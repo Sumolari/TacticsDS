@@ -1,0 +1,19 @@
+{
+	"folders": [ {
+		"name": "Source",
+		"path": "./src"
+	}, {
+		"name": "Builds",
+		"path": "./build"
+	}, {
+		"name": "Assets",
+		"path": "./assets"
+	}, {
+		"name": "Root",
+		"follow_symlinks": true,
+		"folder_exclude_patterns": [ "assets", "src", "build" ],
+		"path": "."
+	} ],
+	"tab_size": 4,
+	"translate_tabs_to_spaces": false
+}

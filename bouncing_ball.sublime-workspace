@@ -1,0 +1,1398 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"repl",
+				"reply_to_tweet"
+			],
+			[
+				"TWITTER",
+				"TWITTERUSER_SCREEN_NAME"
+			],
+			[
+				"final",
+				"finalParams"
+			],
+			[
+				"finalP",
+				"finalPath"
+			],
+			[
+				"phar",
+				"phrases"
+			],
+			[
+				"phra",
+				"phrase"
+			],
+			[
+				"mar",
+				"margin-bottom"
+			],
+			[
+				"margin",
+				"margin-top"
+			],
+			[
+				"pa",
+				"padding-right"
+			],
+			[
+				"inlin",
+				"inline-block"
+			],
+			[
+				"navbar",
+				"navbar-brand"
+			],
+			[
+				"padd",
+				"padding-top"
+			],
+			[
+				"na",
+				"navbar-gray"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"text-",
+				"text-transform"
+			],
+			[
+				"pad",
+				"padding-bottom"
+			],
+			[
+				"font-",
+				"font-size"
+			],
+			[
+				"table-",
+				"table-cell"
+			],
+			[
+				"marg",
+				"margin-bottom"
+			],
+			[
+				"write",
+				"write_to_file"
+			],
+			[
+				"utf",
+				"utf-8"
+			],
+			[
+				"Fr",
+				"FreqDist"
+			],
+			[
+				"simbol",
+				"simbolosAFiltrar"
+			],
+			[
+				"cor",
+				"corpus_root"
+			],
+			[
+				"maximu",
+				"maximum_damage_allowed"
+			],
+			[
+				"winner",
+				"winner_characters"
+			],
+			[
+				"skills_damage_dat",
+				"skills_damage_per_hit_data"
+			],
+			[
+				"max-",
+				"max-height"
+			],
+			[
+				"other_ca",
+				"other_character"
+			],
+			[
+				"paraly",
+				"paralyze"
+			],
+			[
+				"current_round",
+				"current_round_changes"
+			],
+			[
+				"current_roun",
+				"current_round_changes"
+			],
+			[
+				"current_r",
+				"current_round_changes"
+			],
+			[
+				"asser",
+				"assert.ifError(err);"
+			],
+			[
+				"same_cha",
+				"same_character_mock"
+			],
+			[
+				"same_accessory",
+				"same_accessory_mock"
+			],
+			[
+				"same_weapon",
+				"same_weapon_mock"
+			],
+			[
+				"characer",
+				"characters"
+			],
+			[
+				"loca",
+				"local_index"
+			],
+			[
+				"compute",
+				"compute_order"
+			],
+			[
+				"EventEmi",
+				"events.EventEmitter();"
+			],
+			[
+				"equipment_",
+				"equipment_found"
+			],
+			[
+				"equipment",
+				"equipment_promises"
+			],
+			[
+				"waitin",
+				"waiting_endpoint"
+			],
+			[
+				"amount_",
+				"amount_left"
+			],
+			[
+				"required",
+				"required_promises"
+			],
+			[
+				"same_armor",
+				"same_armor_piece"
+			],
+			[
+				"same_ar",
+				"same_armor_type"
+			],
+			[
+				"allowed",
+				"allowedWeapons"
+			],
+			[
+				"different_armor_",
+				"different_armor_set"
+			],
+			[
+				"same_basic_",
+				"same_basic_armor_piece"
+			],
+			[
+				"requirements",
+				"requirements_ready"
+			],
+			[
+				"previous",
+				"previous_defer"
+			],
+			[
+				"type_found_",
+				"type_found_promise"
+			],
+			[
+				"process",
+				"process_item"
+			],
+			[
+				"new_ski",
+				"new_skill"
+			],
+			[
+				"new_skill",
+				"new_skill_promise"
+			],
+			[
+				"new_Ski",
+				"new_skill_save"
+			],
+			[
+				"readFie",
+				"fs.readFileSync(path, encoding);"
+			],
+			[
+				"readFile",
+				"fs.readFileSync(path, encoding);"
+			],
+			[
+				"subli",
+				"sublime-theme"
+			],
+			[
+				"mt_",
+				"mt_comparisons"
+			],
+			[
+				"Mark",
+				"MarkLimit"
+			],
+			[
+				"GREAT",
+				"GREATER_OR_EQUAL"
+			],
+			[
+				"mt_co",
+				"mt_counts"
+			],
+			[
+				"GREA",
+				"GREATER_OR_EQUAL"
+			],
+			[
+				"GRE",
+				"GREATER_OR_EQUAL"
+			],
+			[
+				"GRA",
+				"GREATER_THAN"
+			],
+			[
+				"STATUS_M",
+				"STATUS_WOMAN"
+			],
+			[
+				"STATUS",
+				"STATUS_WOMAN"
+			],
+			[
+				"more",
+				"more_than_9"
+			],
+			[
+				"more_",
+				"more_than_8"
+			],
+			[
+				"STATUS_",
+				"STATUS_IGNORED"
+			],
+			[
+				"next",
+				"nextToken"
+			],
+			[
+				"report",
+				"reportFileNotFoundException"
+			],
+			[
+				"STRING",
+				"STRING_FALSE"
+			],
+			[
+				"MPI_S",
+				"MPI_Send"
+			],
+			[
+				"MPI_",
+				"MPI_DOUBLE"
+			],
+			[
+				"b_loo",
+				"b_loop_2"
+			],
+			[
+				"a_l",
+				"a_loop_2"
+			],
+			[
+				"print",
+				"print_stack"
+			],
+			[
+				"second",
+				"secondOne"
+			],
+			[
+				"sec",
+				"secondOne"
+			],
+			[
+				"first",
+				"firstOne"
+			],
+			[
+				"sum",
+				"sumOfMasses"
+			],
+			[
+				"result",
+				"result"
+			],
+			[
+				"sect",
+				"sectionMasses"
+			],
+			[
+				"firs",
+				"firstMasses"
+			],
+			[
+				"sectio",
+				"sectionLengths"
+			],
+			[
+				"feed_",
+				"feed_posts"
+			],
+			[
+				"all",
+				"allMedia"
+			],
+			[
+				"pos",
+				"possible_slug"
+			],
+			[
+				"set",
+				"setInterval();"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"no",
+				"nowrap"
+			],
+			[
+				"setIn",
+				"setInterval();"
+			],
+			[
+				"verySlow",
+				"verySlowFunctionReturningPromise"
+			],
+			[
+				"traditional",
+				"traditionalApproachDefer"
+			],
+			[
+				"MPI_s",
+				"MPI_STATUS_IGNORE"
+			],
+			[
+				"MPI_C",
+				"MPI_COMM_WORLD"
+			],
+			[
+				"comme",
+				"comment"
+			],
+			[
+				"albert",
+				"albertdb"
+			],
+			[
+				"genera",
+				"generacion98"
+			],
+			[
+				"es",
+				"espiritus"
+			],
+			[
+				"cate",
+				"category_id"
+			],
+			[
+				"rever",
+				"parez_reverte"
+			],
+			[
+				"Ac",
+				"ActivityEntry"
+			],
+			[
+				"par",
+				"paramType"
+			],
+			[
+				"ran",
+				"rankings"
+			],
+			[
+				"heap",
+				"heapify"
+			],
+			[
+				"compo",
+				"composer_id"
+			],
+			[
+				"open",
+				"open_orders"
+			],
+			[
+				"nice_",
+				"nice_opus"
+			],
+			[
+				"inst",
+				"instrs"
+			],
+			[
+				"ins",
+				"inst"
+			],
+			[
+				"intr",
+				"instruments"
+			],
+			[
+				"work",
+				"work_id"
+			],
+			[
+				"edition",
+				"edition_history"
+			],
+			[
+				"max",
+				"max_str_len"
+			],
+			[
+				"el",
+				"elArray"
+			],
+			[
+				"re",
+				"retrieve"
+			],
+			[
+				"grop",
+				"groupMFSet"
+			],
+			[
+				"group",
+				"groupMFSet"
+			],
+			[
+				"Unk",
+				"UnknownBankException"
+			],
+			[
+				"bank",
+				"bank_number"
+			],
+			[
+				"margin-",
+				"margin-bottom"
+			],
+			[
+				"bor",
+				"border-bottom"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/Ruby/Ruby.sublime-build",
+	"command_palette":
+	{
+		"height": 400.0,
+		"selected_items":
+		[
+			[
+				"tr",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"trai",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"dele",
+				"File: Delete"
+			],
+			[
+				"bea",
+				"BeautifyRuby"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"linter",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"form",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"for",
+				"Format: Javascript"
+			],
+			[
+				"javas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"forma",
+				"Format: Javascript"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"err",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"packa",
+				"Package Control: Remove Package"
+			],
+			[
+				"lint",
+				"Preferences: SublimeLinter Settings – Default"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"json",
+				"Indent JSON"
+			],
+			[
+				"er",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"iden",
+				"Indent JSON"
+			],
+			[
+				"ide",
+				"Indent JSON"
+			],
+			[
+				"be",
+				"BeautifyRuby"
+			],
+			[
+				"ruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"ru",
+				"BeautifyRuby"
+			],
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"set",
+				"Set Syntax: C++"
+			],
+			[
+				"as",
+				"Git: Apply Stash"
+			],
+			[
+				"i",
+				"Indent JSON"
+			],
+			[
+				"rub",
+				"Set Syntax: Ruby"
+			],
+			[
+				"trac",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"set  syntax: c",
+				"Set Syntax: C"
+			],
+			[
+				"dlx",
+				"Set Syntax: DLX"
+			],
+			[
+				"synt",
+				"Set Syntax: C"
+			],
+			[
+				"ast",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"mips",
+				"Set Syntax: MIPS"
+			],
+			[
+				"tra",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"se",
+				"Set Syntax: C++"
+			],
+			[
+				"b",
+				"BeautifyRuby"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"astyle",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"astyl",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"erro",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"error",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"conver",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"show",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"syntax c",
+				"Set Syntax: C"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"object",
+				"Set Syntax: Objective-C"
+			],
+			[
+				"lin",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"linte",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"packs",
+				"Package Control: List Packages"
+			],
+			[
+				"format",
+				"Format: Javascript"
+			],
+			[
+				"pakc",
+				"Package Control: Install Package"
+			],
+			[
+				"xml",
+				"Set Syntax: XML"
+			],
+			[
+				"pret",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"prett",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"ex",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"pacl",
+				"Package Control: List Packages"
+			],
+			[
+				"javascr",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"pa",
+				"Package Control: Remove Package"
+			],
+			[
+				"2pdf",
+				"Preferences: 2pdf Key Bindings – Default"
+			],
+			[
+				"sho",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"expo",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"termi",
+				"Preferences: Terminal Key Bindings – Default"
+			],
+			[
+				"package ",
+				"Package Control: Install Package"
+			],
+			[
+				"export",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"expor",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: lis",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: se",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 529.0
+	},
+	"console":
+	{
+		"height": 132.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/bouncing_ball",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/bouncing_ball/build"
+	],
+	"file_history":
+	[
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/bouncing_ball/bouncing_ball.sublime-project",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/bouncing_ball/Makefile",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/hello_world/Makefile",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/vagrant/dependencies.sh",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/vagrant/tools.sh",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/vagrant/personal.sh",
+		"/Users/sumolari/Desktop/index.html",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/vagrant/vagrant.sh",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/hello_world/source/main.cpp",
+		"/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/vagrant/Vagrantfile",
+		"/Users/sumolari/Dropbox/Sublime Text 3 Packages/Packages/User/BeautifyRuby.sublime-settings",
+		"/Users/sumolari/Dropbox/Sublime Text 3 Packages/Packages/BeautifyRuby/BeautifyRuby.sublime-settings",
+		"/Users/sumolari/Dropbox/Sublime Text 3 Packages/Packages/User/SublimeLinter.sublime-settings",
+		"/Volumes/Nitfy/Downloads/eigen-eigen-10219c95fe65/Eigen/Dense",
+		"/Users/sumolari/Dropbox/Keen Frog Web/app.js",
+		"/Users/sumolari/Dropbox/Keen Frog Web/package.json",
+		"/Users/sumolari/Dropbox/Keen Frog Web/monkey.js",
+		"/Users/sumolari/Dropbox/Keen Frog Web/public/style.css",
+		"/Users/sumolari/Dropbox/Keen Frog Web/node_modules/twit/lib/oarequest.js",
+		"/Users/sumolari/Dropbox/Keen Frog Web/node_modules/twit/lib/twitter.js",
+		"/Users/sumolari/Dropbox/Keen Frog Web/keenFrogWeb.sublime-project",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/index.html",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/monkey.js",
+		"/Volumes/HDD/sumolari/Dropbox/Wise Monkey Web/monkey.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/newrelic.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/package.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/Procfile",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/txt/jones_script.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/json/jones.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/sar/lab/P3/monoinfinito.py",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/app.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/less/app.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/less/bootstrap.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/less/navbar.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/less/variables.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/less/glyphicons.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/.gitignore",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/less/font-awesome/variables.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/style.css",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/4maw/.gitignore",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey Web/public/js/4maw.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/4maw/4maw.sublime-project",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/4maw/public/less/fa-variables.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/4maw/public/less/font-awesome.less",
+		"/Volumes/Macintosh HD/sumolari/Downloads/font-awesome-4.0.3/less/icons.less",
+		"/Volumes/Macintosh HD/sumolari/Downloads/font-awesome-4.0.3/less/font-awesome.less",
+		"/Volumes/Macintosh HD/sumolari/Downloads/font-awesome-4.0.3/less/path.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/4maw/public/js/waypoints.min.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/4maw/public/less/navbar.less",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P4/eneeleteka.py",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/indexmono.py",
+		"/Volumes/HDD/sumolari/Dropbox/universidad/tercero/semestre b/sar/lab/P4/eneeleteka.py",
+		"/Volumes/HDD/sumolari/Desktop/eneeleteka.py",
+		"/Volumes/HDD/sumolari/Desktop/indexmono.py",
+		"/Volumes/HDD/sumolari/Dropbox/universidad/tercero/semestre b/sar/lab/P3/indexmono.py",
+		"/Volumes/HDD/sumolari/Dropbox/universidad/tercero/semestre b/sar/lab/P3/a",
+		"/Volumes/HDD/sumolari/Dropbox/universidad/tercero/semestre b/sar/lab/P3/txt/alicia.txt",
+		"/Volumes/HDD/sumolari/Desktop/nltk2.py",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/monoinfinito.py",
+		"/Volumes/HDD/sumolari/Dropbox/universidad/tercero/semestre b/sar/lab/P3/indexmono",
+		"/Volumes/HDD/sumolari/Desktop/nltk.py",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/txt/starwars_spanish.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/txt/starwars_better.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/indexmonoJSON.py",
+		"/Volumes/HDD/sumolari/Vagrant/debian/Vagrantfile",
+		"/Volumes/HDD/sumolari/Vagrant/debian-gui/Berksfile",
+		"/Volumes/HDD/sumolari/Vagrant/debian-gui/Vagrantfile",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/starwars_spanish.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/indexmonoConfinalesJSON.py",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/lab/P3/starwars_spanish.json",
+		"/Volumes/Macintosh HD/sumolari/Downloads/Lucas, George - La guerra de las galaxias 11.15.22.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/starwars_spanish.txt",
+		"/Volumes/Macintosh HD/sumolari/Downloads/Lucas__George_-_La_guerra_de_las_galaxias_11.15.22.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/lab/P3/josue.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/rey.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/lab/P3/rey.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/rey.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/pruebas.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/prueba.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/lazarillo.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/josue.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/lazarillo.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/lab/P3/lazarillo.",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P2/cuentaPalabras.py",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/lab/P3/josue.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/lab/P3/josue.",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/lab/P3/rey.",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/josue.json",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/lazarillo.json",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/lazarillo.txt",
+		"/Volumes/HDD/sumolari/Dropbox/Wise Monkey/Wise Monkey/es.lproj/dick.json",
+		"/Volumes/HDD/sumolari/Dropbox/Wise Monkey/Assets/Localizable.strings",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/josue.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Wise Monkey/Wise Monkey/grey.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/grey.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/monoinfinito.py",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/grey.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/jungle.txt",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/jungle.json",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/starwars_better.txt",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/starwars.txt",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/dick.json",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/dick.txt",
+		"/Volumes/HDD/sumolari/Dropbox/Wise Monkey/Wise Monkey/starwars.json",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/indexmonoConfinalesJSON.py",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/grey_corto.json",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/grey_corto.txt",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/indexmono.py",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/indexmonoConfinales.py",
+		"/Volumes/HDD/sumolari/.zshrc",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/SAR/LAB/P3/spam.txt",
+		"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/semestre b/sar/lab/P3/indexmono.py",
+		"/Volumes/Macintosh HD/sumolari/Desktop/stopwords.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/vendor/roundAPI.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/docs/docs/player.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/docs/models.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/docs/docs/character.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/docs/docs/team.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/vendor/battleHandler.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/skills/purify.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/seeds/class.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/seeds/skill.json",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/vendor/characterHelper.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Clients/NodeJS/config.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/tests/roundAPI.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/skills/poison.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/skills/fiddle.js",
+		"/Volumes/Macintosh HD/sumolari/Dropbox/FFS/Server/seeds/team.json"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 106.0,
+		"where_history":
+		[
+			"<open files>",
+			"",
+			"/Volumes/Macintosh HD/sumolari/Dropbox/whispice/2.x/Bots/feed_refresher",
+			"",
+			"user-following",
+			"",
+			"[/td][td]",
+			"[td]",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"",
+			"<open files>",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/plugins/bbpress",
+			"/Applications/MAMP/htdocs/whispice/wp-content/plugins/theme-my-login",
+			"/Applications/MAMP/htdocs/whispice/wp-content/plugins/",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"/Applications/MAMP/htdocs/whispice/wp-content/whispice",
+			"/Applications/MAMP/htdocs/whispice/",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"/Users/sumolari/Dropbox/whispice/wp-content/themes/whispice",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"#-------------------------------------------------------------------------------------",
+			"#---------------------------------------------------------------------------------",
+			"//---------------------------------------------------------------------------------",
+			"/home/vagrant",
+			"favo",
+			"		transform: ",
+			") ;",
+			"  ",
+			"NAME",
+			"name",
+			"WISEMONKEYUSER_SCREEN_NAME",
+			"WISEMONKEYUSER_ID",
+			"starwars_better",
+			"\"a\":",
+			"a",
+			"Shushl",
+			"Jonesl",
+			"large",
+			"lg",
+			"btn-",
+			"brand-prim",
+			"Lato",
+			"font-",
+			"	<div class=\"col-xs-6 advice\">\n							<p>Hello, I'm a Wise Monkey and I can give you useful tips and advices</p>\n						</div>\n\n						<div class=\"col-xs-6\" id=\"monkey\">\n							<img src=\"img/monkey@2x.png\" width=\"300\" height=\"273\" />\n						</div>\n\n					</div>",
+			"button",
+			"size",
+			"navbar",
+			"weight",
+			"-default-",
+			"@navbar",
+			"@navbar-default-color",
+			"#",
+			"$",
+			"(\\w+),\\n(\\w+)",
+			"(\\w+)\\n\"\\n(\\w+)",
+			"(\\w+)\\n(\\w+)",
+			"(\\w+)-\\n\"\\n(\\w+)",
+			"(\\w+)-\\n(\\w+)",
+			"chó",
+			"",
+			"cuales",
+			"cua les",
+			"cua ",
+			"cuales",
+			"cua",
+			"cuales",
+			"'",
+			"terrorismo",
+			"víctimas",
+			"ñ",
+			"diablo",
+			"diablo est",
+			"est",
+			"está",
+			"Transición",
+			"España",
+			"Príncipe",
+			"sta ",
+			"sta",
+			" sta",
+			" sta ",
+			"sta",
+			" \n",
+			"\"\"",
+			"empire",
+			"princess",
+			"imperial",
+			"force",
+			"Dantooine",
+			"Alderaan",
+			"Princess",
+			"Force",
+			"Dantooine",
+			"dantooine",
+			"Alderaan",
+			"Senate",
+			"Imperial",
+			"Rebel",
+			"Force",
+			"Luke",
+			"\" ",
+			"count\": {",
+			"count",
+			"\\'",
+			"\"",
+			"'",
+			"\"",
+			"Player\":",
+			"canPerform",
+			"console.log",
+			"log.error",
+			"STATUS_PARALYSIS_ID",
+			"\"paralysis\"",
+			"paralysis",
+			"\"poison\"",
+			"HEALTH_STAT_ID",
+			"getArmorTyp",
+			"realDamage",
+			"initStats",
+			"STATISTIC_",
+			"Statistics",
+			"winner",
+			"room.battle.finished",
+			"console.log",
+			"Environment",
+			"STATISTICS",
+			"),\n",
+			"Skill\":",
+			"Skill\"",
+			"Skill",
+			"altered_statuses",
+			"console.lo",
+			"console",
+			"cast",
+			".cast",
+			"room.characters",
+			"rooms",
+			"room = ",
+			"commit",
+			"Skill.",
+			"DECISION_MADE_EVENT",
+			"handle_decision",
+			"all_decisions_received",
+			"decisions_phase_end",
+			"MATCH_FOUND_EVENT",
+			"\"Skill\":",
+			"Skill+",
+			"console.log"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			" ",
+			"TWITTERUSER_SCREEN_NAME",
+			"TWITTERUSER_ID",
+			"starwars",
+			"Shush",
+			"Jones",
+			"",
+			"$1 $2",
+			"$1$2",
+			"\"",
+			"plátano",
+			"bananas",
+			"Banana",
+			"Utiel",
+			"Gorila",
+			" ",
+			"healthy-cycles",
+			"hoe",
+			"hot",
+			"swag",
+			"Utiel",
+			"Jungle",
+			"hoe",
+			"swag",
+			"Utiel",
+			"Jungle",
+			"hood",
+			"hot",
+			"banana",
+			"swag",
+			"Monkey",
+			"'",
+			"\\'",
+			"'",
+			"{\n			\"description\": \"Session token\",\n			\"name\": \"sessionToken\",\n			\"paramType\": \"header\",\n			\"required\": false,\n			\"type\": \"string\"\n		}",
+			"user",
+			"dateTime",
+			"stack",
+			"Stack",
+			"stack_push",
+			"stack_top",
+			"10.0.1.36",
+			"10.0.1.35",
+			".",
+			">",
+			"<",
+			">",
+			"<",
+			"",
+			"\",\n\"",
+			",\n\"",
+			"/users/",
+			"symbol: 'S',",
+			"media_id",
+			",\n",
+			" ",
+			"\"",
+			" ",
+			"",
+			" ",
+			"",
+			" ",
+			"media",
+			">\n",
+			"</item>\n",
+			">\n",
+			"'",
+			"",
+			"<img src=\"images/spacer.gif\" style=\"display:block;\" width=\"53\" height=\"53\" />",
+			"q.length",
+			"empty?",
+			"\nSTART WITH",
+			"\", \"",
+			"\",",
+			"\", \"",
+			" ",
+			"\", \"",
+			"\", ",
+			" ",
+			"\", \"",
+			" ",
+			".mixin-animation-timing-function(",
+			".mixin-transform(",
+			") );",
+			"r );",
+			"t );",
+			"r );",
+			") );",
+			".mixin-animation-timing-function(",
+			".mixin-transform(",
+			".mixin-animation-timing-function(",
+			"r );",
+			"t );",
+			") );",
+			".mixin-transform(",
+			".mixin",
+			".mixin-animation-timing-function(",
+			") );",
+			"-mixin-transform(",
+			" ",
+			"",
+			" ",
+			"'",
+			"* .frontme-share",
+			"'",
+			".frontme-share ",
+			"article.post",
+			"",
+			".frontme-share",
+			"'",
+			",#frontme-comments ",
+			"]",
+			"[",
+			"",
+			"]",
+			"[",
+			"",
+			"[",
+			"]",
+			"[",
+			"",
+			"[",
+			"]",
+			"[",
+			"\"",
+			"> section",
+			".divup-form",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/bouncing_ball"
+		}
+	],
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 114.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/sumolari/Dropbox/Universidad/Segundo/Semestre A/ETC/ACT/Button and Lamp - 1.s"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/bouncing_ball/bouncing_ball.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 208.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
