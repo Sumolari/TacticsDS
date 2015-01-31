@@ -124,6 +124,11 @@ bool Sprite::setTile( uint16 tileIndex ) {
     return true;
 }
 
+uint16 Sprite::getTile() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
 bool Sprite::setPalette( uint8 paletteIndex ) {
     uint8 paletteIndexCapped = paletteIndex & 0x000F;
     if ( paletteIndex != paletteIndexCapped ) return false;
@@ -134,26 +139,135 @@ bool Sprite::setPalette( uint8 paletteIndex ) {
     return true;
 }
 
+uint8 Sprite::getPalette() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
 //----------//------------------------------------------------------------------
-//----------// Other settings.
+//----------// Rotation & scale settings.
 //----------//------------------------------------------------------------------
 
-void Sprite::clear() {
-    sprites[this->id].attr0 = ATTR0_DISABLED;
-    sprites[this->id].attr1 = 0;
-    sprites[this->id].attr2 = 0;
-    sprites[this->id].affine_data = 0;
+/**
+ * Enables rotation and scale of this sprite.
+ */
+void Sprite::enableRotationAndScale() {
+    TO_BE_IMPLEMENTED
 }
 
-void Sprite::disable() {
-    uint16 disableMask = 0xFEFF;
-    sprites[this->id].attr0 &= disableMask;
+/**
+ * Disables rotation and scale of this sprite.
+ * Double-size will be disabled, too.
+ */
+void Sprite::disableRotationAndScale() {
+    TO_BE_IMPLEMENTED
 }
 
-void Sprite::enable() {
-    uint16 enableMask = 0xFCFF;
-    sprites[this->id].attr0 &= enableMask;
+/**
+ * Returns whether rotation and scaling are enabled in this sprite or not.
+ * @return Whether rotation and scaling are enabled in this sprite or not.
+ */
+bool Sprite::rotationAndScaleAreEnabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
 }
+
+bool Sprite::rotationAndScaleAreDisabled() {
+    return !this->rotationAndScaleAreEnabled();
+}
+
+/**
+ * Enables double size of this sprite.
+ * Will enable also rotation and scaling.
+ */
+void Sprite::enableDoubleSize() {
+    TO_BE_IMPLEMENTED
+}
+
+/**
+ * Disables double size of this sprite.
+ */
+void Sprite::disableDoubleSize() {
+    TO_BE_IMPLEMENTED
+}
+
+/**
+ * Returns whether double size is enabled or not.
+ * @return Whether double size is enabled or not.
+ */
+bool Sprite::doubleSizeEnabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+bool Sprite::doubleSizeDisabled() {
+    return !this->doubleSizeEnabled();
+}
+
+//----------//------------------------------------------------------------------
+//----------// Object mode settings.
+//----------//------------------------------------------------------------------
+
+/**
+ * Sets this sprite's object mode to given one.
+ * @param newMode This sprite's object mode.
+ */
+void Sprite::setObjectMode( SpriteObjectMode newMode ) {
+    TO_BE_IMPLEMENTED
+}
+
+/**
+ * Returns this sprite's object mode.
+ * @return Object mode of this sprite.
+ */
+SpriteObjectMode Sprite::getObjectMode() {
+    TO_BE_IMPLEMENTED
+    return normal;
+}
+
+//----------//------------------------------------------------------------------
+//----------// Mosaic & color settings.
+//----------//------------------------------------------------------------------
+
+void Sprite::enableMosaic() {
+    TO_BE_IMPLEMENTED
+}
+
+void Sprite::disableMosaic() {
+    TO_BE_IMPLEMENTED
+}
+
+bool Sprite::mosaicIsEnabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+bool Sprite::mosaicIsDisabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+void Sprite::use16BitColors() {
+    TO_BE_IMPLEMENTED
+}
+
+void Sprite::use256BitColors() {
+    TO_BE_IMPLEMENTED
+}
+
+bool Sprite::isUsing16BitColors()
+{
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+bool Sprite::isUsing256BitColors() {
+    return !this->isUsing16BitColors();
+}
+
+//----------//------------------------------------------------------------------
+//----------// Shape & size settings.
+//----------//------------------------------------------------------------------
 
 bool Sprite::setSizeMode( SpriteSizeMode newMode ) {
     uint16 attr0mask;
@@ -292,6 +406,118 @@ SpriteSizeMode Sprite::getSizeMode() {
     }
 
     return sizeMode;
+}
+
+//----------//------------------------------------------------------------------
+//----------// Flip settings.
+//----------//------------------------------------------------------------------
+
+/**
+ * Enables horizontal flip for this sprite.
+ * This will disable rotation/scale for this sprite.
+ */
+void Sprite::enableHorizontalFlip() {
+    TO_BE_IMPLEMENTED
+}
+
+/**
+ * Disables horizontal flip for this sprite.
+ * This will disable rotation/scale for this sprite.
+ */
+void Sprite::disableHorizontalFlip() {
+    TO_BE_IMPLEMENTED
+}
+
+/**
+ * Returns whether horizontal flip is enabled for this sprite or not.
+ * If rotation/scaling is disabled it'll return false.
+ * @return Whether horizontal flip is enabled for this sprite or not.
+ */
+bool Sprite::horizontalFlipIsEnabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+/**
+ * Returns whether horizontal flip is disabled for this sprite or not.
+ * If rotation/scaling is disabled it'll return false.
+ * THIS IS NOT EQUIVALENT TO !horizontalFlipIsEnabled() !!
+ * @return Whether horizontal flip is disabled for this sprite or not.
+ */
+bool Sprite::horizontalFlipIsDisabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+/**
+ * Enables vertical flip for this sprite.
+ * This will disable rotation/scale for this sprite.
+ */
+void Sprite::enableVerticalFlip() {
+    TO_BE_IMPLEMENTED
+}
+
+/**
+ * Disables vertical flip for this sprite.
+ * This will disable rotation/scale for this sprite.
+ */
+void Sprite::disableVerticalFlip() {
+    TO_BE_IMPLEMENTED
+}
+
+/**
+ * Returns whether vertical flip is enabled for this sprite or not.
+ * If rotation/scaling is disabled it'll return false.
+ * @return Whether vertical flip is enabled for this sprite or not.
+ */
+bool Sprite::verticalFlipIsEnabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+/**
+ * Returns whether vertical flip is disabled for this sprite or not.
+ * If rotation/scaling is disabled it'll return false.
+ * THIS IS NOT EQUIVALENT TO !verticalFlipIsEnabled() !!
+ * @return Whether vertical flip is disabled for this sprite or not.
+ */
+bool Sprite::verticalFlipIsDisabled() {
+    TO_BE_IMPLEMENTED
+    return 0;
+}
+
+//----------//------------------------------------------------------------------
+//----------// Priority settings.
+//----------//------------------------------------------------------------------
+
+void Sprite::setPriority( SpritePriority priority ) {
+    TO_BE_IMPLEMENTED
+}
+
+SpritePriority Sprite::getPriority() {
+    TO_BE_IMPLEMENTED
+    return spLOW;
+}
+
+//----------//------------------------------------------------------------------
+//----------// Other settings.
+//----------//------------------------------------------------------------------
+
+void Sprite::clear() {
+    sprites[this->id].attr0 = ATTR0_DISABLED;
+    sprites[this->id].attr1 = 0;
+    sprites[this->id].attr2 = 0;
+    sprites[this->id].affine_data = 0;
+}
+
+void Sprite::disable() {
+    uint16 disableMask = 0xFEFF;
+    sprites[this->id].attr0 &= disableMask;
+}
+
+void Sprite::enable() {
+    uint16 enableMask = 0xFCFF;
+    sprites[this->id].attr0 &= enableMask;
 }
 
 void Sprite::print() {

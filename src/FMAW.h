@@ -3,7 +3,8 @@
 
 #include "./math.h"
 #include "./geometry.h"
-#include "./sprite.h"
 #include "./debug.h"
+#include "./background.h"
+#include "./sprite.h"
 
 #endif

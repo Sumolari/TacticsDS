@@ -42,6 +42,22 @@ typedef enum t_spriteSizeMode {
     unknown
 } SpriteSizeMode;
 
+// Type defining the different object modes available.
+typedef enum t_spriteObjectMode {
+    normal             = 0x0,
+    alpha_first_target = 0x1,
+    add_to_window      = 0x2,
+    bitmap             = 0x3
+} SpriteObjectMode;
+
+// Type defining the different priorities of backgrounds.
+typedef enum t_spritePriority {
+    spHIGHEST = 0xF3FF,
+    spHIGH    = 0xF7FF,
+    spLOW     = 0xFBFF,
+    spLOWEST  = 0xFFFF
+} SpritePriority;
+
 //------------------------------------------------------------------------------
 // Common sprite helpers.
 //------------------------------------------------------------------------------
@@ -161,11 +177,228 @@ public:
     bool setTile( uint16 tileIndex );
 
     /**
+     * Returns this sprite's tile index.
+     * @return Tile of this sprite index.
+     */
+    uint16 getTile();
+
+    /**
      * Sets this sprite's palette to given one.
      * @param  paletteIndex Index of palette to use.
      * @return              Whether palette can be used or not.
      */
     bool setPalette( uint8 paletteIndex );
+
+    /**
+     * Returns this sprite's palette index.
+     * @return Palette index of this sprite.
+     */
+    uint8 getPalette();
+
+    //--------------------------------------------------------------------------
+    // Rotation & scale settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Enables rotation and scale of this sprite.
+     */
+    void enableRotationAndScale();
+
+    /**
+     * Disables rotation and scale of this sprite.
+     * Double-size will be disabled, too.
+     */
+    void disableRotationAndScale();
+
+    /**
+     * Returns whether rotation and scaling are enabled in this sprite or not.
+     * @return Whether rotation and scaling are enabled in this sprite or not.
+     */
+    bool rotationAndScaleAreEnabled();
+
+    /**
+     * Returns whether rotation and scaling are disabled in this sprite or not.
+     * @return Whether rotation and scaling are disabled in this sprite or not.
+     */
+    bool rotationAndScaleAreDisabled();
+
+    /**
+     * Enables double size of this sprite.
+     * Will enable also rotation and scaling.
+     */
+    void enableDoubleSize();
+
+    /**
+     * Disables double size of this sprite.
+     */
+    void disableDoubleSize();
+
+    /**
+     * Returns whether double size is enabled or not.
+     * @return Whether double size is enabled or not.
+     */
+    bool doubleSizeEnabled();
+
+    /**
+     * Returns whether double size is enabled or not.
+     * @return Whether double size is enabled or not.
+     */
+    bool doubleSizeDisabled();
+
+    //--------------------------------------------------------------------------
+    // Object mode settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets this sprite's object mode to given one.
+     * @param newMode This sprite's object mode.
+     */
+    void setObjectMode( SpriteObjectMode newMode );
+
+    /**
+     * Returns this sprite's object mode.
+     * @return Object mode of this sprite.
+     */
+    SpriteObjectMode getObjectMode();
+
+    //--------------------------------------------------------------------------
+    // Mosaic & color settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Enables mosaic mode for this sprite.
+     */
+    void enableMosaic();
+
+    /**
+     * Disables mosaic mode for this sprite.
+     */
+    void disableMosaic();
+
+    /**
+     * Returns whether mosaic mode is enabled for this sprite.
+     * @return Whether mosaic mode is enabled for this sprite.
+     */
+    bool mosaicIsEnabled();
+
+    /**
+     * Returns whether mosaic mode is disabled for this sprite.
+     * @return Whether mosaic mode is disabled for this sprite.
+     */
+    bool mosaicIsDisabled();
+
+    /**
+     * Enables 16 bit textures for this sprite.
+     */
+    void use16BitColors();
+
+    /**
+     * Enables 256 bit textures for this sprite.
+     */
+    void use256BitColors();
+
+    /**
+     * Returns whether this sprite is using 16 bit textures or not.
+     * @return Whether this sprite is using 16 bit textures or not.
+     */
+    bool isUsing16BitColors();
+
+    /**
+     * Returns whether this sprite is using 256 bit textures or not.
+     * @return Whether this sprite is using 256 bit textures or not.
+     */
+    bool isUsing256BitColors();
+
+    //--------------------------------------------------------------------------
+    // Shape & size settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets this sprite's size mode to given mode.
+     * @param newMode New Sprite Mode for this sprite.
+     * @return        Whether newMode can be applied or not.
+     */
+    bool setSizeMode( SpriteSizeMode newMode );
+
+    /**
+     * Returns this sprite's size mode.
+     * @return This sprite's size mode.
+     */
+    SpriteSizeMode getSizeMode();
+
+    //--------------------------------------------------------------------------
+    // Flip settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Enables horizontal flip for this sprite.
+     * This will disable rotation/scale for this sprite.
+     */
+    void enableHorizontalFlip();
+
+    /**
+     * Disables horizontal flip for this sprite.
+     * This will disable rotation/scale for this sprite.
+     */
+    void disableHorizontalFlip();
+
+    /**
+     * Returns whether horizontal flip is enabled for this sprite or not.
+     * If rotation/scaling is disabled it'll return false.
+     * @return Whether horizontal flip is enabled for this sprite or not.
+     */
+    bool horizontalFlipIsEnabled();
+
+    /**
+     * Returns whether horizontal flip is disabled for this sprite or not.
+     * If rotation/scaling is disabled it'll return false.
+     * THIS IS NOT EQUIVALENT TO !horizontalFlipIsEnabled() !!
+     * @return Whether horizontal flip is disabled for this sprite or not.
+     */
+    bool horizontalFlipIsDisabled();
+
+    /**
+     * Enables vertical flip for this sprite.
+     * This will disable rotation/scale for this sprite.
+     */
+    void enableVerticalFlip();
+
+    /**
+     * Disables vertical flip for this sprite.
+     * This will disable rotation/scale for this sprite.
+     */
+    void disableVerticalFlip();
+
+    /**
+     * Returns whether vertical flip is enabled for this sprite or not.
+     * If rotation/scaling is disabled it'll return false.
+     * @return Whether vertical flip is enabled for this sprite or not.
+     */
+    bool verticalFlipIsEnabled();
+
+    /**
+     * Returns whether vertical flip is disabled for this sprite or not.
+     * If rotation/scaling is disabled it'll return false.
+     * THIS IS NOT EQUIVALENT TO !verticalFlipIsEnabled() !!
+     * @return Whether vertical flip is disabled for this sprite or not.
+     */
+    bool verticalFlipIsDisabled();
+
+    //--------------------------------------------------------------------------
+    // Priority settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets priority of this sprite.
+     * @param priority New priority of this sprite.
+     */
+    void setPriority( SpritePriority priority );
+
+    /**
+     * Returns the priority of this sprite.
+     * @return This sprite's priority.
+     */
+    SpritePriority getPriority();
 
     //--------------------------------------------------------------------------
     // Other settings.
@@ -189,25 +422,11 @@ public:
     void enable();
 
     /**
-     * Sets this sprite's size mode to given mode.
-     * @param newMode New Sprite Mode for this sprite.
-     * @return        Whether newMode can be applied or not.
-     */
-    bool setSizeMode( SpriteSizeMode newMode );
-
-    /**
-     * Returns this sprite's size mode.
-     * @return This sprite's size mode.
-     */
-    SpriteSizeMode getSizeMode();
-
-    /**
      * Prints a description of this Sprite in debug console.
      */
     void print();
 
 };
-
 
 }
 

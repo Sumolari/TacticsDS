@@ -30,9 +30,9 @@ void printf(const std::string fmt_str, ...) {
     nocashMessage((std::string(formatted.get())).c_str());
 }
 
-std::string byte_to_binary( uint16 x ) {
+std::string byte_to_binary( uint8 x ) {
     std::stringstream string {};
-    for ( uint16 z = 128; z > 0; z >>= 1 )
+    for ( uint8 z = 128; z > 0; z >>= 1 )
         string << (((x & z) == z) ? "1" : "0");
     return string.str();
 }

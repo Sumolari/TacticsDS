@@ -118,8 +118,8 @@ void setupGraphics(void) {
     // Add some sprites.
     for ( int n = 0; n < 5; n++ ) {
         FMAW::Sprite sprite;
-        sprite.setXPosition(rand() % (256 - 16));
-        sprite.setYPosition(rand() % (192 - 16));
+        sprite.setXPosition(rand() % 256);
+        sprite.setYPosition(rand() % 192);
         sprite.setSizeMode(FMAW::square16x16);
         sprite.setTile(TILES_BALL);
         sprite.setPalette(PAL_BALL);

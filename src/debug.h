@@ -2,10 +2,13 @@
 #define FMAW_DEBUG_H
 
 #include <string>
+#include <assert.h>
 
 #include "./debug.h"
 
 namespace FMAW {
+
+#define TO_BE_IMPLEMENTED assert( 0 && "This function is not implemented yet!");
 
 /**
  * Prints given message applying format, if needed.
@@ -17,7 +20,7 @@ void printf( const std::string fmt_str, ... );
  * @param  x Byte to represent in binary.
  * @return   Binary representation of given byte.
  */
-std::string byte_to_binary( uint16 x );
+std::string byte_to_binary( uint8 x );
 
 /**
  * Returns a string representing given half word in binary.
