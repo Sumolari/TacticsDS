@@ -4,7 +4,7 @@
 #include <nds/debug.h>
 #include <sstream>
 
-#include "./debug.h"
+#include "./FMAW.h"  // Import our awesome framework!
 
 //------------------------------------------------------------------------------
 // Graphic references
@@ -15,7 +15,7 @@
 #include "./gfx_gradient.h"
 
 //------------------------------------------------------------------------------
-// Tile entries
+// Background tile entries
 //------------------------------------------------------------------------------
 
 #define TILE_EMPTY     0  // Tile 0 = empty
@@ -26,8 +26,12 @@
 #define tile2bgram(t)  (BG_GFX + (t) * 16)
 
 //------------------------------------------------------------------------------
-// Palette entries
+// Background...
 //------------------------------------------------------------------------------
+
+//----------//------------------------------------------------------------------
+//----------// Palette entries
+//----------//------------------------------------------------------------------
 
 #define PAL_BRICKS     0  // Brick palette (entry 0->15).
 #define PAL_GRADIENT   1  // Gradient palette (entry 16->31).
@@ -37,11 +41,34 @@
 // Macro for calculating BG VRAM memory address with palette index.
 #define pal2bgram(p)   (BG_PALETTE + (p) * 16)
 
-//------------------------------------------------------------------------------
-// BG Screen Base Blocks pointed
-//------------------------------------------------------------------------------
+//----------//------------------------------------------------------------------
+//----------// Screen base blocks pointed
+//----------//------------------------------------------------------------------
+
 #define bg0map    (reinterpret_cast<u16*>BG_MAP_RAM(1))
 #define bg1map    (reinterpret_cast<u16*>BG_MAP_RAM(2))
+
+//------------------------------------------------------------------------------
+// Sprites...
+//------------------------------------------------------------------------------
+
+//----------//------------------------------------------------------------------
+//----------// Tile entries
+//----------//------------------------------------------------------------------
+
+#define TILES_BALL     0  // Ball tiles (16x16 tile: 0 -> 3)
+
+// Macro for calculating Sprite VRAM memory address with tile index.
+#define tile2objram(t) (SPRITE_GFX + (t) * 16)
+
+//----------//------------------------------------------------------------------
+//----------// Palette entries
+//----------//------------------------------------------------------------------
+
+#define PAL_BALL       0  // Ball palette (entry 0 -> 15)
+
+// Macro for calculating Palette VRAM memorya address with palette index.
+#define pal2objram(p) (SPRITE_PALETTE + (p) * 16)
 
 //------------------------------------------------------------------------------
 // Main code section
@@ -64,10 +91,17 @@ void setupGraphics(void) {
     dmaCopyHalfWords(3, gfx_gradientTiles, tile2bgram(TILE_GRADIENT),
                      gfx_gradientTilesLen);
 
-    // Palettes go to palette memory.
+    // Copy Sprites graphics.
+    dmaCopyHalfWords(3, gfx_ballTiles, tile2objram(TILES_BALL),
+                     gfx_ballTilesLen);
+
+    // BG palettes go to palette memory.
     dmaCopyHalfWords(3, gfx_brickPal, pal2bgram(PAL_BRICKS), gfx_brickPalLen);
     dmaCopyHalfWords(3, gfx_gradientPal, pal2bgram(PAL_GRADIENT),
                      gfx_gradientPalLen);
+
+    // Sprite palettes go to palette memory.
+    dmaCopyHalfWords(3, gfx_ballPal, pal2objram(PAL_BALL), gfx_ballPalLen);
 
     // Set backdrop color.
     BG_PALETTE[0] = BACKDROP_COLOR;
@@ -75,12 +109,17 @@ void setupGraphics(void) {
     // libnds prefixes the register names with REG_
     REG_BG0CNT  = BG_MAP_BASE(1);
     REG_BG1CNT  = BG_MAP_BASE(2);
+
+    videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |
+                 DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D_LAYOUT);
 }
 
 void update_logic() {
 }
 
 void update_graphics() {
+    FMAW::clearAllSprites();
+
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     for ( int n = 0; n < 1024; n++ ) {
         bg0map[n] = 0;
@@ -128,8 +167,6 @@ void update_graphics() {
     //                              0010000010000010
     REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
     REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
-
-    videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE);
 }
 
 int main(void) {

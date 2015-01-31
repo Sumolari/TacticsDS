@@ -1,6 +1,8 @@
 #ifndef FMAW_DEBUG_H
 #define FMAW_DEBUG_H
 
+#include "./debug.h"
+
 namespace FMAW {
 
 /**
