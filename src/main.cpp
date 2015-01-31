@@ -112,13 +112,25 @@ void setupGraphics(void) {
 
     videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |
                  DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D_LAYOUT);
+
+    FMAW::clearAllSprites();
+
+    // Add some sprites.
+    for ( int n = 0; n < 5; n++ ) {
+        FMAW::Sprite sprite;
+        sprite.setXPosition(rand() % (256 - 16));
+        sprite.setYPosition(rand() % (192 - 16));
+        sprite.setSizeMode(FMAW::square16x16);
+        sprite.setTile(TILES_BALL);
+        sprite.setPalette(PAL_BALL);
+        sprite.enable();
+    }
 }
 
 void update_logic() {
 }
 
 void update_graphics() {
-    FMAW::clearAllSprites();
 
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     for ( int n = 0; n < 1024; n++ ) {

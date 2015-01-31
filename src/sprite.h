@@ -47,36 +47,33 @@ typedef enum t_spriteSizeMode {
 //------------------------------------------------------------------------------
 
 /**
- * Clears all the sprites.
+ * Clears all sprites in memory.
  */
-void clearAllSprites(void);
-
-/**
- * Disables given sprite (it won't be rendered and no CPU cycles will be wasted
- * on it).
- */
-void disableSprite( sprite_id id );
+void clearAllSprites();
 
 //------------------------------------------------------------------------------
 // Sprite class.
 //------------------------------------------------------------------------------
 
 class Sprite {
-private:
-    // Actual struct holding sprite internal data.
-    t_spriteEntry entry;
-
-
 public:
     // ID of this sprite.
-    uint8 id;
+    sprite_id id;
     // Next empty sprite.
-    static uint8 nextEmptySprite;
+    static sprite_id nextEmptySprite;
 
     /**
      * Default constructor takes a valid ID automatically.
      */
-    Sprite() : id( nextEmptySprite++ ) {};
+    Sprite() : id( nextEmptySprite++ ) {
+        this->clear();
+    };
+
+    /**
+     * Constructor for Sprite with given ID. Sprite should have been previously
+     * created otherwise results are not defined.
+     */
+    Sprite( sprite_id id ) : id(id) {};
 
     //--------------------------------------------------------------------------
     // Position.
@@ -174,13 +171,22 @@ public:
     // Other settings.
     //--------------------------------------------------------------------------
 
-    // _TODO: Add method to enable this sprite.
+    /**
+     * Resets VRAM of this sprite to 0.
+     */
+    void clear();
 
     /**
      * Disables this sprite (it won't be rendered and no CPU cycles will be
      * wasted on it).
      */
     void disable();
+
+    /**
+     * Enables this sprite (it might be rendered but it will consume CPU cycles
+     * for sure).
+     */
+    void enable();
 
     /**
      * Sets this sprite's size mode to given mode.
@@ -194,6 +200,11 @@ public:
      * @return This sprite's size mode.
      */
     SpriteSizeMode getSizeMode();
+
+    /**
+     * Prints a description of this Sprite in debug console.
+     */
+    void print();
 
 };
 

@@ -1,8 +1,11 @@
+#include <string>
+
 #include <nds.h>
 #include <nds/debug.h>
 
 #include "./math.h"
 #include "./sprite.h"
+#include "./debug.h"
 
 namespace FMAW {
 
@@ -10,13 +13,11 @@ namespace FMAW {
 // Common sprite helpers.
 //------------------------------------------------------------------------------
 
-void clearAllSprites(void) {
-    for ( sprite_id id = 0; id < TOTAL_SPRITES; id++ )
-        disableSprite( id );
-}
-
-void disableSprite( sprite_id id ) {
-    sprites[id].attr0 = ATTR0_DISABLED;
+void clearAllSprites() {
+    for ( sprite_id id = 0; id < TOTAL_SPRITES; id++ ) {
+        Sprite sprite (id);
+        sprite.clear();
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -34,6 +35,7 @@ bool Sprite::setXPosition( int x ) {
     if ( isNegative ) x = -x;
 
     uint16 xCapped = x & 0x00FF;
+    printf("X Original: %d New: %u", x, xCapped);
     if ( x != xCapped ) return false;
 
     // If x was negative we have to apply 2's complement.
@@ -41,11 +43,11 @@ bool Sprite::setXPosition( int x ) {
 
     // We have to set the upper part of the half-word to 1 so AND doesn't
     // break anything.
-    x |= 0xFF00;
+    x |= 0xFE00;
     // We have to set position's bits to 1 so we can then make an AND.
-    this->entry.attr1 = this->entry.attr1 | 0x01FF;
+    sprites[this->id].attr1 |= 0x01FF;
     // Now we can set position with a simple AND.
-    this->entry.attr1 &= x;
+    sprites[this->id].attr1 &= x;
 
     return true;
 }
@@ -55,6 +57,7 @@ bool Sprite::setYPosition( int y ) {
     if ( isNegative ) y = -y;
 
     uint16 yCapped = y & 0x007F;
+    printf("Y Original: %d New: %u", y, yCapped);
     if ( y != yCapped ) return false;
 
     // If x was negative we have to apply 2's complement.
@@ -64,9 +67,9 @@ bool Sprite::setYPosition( int y ) {
     // break anything.
     y |= 0xFF00;
     // We have to set position's bits to 1 so we can then make an AND.
-    this->entry.attr0 = this->entry.attr0 | 0x00FF;
+    sprites[this->id].attr0 |= 0x00FF;
     // Now we can set position with a simple AND.
-    this->entry.attr0 &= y;
+    sprites[this->id].attr0 &= y;
 
     return true;
 }
@@ -87,14 +90,14 @@ bool Sprite::setPosition( Point point ) {
 }
 
 int Sprite::getXPosition() {
-    uint8 x = this->entry.attr1 & 0x01FF;
+    uint8 x = sprites[this->id].attr1 & 0x01FF;
     // If x-position was a negative number...
     if ( (x & 0x0100) != 0 ) return -twosComplement9B(x);
     return x;
 }
 
 int Sprite::getYPosition() {
-    uint8 y = this->entry.attr0 & 0x00FF;
+    uint8 y = sprites[this->id].attr0 & 0x00FF;
     // If y-position was a negative number...
     if ( (y & 0x0080) != 0 ) return -twosComplement8B(y);
     return y;
@@ -115,9 +118,9 @@ bool Sprite::setTile( uint16 tileIndex ) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;
     if ( tileIndex != tileIndexCapped ) return false;
     // We first set tile bits to 1 so we can apply an AND later.
-    this->entry.attr2 |= 0x01FF;
+    sprites[this->id].attr2 |= 0x01FF;
     // We apply and AND to set the bits properly.
-    this->entry.attr2 &= tileIndexCapped;
+    sprites[this->id].attr2 &= tileIndexCapped;
     return true;
 }
 
@@ -125,9 +128,9 @@ bool Sprite::setPalette( uint8 paletteIndex ) {
     uint8 paletteIndexCapped = paletteIndex & 0x000F;
     if ( paletteIndex != paletteIndexCapped ) return false;
     // We first set tile bits to 1 so we can apply an AND later.
-    this->entry.attr2 |= 0xF000;
+    sprites[this->id].attr2 |= 0xF000;
     // We apply and AND to set the bits properly.
-    this->entry.attr2 &= paletteIndexCapped << 12;
+    sprites[this->id].attr2 &= paletteIndexCapped << 12;
     return true;
 }
 
@@ -135,9 +138,21 @@ bool Sprite::setPalette( uint8 paletteIndex ) {
 //----------// Other settings.
 //----------//------------------------------------------------------------------
 
+void Sprite::clear() {
+    sprites[this->id].attr0 = ATTR0_DISABLED;
+    sprites[this->id].attr1 = 0;
+    sprites[this->id].attr2 = 0;
+    sprites[this->id].affine_data = 0;
+}
+
 void Sprite::disable() {
-    // _TODO: Update this method to ensure that previous settings are preserved.
-    this->entry.attr0 = ATTR0_DISABLED;
+    uint16 disableMask = 0xFEFF;
+    sprites[this->id].attr0 &= disableMask;
+}
+
+void Sprite::enable() {
+    uint16 enableMask = 0xFCFF;
+    sprites[this->id].attr0 &= enableMask;
 }
 
 bool Sprite::setSizeMode( SpriteSizeMode newMode ) {
@@ -194,18 +209,18 @@ bool Sprite::setSizeMode( SpriteSizeMode newMode ) {
     }
 
     // We first set the size bits to 1.
-    this->entry.attr0 |= 0XC000;
-    this->entry.attr1 |= 0XC000;
+    sprites[this->id].attr0 |= 0XC000;
+    sprites[this->id].attr1 |= 0XC000;
     // And then we apply the mask.
-    this->entry.attr0 &= attr0mask;
-    this->entry.attr1 &= attr1mask;
+    sprites[this->id].attr0 &= attr0mask;
+    sprites[this->id].attr1 &= attr1mask;
 
     return true;
 }
 
 SpriteSizeMode Sprite::getSizeMode() {
-    uint16 shape = this->entry.attr0 & 0xC000;
-    uint16 size  = this->entry.attr1 & 0xC000;
+    uint16 shape = sprites[this->id].attr0 & 0xC000;
+    uint16 size  = sprites[this->id].attr1 & 0xC000;
     SpriteSizeMode sizeMode;
 
     switch ( shape ) {
@@ -277,6 +292,18 @@ SpriteSizeMode Sprite::getSizeMode() {
     }
 
     return sizeMode;
+}
+
+void Sprite::print() {
+    FMAW::printf("%s\r\n  Sprite %u:%s\r\n|%s|",
+                 "\r\n|----------------|", this->id, "\r\n|----------------|",
+                 half_word_to_binary(sprites[this->id].attr0).c_str());
+    FMAW::printf("|%s|\r\n|%s|",
+                 half_word_to_binary(sprites[this->id].attr1).c_str(),
+                 half_word_to_binary(sprites[this->id].attr2).c_str());
+    FMAW::printf("|%s|\r\n%s",
+                 half_word_to_binary(sprites[this->id].affine_data).c_str(),
+                 "|----------------|");
 }
 
 }
