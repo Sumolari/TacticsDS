@@ -10,7 +10,7 @@ namespace FMAW {
 //------------------------------------------------------------------------------
 
 // Access to sprites' memory, in an array-like way.
-#define sprites       (reinterpret_cast<FMAW::spriteEntry*>OAM)
+#define sprites       (reinterpret_cast<FMAW::SpriteEntry*>OAM)
 
 #define TOTAL_SPRITES 128  // Total amount of sprites that can be rendered.
 
@@ -20,9 +20,27 @@ typedef struct t_spriteEntry {
     uint16 attr1;
     uint16 attr2;
     uint16 affine_data;
-} spriteEntry;
+} SpriteEntry;
 
+// Type that defines the ID of a sprite.
 typedef uint8 sprite_id;
+
+// Type defining the different size modes available.
+typedef enum t_spriteSizeMode {
+    square8x8,
+    square16x16,
+    square32x32,
+    square64x64,
+    wide16x8,
+    wide32x8,
+    wide32x16,
+    wide64x32,
+    tall8x16,
+    tall8x32,
+    tall16x32,
+    tall32x64,
+    unknown
+} SpriteSizeMode;
 
 //------------------------------------------------------------------------------
 // Common sprite helpers.
@@ -59,6 +77,10 @@ public:
      * Default constructor takes a valid ID automatically.
      */
     Sprite() : id( nextEmptySprite++ ) {};
+
+    //--------------------------------------------------------------------------
+    // Position.
+    //--------------------------------------------------------------------------
 
     /**
      * Sets x position of this sprite.
@@ -129,6 +151,49 @@ public:
      * @return Position of this sprite.
      */
     Point getPosition();
+
+    //--------------------------------------------------------------------------
+    // Tile & palette settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets this sprite's tile to given one.
+     * @param tileIndex  Index of tile to use.
+     * @return           Whether tile can be used or not.
+     */
+    bool setTile( uint16 tileIndex );
+
+    /**
+     * Sets this sprite's palette to given one.
+     * @param  paletteIndex Index of palette to use.
+     * @return              Whether palette can be used or not.
+     */
+    bool setPalette( uint8 paletteIndex );
+
+    //--------------------------------------------------------------------------
+    // Other settings.
+    //--------------------------------------------------------------------------
+
+    // _TODO: Add method to enable this sprite.
+
+    /**
+     * Disables this sprite (it won't be rendered and no CPU cycles will be
+     * wasted on it).
+     */
+    void disable();
+
+    /**
+     * Sets this sprite's size mode to given mode.
+     * @param newMode New Sprite Mode for this sprite.
+     * @return        Whether newMode can be applied or not.
+     */
+    bool setSizeMode( SpriteSizeMode newMode );
+
+    /**
+     * Returns this sprite's size mode.
+     * @return This sprite's size mode.
+     */
+    SpriteSizeMode getSizeMode();
 
 };
 
