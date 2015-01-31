@@ -73,22 +73,21 @@ void setupGraphics(void) {
     BG_PALETTE[0] = BACKDROP_COLOR;
 
     // libnds prefixes the register names with REG_
-    REG_BG0CNT = BG_MAP_BASE(1);
-    REG_BG1CNT = BG_MAP_BASE(2);
+    REG_BG0CNT  = BG_MAP_BASE(1);
+    REG_BG1CNT  = BG_MAP_BASE(2);
 }
 
 void update_logic() {
 }
 
 void update_graphics() {
-    // Clear entire bricks' tilemap to zero
-    for ( int n = 0; n < 1024; n++ )
+    // Clear entire bricks' tilemap and gradient's tilemap to zero
+    for ( int n = 0; n < 1024; n++ ) {
         bg0map[n] = 0;
+        bg1map[n] = 0;
+    }
 
-    // Unsigned int16 has 16 bit size, the same as our register.
-    uint16 pal_bricks_bit = PAL_BRICKS << 12;
-
-    // Set tilemap entries for 6 first rows.
+    // Set tilemap entries for 6 first rows of background 0 (bricks).
     for ( int y = 0; y < 6; y++ ) {
         int y32 = y * 32;
 
@@ -101,12 +100,25 @@ void update_graphics() {
             //            ^ is the xor operator.
             int hflip = (x & 1) ^ (y & 1);
 
-            // Set the tilemap entry
-            bg0map[x + y32] = TILE_BRICK | (hflip << 10) | pal_bricks_bit;
+            // Set the tilemap entry.
+            // (PAL_BRICKS << 12) remains there because it is computed at
+            // compile time!
+            bg0map[x + y32] = TILE_BRICK | (hflip << 10) | (PAL_BRICKS << 12);
         }
     }
+    // Did we say 6 first rows? We wanted 6 LAST rows!
+    REG_BG0VOFS = 112;
 
-    videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE);
+    // Set tilemap entries for 8 first rows of background 1 (gradient).
+    for ( int y = 0; y < 8; y++ ) {
+        int tile = TILE_GRADIENT + y;
+        int y32 = y * 32;
+
+        for ( int x = 0; x < 32; x++ )
+            bg1map[x + y32] = tile | (PAL_GRADIENT << 12);
+    }
+
+    videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE);
 }
 
 int main(void) {
