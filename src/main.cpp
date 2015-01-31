@@ -1,6 +1,10 @@
 // Copyright 2015 Lluís Ulzurrun de Asanza Sàez
 
 #include <nds.h>
+#include <nds/debug.h>
+#include <sstream>
+
+#include "./debug.h"
 
 //------------------------------------------------------------------------------
 // Graphic references
@@ -34,6 +38,12 @@
 #define pal2bgram(p)   (BG_PALETTE + (p) * 16)
 
 //------------------------------------------------------------------------------
+// BG Screen Base Blocks pointed
+//------------------------------------------------------------------------------
+#define bg0map    (reinterpret_cast<u16*>BG_MAP_RAM(1))
+#define bg1map    (reinterpret_cast<u16*>BG_MAP_RAM(2))
+
+//------------------------------------------------------------------------------
 // Main code section
 //------------------------------------------------------------------------------
 
@@ -61,13 +71,42 @@ void setupGraphics(void) {
 
     // Set backdrop color.
     BG_PALETTE[0] = BACKDROP_COLOR;
+
+    // libnds prefixes the register names with REG_
+    REG_BG0CNT = BG_MAP_BASE(1);
+    REG_BG1CNT = BG_MAP_BASE(2);
 }
 
 void update_logic() {
 }
 
 void update_graphics() {
-    videoSetMode(MODE_0_2D);
+    // Clear entire bricks' tilemap to zero
+    for ( int n = 0; n < 1024; n++ )
+        bg0map[n] = 0;
+
+    // Unsigned int16 has 16 bit size, the same as our register.
+    uint16 pal_bricks_bit = PAL_BRICKS << 12;
+
+    // Set tilemap entries for 6 first rows.
+    for ( int y = 0; y < 6; y++ ) {
+        int y32 = y * 32;
+
+        for ( int x = 0; x < 32; x++ ) {
+            // Magical formula to calculate if the tile needs to be flipped.
+            // Basically: x & 1 -> AND operation between both numbers, that is:
+            //            if last bit is 1, 1, if not, 0. This allows to check
+            //            if a number is odd or even in a very fast way.
+            //            y & 1 -> Works in the very same way as x & 1.
+            //            ^ is the xor operator.
+            int hflip = (x & 1) ^ (y & 1);
+
+            // Set the tilemap entry
+            bg0map[x + y32] = TILE_BRICK | (hflip << 10) | pal_bricks_bit;
+        }
+    }
+
+    videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE);
 }
 
 int main(void) {
