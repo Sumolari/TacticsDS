@@ -151,39 +151,35 @@ BackgroundSize Background::getSize() {
 //----------//------------------------------------------------------------------
 
 void Background::enableHorizontalFlip( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
+    this->tiles[tile_id] |= 0x0400;
 }
 
 void Background::disableHorizontalFlip( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
+    this->tiles[tile_id] &= 0xFBFF;
 }
 
 bool Background::horizontalFlipIsEnabled( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (this->tiles[tile_id] & 0x0400) != 0;
 }
 
 bool Background::horizontalFlipIsDisabled( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return !this->horizontalFlipIsEnabled(tile_id);
 }
 
 void Background::enableVerticalFlip( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
+    this->tiles[tile_id] |= 0x0800;
 }
 
 void Background::disableVerticalFlip( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
+    this->tiles[tile_id] &= 0xF7FF;
 }
 
 bool Background::verticalFlipIsEnabled( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (this->tiles[tile_id] & 0x0800) != 0;
 }
 
 bool Background::verticalFlipIsDisabled( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return this->verticalFlipIsEnabled(tile_id);
 }
 
 //----------//------------------------------------------------------------------
