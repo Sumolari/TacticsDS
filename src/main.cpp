@@ -78,6 +78,9 @@
 
 Ball g_ball;
 
+#define X_TWEAK BasicFixedReal<12>(0.125)
+#define Y_TWEAK FixedReal(0.1)
+
 //------------------------------------------------------------------------------
 // Main code section
 //------------------------------------------------------------------------------
@@ -193,7 +196,35 @@ void setupGraphics(void) {
     g_ball.sprite.enable();
 }
 
+void process_input() {
+    scanKeys();
+
+    int keysh = keysHeld();
+    // Process user input.
+
+    // Check if UP is pressed...
+    if (keysh & KEY_UP) {
+        g_ball.yvel -= Y_TWEAK;
+    }
+
+    // Check if DOWN is pressed.
+    if (keysh & KEY_DOWN) {
+        g_ball.yvel += Y_TWEAK;
+    }
+
+    // Check if LEFT is pressed.
+    if (keysh & KEY_LEFT) {
+        g_ball.xvel -= X_TWEAK;
+    }
+
+    // Check if RIGHT is pressed.
+    if (keysh & KEY_RIGHT) {
+        g_ball.xvel += X_TWEAK;
+    }
+}
+
 void update_logic() {
+    process_input();
     g_ball.update();
 }
 
