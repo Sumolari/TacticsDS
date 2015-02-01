@@ -142,12 +142,24 @@ bool Background::isUsing256BitColors() {
 //----------//------------------------------------------------------------------
 
 void Background::setSize( BackgroundSize newSize ) {
-    TO_BE_IMPLEMENTED
+    *this->reg() &= 0x3FFF;
+    *this->reg() |= newSize;
 }
 
 BackgroundSize Background::getSize() {
-    TO_BE_IMPLEMENTED
-    return size32x32;
+    uint16 halfword = *this->reg() | 0x3FFF;
+    switch ( halfword ) {
+        case size32x32:
+            return size32x32;
+        case size64x32:
+            return size64x32;
+        case size32x64:
+            return size32x64;
+        case size64x64:
+        // Default will not be triggered
+        default:
+            return size64x64;
+    }
 }
 
 //----------//------------------------------------------------------------------
