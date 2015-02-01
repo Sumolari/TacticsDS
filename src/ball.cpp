@@ -12,11 +12,7 @@ void Ball::update() {
     this->xvel = FMAW::clampBasicFixedReal(this->xvel, -MAX_XVEL, MAX_XVEL);
 
     this->yvel += GRAVITY;
-    // FMAW::printf("Before: %f", this->y.toDouble());
     this->y += this->yvel;
-    FMAW::printf("Current Y speed: %f", this->yvel.toDouble());
-    FMAW::printf("Current X speed: %f", this->xvel.toDouble());
-    // FMAW::printf("After: %f", this->y.toDouble());
 
 
     if (this->y + BALL_RADIUS >= PLATFORM_LEVEL) {
@@ -25,16 +21,11 @@ void Ball::update() {
         this->y = PLATFORM_LEVEL - BALL_RADIUS;
         this->yvel *= 256 - BOUNCE_DAMPER;
         this->yvel /= 256;
-        this->yvel.print();
-        // FMAW::printf("Speed before: %f", this->yvel.toDouble());
         this->yvel = FixedReal(-this->yvel.toDouble());
-        this->yvel.print();
-        // FMAW::printf("Speed after: %f", this->yvel.toDouble());
 
         if (this->yvel.toDouble() > -MIN_YVEL.toDouble())
             this->yvel = -MIN_YVEL;
 
-        // FMAW::printf("Final speed: %f", this->yvel.toDouble());
     }
 }
 

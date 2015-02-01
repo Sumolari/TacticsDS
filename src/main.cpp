@@ -81,6 +81,9 @@ Ball g_ball;
 #define X_TWEAK BasicFixedReal<12>(0.125)
 #define Y_TWEAK FixedReal(0.1)
 
+FixedReal g_camera_x;
+FixedReal g_camera_y;
+
 //------------------------------------------------------------------------------
 // Main code section
 //------------------------------------------------------------------------------
@@ -223,13 +226,32 @@ void process_input() {
     }
 }
 
+void update_camera() {
+    // Desired camera X:
+    FixedReal cx = g_ball.x - 128;
+
+    // Difference between desired and current position.
+    FixedReal dx = cx - g_camera_x;
+
+    // 10 is the minimum threshold.
+    if ((dx.toDouble() > 0.04) | (dx.toDouble() < -0.04)) {
+        dx *= FixedReal(0.05);
+    }
+
+    g_camera_x += dx;
+    g_camera_y = 0;
+}
+
 void update_logic() {
     process_input();
     g_ball.update();
+    update_camera();
 }
 
 void update_graphics() {
-    g_ball.render(0, 0);
+    g_ball.render(g_camera_x.toInt(), g_camera_y.toInt());
+
+    REG_BG0HOFS = g_camera_x.toInt();
 }
 
 int main(void) {
