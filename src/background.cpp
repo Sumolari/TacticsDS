@@ -203,12 +203,23 @@ bool Background::verticalFlipIsDisabled( background_tile_id tile_id ) {
 //----------//------------------------------------------------------------------
 
 void Background::setPriority( BackgroundPriority priority ) {
-    TO_BE_IMPLEMENTED
+    *this->reg() |= 0x0003;
+    *this->reg() &= priority;
 }
 
 BackgroundPriority Background::getPriority() {
-    TO_BE_IMPLEMENTED
-    return bpHIGHEST;
+    switch ( (*this->reg() & 0x0003) | 0xFFFC ) {
+        case bpHIGHEST:
+            return bpHIGHEST;
+        case bpHIGH:
+            return bpHIGH;
+        case bpLOW:
+            return bpLOW;
+        case bpLOWEST:
+        // Default won't be triggered.
+        default:
+            return bpLOWEST;
+    }
 }
 
 //----------//------------------------------------------------------------------
@@ -216,11 +227,13 @@ BackgroundPriority Background::getPriority() {
 //----------//------------------------------------------------------------------
 
 void Background::clear() {
-    TO_BE_IMPLEMENTED
+    *this->reg() = 0x0000;
 }
 
 void Background::clearAllTiles() {
-    TO_BE_IMPLEMENTED
+    vu16 *tileMap = this->tilemap();
+    for ( int n = 0; n < 1024; n++ )
+        tileMap[n] = 0x0000;
 }
 
 }
