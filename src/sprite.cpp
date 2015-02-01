@@ -200,7 +200,7 @@ SpriteObjectMode Sprite::getObjectMode() {
         case bitmap:
             return bitmap;
         default:
-            // This won't happen ever.
+            // This won't ever happen.
             return normal;
     }
 }
@@ -441,12 +441,26 @@ bool Sprite::verticalFlipIsDisabled() {
 //----------//------------------------------------------------------------------
 
 void Sprite::setPriority( SpritePriority priority ) {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr2 |= 0x0C00;
+    sprites[this->id].attr2 &= priority;
 }
 
 SpritePriority Sprite::getPriority() {
-    TO_BE_IMPLEMENTED
-    return spLOW;
+    uint16 half_word = sprites[this->id].attr2 | 0xF3FF;
+
+    switch (half_word) {
+        case spHIGHEST:
+            return spHIGHEST;
+        case spHIGH:
+            return spHIGH;
+        case spLOW:
+            return spLOW;
+        case spLOWEST:
+            return spLOWEST;
+        default:
+            // This won't ever happen.
+            return spHIGHEST;
+    }
 }
 
 //----------//------------------------------------------------------------------
