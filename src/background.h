@@ -29,6 +29,28 @@ typedef uint16 background_tile_id;
 
 class Background {
 
+private:
+    // Tiles register array.
+    vu16 *tiles;
+    // Register holding this background data.
+    vu16 *reg;
+
+    /**
+     * Sets internal register attrbute to proper address based on ID.
+     */
+    void selectRegister() {
+        switch ( this->id ) {
+            case 0:
+                this->reg = &REG_BG0CNT;
+            case 1:
+                this->reg = &REG_BG1CNT;
+            case 2:
+                this->reg = &REG_BG2CNT;
+            case 3:
+                this->reg = &REG_BG3CNT;
+        }
+    }
+
 public:
     // ID of this background.
     background_id id;
@@ -40,25 +62,18 @@ public:
     */
     Background() : id( nextEmptyBackground++ ) {
         this->clear();
+        this->tiles = (reinterpret_cast<u16 *>BG_MAP_RAM(this->id));
+        this->selectRegister();
     };
 
     /**
      * Constructor for Background with given ID. Background should have been
      * previously created otherwise results are not defined.
      */
-    Background( background_id id ) : id(id) {};
-
-    /**
-     * Returns tilemap address of this background.
-     * @return This background's tilemap address.
-     */
-    vu16 *tilemap();
-
-    /**
-     * Returns the register used to store this background's info.
-     * @return Register used to store this background's info.
-     */
-    vu16 *reg();
+    Background( background_id id ) : id(id) {
+        this->tiles = (reinterpret_cast<u16 *>BG_MAP_RAM(this->id));
+        this->selectRegister();
+    };
 
 
     //--------------------------------------------------------------------------

@@ -11,24 +11,6 @@ namespace FMAW {
 
 background_id Background::nextEmptyBackground = 0;
 
-vu16 *Background::tilemap() {
-    return (reinterpret_cast<u16 *>BG_MAP_RAM(this->id));
-}
-
-vu16 *Background::reg() {
-    switch ( this->id ) {
-        case 0:
-            return &REG_BG0CNT;
-        case 1:
-            return &REG_BG1CNT;
-        case 2:
-            return &REG_BG2CNT;
-        case 3:
-        default:
-            return &REG_BG3CNT;
-    }
-}
-
 //----------//------------------------------------------------------------------
 //----------// Position.
 //----------//------------------------------------------------------------------
@@ -36,37 +18,37 @@ vu16 *Background::reg() {
 bool Background::setCharacterBaseBlock( uint8 characterBaseBlock ) {
     if ( characterBaseBlock > 15 || characterBaseBlock < 0 ) return false;
     characterBaseBlock <<= 2;
-    *this->reg() &= 0xFFC3;
-    *this->reg() |= characterBaseBlock;
+    *this->reg &= 0xFFC3;
+    *this->reg |= characterBaseBlock;
     return true;
 }
 
 uint8 Background::getCharacterBaseBlock() {
-    return (*this->reg() & 0x003C) >> 2;
+    return (*this->reg & 0x003C) >> 2;
 }
 
 bool Background::setScreenBaseBlock( uint8 newScreenBaseBlock ) {
     if ( newScreenBaseBlock > 31 || newScreenBaseBlock < 0 ) return false;
     newScreenBaseBlock <<= 8;
-    *this->reg() &= 0xE0FF;
-    *this->reg() |= newScreenBaseBlock;
+    *this->reg &= 0xE0FF;
+    *this->reg |= newScreenBaseBlock;
     return true;
 }
 
 uint8 Background::getScreenBaseBlock() {
-    return (*this->reg() & 0x1F00) >> 8;
+    return (*this->reg & 0x1F00) >> 8;
 }
 
 void Background::enableDisplayAreaOverflow() {
-    *this->reg() |= 0x2000;
+    *this->reg |= 0x2000;
 }
 
 void Background::disableDisplayAreaOverflow() {
-    *this->reg() &= 0xDFFF;
+    *this->reg &= 0xDFFF;
 }
 
 bool Background::displayAreaOverflowEnabled() {
-    return (*this->reg() &= 0x2000) != 0;
+    return (*this->reg &= 0x2000) != 0;
 }
 
 bool Background::displayAreaOverflowDisabled() {
@@ -78,8 +60,11 @@ bool Background::displayAreaOverflowDisabled() {
 //----------//------------------------------------------------------------------
 
 bool Background::setTile( background_tile_id tile_id, uint16 tileIndex ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    uint16 tileIndexCapped = tileIndex & 0x01FF;
+    if ( tileIndex != tileIndexCapped ) return false;
+    tiles[tile_id] |= 0x01FF;
+    tiles[tile_id] &= tileIndexCapped;
+    return true;
 }
 
 uint16 Background::getTile( background_tile_id tile_id ) {
@@ -102,15 +87,15 @@ uint8 Background::getPalette( background_tile_id tile_id ) {
 //----------//------------------------------------------------------------------
 
 void Background::enableMosaic() {
-    *this->reg() |= 0x0040;
+    *this->reg |= 0x0040;
 }
 
 void Background::disableMosaic() {
-    *this->reg() &= 0xFFCF;
+    *this->reg &= 0xFFCF;
 }
 
 bool Background::mosaicIsEnabled() {
-    return (*this->reg() & 0x0040) != 0;
+    return (*this->reg & 0x0040) != 0;
 }
 
 bool Background::mosaicIsDisabled() {
@@ -118,15 +103,15 @@ bool Background::mosaicIsDisabled() {
 }
 
 void Background::use16BitColors() {
-    *this->reg() &= 0xFF7F;
+    *this->reg &= 0xFF7F;
 }
 
 void Background::use256BitColors() {
-    *this->reg() |= 0x0080;
+    *this->reg |= 0x0080;
 }
 
 bool Background::isUsing16BitColors() {
-    return (*this->reg() & 0x0080) == 0;
+    return (*this->reg & 0x0080) == 0;
 }
 
 bool Background::isUsing256BitColors() {
@@ -138,12 +123,12 @@ bool Background::isUsing256BitColors() {
 //----------//------------------------------------------------------------------
 
 void Background::setSize( BackgroundSize newSize ) {
-    *this->reg() &= 0x3FFF;
-    *this->reg() |= newSize;
+    *this->reg &= 0x3FFF;
+    *this->reg |= newSize;
 }
 
 BackgroundSize Background::getSize() {
-    uint16 halfword = *this->reg() | 0x3FFF;
+    uint16 halfword = *this->reg | 0x3FFF;
     switch ( halfword ) {
         case size32x32:
             return size32x32;
@@ -203,12 +188,12 @@ bool Background::verticalFlipIsDisabled( background_tile_id tile_id ) {
 //----------//------------------------------------------------------------------
 
 void Background::setPriority( BackgroundPriority priority ) {
-    *this->reg() |= 0x0003;
-    *this->reg() &= priority;
+    *this->reg |= 0x0003;
+    *this->reg &= priority;
 }
 
 BackgroundPriority Background::getPriority() {
-    switch ( (*this->reg() & 0x0003) | 0xFFFC ) {
+    switch ( (*this->reg & 0x0003) | 0xFFFC ) {
         case bpHIGHEST:
             return bpHIGHEST;
         case bpHIGH:
@@ -227,13 +212,12 @@ BackgroundPriority Background::getPriority() {
 //----------//------------------------------------------------------------------
 
 void Background::clear() {
-    *this->reg() = 0x0000;
+    *this->reg = 0x0000;
 }
 
 void Background::clearAllTiles() {
-    vu16 *tileMap = this->tilemap();
     for ( int n = 0; n < 1024; n++ )
-        tileMap[n] = 0x0000;
+        this->tiles[n] = 0x0000;
 }
 
 }
