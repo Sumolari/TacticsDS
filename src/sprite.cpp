@@ -125,8 +125,7 @@ bool Sprite::setTile( uint16 tileIndex ) {
 }
 
 uint16 Sprite::getTile() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return sprites[this->id].attr2 & 0x01FF;
 }
 
 bool Sprite::setPalette( uint8 paletteIndex ) {
@@ -140,8 +139,7 @@ bool Sprite::setPalette( uint8 paletteIndex ) {
 }
 
 uint8 Sprite::getPalette() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (sprites[this->id].attr2 & 0xF000) >> 12;
 }
 
 //----------//------------------------------------------------------------------
@@ -152,7 +150,7 @@ uint8 Sprite::getPalette() {
  * Enables rotation and scale of this sprite.
  */
 void Sprite::enableRotationAndScale() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 |= 0x0100;
 }
 
 /**
@@ -160,7 +158,7 @@ void Sprite::enableRotationAndScale() {
  * Double-size will be disabled, too.
  */
 void Sprite::disableRotationAndScale() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 &= 0xFEFF;
 }
 
 /**
@@ -168,8 +166,7 @@ void Sprite::disableRotationAndScale() {
  * @return Whether rotation and scaling are enabled in this sprite or not.
  */
 bool Sprite::rotationAndScaleAreEnabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (sprites[this->id].attr0 & 0x0100) != 0 ;
 }
 
 bool Sprite::rotationAndScaleAreDisabled() {
@@ -181,14 +178,14 @@ bool Sprite::rotationAndScaleAreDisabled() {
  * Will enable also rotation and scaling.
  */
 void Sprite::enableDoubleSize() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 |= 0x0200;
 }
 
 /**
  * Disables double size of this sprite.
  */
 void Sprite::disableDoubleSize() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 &= 0xFDFF;
 }
 
 /**
@@ -196,8 +193,7 @@ void Sprite::disableDoubleSize() {
  * @return Whether double size is enabled or not.
  */
 bool Sprite::doubleSizeEnabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (sprites[this->id].attr0 = 0x0200) != 0;
 }
 
 bool Sprite::doubleSizeDisabled() {
@@ -213,7 +209,8 @@ bool Sprite::doubleSizeDisabled() {
  * @param newMode This sprite's object mode.
  */
 void Sprite::setObjectMode( SpriteObjectMode newMode ) {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 |= 0x0C00;
+    sprites[this->id].attr0 &= newMode;
 }
 
 /**
@@ -221,8 +218,21 @@ void Sprite::setObjectMode( SpriteObjectMode newMode ) {
  * @return Object mode of this sprite.
  */
 SpriteObjectMode Sprite::getObjectMode() {
-    TO_BE_IMPLEMENTED
-    return normal;
+    uint16 half_word = sprites[this->id].attr0 | 0xF3FF;
+
+    switch (half_word) {
+        case normal:
+            return normal;
+        case alpha_first_target:
+            return normal;
+        case add_to_window:
+            return add_to_window;
+        case bitmap:
+            return bitmap;
+        default:
+            // This won't happen ever.
+            return normal;
+    }
 }
 
 //----------//------------------------------------------------------------------
@@ -230,35 +240,31 @@ SpriteObjectMode Sprite::getObjectMode() {
 //----------//------------------------------------------------------------------
 
 void Sprite::enableMosaic() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 |= 0x1000;
 }
 
 void Sprite::disableMosaic() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 &= 0xEFFF;
 }
 
 bool Sprite::mosaicIsEnabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (sprites[this->id].attr0 & 0x1000) != 0;
 }
 
 bool Sprite::mosaicIsDisabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return !this->mosaicIsEnabled();
 }
 
 void Sprite::use16BitColors() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 &= 0xDFFF;
 }
 
 void Sprite::use256BitColors() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr0 |= 0x2000;
 }
 
-bool Sprite::isUsing16BitColors()
-{
-    TO_BE_IMPLEMENTED
-    return 0;
+bool Sprite::isUsing16BitColors() {
+    return (sprites[this->id].attr0 & 0x2000) != 0;
 }
 
 bool Sprite::isUsing256BitColors() {

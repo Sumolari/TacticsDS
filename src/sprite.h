@@ -44,10 +44,10 @@ typedef enum t_spriteSizeMode {
 
 // Type defining the different object modes available.
 typedef enum t_spriteObjectMode {
-    normal             = 0x0,
-    alpha_first_target = 0x1,
-    add_to_window      = 0x2,
-    bitmap             = 0x3
+    normal             = 0xF3FF,
+    alpha_first_target = 0xF7FF,
+    add_to_window      = 0xFBFF,
+    bitmap             = 0xFFFF
 } SpriteObjectMode;
 
 // Type defining the different priorities of backgrounds.
