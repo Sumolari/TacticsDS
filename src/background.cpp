@@ -62,24 +62,27 @@ bool Background::displayAreaOverflowDisabled() {
 bool Background::setTile( background_tile_id tile_id, uint16 tileIndex ) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;
     if ( tileIndex != tileIndexCapped ) return false;
-    tiles[tile_id] |= 0x01FF;
-    tiles[tile_id] &= tileIndexCapped;
+    this->tiles[tile_id] |= 0x01FF;
+    this->tiles[tile_id] &= tileIndexCapped;
     return true;
 }
 
 uint16 Background::getTile( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return this->tiles[tile_id] & 0x01FF;
 }
 
 bool Background::setPalette( background_tile_id tile_id, uint8 paletteIndex ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    uint8 paletteIndexCapped = paletteIndex & 0x000F;
+    if ( paletteIndex != paletteIndexCapped ) return false;
+    // We first set tile bits to 1 so we can apply an AND later.
+    this->tiles[tile_id] |= 0xF000;
+    // We apply and AND to set the bits properly.
+    this->tiles[tile_id] &= paletteIndexCapped << 12;
+    return true;
 }
 
 uint8 Background::getPalette( background_tile_id tile_id ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (this->tiles[tile_id] & 0xF000) >> 12;
 }
 
 //----------//------------------------------------------------------------------
