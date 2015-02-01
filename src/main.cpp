@@ -74,6 +74,9 @@
 // Main code section
 //------------------------------------------------------------------------------
 
+// rand_r seed.
+unsigned int seed = 12345;
+
 /**
  * Sets up graphics.
  */
@@ -104,11 +107,13 @@ void setupGraphics(void) {
     dmaCopyHalfWords(3, gfx_ballPal, pal2objram(PAL_BALL), gfx_ballPalLen);
 
     // Set backdrop color.
-    BG_PALETTE[0] = BACKDROP_COLOR;
+    FMAW::setBackgroundColor(BACKDROP_COLOR);
 
-    // libnds prefixes the register names with REG_
-    REG_BG0CNT  = BG_MAP_BASE(1);
-    REG_BG1CNT  = BG_MAP_BASE(2);
+    FMAW::Background bgBricks(0);
+    bgBricks.setScreenBaseBlock(1);
+
+    FMAW::Background bgGradient(1);
+    bgGradient.setScreenBaseBlock(2);
 
     videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |
                  DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D_LAYOUT);
@@ -118,8 +123,8 @@ void setupGraphics(void) {
     // Add some sprites.
     for ( int n = 0; n < 5; n++ ) {
         FMAW::Sprite sprite;
-        sprite.setXPosition(rand() % 256);
-        sprite.setYPosition(rand() % 192);
+        sprite.setXPosition(rand_r(&seed) % 256);
+        sprite.setYPosition(rand_r(&seed) % 192);
         sprite.setSizeMode(FMAW::square16x16);
         sprite.setTile(TILES_BALL);
         sprite.setPalette(PAL_BALL);
@@ -132,40 +137,39 @@ void update_logic() {
 
 void update_graphics() {
     // Clear entire bricks' tilemap and gradient's tilemap to zero
-    for ( int n = 0; n < 1024; n++ ) {
-        bg0map[n] = 0;
-        bg1map[n] = 0;
-    }
+    FMAW::Background bgBricks(0);
+    bgBricks.clearAllTiles();
+
+    FMAW::Background bgGradient(1);
+    bgBricks.clearAllTiles();
 
     // Set tilemap entries for 6 first rows of background 0 (bricks).
     for ( int y = 0; y < 6; y++ ) {
-        int y32 = y * 32;
-
         for ( int x = 0; x < 32; x++ ) {
-            // Magical formula to calculate if the tile needs to be flipped.
-            // Basically: x & 1 -> AND operation between both numbers, that is:
-            //            if last bit is 1, 1, if not, 0. This allows to check
-            //            if a number is odd or even in a very fast way.
-            //            y & 1 -> Works in the very same way as x & 1.
-            //            ^ is the xor operator.
-            int hflip = (x & 1) ^ (y & 1);
+            int tile_id = x + y * 32;  // Product optimized at compile time!
 
-            // Set the tilemap entry.
-            // (PAL_BRICKS << 12) remains there because it is computed at
-            // compile time!
-            bg0map[x + y32] = TILE_BRICK | (hflip << 10) | (PAL_BRICKS << 12);
+            // Either odd columns of even rows or even columns of odd rows...
+            // if (( x % 2 == 0 && y % 2 == 1 ) || (x % 2 == 1 && y % 2 == 0 ))
+            if ((x & 1) ^ (y & 1))
+                bgBricks.enableHorizontalFlip(tile_id);
+
+            bgBricks.setTile(tile_id, TILE_BRICK);
+            bgBricks.setPalette(tile_id, PAL_BRICKS);
         }
     }
     // Did we say 6 first rows? We wanted 6 LAST rows!
-    REG_BG0VOFS = 112;
+    bgBricks.setVerticalOffset(112);
 
     // Set tilemap entries for 8 first rows of background 1 (gradient).
     for ( int y = 0; y < 8; y++ ) {
-        int tile = TILE_GRADIENT + y;
+        int tile_index = TILE_GRADIENT + y;
         int y32 = y * 32;
 
-        for ( int x = 0; x < 32; x++ )
-            bg1map[x + y32] = tile | (PAL_GRADIENT << 12);
+        for ( int x = 0; x < 32; x++ ) {
+            int tile_id = x + y32;
+            bgGradient.setTile(tile_id, tile_index);
+            bgGradient.setPalette(tile_id, PAL_GRADIENT);
+        }
     }
 
     // Enable alpha blending of background 1.

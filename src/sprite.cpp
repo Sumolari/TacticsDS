@@ -34,7 +34,6 @@ bool Sprite::setXPosition( int x ) {
     if ( isNegative ) x = -x;
 
     uint16 xCapped = x & 0x00FF;
-    printf("X Original: %d New: %u", x, xCapped);
     if ( x != xCapped ) return false;
 
     // If x was negative we have to apply 2's complement.
@@ -56,7 +55,6 @@ bool Sprite::setYPosition( int y ) {
     if ( isNegative ) y = -y;
 
     uint16 yCapped = y & 0x007F;
-    printf("Y Original: %d New: %u", y, yCapped);
     if ( y != yCapped ) return false;
 
     // If x was negative we have to apply 2's complement.
@@ -117,9 +115,9 @@ bool Sprite::setTile( uint16 tileIndex ) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;
     if ( tileIndex != tileIndexCapped ) return false;
     // We first set tile bits to 1 so we can apply an AND later.
-    sprites[this->id].attr2 |= 0x01FF;
+    sprites[this->id].attr2 &= 0xFE00;
     // We apply and AND to set the bits properly.
-    sprites[this->id].attr2 &= tileIndexCapped;
+    sprites[this->id].attr2 |= tileIndexCapped;
     return true;
 }
 
@@ -131,9 +129,9 @@ bool Sprite::setPalette( uint8 paletteIndex ) {
     uint8 paletteIndexCapped = paletteIndex & 0x000F;
     if ( paletteIndex != paletteIndexCapped ) return false;
     // We first set tile bits to 1 so we can apply an AND later.
-    sprites[this->id].attr2 |= 0xF000;
+    sprites[this->id].attr2 &= 0x0FFF;
     // We apply and AND to set the bits properly.
-    sprites[this->id].attr2 &= paletteIndexCapped << 12;
+    sprites[this->id].attr2 |= paletteIndexCapped << 12;
     return true;
 }
 

@@ -1,9 +1,15 @@
+// Copyright 2015 Lluís Ulzurrun de Asanza Sàez
+
 #include <nds.h>
 
 #include "./background.h"
 #include "./debug.h"
 
 namespace FMAW {
+
+void setBackgroundColor(unsigned int color) {
+    BG_PALETTE[0] = color;
+}
 
 //------------------------------------------------------------------------------
 // Background class.
@@ -15,11 +21,10 @@ background_id Background::nextEmptyBackground = 0;
 //----------// Position.
 //----------//------------------------------------------------------------------
 
-bool Background::setCharacterBaseBlock( uint8 characterBaseBlock ) {
+bool Background::setCharacterBaseBlock(uint8 characterBaseBlock) {
     if ( characterBaseBlock > 15 || characterBaseBlock < 0 ) return false;
-    characterBaseBlock <<= 2;
     *this->reg &= 0xFFC3;
-    *this->reg |= characterBaseBlock;
+    *this->reg |= characterBaseBlock << 2;
     return true;
 }
 
@@ -27,11 +32,11 @@ uint8 Background::getCharacterBaseBlock() {
     return (*this->reg & 0x003C) >> 2;
 }
 
-bool Background::setScreenBaseBlock( uint8 newScreenBaseBlock ) {
+bool Background::setScreenBaseBlock(uint8 newScreenBaseBlock) {
     if ( newScreenBaseBlock > 31 || newScreenBaseBlock < 0 ) return false;
-    newScreenBaseBlock <<= 8;
     *this->reg &= 0xE0FF;
-    *this->reg |= newScreenBaseBlock;
+    *this->reg |= newScreenBaseBlock << 8;
+    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(newScreenBaseBlock);
     return true;
 }
 
@@ -55,33 +60,47 @@ bool Background::displayAreaOverflowDisabled() {
     return !this->displayAreaOverflowEnabled();
 }
 
+void Background::setVerticalOffset(uint8 offset) {
+    *this->vOffset = offset;
+}
+
+uint8 Background::getVerticalOffset() {
+    return *this->vOffset;
+}
+
+void Background::setHorizontalOffset(uint8 offset) {
+    *this->hOffset = offset;
+}
+
+uint8 Background::getHorizontalOffset() {
+    return *this->hOffset;
+}
+
 //----------//------------------------------------------------------------------
 //----------// Tile & palette settings.
 //----------//------------------------------------------------------------------
 
-bool Background::setTile( background_tile_id tile_id, uint16 tileIndex ) {
+bool Background::setTile(background_tile_id tile_id, uint16 tileIndex) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;
     if ( tileIndex != tileIndexCapped ) return false;
-    this->tiles[tile_id] |= 0x01FF;
-    this->tiles[tile_id] &= tileIndexCapped;
+    this->tiles[tile_id] &= 0xFE00;
+    this->tiles[tile_id] |= tileIndexCapped;
     return true;
 }
 
-uint16 Background::getTile( background_tile_id tile_id ) {
+uint16 Background::getTile(background_tile_id tile_id) {
     return this->tiles[tile_id] & 0x01FF;
 }
 
-bool Background::setPalette( background_tile_id tile_id, uint8 paletteIndex ) {
-    uint8 paletteIndexCapped = paletteIndex & 0x000F;
+bool Background::setPalette(background_tile_id tile_id, uint8 paletteIndex) {
+    uint16 paletteIndexCapped = paletteIndex & 0x000F;
     if ( paletteIndex != paletteIndexCapped ) return false;
-    // We first set tile bits to 1 so we can apply an AND later.
-    this->tiles[tile_id] |= 0xF000;
-    // We apply and AND to set the bits properly.
-    this->tiles[tile_id] &= paletteIndexCapped << 12;
+    this->tiles[tile_id] &= 0x0FFF;
+    this->tiles[tile_id] |= paletteIndexCapped << 12;
     return true;
 }
 
-uint8 Background::getPalette( background_tile_id tile_id ) {
+uint8 Background::getPalette(background_tile_id tile_id) {
     return (this->tiles[tile_id] & 0xF000) >> 12;
 }
 
@@ -125,7 +144,7 @@ bool Background::isUsing256BitColors() {
 //----------// Shape & size settings.
 //----------//------------------------------------------------------------------
 
-void Background::setSize( BackgroundSize newSize ) {
+void Background::setSize(BackgroundSize newSize) {
     *this->reg &= 0x3FFF;
     *this->reg |= newSize;
 }
@@ -150,35 +169,35 @@ BackgroundSize Background::getSize() {
 //----------// Flip settings.
 //----------//------------------------------------------------------------------
 
-void Background::enableHorizontalFlip( background_tile_id tile_id ) {
+void Background::enableHorizontalFlip(background_tile_id tile_id) {
     this->tiles[tile_id] |= 0x0400;
 }
 
-void Background::disableHorizontalFlip( background_tile_id tile_id ) {
+void Background::disableHorizontalFlip(background_tile_id tile_id) {
     this->tiles[tile_id] &= 0xFBFF;
 }
 
-bool Background::horizontalFlipIsEnabled( background_tile_id tile_id ) {
+bool Background::horizontalFlipIsEnabled(background_tile_id tile_id) {
     return (this->tiles[tile_id] & 0x0400) != 0;
 }
 
-bool Background::horizontalFlipIsDisabled( background_tile_id tile_id ) {
+bool Background::horizontalFlipIsDisabled(background_tile_id tile_id) {
     return !this->horizontalFlipIsEnabled(tile_id);
 }
 
-void Background::enableVerticalFlip( background_tile_id tile_id ) {
+void Background::enableVerticalFlip(background_tile_id tile_id) {
     this->tiles[tile_id] |= 0x0800;
 }
 
-void Background::disableVerticalFlip( background_tile_id tile_id ) {
+void Background::disableVerticalFlip(background_tile_id tile_id) {
     this->tiles[tile_id] &= 0xF7FF;
 }
 
-bool Background::verticalFlipIsEnabled( background_tile_id tile_id ) {
+bool Background::verticalFlipIsEnabled(background_tile_id tile_id) {
     return (this->tiles[tile_id] & 0x0800) != 0;
 }
 
-bool Background::verticalFlipIsDisabled( background_tile_id tile_id ) {
+bool Background::verticalFlipIsDisabled(background_tile_id tile_id) {
     return this->verticalFlipIsEnabled(tile_id);
 }
 
@@ -186,7 +205,7 @@ bool Background::verticalFlipIsDisabled( background_tile_id tile_id ) {
 //----------// Priority settings.
 //----------//------------------------------------------------------------------
 
-void Background::setPriority( BackgroundPriority priority ) {
+void Background::setPriority(BackgroundPriority priority) {
     *this->reg |= 0x0003;
     *this->reg &= priority;
 }
@@ -216,7 +235,18 @@ void Background::clear() {
 
 void Background::clearAllTiles() {
     for ( int n = 0; n < 1024; n++ )
-        this->tiles[n] = 0x0000;
+        this->tiles[n] = 0;
 }
 
+void Background::print() {
+    printf("\r\nBackground %u: %s\r\n",
+           this->id, half_word_to_binary(*this->reg).c_str());
 }
+
+void Background::printTile(background_tile_id tile_id) {
+    printf("\r\nBackground %u, tile %u: %s\r\n",
+           this->id, tile_id,
+           half_word_to_binary(this->tiles[tile_id]).c_str());
+}
+
+}  // namespace FMAW

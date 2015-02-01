@@ -27,13 +27,19 @@ typedef uint8 background_id;
 // Type that defines the ID of a background tile.
 typedef uint16 background_tile_id;
 
+void setBackgroundColor( unsigned int color );
+
 class Background {
 
 private:
     // Tiles register array.
-    vu16 *tiles;
+    u16 *tiles;
     // Register holding this background data.
     vu16 *reg;
+    // Register holding this background's vertical offset.
+    vu16 *vOffset;
+    // Register holding this background's horizontal offset.
+    vu16 *hOffset;
 
     /**
      * Sets internal register attrbute to proper address based on ID.
@@ -42,12 +48,24 @@ private:
         switch ( this->id ) {
             case 0:
                 this->reg = &REG_BG0CNT;
+                this->vOffset = &REG_BG0VOFS;
+                this->hOffset = &REG_BG0HOFS;
+                break;
             case 1:
                 this->reg = &REG_BG1CNT;
+                this->vOffset = &REG_BG1VOFS;
+                this->hOffset = &REG_BG1HOFS;
+                break;
             case 2:
                 this->reg = &REG_BG2CNT;
+                this->vOffset = &REG_BG2VOFS;
+                this->hOffset = &REG_BG2HOFS;
+                break;
             case 3:
                 this->reg = &REG_BG3CNT;
+                this->vOffset = &REG_BG3VOFS;
+                this->hOffset = &REG_BG3HOFS;
+                break;
         }
     }
 
@@ -58,12 +76,12 @@ public:
     static background_id nextEmptyBackground;
 
     /**
-    * Default constructor takes a valid ID automatically.
-    */
+     * Default constructor takes a valid ID automatically.
+     */
     Background() : id( nextEmptyBackground++ ) {
         this->clear();
-        this->tiles = (reinterpret_cast<u16 *>BG_MAP_RAM(this->id));
         this->selectRegister();
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(0);
     };
 
     /**
@@ -71,10 +89,10 @@ public:
      * previously created otherwise results are not defined.
      */
     Background( background_id id ) : id(id) {
-        this->tiles = (reinterpret_cast<u16 *>BG_MAP_RAM(this->id));
         this->selectRegister();
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
+                          this->getScreenBaseBlock());
     };
-
 
     //--------------------------------------------------------------------------
     // Position.
@@ -95,6 +113,8 @@ public:
 
     /**
      * Sets this background's screen base block if given value is valid.
+     * Automatically changes internal tiles pointer to work with proper tiles.
+     *
      * @param  newScreenBaseBlock Screen base block for this background (0..31)
      * @return                    Whether change chould be applied or not.
      */
@@ -129,16 +149,42 @@ public:
      */
     bool displayAreaOverflowDisabled();
 
+    /**
+     * Sets vertical offset of this background to given value.
+     * @param offset New vertical offset for this background.
+     */
+    void setVerticalOffset( uint8 offset );
+
+    /**
+     * Returns vertical offset of this background.
+     * @return This background's vertical offset.
+     */
+    uint8 getVerticalOffset();
+
+    /**
+     * Sets horizontal offset of this background to given value.
+     * @param offset New horizontal offset for this background.
+     */
+    void setHorizontalOffset( uint8 offset );
+
+    /**
+     * Returns horizontal offset of this background.
+     * @return This background's horizontal offset.
+     */
+    uint8 getHorizontalOffset();
+
+
+
     //--------------------------------------------------------------------------
     // Tile & palette settings.
     //--------------------------------------------------------------------------
 
     /**
-    * Sets tile index of given tile in this background to given one.
-    * @param  tile_id    ID of the affected tile.
-    * @param  tileIndex  Index of tile to use.
-    * @return            Whether change could be applied or not.
-    */
+     * Sets tile index of given tile in this background to given one.
+     * @param  tile_id    ID of the affected tile.
+     * @param  tileIndex  Index of tile to use.
+     * @return            Whether change could be applied or not.
+     */
     bool setTile( background_tile_id tile_id, uint16 tileIndex );
 
     /**
@@ -321,9 +367,20 @@ public:
     void clear();
 
     /**
-    * Resets all tiles of this background.
-    */
+     * Resets all tiles of this background.
+     */
     void clearAllTiles();
+
+    /**
+     * Displays information about this background.
+     */
+    void print();
+
+    /**
+     * Displays information about given tile of this background.
+     * @param tile_id ID of tile whose information will be displayed.
+     */
+    void printTile( background_tile_id tile_id );
 
 };
 
