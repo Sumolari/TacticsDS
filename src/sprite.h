@@ -81,7 +81,7 @@ public:
     /**
      * Default constructor takes a valid ID automatically.
      */
-    Sprite() : id( nextEmptySprite++ ) {
+    Sprite() : id(nextEmptySprite++) {
         this->clear();
     };
 
@@ -89,7 +89,7 @@ public:
      * Constructor for Sprite with given ID. Sprite should have been previously
      * created otherwise results are not defined.
      */
-    Sprite( sprite_id id ) : id(id) {};
+    Sprite(sprite_id id) : id(id) {};
 
     //--------------------------------------------------------------------------
     // Position.
@@ -105,7 +105,7 @@ public:
      * @param  x New value for x-offset.
      * @return   Whether desired chaged was applied or not.
      */
-    bool setXPosition( int x );
+    bool setXPosition(int x);
 
     /**
      * Sets y position of this sprite.
@@ -117,7 +117,7 @@ public:
      * @param  y New value for y-offset.
      * @return   Whether desired chaged was applied or not.
      */
-    bool setYPosition( int y );
+    bool setYPosition(int y);
 
     /**
      * Sets x and y position of this sprite.
@@ -132,7 +132,7 @@ public:
      * @param  y New value for y-offset.
      * @return   Whether BOTH changes where applied or not.
      */
-    bool setPosition( int x, int y );
+    bool setPosition(int x, int y);
 
     /**
      * Sets x and y position of this sprite.
@@ -145,7 +145,7 @@ public:
      * @param  point New position.
      * @return       Whether BOTH changes where applied or not.
      */
-    bool setPosition( Point point );
+    bool setPosition(Point point);
 
     /**
      * Returns current x-offset of this sprite.
@@ -174,7 +174,7 @@ public:
      * @param tileIndex  Index of tile to use.
      * @return           Whether tile can be used or not.
      */
-    bool setTile( uint16 tileIndex );
+    bool setTile(uint16 tileIndex);
 
     /**
      * Returns this sprite's tile index.
@@ -187,7 +187,7 @@ public:
      * @param  paletteIndex Index of palette to use.
      * @return              Whether palette can be used or not.
      */
-    bool setPalette( uint8 paletteIndex );
+    bool setPalette(uint8 paletteIndex);
 
     /**
      * Returns this sprite's palette index.
@@ -253,7 +253,7 @@ public:
      * Sets this sprite's object mode to given one.
      * @param newMode This sprite's object mode.
      */
-    void setObjectMode( SpriteObjectMode newMode );
+    void setObjectMode(SpriteObjectMode newMode);
 
     /**
      * Returns this sprite's object mode.
@@ -318,7 +318,7 @@ public:
      * @param newMode New Sprite Mode for this sprite.
      * @return        Whether newMode can be applied or not.
      */
-    bool setSizeMode( SpriteSizeMode newMode );
+    bool setSizeMode(SpriteSizeMode newMode);
 
     /**
      * Returns this sprite's size mode.
@@ -392,7 +392,7 @@ public:
      * Sets priority of this sprite.
      * @param priority New priority of this sprite.
      */
-    void setPriority( SpritePriority priority );
+    void setPriority(SpritePriority priority);
 
     /**
      * Returns the priority of this sprite.

@@ -3,3 +3,4 @@ build/
 *.elf
 doc/html/
 doc/latex/
+bouncing_ball.sublime-workspace

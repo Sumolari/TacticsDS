@@ -1,10 +1,13 @@
-#include <string>
+// Copyright 2015 Lluís Ulzurrun de Asanza Sàez
+
+#include "./sprite.h"
 
 #include <nds.h>
 
-#include "./math.h"
-#include "./sprite.h"
+#include <string>
+
 #include "./debug.h"
+#include "./math.h"
 
 namespace FMAW {
 
@@ -13,8 +16,8 @@ namespace FMAW {
 //------------------------------------------------------------------------------
 
 void clearAllSprites() {
-    for ( sprite_id id = 0; id < TOTAL_SPRITES; id++ ) {
-        Sprite sprite (id);
+    for (sprite_id id = 0; id < TOTAL_SPRITES; id++) {
+        Sprite sprite(id);
         sprite.clear();
     }
 }
@@ -29,15 +32,15 @@ sprite_id Sprite::nextEmptySprite = 0;
 //----------// Position.
 //----------//------------------------------------------------------------------
 
-bool Sprite::setXPosition( int x ) {
+bool Sprite::setXPosition(int x) {
     bool isNegative = x < 0;
-    if ( isNegative ) x = -x;
+    if (isNegative) x = -x;
 
     uint16 xCapped = x & 0x00FF;
-    if ( x != xCapped ) return false;
+    if (x != xCapped) return false;
 
     // If x was negative we have to apply 2's complement.
-    if ( isNegative ) x = twosComplement9B(x);
+    if (isNegative) x = twosComplement9B(x);
 
     // We have to set the upper part of the half-word to 1 so AND doesn't
     // break anything.
@@ -50,15 +53,15 @@ bool Sprite::setXPosition( int x ) {
     return true;
 }
 
-bool Sprite::setYPosition( int y ) {
+bool Sprite::setYPosition(int y) {
     bool isNegative = y < 0;
-    if ( isNegative ) y = -y;
+    if (isNegative) y = -y;
 
     uint16 yCapped = y & 0x007F;
-    if ( y != yCapped ) return false;
+    if (y != yCapped) return false;
 
     // If x was negative we have to apply 2's complement.
-    if ( isNegative ) y = twosComplement8B(y);
+    if (isNegative) y = twosComplement8B(y);
 
     // We have to set the upper part of the half-word to 1 so AND doesn't
     // break anything.
@@ -71,32 +74,33 @@ bool Sprite::setYPosition( int y ) {
     return true;
 }
 
-bool Sprite::setPosition( int x, int y ) {
+bool Sprite::setPosition(int x, int y) {
     Point previousPosition = this->getPosition();
-    if ( this->setXPosition( x ) && this->setYPosition( y ) ) return true;
-    else {
-        this->setXPosition( previousPosition.x );
-        this->setYPosition( previousPosition.y );
+    if (this->setXPosition(x) && this->setYPosition(y)) {
+        return true;
+    } else {
+        this->setXPosition(previousPosition.x);
+        this->setYPosition(previousPosition.y);
         return false;
     }
     return true;
 }
 
-bool Sprite::setPosition( Point point ) {
-    return this->setPosition( point.x, point.y );
+bool Sprite::setPosition(Point point) {
+    return this->setPosition(point.x, point.y);
 }
 
 int Sprite::getXPosition() {
     uint8 x = sprites[this->id].attr1 & 0x01FF;
     // If x-position was a negative number...
-    if ( (x & 0x0100) != 0 ) return -twosComplement9B(x);
+    if ((x & 0x0100) != 0) return -twosComplement9B(x);
     return x;
 }
 
 int Sprite::getYPosition() {
     uint8 y = sprites[this->id].attr0 & 0x00FF;
     // If y-position was a negative number...
-    if ( (y & 0x0080) != 0 ) return -twosComplement8B(y);
+    if ((y & 0x0080) != 0) return -twosComplement8B(y);
     return y;
 }
 
@@ -111,9 +115,9 @@ Point Sprite::getPosition() {
 //----------// Tile & palette settings.
 //----------//------------------------------------------------------------------
 
-bool Sprite::setTile( uint16 tileIndex ) {
+bool Sprite::setTile(uint16 tileIndex) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;
-    if ( tileIndex != tileIndexCapped ) return false;
+    if (tileIndex != tileIndexCapped) return false;
     // We first set tile bits to 1 so we can apply an AND later.
     sprites[this->id].attr2 &= 0xFE00;
     // We apply and AND to set the bits properly.
@@ -125,9 +129,9 @@ uint16 Sprite::getTile() {
     return sprites[this->id].attr2 & 0x01FF;
 }
 
-bool Sprite::setPalette( uint8 paletteIndex ) {
+bool Sprite::setPalette(uint8 paletteIndex) {
     uint8 paletteIndexCapped = paletteIndex & 0x000F;
-    if ( paletteIndex != paletteIndexCapped ) return false;
+    if (paletteIndex != paletteIndexCapped) return false;
     // We first set tile bits to 1 so we can apply an AND later.
     sprites[this->id].attr2 &= 0x0FFF;
     // We apply and AND to set the bits properly.
@@ -152,7 +156,7 @@ void Sprite::disableRotationAndScale() {
 }
 
 bool Sprite::rotationAndScaleAreEnabled() {
-    return (sprites[this->id].attr0 & 0x0100) != 0 ;
+    return (sprites[this->id].attr0 & 0x0100) != 0;
 }
 
 bool Sprite::rotationAndScaleAreDisabled() {
@@ -179,7 +183,7 @@ bool Sprite::doubleSizeDisabled() {
 //----------// Object mode settings.
 //----------//------------------------------------------------------------------
 
-void Sprite::setObjectMode( SpriteObjectMode newMode ) {
+void Sprite::setObjectMode(SpriteObjectMode newMode) {
     sprites[this->id].attr0 |= 0x0C00;
     sprites[this->id].attr0 &= newMode;
 }
@@ -242,11 +246,11 @@ bool Sprite::isUsing256BitColors() {
 //----------// Shape & size settings.
 //----------//------------------------------------------------------------------
 
-bool Sprite::setSizeMode( SpriteSizeMode newMode ) {
+bool Sprite::setSizeMode(SpriteSizeMode newMode) {
     uint16 attr0mask;
     uint16 attr1mask;
 
-    switch ( newMode ) {
+    switch (newMode) {
         case square8x8:
         case square16x16:
         case square32x32:
@@ -269,7 +273,7 @@ bool Sprite::setSizeMode( SpriteSizeMode newMode ) {
             return false;
     }
 
-    switch ( newMode ) {
+    switch (newMode) {
         case square8x8:
         case wide16x8:
         case tall8x16:
@@ -310,7 +314,7 @@ SpriteSizeMode Sprite::getSizeMode() {
     uint16 size  = sprites[this->id].attr1 & 0xC000;
     SpriteSizeMode sizeMode;
 
-    switch ( shape ) {
+    switch (shape) {
         // Square.
         case 0x0000:
             switch (size) {
@@ -397,7 +401,7 @@ void Sprite::disableHorizontalFlip() {
 
 // If rotation/scaling is disabled it'll return false.
 bool Sprite::horizontalFlipIsEnabled() {
-    if ( this->rotationAndScaleAreDisabled() )
+    if (this->rotationAndScaleAreDisabled())
         return false;
     return (sprites[this->id].attr1 & 0x1000) != 0;
 }
@@ -405,7 +409,7 @@ bool Sprite::horizontalFlipIsEnabled() {
 // If rotation/scaling is disabled it'll return false.
 // THIS IS NOT EQUIVALENT TO !horizontalFlipIsEnabled() !!
 bool Sprite::horizontalFlipIsDisabled() {
-    if ( this->rotationAndScaleAreDisabled() )
+    if (this->rotationAndScaleAreDisabled())
         return false;
     return (sprites[this->id].attr1 & 0x1000) == 0;
 }
@@ -420,7 +424,7 @@ void Sprite::disableVerticalFlip() {
 
 // If rotation/scaling is disabled it'll return false.
 bool Sprite::verticalFlipIsEnabled() {
-    if ( this->rotationAndScaleAreDisabled() )
+    if (this->rotationAndScaleAreDisabled())
         return false;
     return (sprites[this->id].attr1 & 0x2000) != 0;
 }
@@ -428,7 +432,7 @@ bool Sprite::verticalFlipIsEnabled() {
 // If rotation/scaling is disabled it'll return false.
 // THIS IS NOT EQUIVALENT TO !verticalFlipIsEnabled() !!
 bool Sprite::verticalFlipIsDisabled() {
-    if ( this->rotationAndScaleAreDisabled() )
+    if (this->rotationAndScaleAreDisabled())
         return false;
     return (sprites[this->id].attr1 & 0x2000) == 0;
 }
@@ -437,7 +441,7 @@ bool Sprite::verticalFlipIsDisabled() {
 //----------// Priority settings.
 //----------//------------------------------------------------------------------
 
-void Sprite::setPriority( SpritePriority priority ) {
+void Sprite::setPriority(SpritePriority priority) {
     sprites[this->id].attr2 |= 0x0C00;
     sprites[this->id].attr2 &= priority;
 }
@@ -493,4 +497,4 @@ void Sprite::print() {
                  "|----------------|");
 }
 
-}
+}  // namespace FMAW

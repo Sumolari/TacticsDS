@@ -27,7 +27,7 @@ typedef uint8 background_id;
 // Type that defines the ID of a background tile.
 typedef uint16 background_tile_id;
 
-void setBackgroundColor( unsigned int color );
+void setBackgroundColor(unsigned int color);
 
 class Background {
 
@@ -45,7 +45,7 @@ private:
      * Sets internal register attrbute to proper address based on ID.
      */
     void selectRegister() {
-        switch ( this->id ) {
+        switch (this->id) {
             case 0:
                 this->reg = &REG_BG0CNT;
                 this->vOffset = &REG_BG0VOFS;
@@ -78,7 +78,7 @@ public:
     /**
      * Default constructor takes a valid ID automatically.
      */
-    Background() : id( nextEmptyBackground++ ) {
+    Background() : id(nextEmptyBackground++) {
         this->clear();
         this->selectRegister();
         this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(0);
@@ -88,7 +88,7 @@ public:
      * Constructor for Background with given ID. Background should have been
      * previously created otherwise results are not defined.
      */
-    Background( background_id id ) : id(id) {
+    Background(background_id id) : id(id) {
         this->selectRegister();
         this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
                           this->getScreenBaseBlock());
@@ -103,7 +103,7 @@ public:
      * @param  characterBaseBlock Character block for this background (0..15)
      * @return                    Whether change could be applied or not.
      */
-    bool setCharacterBaseBlock( uint8 characterBaseBlock );
+    bool setCharacterBaseBlock(uint8 characterBaseBlock);
 
     /**
      * Returns this background's character base block.
@@ -118,7 +118,7 @@ public:
      * @param  newScreenBaseBlock Screen base block for this background (0..31)
      * @return                    Whether change chould be applied or not.
      */
-    bool setScreenBaseBlock( uint8 newScreenBaseBlock );
+    bool setScreenBaseBlock(uint8 newScreenBaseBlock);
 
     /**
      * Returns this background's screen base block.
@@ -153,7 +153,7 @@ public:
      * Sets vertical offset of this background to given value.
      * @param offset New vertical offset for this background.
      */
-    void setVerticalOffset( uint8 offset );
+    void setVerticalOffset(uint8 offset);
 
     /**
      * Returns vertical offset of this background.
@@ -165,7 +165,7 @@ public:
      * Sets horizontal offset of this background to given value.
      * @param offset New horizontal offset for this background.
      */
-    void setHorizontalOffset( uint8 offset );
+    void setHorizontalOffset(uint8 offset);
 
     /**
      * Returns horizontal offset of this background.
@@ -185,14 +185,14 @@ public:
      * @param  tileIndex  Index of tile to use.
      * @return            Whether change could be applied or not.
      */
-    bool setTile( background_tile_id tile_id, uint16 tileIndex );
+    bool setTile(background_tile_id tile_id, uint16 tileIndex);
 
     /**
      * Returns tile index of given tile in this background.
      * @param  tile_id ID of the affected tile.
      * @return         Tile index of given tile in this background.
      */
-    uint16 getTile( background_tile_id tile_id );
+    uint16 getTile(background_tile_id tile_id);
 
     /**
      * Sets palette of given tile in this background's to given palette.
@@ -200,14 +200,14 @@ public:
      * @param  paletteIndex Index of palette to use.
      * @return              Whether change could be applied or not.
      */
-    bool setPalette( background_tile_id tile_id, uint8 paletteIndex );
+    bool setPalette(background_tile_id tile_id, uint8 paletteIndex);
 
     /**
      * Returns palette index of given tile in this background.
      * @param  tile_id ID of the affected tile.
      * @return         Palette index of given tile in this background.
      */
-    uint8 getPalette( background_tile_id tile_id );
+    uint8 getPalette(background_tile_id tile_id);
 
     //--------------------------------------------------------------------------
     // Mosaic & color settings.
@@ -265,7 +265,7 @@ public:
      * Sets size of this background.
      * @param  newSize New size for this background.
      */
-    void setSize( BackgroundSize newSize );
+    void setSize(BackgroundSize newSize);
 
     /**
      * Returns current size of this background.
@@ -281,13 +281,13 @@ public:
      * Enables horizontal flip for given tile in this background.
      * @param  tile_id ID of the affected tile.
      */
-    void enableHorizontalFlip( background_tile_id tile_id );
+    void enableHorizontalFlip(background_tile_id tile_id);
 
     /**
      * Disables horizontal flip for given tile in this background.
      * @param  tile_id ID of the affected tile.
      */
-    void disableHorizontalFlip( background_tile_id tile_id );
+    void disableHorizontalFlip(background_tile_id tile_id);
 
     /**
      * Returns whether horizontal flip is enabled for given tile in this
@@ -297,7 +297,7 @@ public:
      * @return         Whether horizontal flip is enabled for given tile in this
      *                 background or not.
      */
-    bool horizontalFlipIsEnabled( background_tile_id tile_id );
+    bool horizontalFlipIsEnabled(background_tile_id tile_id);
 
     /**
      * Returns whether horizontal flip is disabled for given tile in this
@@ -307,19 +307,19 @@ public:
      * @return         Whether horizontal flip is disabled for given tile in
      *                 this background or not.
      */
-    bool horizontalFlipIsDisabled( background_tile_id tile_id );
+    bool horizontalFlipIsDisabled(background_tile_id tile_id);
 
     /**
      * Enables vertical flip for given tile in this background.
      * @param  tile_id ID of the affected tile.
      */
-    void enableVerticalFlip( background_tile_id tile_id );
+    void enableVerticalFlip(background_tile_id tile_id);
 
     /**
      * Disables vertical flip for given tile in this background.
      * @param  tile_id ID of the affected tile.
      */
-    void disableVerticalFlip( background_tile_id tile_id );
+    void disableVerticalFlip(background_tile_id tile_id);
 
     /**
      * Returns whether vertical flip is enabled for given tile in this
@@ -329,7 +329,7 @@ public:
      * @return         Whether vertical flip is enabled for given tile in this
      *                 background or not.
      */
-    bool verticalFlipIsEnabled( background_tile_id tile_id );
+    bool verticalFlipIsEnabled(background_tile_id tile_id);
 
     /**
      * Returns whether vertical flip is disabled for given tile in this
@@ -339,7 +339,7 @@ public:
      * @return         Whether vertical flip is disabled for given tile in this
      *                 background or not.
      */
-    bool verticalFlipIsDisabled( background_tile_id tile_id );
+    bool verticalFlipIsDisabled(background_tile_id tile_id);
 
     //--------------------------------------------------------------------------
     // Priority settings.
@@ -349,7 +349,7 @@ public:
      * Sets priority of this background.
      * @param priority New priority of this background.
      */
-    void setPriority( BackgroundPriority priority );
+    void setPriority(BackgroundPriority priority);
 
     /**
      * Returns the priority of this background.
@@ -380,7 +380,7 @@ public:
      * Displays information about given tile of this background.
      * @param tile_id ID of tile whose information will be displayed.
      */
-    void printTile( background_tile_id tile_id );
+    void printTile(background_tile_id tile_id);
 
 };
 

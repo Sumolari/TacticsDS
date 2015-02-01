@@ -85,7 +85,7 @@ void setupGraphics(void) {
     vramSetBankF(VRAM_F_MAIN_SPRITE);
 
     // Generate the first blank tile by clearing it to zero.
-    for ( int n = 0; n < 16; n++ )
+    for (int n = 0; n < 16; n++)
         BG_GFX[n] = 0;
 
     // Copy BG graphics.
@@ -121,7 +121,7 @@ void setupGraphics(void) {
     FMAW::clearAllSprites();
 
     // Add some sprites.
-    for ( int n = 0; n < 5; n++ ) {
+    for (int n = 0; n < 5; n++) {
         FMAW::Sprite sprite;
         sprite.setXPosition(rand_r(&seed) % 256);
         sprite.setYPosition(rand_r(&seed) % 192);
@@ -144,8 +144,8 @@ void update_graphics() {
     bgBricks.clearAllTiles();
 
     // Set tilemap entries for 6 first rows of background 0 (bricks).
-    for ( int y = 0; y < 6; y++ ) {
-        for ( int x = 0; x < 32; x++ ) {
+    for (int y = 0; y < 6; y++) {
+        for (int x = 0; x < 32; x++) {
             int tile_id = x + y * 32;  // Product optimized at compile time!
 
             // Either odd columns of even rows or even columns of odd rows...
@@ -161,11 +161,11 @@ void update_graphics() {
     bgBricks.setVerticalOffset(112);
 
     // Set tilemap entries for 8 first rows of background 1 (gradient).
-    for ( int y = 0; y < 8; y++ ) {
+    for (int y = 0; y < 8; y++) {
         int tile_index = TILE_GRADIENT + y;
         int y32 = y * 32;
 
-        for ( int x = 0; x < 32; x++ ) {
+        for (int x = 0; x < 32; x++) {
             int tile_id = x + y32;
             bgGradient.setTile(tile_id, tile_index);
             bgGradient.setPalette(tile_id, PAL_GRADIENT);
