@@ -1,7 +1,6 @@
 #include <string>
 
 #include <nds.h>
-#include <nds/debug.h>
 
 #include "./math.h"
 #include "./sprite.h"
@@ -24,7 +23,7 @@ void clearAllSprites() {
 // Sprite class.
 //------------------------------------------------------------------------------
 
-uint8 Sprite::nextEmptySprite = 0;
+sprite_id Sprite::nextEmptySprite = 0;
 
 //----------//------------------------------------------------------------------
 //----------// Position.
