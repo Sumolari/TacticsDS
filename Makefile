@@ -13,11 +13,17 @@ include $(DEVKITARM)/ds_rules
 # BUILD is the directory where object files & intermediate files will be placed
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
+# DOXY is the command to generate documentation
+# DOCDIR is the path where documentation will be stored
+# DOXYFILE is the file with settings for documentation the generator
 #-------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	assets src data
 INCLUDES	:=	include build
+DOXY        :=  doxygen
+DOCDIR      :=  doc
+DOXYFILE    :=  $(DOCDIR)/Doxyfile
 
 #-------------------------------------------------------------------------------
 # options for code generation
@@ -90,7 +96,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: $(BUILD) clean
+.PHONY: $(BUILD) clean doc
 
 #-------------------------------------------------------------------------------
 $(BUILD):
@@ -102,6 +108,12 @@ clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba
 
+#-------------------------------------------------------------------------------
+doc:
+	$(DOXY) $(DOXYFILE)
+
+doc-%:
+	$(DOXY) $(DOXYFILE).$*
 
 #-------------------------------------------------------------------------------
 else

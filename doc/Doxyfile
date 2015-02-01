@@ -1,0 +1,17 @@
+PROJECT_NAME           = "Bouncing Ball"
+PROJECT_BRIEF          = "Just a simple bouncing ball game"
+OUTPUT_DIRECTORY       = "doc"
+INPUT                  = "src"
+FILE_PATTERNS          = "*.h"
+RECURSIVE              = YES
+SOURCE_BROWSER         = YES
+HTML_DYNAMIC_SECTIONS  = YES
+USE_MATHJAX            = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+MULTILINE_CPP_IS_BRIEF = YES
+SHOW_DIRECTORIES       = YES
+PAPER_TYPE             = letter
+HIDE_UNDOC_RELATIONS   = NO

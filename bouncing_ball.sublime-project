@@ -9,6 +9,9 @@
 		"name": "Assets",
 		"path": "./assets"
 	}, {
+		"name": "Documentation",
+		"path": "./doc"
+	}, {
 		"name": "Root",
 		"follow_symlinks": true,
 		"file_exclude_patterns": [ "bouncing_ball.sublime-project" ],

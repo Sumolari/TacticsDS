@@ -1,3 +1,5 @@
 build/
 *.nds
 *.elf
+doc/html/
+doc/latex/
