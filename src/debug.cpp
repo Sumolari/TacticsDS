@@ -12,12 +12,13 @@
 #include <sstream>
 #include <string>
 
+#include "./types.h"
 
 namespace FMAW {
 
 void printf(const std::string fmt_str, ...) {
     /* Reserve two times as much as the length of the fmt_str */
-    int final_n, n = (static_cast<int>fmt_str.size()) * 2;
+    int final_n, n = (static_cast<int>(fmt_str.size()) * 2);
     std::string str;
     std::unique_ptr<char[]> formatted;
     va_list ap;

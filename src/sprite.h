@@ -1,6 +1,7 @@
 #ifndef FMAW_SPRITE_H
 #define FMAW_SPRITE_H
 
+#include "./types.h"
 #include "./geometry.h"
 
 namespace FMAW {

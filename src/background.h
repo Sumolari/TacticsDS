@@ -1,6 +1,8 @@
 #ifndef FMAW_BACKGROUND_H
 #define FMAW_BACKGROUND_H
 
+#include "./types.h"
+
 namespace FMAW {
 
 #define TOTAL_BACKGROUNDS 4  // Total amount of backgrounds available.

@@ -2,6 +2,7 @@
 
 #include <nds.h>
 
+#include "./types.h"
 #include "./background.h"
 #include "./debug.h"
 
@@ -22,7 +23,7 @@ background_id Background::nextEmptyBackground = 0;
 //----------//------------------------------------------------------------------
 
 bool Background::setCharacterBaseBlock(uint8 characterBaseBlock) {
-    if ( characterBaseBlock > 15 || characterBaseBlock < 0 ) return false;
+    if (characterBaseBlock > 15 || characterBaseBlock < 0) return false;
     *this->reg &= 0xFFC3;
     *this->reg |= characterBaseBlock << 2;
     return true;
@@ -33,7 +34,7 @@ uint8 Background::getCharacterBaseBlock() {
 }
 
 bool Background::setScreenBaseBlock(uint8 newScreenBaseBlock) {
-    if ( newScreenBaseBlock > 31 || newScreenBaseBlock < 0 ) return false;
+    if (newScreenBaseBlock > 31 || newScreenBaseBlock < 0) return false;
     *this->reg &= 0xE0FF;
     *this->reg |= newScreenBaseBlock << 8;
     this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(newScreenBaseBlock);
@@ -82,7 +83,7 @@ uint8 Background::getHorizontalOffset() {
 
 bool Background::setTile(background_tile_id tile_id, uint16 tileIndex) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;
-    if ( tileIndex != tileIndexCapped ) return false;
+    if (tileIndex != tileIndexCapped) return false;
     this->tiles[tile_id] &= 0xFE00;
     this->tiles[tile_id] |= tileIndexCapped;
     return true;
@@ -94,7 +95,7 @@ uint16 Background::getTile(background_tile_id tile_id) {
 
 bool Background::setPalette(background_tile_id tile_id, uint8 paletteIndex) {
     uint16 paletteIndexCapped = paletteIndex & 0x000F;
-    if ( paletteIndex != paletteIndexCapped ) return false;
+    if (paletteIndex != paletteIndexCapped) return false;
     this->tiles[tile_id] &= 0x0FFF;
     this->tiles[tile_id] |= paletteIndexCapped << 12;
     return true;
@@ -151,7 +152,7 @@ void Background::setSize(BackgroundSize newSize) {
 
 BackgroundSize Background::getSize() {
     uint16 halfword = *this->reg | 0x3FFF;
-    switch ( halfword ) {
+    switch (halfword) {
         case size32x32:
             return size32x32;
         case size64x32:
@@ -211,7 +212,7 @@ void Background::setPriority(BackgroundPriority priority) {
 }
 
 BackgroundPriority Background::getPriority() {
-    switch ( (*this->reg & 0x0003) | 0xFFFC ) {
+    switch ((*this->reg & 0x0003) | 0xFFFC) {
         case bpHIGHEST:
             return bpHIGHEST;
         case bpHIGH:
@@ -234,7 +235,7 @@ void Background::clear() {
 }
 
 void Background::clearAllTiles() {
-    for ( int n = 0; n < 1024; n++ )
+    for (int n = 0; n < 1024; n++)
         this->tiles[n] = 0;
 }
 
