@@ -7,18 +7,18 @@ namespace FMAW {
 
 // Type defining the different priorities of backgrounds.
 typedef enum t_backgroundPriority {
-    bpHIGHEST = 0x0,
-    bpHIGH    = 0x1,
-    bpLOW     = 0x2,
-    bpLOWEST  = 0x3
+    bpHIGHEST = 0xFFFC,
+    bpHIGH    = 0xFFFD,
+    bpLOW     = 0xFFFE,
+    bpLOWEST  = 0xFFFF
 } BackgroundPriority;
 
 // Type defining the different sizes of backgrounds.
 typedef enum t_backgroundSize {
-    size32x32 = 0x0,
-    size64x32 = 0x1,
-    size32x64 = 0x2,
-    size64x64 = 0x3
+    size32x32 = 0x3FFF,
+    size64x32 = 0x7FFF,
+    size32x64 = 0xBFFF,
+    size64x64 = 0xFFFF
 } BackgroundSize;
 
 // Type that defines the ID of a background.
@@ -47,6 +47,19 @@ public:
      * previously created otherwise results are not defined.
      */
     Background( background_id id ) : id(id) {};
+
+    /**
+     * Returns tilemap address of this background.
+     * @return This background's tilemap address.
+     */
+    vu16 *tilemap();
+
+    /**
+     * Returns the register used to store this background's info.
+     * @return Register used to store this background's info.
+     */
+    vu16 *reg();
+
 
     //--------------------------------------------------------------------------
     // Position.
@@ -93,6 +106,13 @@ public:
      * @return True if display area overflow bit of this background is enabled.
      */
     bool displayAreaOverflowEnabled();
+
+    /**
+     * Returns whether display area overflow bit os this background is disabled
+     * or not.
+     * @return False if display area overflow bit of this background is enabled.
+     */
+    bool displayAreaOverflowDisabled();
 
     //--------------------------------------------------------------------------
     // Tile & palette settings.

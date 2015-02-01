@@ -11,41 +11,66 @@ namespace FMAW {
 
 background_id Background::nextEmptyBackground = 0;
 
+vu16 *Background::tilemap() {
+    return (reinterpret_cast<u16 *>BG_MAP_RAM(this->id));
+}
+
+vu16 *Background::reg() {
+    switch ( this->id ) {
+        case 0:
+            return &REG_BG0CNT;
+        case 1:
+            return &REG_BG1CNT;
+        case 2:
+            return &REG_BG2CNT;
+        case 3:
+        default:
+            return &REG_BG3CNT;
+    }
+}
+
 //----------//------------------------------------------------------------------
 //----------// Position.
 //----------//------------------------------------------------------------------
 
 bool Background::setCharacterBaseBlock( uint8 characterBaseBlock ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    if ( characterBaseBlock > 15 || characterBaseBlock < 0 ) return false;
+    characterBaseBlock <<= 2;
+    *this->reg() &= 0xFFC3;
+    *this->reg() |= characterBaseBlock;
+    return true;
 }
 
 uint8 Background::getCharacterBaseBlock() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (*this->reg() & 0x003C) >> 2;
 }
 
 bool Background::setScreenBaseBlock( uint8 newScreenBaseBlock ) {
-    TO_BE_IMPLEMENTED
-    return 0;
+    if ( newScreenBaseBlock > 31 || newScreenBaseBlock < 0 ) return false;
+    newScreenBaseBlock <<= 8;
+    *this->reg() &= 0xE0FF;
+    *this->reg() |= newScreenBaseBlock;
+    return true;
 }
 
 uint8 Background::getScreenBaseBlock() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (*this->reg() & 0x1F00) >> 8;
 }
 
 void Background::enableDisplayAreaOverflow() {
-    TO_BE_IMPLEMENTED
+    *this->reg() |= 0x2000;
 }
 
 void Background::disableDisplayAreaOverflow() {
-    TO_BE_IMPLEMENTED
+    *this->reg() &= 0xDFFF;
 }
 
 bool Background::displayAreaOverflowEnabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (*this->reg() &= 0x2000) != 0;
+}
+
+bool Background::displayAreaOverflowDisabled() {
+    return !this->displayAreaOverflowEnabled();
 }
 
 //----------//------------------------------------------------------------------
