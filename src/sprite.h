@@ -100,7 +100,7 @@ public:
      * Handles negative values and overflows by not applying the change and
      * returning false.
      *
-     * @see FMAW::setPosition
+     * @see Sprite::setPosition()
      *
      * @param  x New value for x-offset.
      * @return   Whether desired chaged was applied or not.
@@ -112,7 +112,7 @@ public:
      * Handles negative values and overflows by not applying the change and
      * returning false.
      *
-     * @see FMAW::setPosition
+     * @see Sprite::setPosition()
      *
      * @param  y New value for y-offset.
      * @return   Whether desired chaged was applied or not.
@@ -125,8 +125,8 @@ public:
      * returning false.
      * Only applies change if BOTH changes are possible.
      *
-     * @see FMAW::setXPosition
-     * @see FMAW::setYPosition
+     * @see Sprite::setXPosition()
+     * @see Sprite::setYPosition()
      *
      * @param  x New value for x-offset.
      * @param  y New value for y-offset.
@@ -140,7 +140,7 @@ public:
      * returning false.
      * Only applies change if BOTH changes are possible.
      *
-     * @see FMAW::setPosition
+     * @see Sprite::setPosition()
      *
      * @param  point New position.
      * @return       Whether BOTH changes where applied or not.
