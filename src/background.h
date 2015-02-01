@@ -285,6 +285,11 @@ public:
      */
     void clear();
 
+    /**
+    * Resets all tiles of this background.
+    */
+    void clearAllTiles();
+
 };
 
 }
