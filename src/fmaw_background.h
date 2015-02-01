@@ -3,6 +3,8 @@
 
 #include "./fmaw_types.h"
 
+#include <nds.h>
+
 namespace FMAW {
 
 #define TOTAL_BACKGROUNDS 4  // Total amount of backgrounds available.

@@ -4,7 +4,11 @@
 typedef unsigned char uint8;
 typedef unsigned short int uint16;
 
+#include <nds.h>
+#include <nds/debug.h>
+
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 /**
@@ -17,7 +21,7 @@ struct BasicFixedReal
     typedef BasicFixedReal self;
     static const int factor = 1 << (E - 1);
     BasicFixedReal() : m(0) { }
-    BasicFixedReal(double d) : m(static_cast<double>(d *factor)) { }
+    BasicFixedReal(double d) : m(static_cast<int>(d *factor)) { }
     self &operator+=(const self &x) {
         m += x.m;
         return *this;
@@ -28,12 +32,12 @@ struct BasicFixedReal
     }
     self &operator*=(const self &x) {
         m *= x.m;
-        m >>= E;
+        m >>= E - 1;
         return *this;
     }
     self &operator/=(const self &x) {
-        m /= x.m;
         m *= factor;
+        m /= x.m;
         return *this;
     }
     self &operator*=(int x) {
@@ -45,10 +49,18 @@ struct BasicFixedReal
         return *this;
     }
     self operator-() {
-        return self(-m);
+        return self(-this->toDouble());
+    }
+    int toInt() const {
+        return int(m) / factor;
     }
     double toDouble() const {
         return double(m) / factor;
+    }
+    void print() {
+        std::stringstream str;
+        str << this->m;
+        nocashMessage(str.str().c_str());
     }
     // friend functions
     friend self operator+(self x, const self &y) {

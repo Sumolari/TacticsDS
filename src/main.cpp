@@ -71,11 +71,34 @@
 #define pal2objram(p) (SPRITE_PALETTE + (p) * 16)
 
 //------------------------------------------------------------------------------
+// Game objects
+//------------------------------------------------------------------------------
+
+#include "./ball.h"
+
+Ball g_ball;
+
+//------------------------------------------------------------------------------
 // Main code section
 //------------------------------------------------------------------------------
 
 // rand_r seed.
 unsigned int seed = 12345;
+
+/**
+ * Sets up interrupts.
+ */
+void setupInterrupts(void) {
+    irqInit();               // Initialize interrups.
+    irqEnable(IRQ_VBLANK);   // Enable vblank interrupt.
+}
+
+void resetBall(void) {
+    g_ball.x = FixedReal(128);
+    g_ball.y = FixedReal(64);
+    g_ball.xvel = BasicFixedReal<12>(0.39);
+    g_ball.yvel = FixedReal(0);
+}
 
 /**
  * Sets up graphics.
@@ -120,28 +143,9 @@ void setupGraphics(void) {
 
     FMAW::clearAllSprites();
 
-    // Add some sprites.
-    for (int n = 0; n < 5; n++) {
-        FMAW::Sprite sprite;
-        sprite.setXPosition(rand_r(&seed) % 256);
-        sprite.setYPosition(rand_r(&seed) % 192);
-        sprite.setSizeMode(FMAW::square16x16);
-        sprite.setTile(TILES_BALL);
-        sprite.setPalette(PAL_BALL);
-        sprite.enable();
-    }
-}
-
-void update_logic() {
-}
-
-void update_graphics() {
     // Clear entire bricks' tilemap and gradient's tilemap to zero
-    FMAW::Background bgBricks(0);
     bgBricks.clearAllTiles();
-
-    FMAW::Background bgGradient(1);
-    bgBricks.clearAllTiles();
+    bgGradient.clearAllTiles();
 
     // Set tilemap entries for 6 first rows of background 0 (bricks).
     for (int y = 0; y < 6; y++) {
@@ -182,12 +186,26 @@ void update_graphics() {
     //                              0010000010000010
     REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
     REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
+
+    g_ball = Ball();
+    g_ball.sprite.setTile(TILES_BALL);
+    g_ball.sprite.setPalette(PAL_BALL);
+    g_ball.sprite.enable();
+}
+
+void update_logic() {
+    g_ball.update();
+}
+
+void update_graphics() {
+    g_ball.render(0, 0);
 }
 
 int main(void) {
-    irqInit();               // Initialize interrups.
-    irqEnable(IRQ_VBLANK);   // Enable vblank interrupt.
+    setupInterrupts();
     setupGraphics();
+    resetBall();
+
     while (1) {
         // Rendering period:
         // Update game objects.
@@ -200,4 +218,6 @@ int main(void) {
         // Move the graphics around.
         update_graphics();
     }
+
+    return 0;
 }

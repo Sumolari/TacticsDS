@@ -37,7 +37,7 @@ bool Sprite::setXPosition(int x) {
     if (isNegative) x = -x;
 
     uint16 xCapped = x & 0x00FF;
-    if (x != xCapped) return false;
+    //if (x != xCapped) return false;
 
     // If x was negative we have to apply 2's complement.
     if (isNegative) x = twosComplement9B(x);
@@ -58,7 +58,7 @@ bool Sprite::setYPosition(int y) {
     if (isNegative) y = -y;
 
     uint16 yCapped = y & 0x007F;
-    if (y != yCapped) return false;
+    //if (y != yCapped) return false;
 
     // If x was negative we have to apply 2's complement.
     if (isNegative) y = twosComplement8B(y);
