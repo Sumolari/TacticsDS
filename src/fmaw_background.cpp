@@ -2,9 +2,9 @@
 
 #include <nds.h>
 
-#include "./types.h"
-#include "./background.h"
-#include "./debug.h"
+#include "./fmaw_types.h"
+#include "./fmaw_background.h"
+#include "./fmaw_debug.h"
 
 namespace FMAW {
 

@@ -1,13 +1,13 @@
 // Copyright 2015 Lluís Ulzurrun de Asanza Sàez
 
-#include "./sprite.h"
+#include "./fmaw_sprite.h"
 
 #include <nds.h>
 
 #include <string>
 
-#include "./debug.h"
-#include "./math.h"
+#include "./fmaw_debug.h"
+#include "./fmaw_math.h"
 
 namespace FMAW {
 

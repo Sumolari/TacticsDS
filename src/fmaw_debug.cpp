@@ -1,6 +1,6 @@
 // Copyright 2015 Lluís Ulzurrun de Asanza Sàez
 
-#include "./debug.h"
+#include "./fmaw_debug.h"
 
 #include <stdarg.h>  // For va_start, etc.
 
@@ -12,7 +12,7 @@
 #include <sstream>
 #include <string>
 
-#include "./types.h"
+#include "./fmaw_types.h"
 
 namespace FMAW {
 

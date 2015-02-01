@@ -4,7 +4,7 @@
 #include <string>
 #include <assert.h>
 
-#include "./types.h"
+#include "./fmaw_types.h"
 
 namespace FMAW {
 

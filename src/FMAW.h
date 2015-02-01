@@ -1,11 +1,11 @@
 #ifndef FMAW_H
 #define FMAW_H
 
-#include "./types.h"
-#include "./math.h"
-#include "./geometry.h"
-#include "./debug.h"
-#include "./background.h"
-#include "./sprite.h"
+#include "./fmaw_types.h"
+#include "./fmaw_math.h"
+#include "./fmaw_geometry.h"
+#include "./fmaw_debug.h"
+#include "./fmaw_background.h"
+#include "./fmaw_sprite.h"
 
 #endif

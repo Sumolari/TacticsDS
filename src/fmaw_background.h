@@ -1,7 +1,7 @@
 #ifndef FMAW_BACKGROUND_H
 #define FMAW_BACKGROUND_H
 
-#include "./types.h"
+#include "./fmaw_types.h"
 
 namespace FMAW {
 
