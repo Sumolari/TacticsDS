@@ -102,39 +102,35 @@ uint8 Background::getPalette( background_tile_id tile_id ) {
 //----------//------------------------------------------------------------------
 
 void Background::enableMosaic() {
-    TO_BE_IMPLEMENTED
+    *this->reg() |= 0x0040;
 }
 
 void Background::disableMosaic() {
-    TO_BE_IMPLEMENTED
+    *this->reg() &= 0xFFCF;
 }
 
 bool Background::mosaicIsEnabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (*this->reg() & 0x0040) != 0;
 }
 
 bool Background::mosaicIsDisabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return !this->mosaicIsEnabled();
 }
 
 void Background::use16BitColors() {
-    TO_BE_IMPLEMENTED
+    *this->reg() &= 0xFF7F;
 }
 
 void Background::use256BitColors() {
-    TO_BE_IMPLEMENTED
+    *this->reg() |= 0x0080;
 }
 
 bool Background::isUsing16BitColors() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return (*this->reg() & 0x0080) == 0;
 }
 
 bool Background::isUsing256BitColors() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    return !this->isUsing16BitColors();
 }
 
 //----------//------------------------------------------------------------------
