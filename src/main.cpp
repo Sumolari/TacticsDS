@@ -131,7 +131,6 @@ void update_logic() {
 }
 
 void update_graphics() {
-
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     for ( int n = 0; n < 1024; n++ ) {
         bg0map[n] = 0;

@@ -24,6 +24,9 @@ typedef enum t_backgroundSize {
 // Type that defines the ID of a background.
 typedef uint8 background_id;
 
+// Type that defines the ID of a background tile.
+typedef uint16 background_tile_id;
+
 class Background {
 
 public:
@@ -96,30 +99,34 @@ public:
     //--------------------------------------------------------------------------
 
     /**
-    * Sets this background's tile to given one.
-    * @param tileIndex  Index of tile to use.
-    * @return           Whether tile can be used or not.
+    * Sets tile index of given tile in this background to given one.
+    * @param  tile_id    ID of the affected tile.
+    * @param  tileIndex  Index of tile to use.
+    * @return            Whether change could be applied or not.
     */
-    bool setTile( uint16 tileIndex );
+    bool setTile( background_tile_id tile_id, uint16 tileIndex );
 
     /**
-     * Returns this background's tile index.
-     * @return Tile of this background index.
+     * Returns tile index of given tile in this background.
+     * @param  tile_id ID of the affected tile.
+     * @return         Tile index of given tile in this background.
      */
-    uint16 getTile();
+    uint16 getTile( background_tile_id tile_id );
 
     /**
-     * Sets this background's palette to given one.
+     * Sets palette of given tile in this background's to given palette.
+     * @param  tile_id      ID of the affected tile.
      * @param  paletteIndex Index of palette to use.
-     * @return              Whether palette can be used or not.
+     * @return              Whether change could be applied or not.
      */
-    bool setPalette( uint8 paletteIndex );
+    bool setPalette( background_tile_id tile_id, uint8 paletteIndex );
 
     /**
-     * Returns this background's palette index.
-     * @return Palette index of this background.
+     * Returns palette index of given tile in this background.
+     * @param  tile_id ID of the affected tile.
+     * @return         Palette index of given tile in this background.
      */
-    uint8 getPalette();
+    uint8 getPalette( background_tile_id tile_id );
 
     //--------------------------------------------------------------------------
     // Mosaic & color settings.
@@ -190,48 +197,68 @@ public:
     //--------------------------------------------------------------------------
 
     /**
-     * Enables horizontal flip for this background.
+     * Enables horizontal flip for given tile in this background.
+     * @param  tile_id ID of the affected tile.
      */
-    void enableHorizontalFlip();
+    void enableHorizontalFlip( background_tile_id tile_id );
 
     /**
-     * Disables horizontal flip for this background.
+     * Disables horizontal flip for given tile in this background.
+     * @param  tile_id ID of the affected tile.
      */
-    void disableHorizontalFlip();
+    void disableHorizontalFlip( background_tile_id tile_id );
 
     /**
-     * Returns whether horizontal flip is enabled for this background or not.
-     * @return Whether horizontal flip is enabled for this background or not.
+     * Returns whether horizontal flip is enabled for given tile in this
+     * background or not.
+     *
+     * @param  tile_id ID of the affected tile.
+     * @return         Whether horizontal flip is enabled for given tile in this
+     *                 background or not.
      */
-    bool horizontalFlipIsEnabled();
+    bool horizontalFlipIsEnabled( background_tile_id tile_id );
 
     /**
-     * Returns whether horizontal flip is disabled for this background or not.
-     * @return Whether horizontal flip is disabled for this background or not.
+     * Returns whether horizontal flip is disabled for given tile in this
+     * background or not.
+     *
+     * @param  tile_id ID of the affected tile.
+     * @return         Whether horizontal flip is disabled for given tile in
+     *                 this background or not.
      */
-    bool horizontalFlipIsDisabled();
+    bool horizontalFlipIsDisabled( background_tile_id tile_id );
 
     /**
-     * Enables vertical flip for this background.
+     * Enables vertical flip for given tile in this background.
+     * @param  tile_id ID of the affected tile.
      */
-    void enableVerticalFlip();
+    void enableVerticalFlip( background_tile_id tile_id );
 
     /**
-     * Disables vertical flip for this background.
+     * Disables vertical flip for given tile in this background.
+     * @param  tile_id ID of the affected tile.
      */
-    void disableVerticalFlip();
+    void disableVerticalFlip( background_tile_id tile_id );
 
     /**
-     * Returns whether vertical flip is enabled for this background or not.
-     * @return Whether vertical flip is enabled for this background or not.
+     * Returns whether vertical flip is enabled for given tile in this
+     * background.
+     *
+     * @param  tile_id ID of the affected tile.
+     * @return         Whether vertical flip is enabled for given tile in this
+     *                 background or not.
      */
-    bool verticalFlipIsEnabled();
+    bool verticalFlipIsEnabled( background_tile_id tile_id );
 
     /**
-     * Returns whether vertical flip is disabled for this background or not.
-     * @return Whether vertical flip is disabled for this background or not.
+     * Returns whether vertical flip is disabled for given tile in this
+     * background or not.
+     *
+     * @param  tile_id ID of the affected tile.
+     * @return         Whether vertical flip is disabled for given tile in this
+     *                 background or not.
      */
-    bool verticalFlipIsDisabled();
+    bool verticalFlipIsDisabled( background_tile_id tile_id );
 
     //--------------------------------------------------------------------------
     // Priority settings.
