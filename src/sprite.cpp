@@ -146,25 +146,14 @@ uint8 Sprite::getPalette() {
 //----------// Rotation & scale settings.
 //----------//------------------------------------------------------------------
 
-/**
- * Enables rotation and scale of this sprite.
- */
 void Sprite::enableRotationAndScale() {
     sprites[this->id].attr0 |= 0x0100;
 }
 
-/**
- * Disables rotation and scale of this sprite.
- * Double-size will be disabled, too.
- */
 void Sprite::disableRotationAndScale() {
     sprites[this->id].attr0 &= 0xFEFF;
 }
 
-/**
- * Returns whether rotation and scaling are enabled in this sprite or not.
- * @return Whether rotation and scaling are enabled in this sprite or not.
- */
 bool Sprite::rotationAndScaleAreEnabled() {
     return (sprites[this->id].attr0 & 0x0100) != 0 ;
 }
@@ -173,25 +162,14 @@ bool Sprite::rotationAndScaleAreDisabled() {
     return !this->rotationAndScaleAreEnabled();
 }
 
-/**
- * Enables double size of this sprite.
- * Will enable also rotation and scaling.
- */
 void Sprite::enableDoubleSize() {
     sprites[this->id].attr0 |= 0x0200;
 }
 
-/**
- * Disables double size of this sprite.
- */
 void Sprite::disableDoubleSize() {
     sprites[this->id].attr0 &= 0xFDFF;
 }
 
-/**
- * Returns whether double size is enabled or not.
- * @return Whether double size is enabled or not.
- */
 bool Sprite::doubleSizeEnabled() {
     return (sprites[this->id].attr0 = 0x0200) != 0;
 }
@@ -204,19 +182,11 @@ bool Sprite::doubleSizeDisabled() {
 //----------// Object mode settings.
 //----------//------------------------------------------------------------------
 
-/**
- * Sets this sprite's object mode to given one.
- * @param newMode This sprite's object mode.
- */
 void Sprite::setObjectMode( SpriteObjectMode newMode ) {
     sprites[this->id].attr0 |= 0x0C00;
     sprites[this->id].attr0 &= newMode;
 }
 
-/**
- * Returns this sprite's object mode.
- * @return Object mode of this sprite.
- */
 SpriteObjectMode Sprite::getObjectMode() {
     uint16 half_word = sprites[this->id].attr0 | 0xF3FF;
 
@@ -418,78 +388,52 @@ SpriteSizeMode Sprite::getSizeMode() {
 //----------// Flip settings.
 //----------//------------------------------------------------------------------
 
-/**
- * Enables horizontal flip for this sprite.
- * This will disable rotation/scale for this sprite.
- */
 void Sprite::enableHorizontalFlip() {
-    TO_BE_IMPLEMENTED
+    this->disableRotationAndScale();
+    sprites[this->id].attr1 |= 0x1000;
 }
 
-/**
- * Disables horizontal flip for this sprite.
- * This will disable rotation/scale for this sprite.
- */
 void Sprite::disableHorizontalFlip() {
-    TO_BE_IMPLEMENTED
+    this->disableRotationAndScale();
+    sprites[this->id].attr1 &= 0xEFFF;
 }
 
-/**
- * Returns whether horizontal flip is enabled for this sprite or not.
- * If rotation/scaling is disabled it'll return false.
- * @return Whether horizontal flip is enabled for this sprite or not.
- */
+// If rotation/scaling is disabled it'll return false.
 bool Sprite::horizontalFlipIsEnabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    if ( this->rotationAndScaleAreDisabled() )
+        return false;
+    return (sprites[this->id].attr1 & 0x1000) != 0;
 }
 
-/**
- * Returns whether horizontal flip is disabled for this sprite or not.
- * If rotation/scaling is disabled it'll return false.
- * THIS IS NOT EQUIVALENT TO !horizontalFlipIsEnabled() !!
- * @return Whether horizontal flip is disabled for this sprite or not.
- */
+// If rotation/scaling is disabled it'll return false.
+// THIS IS NOT EQUIVALENT TO !horizontalFlipIsEnabled() !!
 bool Sprite::horizontalFlipIsDisabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    if ( this->rotationAndScaleAreDisabled() )
+        return false;
+    return (sprites[this->id].attr1 & 0x1000) == 0;
 }
 
-/**
- * Enables vertical flip for this sprite.
- * This will disable rotation/scale for this sprite.
- */
 void Sprite::enableVerticalFlip() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr1 |= 0x2000;
 }
 
-/**
- * Disables vertical flip for this sprite.
- * This will disable rotation/scale for this sprite.
- */
 void Sprite::disableVerticalFlip() {
-    TO_BE_IMPLEMENTED
+    sprites[this->id].attr1 &= 0xDFFF;
 }
 
-/**
- * Returns whether vertical flip is enabled for this sprite or not.
- * If rotation/scaling is disabled it'll return false.
- * @return Whether vertical flip is enabled for this sprite or not.
- */
+// If rotation/scaling is disabled it'll return false.
 bool Sprite::verticalFlipIsEnabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    if ( this->rotationAndScaleAreDisabled() )
+        return false;
+    return (sprites[this->id].attr1 & 0x2000) != 0;
 }
 
-/**
- * Returns whether vertical flip is disabled for this sprite or not.
- * If rotation/scaling is disabled it'll return false.
- * THIS IS NOT EQUIVALENT TO !verticalFlipIsEnabled() !!
- * @return Whether vertical flip is disabled for this sprite or not.
- */
+// If rotation/scaling is disabled it'll return false.
+// THIS IS NOT EQUIVALENT TO !verticalFlipIsEnabled() !!
 bool Sprite::verticalFlipIsDisabled() {
-    TO_BE_IMPLEMENTED
-    return 0;
+    if ( this->rotationAndScaleAreDisabled() )
+        return false;
+    return (sprites[this->id].attr1 & 0x2000) == 0;
 }
 
 //----------//------------------------------------------------------------------
