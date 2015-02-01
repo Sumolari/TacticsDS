@@ -1,7 +1,12 @@
 {
 	"folders": [ {
 		"name": "Source",
-		"path": "./src"
+		"path": "./src",
+		"file_exclude_patterns": [ "fmaw*" ]
+	}, {
+		"name": "FMAW",
+		"path": "./FMAW",
+		"file_include_patterns": [ "fmaw*" ]
 	}, {
 		"name": "Builds",
 		"path": "./build"
