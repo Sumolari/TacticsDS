@@ -15,7 +15,7 @@
 		"name": "Root",
 		"follow_symlinks": true,
 		"file_exclude_patterns": [ "bouncing_ball.sublime-project" ],
-		"folder_exclude_patterns": [ "assets", "src", "build" ],
+		"folder_exclude_patterns": [ "doc", "assets", "src", "build" ],
 		"path": "."
 	} ],
 	"settings": {
