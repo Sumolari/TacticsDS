@@ -386,6 +386,17 @@ public:
     bool verticalFlipIsDisabled();
 
     //--------------------------------------------------------------------------
+    // Transform settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Applies given transform to this sprite.
+     * It will enable scaling and rotation for this sprite.
+     * @param transform Transform to apply.
+     */
+    void applyTransform(Transform transform);
+
+    //--------------------------------------------------------------------------
     // Priority settings.
     //--------------------------------------------------------------------------
 

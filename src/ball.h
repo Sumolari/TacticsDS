@@ -18,7 +18,7 @@
 #define BALL_RADIUS     FixedReal(8)
 #define BALL_DIAM       16
 
-#define MIN_HEIGHT      FixedHeight(4.7)
+#define MIN_HEIGHT      FixedReal(4.7)
 
 #define MIN_YVEL        FixedReal(4.7)
 #define MAX_XVEL        BasicFixedReal<12>(3.9)
@@ -39,7 +39,7 @@ public:
     FMAW::Sprite sprite;
 
     // Height.
-    int height;
+    FixedReal height;
 
     /**
      * Creates a new ball using a new sprite.

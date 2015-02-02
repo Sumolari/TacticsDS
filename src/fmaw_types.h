@@ -22,6 +22,11 @@ struct BasicFixedReal
     static const int factor = 1 << (E - 1);
     BasicFixedReal() : m(0) { }
     BasicFixedReal(double d) : m(static_cast<int>(d *factor)) { }
+    static self BasicFixedRealFromRaw(int raw) {
+        self newFixedReal = self();
+        newFixedReal.m = raw;
+        return newFixedReal;
+    }
     self &operator+=(const self &x) {
         m += x.m;
         return *this;
@@ -50,6 +55,9 @@ struct BasicFixedReal
     }
     self operator-() {
         return self(-this->toDouble());
+    }
+    int raw() const {
+        return m;
     }
     int toInt() const {
         return int(m) / factor;
