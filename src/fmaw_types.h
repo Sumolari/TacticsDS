@@ -15,11 +15,12 @@ using namespace std;
  * Basic type for Fixed Point operations. E is the amount of bits allocated for
  * the DECIMAL part.
  */
+/*
 template<int E>
 struct BasicFixedReal
 {
     typedef BasicFixedReal self;
-    static const int factor = 1 << (E - 1);
+    static const int factor = 1 << E;
     BasicFixedReal() : m(0) { }
     BasicFixedReal(double d) : m(static_cast<int>(d *factor)) { }
     static self BasicFixedRealFromRaw(int raw) {
@@ -37,30 +38,22 @@ struct BasicFixedReal
     }
     self &operator*=(const self &x) {
         m *= x.m;
-        m >>= E - 1;
+        m >>= E;
         return *this;
     }
     self &operator/=(const self &x) {
-        m *= factor;
+        m <<= E;
         m /= x.m;
         return *this;
     }
-    self &operator*=(int x) {
-        m *= x;
-        return *this;
-    }
-    self &operator/=(int x) {
-        m /= x;
-        return *this;
-    }
     self operator-() {
-        return self(-this->toDouble());
+        return -m;
     }
     int raw() const {
         return m;
     }
     int toInt() const {
-        return int(m) / factor;
+        return m >> E;
     }
     double toDouble() const {
         return double(m) / factor;
@@ -107,5 +100,9 @@ private:
 };
 
 typedef BasicFixedReal<8> FixedReal;
+*/
+
+typedef int FixedReal;
+typedef int PreciseFixedReal;
 
 #endif

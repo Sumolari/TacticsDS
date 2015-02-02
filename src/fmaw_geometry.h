@@ -5,6 +5,8 @@
 
 #include <nds.h>
 
+#include "./fmaw_debug.h"
+
 namespace FMAW {
 
 typedef struct t_point {
@@ -29,9 +31,9 @@ private:
      */
     void selectRegister() {
         this->PA = OAM + this->id * 16 + 3;
-        this->PB = this->PA + 3;
-        this->PC = this->PB + 3;
-        this->PD = this->PC + 3;
+        this->PB = OAM + this->id * 16 + 7;
+        this->PC = OAM + this->id * 16 + 11;
+        this->PD = OAM + this->id * 16 + 15;
     }
 
 public:
@@ -61,30 +63,43 @@ public:
         return ((this->id & 0x001F)  << 9) | 0xC1FF;
     }
 
+    void clear() {
+        *this->PA = 0;
+        *this->PB = 0;
+        *this->PC = 0;
+        *this->PD = 0;
+    }
+
     /**
      * Sets this transform to identify transform.
      */
     void setIdentity() {
-        *this->PA = FixedReal(1).raw() & 0x00FF;
-        *this->PB = FixedReal(0).raw() & 0x00FF;
-        *this->PC = FixedReal(0).raw() & 0x00FF;
-        *this->PD = FixedReal(1).raw() & 0x00FF;
+        *this->PA = 1 << 8;
+        *this->PB = 0;
+        *this->PC = 0;
+        *this->PD = 1 << 8;
     }
 
     void applyRotation(double angle) {
 
     }
 
-    void applyScaling(double x, double y) {
-        FixedReal BFRPA = FixedReal::BasicFixedRealFromRaw(*this->PA);
-        FixedReal BFRPB = FixedReal::BasicFixedRealFromRaw(*this->PB);
-        FixedReal BFRPC = FixedReal::BasicFixedRealFromRaw(*this->PC);
-        FixedReal BFRPD = FixedReal::BasicFixedRealFromRaw(*this->PD);
+    void applyScaling(FixedReal x, FixedReal y) {
+        *this->PA = (((*this->PA) * x) >> 8);
+        *this->PB = (((*this->PB) * y) >> 8);
+        *this->PC = (((*this->PC) * x) >> 8);
+        *this->PD = (((*this->PD) * y) >> 8);
+    }
 
-        *this->PA = (BFRPA * x + BFRPB * 0).raw() & 0x00FF;
-        *this->PB = (BFRPA * 0 + BFRPB * y).raw() & 0x00FF;
-        *this->PC = (BFRPC * x + BFRPD * 0).raw() & 0x00FF;
-        *this->PD = (BFRPC * 0 + BFRPD * y).raw() & 0x00FF;
+    void print() {
+        printf("%s\r\n  Transform %u:%s\r\n%f %f\r\n%f %f\r\n%s",
+               "\r\n|----------------|", this->id, "\r\n|----------------|",
+               *this->PA,
+               *this->PB,
+               *this->PC,
+               *this->PD,
+               "|----------------|"
+              );
     }
 
 };

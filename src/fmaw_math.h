@@ -39,24 +39,6 @@ static inline double clampDouble(double value, double low, double high) {
     return value;
 }
 
-/**
- * Given an BasicFixedReal returns a valid BasicFixedReal in the range
- * [low...high] as near as the original BasicFixedReal as possible.
- *
- * @param  value Original BasicFixedReal.
- * @param  low   Minimum value.
- * @param  high  Maximum value.
- * @return       BasicFixedReal in range [low...high] nearest to original one.
- */
-template<int E> static inline BasicFixedReal<E> clampBasicFixedReal(
-    BasicFixedReal<E> value,
-    BasicFixedReal<E> low,
-    BasicFixedReal<E> high) {
-    if (value < low) return low;
-    if (value > high) return high;
-    return value;
-}
-
 }  // namespace FMAW
 
 #endif

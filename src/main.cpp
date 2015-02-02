@@ -76,10 +76,10 @@
 
 #include "./ball.h"
 
-Ball g_ball;
+Ball g_ball = Ball();
 
-#define X_TWEAK BasicFixedReal<12>(0.125)
-#define Y_TWEAK FixedReal(0.1)
+#define X_TWEAK (2<<8)  // BasicFixedReal<12>(0.125)
+#define Y_TWEAK 25  // FixedReal(0.1)
 
 FixedReal g_camera_x;
 FixedReal g_camera_y;
@@ -100,10 +100,10 @@ void setupInterrupts(void) {
 }
 
 void resetBall(void) {
-    g_ball.x = FixedReal(128);
-    g_ball.y = FixedReal(64);
-    g_ball.xvel = BasicFixedReal<12>(0.39);
-    g_ball.yvel = FixedReal(0);
+    g_ball.x = 128 << 8;  // FixedReal(128);
+    g_ball.y = 64 << 8;  // FixedReal(64);
+    g_ball.xvel = 100 << 4;  // BasicFixedReal<12>(0.39);
+    g_ball.yvel = 0;  // FixedReal(0);
 }
 
 /**
@@ -193,7 +193,6 @@ void setupGraphics(void) {
     REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
     REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
 
-    g_ball = Ball();
     g_ball.sprite.setTile(TILES_BALL);
     g_ball.sprite.setPalette(PAL_BALL);
     g_ball.sprite.enable();
@@ -228,14 +227,15 @@ void process_input() {
 
 void update_camera() {
     // Desired camera X:
-    FixedReal cx = g_ball.x - 128;
+    FixedReal cx = g_ball.x - (128 << 8);
 
     // Difference between desired and current position.
     FixedReal dx = cx - g_camera_x;
 
     // 10 is the minimum threshold.
-    if ((dx.toDouble() > 0.04) | (dx.toDouble() < -0.04)) {
-        dx *= FixedReal(0.05);
+    // if ((dx.toDouble() > 0.04) || (dx.toDouble() < -0.04)) {
+    if (dx > 10 || dx < -10) {
+        dx = (dx * 50) >> 10;   // dx *= FixedReal(0.05);
     }
 
     g_camera_x += dx;
@@ -249,9 +249,9 @@ void update_logic() {
 }
 
 void update_graphics() {
-    g_ball.render(g_camera_x.toInt(), g_camera_y.toInt());
+    g_ball.render(g_camera_x >> 8, g_camera_y >> 8);
 
-    REG_BG0HOFS = g_camera_x.toInt();
+    REG_BG0HOFS = g_camera_x >> 8;  // REG_BG0HOFS = g_camera_x.toInt();
 }
 
 int main(void) {

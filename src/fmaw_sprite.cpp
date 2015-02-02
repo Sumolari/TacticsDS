@@ -164,7 +164,7 @@ bool Sprite::rotationAndScaleAreDisabled() {
 }
 
 void Sprite::enableDoubleSize() {
-    sprites[this->id].attr0 |= 0x0200;
+    sprites[this->id].attr0 |= 0x0300;
 }
 
 void Sprite::disableDoubleSize() {
@@ -443,7 +443,7 @@ bool Sprite::verticalFlipIsDisabled() {
 
 void Sprite::applyTransform(Transform transform) {
     sprites[this->id].attr1 |= 0x3E00;
-    sprites[this->id].attr1 |= transform.IDbitMask();
+    sprites[this->id].attr1 &= transform.IDbitMask();
 }
 
 //----------//------------------------------------------------------------------
@@ -481,7 +481,6 @@ void Sprite::clear() {
     sprites[this->id].attr0 = ATTR0_DISABLED;
     sprites[this->id].attr1 = 0;
     sprites[this->id].attr2 = 0;
-    sprites[this->id].affine_data = 0;
 }
 
 void Sprite::disable() {

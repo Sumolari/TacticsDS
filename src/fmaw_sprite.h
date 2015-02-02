@@ -10,11 +10,6 @@ namespace FMAW {
 // Common sprite constants and variables.
 //------------------------------------------------------------------------------
 
-// Access to sprites' memory, in an array-like way.
-#define sprites       (reinterpret_cast<FMAW::SpriteEntry*>OAM)
-
-#define TOTAL_SPRITES 128  // Total amount of sprites that can be rendered.
-
 // Low-level data structure to work with NDS libraries.
 typedef struct t_spriteEntry {
     uint16 attr0;
@@ -22,6 +17,11 @@ typedef struct t_spriteEntry {
     uint16 attr2;
     uint16 affine_data;
 } SpriteEntry;
+
+// Access to sprites' memory, in an array-like way.
+#define sprites       (reinterpret_cast<FMAW::SpriteEntry*>OAM)
+
+#define TOTAL_SPRITES 128  // Total amount of sprites that can be rendered.
 
 // Type that defines the ID of a sprite.
 typedef uint8 sprite_id;
@@ -83,6 +83,7 @@ public:
      * Default constructor takes a valid ID automatically.
      */
     Sprite() : id(nextEmptySprite++) {
+        FMAW::printf("MY ID IS %d", this->id);
         this->clear();
     };
 

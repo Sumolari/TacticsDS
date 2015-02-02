@@ -4,24 +4,24 @@
 #include "./FMAW.h"
 
 // Gravity constant (add to vertical velocity).
-#define GRAVITY         FixedReal(0.3125)
+#define GRAVITY         80  // FixedReal(0.3125)
 
 // Friction in the air...
 #define AIR_FRICTION    1
 // Friction when the ball hits ground.
 #define GROUND_FRICTION 30
 // The level of the brick platform.
-#define PLATFORM_LEVEL  FixedReal(144)
+#define PLATFORM_LEVEL  ((192 - 48) << 8)  // FixedReal(144)
 // The amount of Y velocity that is absorbed when you hit the ground
 #define BOUNCE_DAMPER   20
 
-#define BALL_RADIUS     FixedReal(8)
+#define BALL_RADIUS     (8 << 8)  // FixedReal(8)
 #define BALL_DIAM       16
 
-#define MIN_HEIGHT      FixedReal(4.7)
+#define MIN_HEIGHT      1200 // FixedReal(4.7)
 
-#define MIN_YVEL        FixedReal(4.7)
-#define MAX_XVEL        BasicFixedReal<12>(3.9)
+#define MIN_YVEL        1200 // FixedReal(4.7)
+#define MAX_XVEL        (1000 << 4)  // BasicFixedReal<12>(3.9)
 
 class Ball {
 
@@ -31,7 +31,7 @@ public:
     // Y coordinate.
     FixedReal y;
     // X velocity.
-    BasicFixedReal<12> xvel;
+    PreciseFixedReal xvel;
     // Y velocity.
     FixedReal yvel;
 
