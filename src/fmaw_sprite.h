@@ -83,7 +83,6 @@ public:
      * Default constructor takes a valid ID automatically.
      */
     Sprite() : id(nextEmptySprite++) {
-        FMAW::printf("MY ID IS %d", this->id);
         this->clear();
     };
 
