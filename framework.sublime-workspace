@@ -1,0 +1,1611 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"curr",
+				"currentTilePalette"
+			],
+			[
+				"TILES",
+				"TILES_BUG_1"
+			],
+			[
+				"max_",
+				"max_voted"
+			],
+			[
+				"min_",
+				"min_voted"
+			],
+			[
+				"winn",
+				"winner_found"
+			],
+			[
+				"min",
+				"min_voted"
+			],
+			[
+				"winne",
+				"winner_found"
+			],
+			[
+				"a",
+				"active"
+			],
+			[
+				"tipo",
+				"tipoYPos"
+			],
+			[
+				"crArg",
+				"crArgEtq"
+			],
+			[
+				"canti",
+				"cantidadNuevoElemento"
+			],
+			[
+				"solu",
+				"solucion"
+			],
+			[
+				"sol",
+				"solucion"
+			],
+			[
+				"podr",
+				"podria_ser"
+			],
+			[
+				"soluc",
+				"solucion"
+			],
+			[
+				"pod",
+				"podria_ser"
+			],
+			[
+				"sele",
+				"seleccionaCaballeros"
+			],
+			[
+				"prub",
+				"prueba_erronea"
+			],
+			[
+				"prueba",
+				"prueba_erronea"
+			],
+			[
+				"ultimo",
+				"ultimo_caballero"
+			],
+			[
+				"caba",
+				"caballero"
+			],
+			[
+				"ultim",
+				"ultimo_caballero"
+			],
+			[
+				"rand",
+				"randint"
+			],
+			[
+				"parejas",
+				"parejas_leales"
+			],
+			[
+				"print_",
+				"print_grid"
+			],
+			[
+				"cache",
+				"cache_col"
+			],
+			[
+				"cache_",
+				"cache_row"
+			],
+			[
+				"print",
+				"print_grid"
+			],
+			[
+				"std",
+				"stdscr"
+			],
+			[
+				"pro",
+				"promising"
+			],
+			[
+				"is_p",
+				"is_promising"
+			],
+			[
+				"valid",
+				"valid_square"
+			],
+			[
+				"optimi",
+				"optimistic_sp"
+			],
+			[
+				"opt",
+				"optimistic"
+			],
+			[
+				"prior",
+				"priority_queue"
+			],
+			[
+				"is_",
+				"is_feasible"
+			],
+			[
+				"ciclo",
+				"cicloHamiltoniano"
+			],
+			[
+				"lbMix",
+				"lbMixP"
+			],
+			[
+				"lb",
+				"lbMixP"
+			],
+			[
+				"trlabe",
+				"trlabels"
+			],
+			[
+				"gener",
+				"generateKnapsackFloat"
+			],
+			[
+				"left",
+				"left_label"
+			],
+			[
+				"right",
+				"right_label"
+			],
+			[
+				"Sol",
+				"solution"
+			],
+			[
+				"so",
+				"solution"
+			],
+			[
+				"fit",
+				"fitness"
+			],
+			[
+				"time",
+				"timeInicio"
+			],
+			[
+				"prob",
+				"probMut"
+			],
+			[
+				"mejor",
+				"mejor_individuo"
+			],
+			[
+				"seam",
+				"seam_paths"
+			],
+			[
+				"remove",
+				"removed_colums"
+			],
+			[
+				"prev",
+				"prevPath"
+			],
+			[
+				"Solv",
+				"SolvedAmounts"
+			],
+			[
+				"nombre",
+				"nombres_femeninos"
+			],
+			[
+				"nombres",
+				"nombres_masculinos"
+			],
+			[
+				"regex",
+				"regexExtraerTamMochilaMultiple"
+			],
+			[
+				"int",
+				"integer"
+			],
+			[
+				"apt-g",
+				"apt-get-update"
+			],
+			[
+				"status",
+				"statuses"
+			],
+			[
+				"statu",
+				"statuses"
+			],
+			[
+				"article",
+				"articleRefUrls"
+			],
+			[
+				"arti",
+				"articleRefUrl"
+			],
+			[
+				"minima",
+				"minimal_data"
+			],
+			[
+				"refresha",
+				"refreshable_url"
+			],
+			[
+				"crypto",
+				"crypto.Hmac();"
+			],
+			[
+				"secret_add",
+				"secret_added_defer"
+			],
+			[
+				"authenticatio",
+				"authentication_valid"
+			],
+			[
+				"authentica",
+				"authentication_valid"
+			],
+			[
+				"validate",
+				"validate_twitter"
+			],
+			[
+				"access_tok",
+				"access_token_secret"
+			],
+			[
+				"assert",
+				"assert.ifError(err);"
+			],
+			[
+				"mongo",
+				"mongo_url"
+			],
+			[
+				"post",
+				"postgres"
+			],
+			[
+				"install",
+				"install_method"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"enemy",
+				"enemy_at_pos"
+			],
+			[
+				"prin",
+				"println"
+			],
+			[
+				"FOVOb",
+				"FOVObjects"
+			],
+			[
+				"pr",
+				"println"
+			],
+			[
+				"fw_patr",
+				"fw_patrol_c"
+			],
+			[
+				"fw_",
+				"fw_safe_pos"
+			],
+			[
+				"fw_p",
+				"fw_patrol_aux"
+			],
+			[
+				"fw_fo",
+				"fw_follow"
+			],
+			[
+				"fw_foll",
+				"fw_follow_dest_x"
+			],
+			[
+				"fw",
+				"fwn_aux_c"
+			],
+			[
+				"Targe",
+				"Targetposition"
+			],
+			[
+				"Ag",
+				"Agent"
+			],
+			[
+				"Medium",
+				"Mediumnx"
+			],
+			[
+				"FWN",
+				"FWNewPos"
+			],
+			[
+				"Remove",
+				"RemoveZ"
+			],
+			[
+				"my_",
+				"my_team"
+			],
+			[
+				"Objec",
+				"ObjectiveZ"
+			],
+			[
+				"Ob",
+				"ObjectiveY"
+			],
+			[
+				"Objectiv",
+				"ObjectiveX"
+			],
+			[
+				"order",
+				"orderRegroupWithoutWaiting"
+			],
+			[
+				"should",
+				"shouldContinue"
+			],
+			[
+				"priori",
+				"rankPriority"
+			],
+			[
+				"desire",
+				"desiredX"
+			],
+			[
+				"current",
+				"currentBattleState"
+			],
+			[
+				"cure",
+				"currentBattleState"
+			],
+			[
+				"writeFile",
+				"fs.writeFile(path, data, encoding_, callback);"
+			],
+			[
+				"exists",
+				"fs.existsSync(path);"
+			],
+			[
+				"read",
+				"fs.readFileSync(path, encoding);"
+			],
+			[
+				"cat_fa",
+				"cat_false_positive"
+			],
+			[
+				"possi",
+				"possibility_valid"
+			],
+			[
+				"resul",
+				"results"
+			],
+			[
+				"uni",
+				"union_lists"
+			],
+			[
+				"articl",
+				"articles_without_term"
+			],
+			[
+				"artic",
+				"articles_with_term"
+			],
+			[
+				"start",
+				"startswith"
+			],
+			[
+				"articles",
+				"articles_with_term"
+			],
+			[
+				"cat_fal",
+				"cat_false_negative"
+			],
+			[
+				"cat_false",
+				"cat_false_positive"
+			],
+			[
+				"art",
+				"article"
+			],
+			[
+				"ca",
+				"categories_index"
+			],
+			[
+				"date",
+				"dates_index"
+			],
+			[
+				"categ",
+				"categories_index"
+			],
+			[
+				"head",
+				"headlines_index"
+			],
+			[
+				"hea",
+				"headlines_index"
+			],
+			[
+				"cate",
+				"categories_index"
+			],
+			[
+				"catego",
+				"category"
+			],
+			[
+				"articles_wi",
+				"articles_with_term_at_position"
+			],
+			[
+				"interse",
+				"intersect_lists"
+			],
+			[
+				"articles_w",
+				"articles_with_term_and_position"
+			],
+			[
+				"iter",
+				"iteritems"
+			],
+			[
+				"articles_",
+				"articles_with_term"
+			],
+			[
+				"all",
+				"all_articles"
+			],
+			[
+				"compo",
+				"component"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/main.cpp",
+			"settings":
+			{
+				"buffer_size": 7020,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/bug.h",
+			"settings":
+			{
+				"buffer_size": 2172,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/bug.cpp",
+			"settings":
+			{
+				"buffer_size": 1320,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "FMAW/FMAW.h",
+			"settings":
+			{
+				"buffer_size": 444,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 271.0,
+		"selected_items":
+		[
+			[
+				"dele",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"for",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"form",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"forma",
+				"SublimeAStyleFormmatter: Format Current Selection"
+			],
+			[
+				"format",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"c+",
+				"Set Syntax: C++"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"ruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"tr",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"tra",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"de",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"java",
+				"Set Syntax: Java"
+			],
+			[
+				"aj",
+				"Set Syntax: Java"
+			],
+			[
+				"del",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"trai",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"pep",
+				"Pep8 Python Lint"
+			],
+			[
+				"pep8",
+				"PEP8: Format Code"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"pyt",
+				"Pep8 Python Lint"
+			],
+			[
+				"lint",
+				"Pep8 Python Lint"
+			],
+			[
+				"matla",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"bash",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"word",
+				"Word Wrap: Toggle"
+			],
+			[
+				"wra",
+				"Word Wrap: Toggle"
+			],
+			[
+				"c++",
+				"Set Syntax: C++"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"i",
+				"Package Control: Install Package"
+			],
+			[
+				"json",
+				"Indent JSON"
+			],
+			[
+				"rub",
+				"Set Syntax: Ruby"
+			],
+			[
+				"htm",
+				"Set Syntax: HTML"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"r",
+				"Set Syntax: Ruby"
+			],
+			[
+				"ide",
+				"Indent XML"
+			],
+			[
+				"xml",
+				"Set Syntax: XML"
+			],
+			[
+				"pakc",
+				"Package Control: Install Package"
+			],
+			[
+				"redi",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"sw",
+				"Set Syntax: Swift"
+			],
+			[
+				"swi",
+				"HTML: Wrap Selection With Tag"
+			],
+			[
+				"err",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"js",
+				"Set Syntax: JSON String Content"
+			],
+			[
+				"jsl",
+				"JSHint Inline"
+			],
+			[
+				"back",
+				"BracketHighlighter: Remove Brackets"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"error",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"iden",
+				"Indent JSON"
+			],
+			[
+				"id",
+				"Indent JSON"
+			],
+			[
+				"ident",
+				"Indent JSON"
+			],
+			[
+				"ex",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"export",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"exprt",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"javas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"linter",
+				"SublimeLinter: Extract Annotations"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"er",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"be",
+				"BeautifyRuby"
+			],
+			[
+				"ru",
+				"BeautifyRuby"
+			],
+			[
+				"set",
+				"Set Syntax: C++"
+			],
+			[
+				"as",
+				"Git: Apply Stash"
+			],
+			[
+				"trac",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"set  syntax: c",
+				"Set Syntax: C"
+			],
+			[
+				"dlx",
+				"Set Syntax: DLX"
+			],
+			[
+				"synt",
+				"Set Syntax: C"
+			],
+			[
+				"ast",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"mips",
+				"Set Syntax: MIPS"
+			],
+			[
+				"se",
+				"Set Syntax: C++"
+			],
+			[
+				"b",
+				"BeautifyRuby"
+			],
+			[
+				"bea",
+				"BeautifyRuby"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"astyle",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"astyl",
+				"SublimeAStyleFormatter: Format Current File"
+			],
+			[
+				"erro",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"conver",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"show",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"syntax c",
+				"Set Syntax: C"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"object",
+				"Set Syntax: Objective-C"
+			],
+			[
+				"lin",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"linte",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"packs",
+				"Package Control: List Packages"
+			],
+			[
+				"pret",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"prett",
+				"Pretty JSON: Reformat (Pretty Print) JSON"
+			],
+			[
+				"pacl",
+				"Package Control: List Packages"
+			],
+			[
+				"javascr",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"2pdf",
+				"Preferences: 2pdf Key Bindings – Default"
+			],
+			[
+				"sho",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"expo",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"termi",
+				"Preferences: Terminal Key Bindings – Default"
+			],
+			[
+				"package ",
+				"Package Control: Install Package"
+			],
+			[
+				"expor",
+				"Export to HTML: Show Export Menu"
+			],
+			[
+				"Package Control: lis",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: se",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 484.0
+	},
+	"console":
+	{
+		"height": 132.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre B/CACM/Problemas/Tema 1/c7.in",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre B/CACM/Problemas/Tema 1/c6.in",
+		"/Volumes/iMACHDD/sumolari/Desktop/demo.cpp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre B/CACM/Problemas/Tema 1/main.cpp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/Semestre B/AEV/vagrant/dependencies.sh",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/vagrant/tools.sh",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/Semestre B/AEV/vagrant/personal.sh",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/Semestre B/AEV/vagrant/Vagrantfile",
+		"/Volumes/iMACHDD/sumolari/Downloads/Juego_v2/Juego/source/alpha01.cpp",
+		"/Volumes/iMACHDD/sumolari/Downloads/Juego_v2/Juego/source/botones.c",
+		"/Volumes/iMACHDD/sumolari/Downloads/Juego_v2/Juego/source/casillas.c",
+		"/Volumes/iMACHDD/sumolari/Downloads/Juego_v2/Juego/source/menu.c",
+		"/Volumes/iMACHDD/sumolari/Downloads/Juego_v2/Juego/source/puntos.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/src/sintaxis.y",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/src/principal.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/Makefile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/Vagrantfile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/Entregas intermedias/Entrega Final/Makefile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/PFG/TranslatePP/TranslatePP/Corpus/eutrans.es",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/PFG/TranslatePP/TranslatePP/Corpus/eutrans.en",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/PFG/TranslatePP/TranslatePP/build/Products/Debug/eutrans.en",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/PFG/TranslatePP/TranslatePP/build/Products/Debug/eutrans.es",
+		"/Volumes/iMACHDD/sumolari/Desktop/Catch Game/Assets/_Scripts/GameController.cs",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/PFG/TranslatePP/TranslatePP/Makefile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/ZSH/zsh-custom/upv-alias.sh",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/SGI/Seminario/S01/S01/Práctica 5/main.cpp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/PDL Ejercicios Tema 7.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/PDL Ejercicios Tema 6.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/PDL Ejercicios Tema 5.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/src/sintaxis.y",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/src/lexico.l",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/c06.c3d",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/PDL.sublime-project",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/extra_tests/e.3.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/extra_tests/e.4.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/extra_tests/e.5.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/extra_tests/e.6.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/Makefile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/extra_tests/e.2.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/extra_tests/e.1.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/lab_tests/c00.out",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/lab_tests/a00.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/src/lexico.l",
+		"/Volumes/iMACHDD/sumolari/Desktop/PDL Ejercicios Tema 7.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/PDL Ejercicios Tema 6.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/Examenes/exportaciones.py",
+		"/Volumes/iMACHDD/sumolari/Desktop/demo.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/alt/Examenes/camino.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P3/backtracking.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/Examenes/caballeros.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/alt/Examenes/caballeros.py",
+		"/Volumes/iMACHDD/sumolari/Desktop/PDL Ejercicios Tema 5.txt",
+		"/Volumes/iMACHDD/sumolari/Desktop/exportaciones.py",
+		"/Volumes/iMACHDD/sumolari/Desktop/camino.py",
+		"/Volumes/iMACHDD/sumolari/Desktop/caballeros.py",
+		"/Volumes/LLUIS/Vagrantfile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/Ejercicios/7-1_1.1.py",
+		"/Volumes/iMACHDD/sumolari/Desktop/sudoku.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/Entrega/Ejercicio 3/reuniones.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/Entrega/Ejercicio 4/Ejercicio1.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/TIA/LAB/P5/Entrega/Ejercicio 4/Ejercicio3A.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/Entrega/Ejercicio 4/Ejercicio2.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/Entrega/Ejercicio 4/Ejercicio3B.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/Entrega/Ejercicio 4/Ejercicio4A.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/Entrega/Ejercicio 4/Ejercicio4B.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/Entrega/Ejercicio 2/3x3.csp",
+		"/Volumes/iMACHDD/sumolari/Desktop/install.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/LAB/tests/tests.14.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/tests/tests.13.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/tests/tests.15.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/PDL/vagrant/LAB/tests/tests.14.c",
+		"/Volumes/iMACHDD/sumolari/Downloads/scummvm-1.7.0/Makefile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/APR/LAB/p2/barrido.m",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/APR/LAB/p2/barrido_ext.m",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/APR/LAB/p2/nnet_toolkit/barrido_ext.m",
+		"/Volumes/iMACHDD/sumolari/.ssh/id_rsa.pub",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/Code/backtrackingScheme.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/Code/branchboundScheme.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/alt/Ejercicios/7-1_1.1.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/alt/Ejercicios/7-1_1.1.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/APR/LAB/p2/nnet_toolkit/ext/barrido_ext.out",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P3-4 ALT/compara_dp.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P3-4 ALT/knapsack.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P3-4 ALT/actividad3.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P3-4 ALT/actividad2.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/alt/lab/P3-4 ALT/actividad3.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/APR/LAB/p2/nnet_toolkit/barrido.m",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/APR/LAB/p2/nnet_toolkit/demo.m",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/output_actividad_2",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/TIA/LAB/P5/_reuniones.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/ejer2-2x2.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/ejer2-5x5.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/ejer2-4x4.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/ejer2-3x3.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/heuristicas_valores/rfla_bottom_first_3_reinas.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/heuristicas_valores/rfla_bottom_first_6_reinas.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/tia/lab/P5/heuristicas_valores/bt_bottom_first_4_reinas.out",
+		"/Volumes/iMACHDD/sumolari/Dropbox/whispice/Toronto/iOS/Front.me/Front.me/View Controllers/Search/SearchAPIDelegate.swift",
+		"/Volumes/iMACHDD/sumolari/Desktop/word.py",
+		"/Volumes/iMACHDD/sumolari/Downloads/train/training.es",
+		"/Volumes/iMACHDD/sumolari/Downloads/dev/development.es",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/cuarto/semestre a/apr/ACT/UlzurrundeAsanzaSaezLluis-T4.m",
+		"/Volumes/iMACHDD/sumolari/Downloads/ULZURRUN-L-3.m",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/APR/ACT/T4/apr_toolkit/trabajo-4.m",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/PFG/TranslatePP/TranslatePP/Vagrantfile",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/PDL/vagrant/Vagrantfile",
+		"/Volumes/iMACHDD/sumolari/Downloads/openfst-1.4.1/README",
+		"/usr/local/.git/MERGE_MSG",
+		"/Applications/Hall.app/Contents/Resources/public/index.html",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/TIA/LAB/P5/ejer2-4x4.csp",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/output_actividad_3",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/heap.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/utils.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/knapsack.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/print_utils.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/compara_poda_lluis.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/ALT/LAB/P4/compara_poda.py",
+		"/Volumes/iMACHDD/sumolari/Downloads/solio/a/code/java/GreatSwerc.java",
+		"/Volumes/iMACHDD/sumolari/Downloads/solio/a/code/c/apt_brute.c",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/TA/vagrant/install_moses.sh",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Cuarto/Semestre A/TA/vagrant/Vagrantfile",
+		"/Volumes/iMACHDD/sumolari/Desktop/incremental.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Apuntes SWERC 2014/Apuntes.sublime-project",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Apuntes SWERC 2014/mat_fibapprox.java",
+		"/Volumes/iMACHDD/sumolari/Desktop/shares_gen.py",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Apuntes SWERC 2014/grf_edmonds-karp.java",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Code/Java/Marks/vip.txt",
+		"/Volumes/iMACHDD/sumolari/Dropbox/Universidad/Code/Java/Marks/database.txt"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"",
+			"\"",
+			"",
+			"<open files>",
+			"",
+			"*.bat",
+			"",
+			"*.bat",
+			"",
+			"-*.min.js",
+			"",
+			"/Volumes/Macintosh HD/sumolari/Dropbox/whispice/2.x/Bots/feed_refresher",
+			"",
+			"user-following",
+			"",
+			"[/td][td]",
+			"[td]",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"",
+			"<open files>",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/plugins/bbpress",
+			"/Applications/MAMP/htdocs/whispice/wp-content/plugins/theme-my-login",
+			"/Applications/MAMP/htdocs/whispice/wp-content/plugins/",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"/Applications/MAMP/htdocs/whispice/wp-content/whispice",
+			"/Applications/MAMP/htdocs/whispice/",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"",
+			"/Applications/MAMP/htdocs/whispice/wp-content/themes/whispice",
+			"/Users/sumolari/Dropbox/whispice/wp-content/themes/whispice",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"2",
+			"4",
+			"2",
+			" ",
+			"«",
+			"»",
+			"glut",
+			"vector<int>",
+			"   ",
+			"1e+00",
+			"0e+00",
+			"«mis»",
+			"mis ",
+			"~n",
+			"'",
+			"'e",
+			"'",
+			"Jesús",
+			"'u",
+			"'",
+			"'o",
+			"'a",
+			"'i",
+			"'",
+			"'!",
+			"'u",
+			"~n",
+			"'e",
+			"'o",
+			"'i",
+			"'?",
+			"'a",
+			"WHILE_",
+			"DO_",
+			" ",
+			"FOR_",
+			"WHILE_",
+			"iterationInstru",
+			"%",
+			"|--------------------------|",
+			"B",
+			"tfuncion",
+			"tvacio",
+			"float",
+			"int",
+			"False",
+			"True",
+			"], [",
+			"ultimo_caballero",
+			"xrange(s)",
+			"?",
+			"SOLUTION",
+			"recibo",
+			"'u",
+			"'o",
+			"'a",
+			"'e",
+			"o'clock",
+			"'i",
+			"'?",
+			"'u",
+			"~n",
+			"'o",
+			"'i",
+			"'e",
+			"'a",
+			"cielo",
+			"ii",
+			"suelo",
+			")	",
+			"voy",
+			" ",
+			"(",
+			") (",
+			"(",
+			"oh",
+			"would",
+			"book",
+			"oh",
+			"booked",
+			"book",
+			"should",
+			"'e",
+			"'u",
+			"'o",
+			"'i",
+			" ",
+			" [",
+			" ",
+			"#",
+			"enable-static",
+			"shared",
+			"using",
+			" ",
+			"FstTester",
+			"'",
+			"assigned",
+			"grad",
+			"gradient_matrix",
+			"path",
+			"prev_path",
+			"mat",
+			"visitados",
+			">= ",
+			"pos",
+			"append",
+			"OBJECTS",
+			"clang",
+			"g++",
+			"L\"",
+			"imgcount",
+			"rm",
+			"\"",
+			"dp_seam_carving",
+			"importantElement",
+			"previousLady",
+			"preferenceForNewImportantElement",
+			"preferenceForPreviousImportantElement",
+			"preferenceForPreviousLady",
+			"preferenceForNewLady",
+			"notImportantElement",
+			"importantElement",
+			"possibleNotImportantElement",
+			"\\end{verbatim}",
+			"\\begin{verbatim}",
+			"\\\"",
+			"fetchRemotePackage",
+			"addRunDependency"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\"",
+			" ",
+			"         ",
+			"",
+			"\"",
+			"fw_new_pos_fixed_x",
+			"fw_new_pos",
+			"member",
+			"shouldContinue( yes )",
+			"shouldContinue( no );",
+			"..\\classes;..\\;.",
+			"..\\asl\\jasonAgent_",
+			"..\\..\\data\\",
+			"..\\lib\\",
+			"../lib/$1",
+			"../lib",
+			"",
+			"cats_with_token",
+			"\"multiTarget\": \"single\",",
+			"{\n			\"description\": \"Session token\",\n			\"name\": \"sessionToken\",\n			\"paramType\": \"header\",\n			\"required\": false,\n			\"type\": \"string\"\n		}",
+			"user",
+			"dateTime",
+			"stack",
+			"Stack",
+			"stack_push",
+			"stack_top",
+			"10.0.1.36",
+			"10.0.1.35",
+			".",
+			">",
+			"<",
+			">",
+			"<",
+			"",
+			"\",\n\"",
+			",\n\"",
+			"/users/",
+			"symbol: 'S',",
+			"media_id",
+			",\n",
+			" ",
+			"\"",
+			" ",
+			"",
+			" ",
+			"",
+			" ",
+			"media",
+			">\n",
+			"</item>\n",
+			">\n",
+			"'",
+			"",
+			"<img src=\"images/spacer.gif\" style=\"display:block;\" width=\"53\" height=\"53\" />",
+			"q.length",
+			"empty?",
+			"\nSTART WITH",
+			"\", \"",
+			"\",",
+			"\", \"",
+			" ",
+			"\", \"",
+			"\", ",
+			" ",
+			"\", \"",
+			" ",
+			".mixin-animation-timing-function(",
+			".mixin-transform(",
+			") );",
+			"r );",
+			"t );",
+			"r );",
+			") );",
+			".mixin-animation-timing-function(",
+			".mixin-transform(",
+			".mixin-animation-timing-function(",
+			"r );",
+			"t );",
+			") );",
+			".mixin-transform(",
+			".mixin",
+			".mixin-animation-timing-function(",
+			") );",
+			"-mixin-transform(",
+			" ",
+			"",
+			" ",
+			"'",
+			"* .frontme-share",
+			"'",
+			".frontme-share ",
+			"article.post",
+			"",
+			".frontme-share",
+			"'",
+			",#frontme-comments ",
+			"]",
+			"[",
+			"",
+			"]",
+			"[",
+			"",
+			"[",
+			"]",
+			"[",
+			"",
+			"[",
+			"]",
+			"[",
+			"\"",
+			"> section",
+			".divup-form",
+			"",
+			"@method new",
+			"	new",
+			"/",
+			"\\verb'\\'",
+			"user-item-list",
+			"user-following",
+			".notification-center .notification.notification-user-relationship",
+			"';",
+			" ",
+			" =",
+			"= ",
+			"sendPost.",
+			" = ",
+			".notification-center .notification",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/main.cpp",
+					"settings":
+					{
+						"buffer_size": 7020,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1885,
+								1885
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 430.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/bug.h",
+					"settings":
+					{
+						"buffer_size": 2172,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1810,
+								1810
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 455.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/bug.cpp",
+					"settings":
+					{
+						"buffer_size": 1320,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								103,
+								103
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "FMAW/FMAW.h",
+					"settings":
+					{
+						"buffer_size": 444,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								146,
+								146
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.autopep8":
+	{
+		"height": 98.0
+	},
+	"output.exec":
+	{
+		"height": 251.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/sumolari/Dropbox/Universidad/Segundo/Semestre A/ETC/ACT/Button and Lamp - 1.s"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Volumes/HDD/sumolari/Dropbox/Universidad/Tercero/Semestre B/AIN/LAB/JGomas/bin/JGomas.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 213.0,
+	"status_bar_visible": true
+}

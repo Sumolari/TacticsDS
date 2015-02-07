@@ -10,9 +10,7 @@
 // Graphic references
 //------------------------------------------------------------------------------
 
-#include "./gfx_Bug_1.h"
-#include "./gfx_Bug_2.h"
-#include "./gfx_Bug_3.h"
+#include "./gfx_ball.h"
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
 
@@ -51,12 +49,37 @@
 #define bg1map    (reinterpret_cast<u16*>BG_MAP_RAM(2))
 
 //------------------------------------------------------------------------------
+// Sprites...
+//------------------------------------------------------------------------------
+
+//----------//------------------------------------------------------------------
+//----------// Tile entries
+//----------//------------------------------------------------------------------
+
+#define TILES_BALL     0  // Ball tiles (16x16 tile: 0 -> 3)
+
+// Macro for calculating Sprite VRAM memory address with tile index.
+#define tile2objram(t) (SPRITE_GFX + (t) * 16)
+
+//----------//------------------------------------------------------------------
+//----------// Palette entries
+//----------//------------------------------------------------------------------
+
+#define PAL_BALL       0  // Ball palette (entry 0 -> 15)
+
+// Macro for calculating Palette VRAM memorya address with palette index.
+#define pal2objram(p) (SPRITE_PALETTE + (p) * 16)
+
+//------------------------------------------------------------------------------
 // Game objects
 //------------------------------------------------------------------------------
 
-#include "./bug.h"
+#include "./ball.h"
 
-Bug g_bug = Bug();
+Ball g_ball = Ball();
+
+#define X_TWEAK (2<<8)  // BasicFixedReal<12>(0.125)
+#define Y_TWEAK 25  // FixedReal(0.1)
 
 FixedReal g_camera_x;
 FixedReal g_camera_y;
@@ -76,9 +99,11 @@ void setupInterrupts(void) {
     irqEnable(IRQ_VBLANK);   // Enable vblank interrupt.
 }
 
-void resetBug(void) {
-    g_bug.x = 128 << 8;  // FixedReal(128);
-    g_bug.y = 64 << 8;  // FixedReal(64);
+void resetBall(void) {
+    g_ball.x = 128 << 8;  // FixedReal(128);
+    g_ball.y = 64 << 8;  // FixedReal(64);
+    g_ball.xvel = 100 << 4;  // BasicFixedReal<12>(0.39);
+    g_ball.yvel = 0;  // FixedReal(0);
 }
 
 /**
@@ -99,14 +124,8 @@ void setupGraphics(void) {
                      gfx_gradientTilesLen);
 
     // Copy Sprites graphics.
-    dmaCopyHalfWords(3, gfx_Bug_1Tiles, tile2objram(TILES_BUG_1),
-                     gfx_Bug_1TilesLen);
-    /*
-    dmaCopyHalfWords(3, gfx_Bug_2Tiles, tile2objram(TILES_BUG_2),
-                     gfx_Bug_2TilesLen);
-    dmaCopyHalfWords(3, gfx_Bug_3Tiles, tile2objram(TILES_BUG_3),
-                     gfx_Bug_3TilesLen);
-    */
+    dmaCopyHalfWords(3, gfx_ballTiles, tile2objram(TILES_BALL),
+                     gfx_ballTilesLen);
 
     // BG palettes go to palette memory.
     dmaCopyHalfWords(3, gfx_brickPal, pal2bgram(PAL_BRICKS), gfx_brickPalLen);
@@ -114,11 +133,7 @@ void setupGraphics(void) {
                      gfx_gradientPalLen);
 
     // Sprite palettes go to palette memory.
-    dmaCopyHalfWords(3, gfx_Bug_1Pal, pal2objram(PAL_BUG_1), gfx_Bug_1PalLen);
-    /*
-    dmaCopyHalfWords(3, gfx_Bug_2Pal, pal2objram(PAL_BUG_2), gfx_Bug_2PalLen);
-    dmaCopyHalfWords(3, gfx_Bug_3Pal, pal2objram(PAL_BUG_3), gfx_Bug_3PalLen);
-    */
+    dmaCopyHalfWords(3, gfx_ballPal, pal2objram(PAL_BALL), gfx_ballPalLen);
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
@@ -178,23 +193,63 @@ void setupGraphics(void) {
     REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
     REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
 
-    g_bug.sprite.setTile(TILES_BUG_1);
-    g_bug.sprite.setPalette(PAL_BUG_1);
-    g_bug.sprite.enable();
+    g_ball.sprite.setTile(TILES_BALL);
+    g_ball.sprite.setPalette(PAL_BALL);
+    g_ball.sprite.enable();
 }
 
-void process_input() { }
+void process_input() {
+    scanKeys();
 
-void update_camera() { }
+    int keysh = keysHeld();
+    // Process user input.
+
+    // Check if UP is pressed...
+    if (keysh & KEY_UP) {
+        g_ball.yvel -= Y_TWEAK;
+    }
+
+    // Check if DOWN is pressed.
+    if (keysh & KEY_DOWN) {
+        g_ball.yvel += Y_TWEAK;
+    }
+
+    // Check if LEFT is pressed.
+    if (keysh & KEY_LEFT) {
+        g_ball.xvel -= X_TWEAK;
+    }
+
+    // Check if RIGHT is pressed.
+    if (keysh & KEY_RIGHT) {
+        g_ball.xvel += X_TWEAK;
+    }
+}
+
+void update_camera() {
+    // Desired camera X:
+    FixedReal cx = g_ball.x - (128 << 8);
+
+    // Difference between desired and current position.
+    FixedReal dx = cx - g_camera_x;
+
+    // 10 is the minimum threshold.
+    // if ((dx.toDouble() > 0.04) || (dx.toDouble() < -0.04)) {
+    if (dx > 10 || dx < -10) {
+        dx = (dx * 50) >> 10;   // dx *= FixedReal(0.05);
+    }
+
+    g_camera_x += dx;
+    g_camera_y = 0;
+}
 
 void update_logic() {
     process_input();
-    g_bug.update();
+    g_ball.update();
     update_camera();
 }
 
 void update_graphics() {
-    g_bug.render(g_camera_x >> 8, g_camera_y >> 8);
+    g_ball.render(g_camera_x >> 8, g_camera_y >> 8);
 
     REG_BG0HOFS = g_camera_x >> 8;  // REG_BG0HOFS = g_camera_x.toInt();
 }
@@ -202,7 +257,7 @@ void update_graphics() {
 int main(void) {
     setupInterrupts();
     setupGraphics();
-    resetBug();
+    resetBall();
 
     while (1) {
         // Rendering period:
