@@ -10,9 +10,6 @@
 // Graphic references
 //------------------------------------------------------------------------------
 
-#include "./gfx_Bug_1.h"
-#include "./gfx_Bug_2.h"
-#include "./gfx_Bug_3.h"
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
 
@@ -56,7 +53,7 @@
 
 #include "./bug.h"
 
-Bug g_bug = Bug();
+Bug g_bug;
 
 FixedReal g_camera_x;
 FixedReal g_camera_y;
@@ -83,6 +80,7 @@ void resetBug(void) {
 
 /**
  * Sets up graphics.
+ * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
     vramSetBankE(VRAM_E_MAIN_BG);
@@ -99,14 +97,6 @@ void setupGraphics(void) {
                      gfx_gradientTilesLen);
 
     // Copy Sprites graphics.
-    dmaCopyHalfWords(3, gfx_Bug_1Tiles, tile2objram(TILES_BUG_1),
-                     gfx_Bug_1TilesLen);
-    /*
-    dmaCopyHalfWords(3, gfx_Bug_2Tiles, tile2objram(TILES_BUG_2),
-                     gfx_Bug_2TilesLen);
-    dmaCopyHalfWords(3, gfx_Bug_3Tiles, tile2objram(TILES_BUG_3),
-                     gfx_Bug_3TilesLen);
-    */
 
     // BG palettes go to palette memory.
     dmaCopyHalfWords(3, gfx_brickPal, pal2bgram(PAL_BRICKS), gfx_brickPalLen);
@@ -114,11 +104,6 @@ void setupGraphics(void) {
                      gfx_gradientPalLen);
 
     // Sprite palettes go to palette memory.
-    dmaCopyHalfWords(3, gfx_Bug_1Pal, pal2objram(PAL_BUG_1), gfx_Bug_1PalLen);
-    /*
-    dmaCopyHalfWords(3, gfx_Bug_2Pal, pal2objram(PAL_BUG_2), gfx_Bug_2PalLen);
-    dmaCopyHalfWords(3, gfx_Bug_3Pal, pal2objram(PAL_BUG_3), gfx_Bug_3PalLen);
-    */
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
@@ -202,6 +187,7 @@ void update_graphics() {
 int main(void) {
     setupInterrupts();
     setupGraphics();
+    g_bug = Bug(FMAW::Sprite(0));
     resetBug();
 
     while (1) {

@@ -4,18 +4,41 @@
 
 #include <nds.h>
 
+#include "./fmaw_macros.h"
+
+#include "./gfx_Bug_1.h"
+#include "./gfx_Bug_2.h"
+#include "./gfx_Bug_3.h"
+
+#define SPRITES_IDLE_ANIMATION 4
+
 void Bug::init() {
     time(&timer);
-    this->tiles = malloc(4 * sizeof(int));
+    this->tiles = reinterpret_cast<int *>(
+                      malloc(SPRITES_IDLE_ANIMATION * sizeof(int)));
     this->tiles[0] = TILES_BUG_1;
     this->tiles[1] = TILES_BUG_2;
     this->tiles[2] = TILES_BUG_3;
     this->tiles[3] = TILES_BUG_2;
-    this->palettes = malloc(4 * sizeof(int));
+    this->palettes = reinterpret_cast<int *>(
+                         malloc(SPRITES_IDLE_ANIMATION * sizeof(int)));
     this->palettes[0] = PAL_BUG_1;
     this->palettes[1] = PAL_BUG_2;
     this->palettes[2] = PAL_BUG_3;
     this->palettes[3] = PAL_BUG_2;
+    this->currentTileID = 0;
+
+    dmaCopyHalfWords(3, gfx_Bug_1Tiles, tile2objram(TILES_BUG_1),
+                     gfx_Bug_1TilesLen);
+    dmaCopyHalfWords(3, gfx_Bug_2Tiles, tile2objram(TILES_BUG_2),
+                     gfx_Bug_2TilesLen);
+    dmaCopyHalfWords(3, gfx_Bug_3Tiles, tile2objram(TILES_BUG_3),
+                     gfx_Bug_3TilesLen);
+
+    dmaCopyHalfWords(3, gfx_Bug_1Pal, pal2objram(PAL_BUG_1), gfx_Bug_1PalLen);
+    dmaCopyHalfWords(3, gfx_Bug_2Pal, pal2objram(PAL_BUG_2), gfx_Bug_2PalLen);
+    dmaCopyHalfWords(3, gfx_Bug_3Pal, pal2objram(PAL_BUG_3), gfx_Bug_3PalLen);
+
     this->currentTileID = 0;
 }
 
@@ -23,15 +46,14 @@ void Bug::update() {
     time_t current;
     time(&current);
 
-    this->sprite.setTile(TILES_BUG_1);
-    this->sprite.setPalette(PAL_BUG_1);
-
-    if (current > this->timer + 1000) {
-        current = this->timer;
+    if (current > this->timer + 1) {
+        this->timer = current;
+        this->currentTileID += 1;
+        this->currentTileID %= SPRITES_IDLE_ANIMATION;
     }
 
     this->sprite.setTile(this->tiles[this->currentTileID]);
-    this->sprite.setPalette(this->palettes[->currentTileID]);
+    this->sprite.setPalette(this->palettes[this->currentTileID]);
 }
 
 void Bug::render(int camera_x, int camera_y) {
