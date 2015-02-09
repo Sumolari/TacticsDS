@@ -21,9 +21,6 @@
 #define TILE_BRICK     1  // Tile 1 = brick
 #define TILE_GRADIENT  2  // Tile 2 = gradient
 
-// Macro for calculating BG VRAM memory address with tile index.
-#define tile2bgram(t)  (BG_GFX + (t) * 16)
-
 //------------------------------------------------------------------------------
 // Background...
 //------------------------------------------------------------------------------
@@ -36,9 +33,6 @@
 #define PAL_GRADIENT   1  // Gradient palette (entry 16->31).
 
 #define BACKDROP_COLOR RGB8(190, 255, 255)
-
-// Macro for calculating BG VRAM memory address with palette index.
-#define pal2bgram(p)   (BG_PALETTE + (p) * 16)
 
 //----------//------------------------------------------------------------------
 //----------// Screen base blocks pointed
