@@ -3,8 +3,6 @@
 
 #include "./FMAW.h"
 
-#include <time.h>
-
 //----------//------------------------------------------------------------------
 //----------// Tile entries
 //----------//------------------------------------------------------------------
@@ -29,7 +27,7 @@
 
 class Bug {
     // Last time bug changed sprite.
-    time_t timer;
+    unsigned int timer;
     // ID of tile currently displayed.
     int currentTileID;
     // Palette of tile currently displayed.

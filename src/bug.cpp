@@ -13,7 +13,7 @@
 #define SPRITES_IDLE_ANIMATION 4
 
 void Bug::init() {
-    time(&timer);
+    this->timer = 0;
     this->tiles = reinterpret_cast<int *>(
                       malloc(SPRITES_IDLE_ANIMATION * sizeof(int)));
     this->tiles[0] = TILES_BUG_1;
@@ -43,11 +43,10 @@ void Bug::init() {
 }
 
 void Bug::update() {
-    time_t current;
-    time(&current);
+    this->timer++;
 
-    if (current > this->timer + 1) {
-        this->timer = current;
+    if (this->timer > frames_in_ms(100)) {
+        this->timer = 0;
         this->currentTileID += 1;
         this->currentTileID %= SPRITES_IDLE_ANIMATION;
     }
