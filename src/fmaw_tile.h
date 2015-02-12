@@ -5,7 +5,6 @@
 #include <string>
 #include "./fmaw_macros.h"
 #include "./fmaw_debug.h"
-#include "./fmaw_sprite.h"
 
 namespace FMAW {
 
@@ -40,11 +39,20 @@ private:
      */
     static int nextPalMemoryPosition;
 
+    /**
+     * First ID available for tiles.
+     */
+    static int nextID;
+
 public:
+    int imgMemory;
+    int palMemory;
+    int ID;
+
     /**
      * Creates a new tile given the ID that will be used to refer to this tile.
      */
-    Tile(int ID, TileAttributes attributes) {
+    Tile(TileAttributes attributes) {
         typedef Tile self;
 
         FMAW::printf("I'm copying tiles of length %d to %d",
@@ -62,6 +70,10 @@ public:
                          pal2objram(self::nextPalMemoryPosition),
                          attributes.paletteLength);
 
+        this->imgMemory = self::nextImgMemoryPosition;
+        this->palMemory = self::nextPalMemoryPosition;
+        this->ID = this->nextID;
+
         // Store memory address of this tile.
         self::IDtoImgMemoryPosition[ID] = self::nextImgMemoryPosition;
         self::IDtoPalMemoryPosition[ID] = self::nextPalMemoryPosition;
@@ -70,6 +82,8 @@ public:
         self::nextImgMemoryPosition += attributes.tilesLength >> 5;
         // TODO: Update this to handle multiple size palettes.
         self::nextPalMemoryPosition++;
+        // This ID has been used!
+        self::nextID++;
     };
 };
 

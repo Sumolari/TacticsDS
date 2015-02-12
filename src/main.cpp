@@ -47,7 +47,7 @@
 
 #include "./bug.h"
 
-Bug g_bug = Bug(FMAW::Sprite(0));
+Bug g_bug;
 
 FixedReal g_camera_x;
 FixedReal g_camera_y;
@@ -157,8 +157,6 @@ void setupGraphics(void) {
     REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
     REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
 
-    g_bug.sprite.setTile(TILES_BUG_1);
-    g_bug.sprite.setPalette(PAL_BUG_1);
     g_bug.sprite.enable();
 }
 
@@ -181,6 +179,7 @@ void update_graphics() {
 int main(void) {
     setupInterrupts();
     setupGraphics();
+    g_bug = Bug(FMAW::Sprite(0));
     resetBug();
 
     while (1) {

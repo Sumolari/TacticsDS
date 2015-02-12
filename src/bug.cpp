@@ -15,21 +15,9 @@
 
 void Bug::init() {
     this->timer = 0;
-    this->tiles = reinterpret_cast<int *>(
-                      malloc(SPRITES_IDLE_ANIMATION * sizeof(int)));
-    this->tiles[0] = TILES_BUG_1;
-    this->tiles[1] = TILES_BUG_2;
-    this->tiles[2] = TILES_BUG_3;
-    this->tiles[3] = TILES_BUG_2;
-    this->palettes = reinterpret_cast<int *>(
-                         malloc(SPRITES_IDLE_ANIMATION * sizeof(int)));
-    this->palettes[0] = PAL_BUG_1;
-    this->palettes[1] = PAL_BUG_2;
-    this->palettes[2] = PAL_BUG_3;
-    this->palettes[3] = PAL_BUG_2;
-    this->currentTileID = 0;
+    this->tiles = reinterpret_cast<FMAW::Tile *>(
+                      malloc(SPRITES_IDLE_ANIMATION * sizeof(FMAW::Tile)));
 
-    /*
     FMAW::TileAttributes tile_1_attrib {
         gfx_Bug_1Tiles,
         gfx_Bug_1TilesLen,
@@ -49,27 +37,14 @@ void Bug::init() {
         gfx_Bug_3PalLen
     };
 
-    FMAW::Tile tile_1(0, tile_1_attrib);
-    FMAW::Tile tile_2(16, tile_2_attrib);
-    FMAW::Tile tile_3(32, tile_3_attrib);
+    FMAW::Tile tile_1(tile_1_attrib);
+    FMAW::Tile tile_2(tile_2_attrib);
+    FMAW::Tile tile_3(tile_3_attrib);
 
-    dmaCopyHalfWords(3, gfx_Bug_1Tiles, tile2objram(TILES_BUG_1),
-                     gfx_Bug_1TilesLen);
-    dmaCopyHalfWords(3, gfx_Bug_1Pal, pal2objram(PAL_BUG_1), gfx_Bug_1PalLen);
-    */
-
-    /**/
-    dmaCopyHalfWords(3, gfx_Bug_1Tiles, tile2objram(TILES_BUG_1),
-                     gfx_Bug_1TilesLen);
-    dmaCopyHalfWords(3, gfx_Bug_2Tiles, tile2objram(TILES_BUG_2),
-                     gfx_Bug_2TilesLen);
-    dmaCopyHalfWords(3, gfx_Bug_3Tiles, tile2objram(TILES_BUG_3),
-                     gfx_Bug_3TilesLen);
-
-    dmaCopyHalfWords(3, gfx_Bug_1Pal, pal2objram(PAL_BUG_1), gfx_Bug_1PalLen);
-    dmaCopyHalfWords(3, gfx_Bug_2Pal, pal2objram(PAL_BUG_2), gfx_Bug_2PalLen);
-    dmaCopyHalfWords(3, gfx_Bug_3Pal, pal2objram(PAL_BUG_3), gfx_Bug_3PalLen);
-    /**/
+    this->tiles[0] = tile_1;
+    this->tiles[1] = tile_2;
+    this->tiles[2] = tile_3;
+    this->tiles[3] = tile_2;
 
     this->currentTileID = 0;
 }
@@ -84,7 +59,6 @@ void Bug::update() {
     }
 
     this->sprite.setTile(this->tiles[this->currentTileID]);
-    this->sprite.setPalette(this->palettes[this->currentTileID]);
 }
 
 void Bug::render(int camera_x, int camera_y) {

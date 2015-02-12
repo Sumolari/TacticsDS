@@ -2,6 +2,7 @@
 #define FMAW_SPRITE_H
 
 #include "./fmaw_types.h"
+#include "./fmaw_tile.h"
 #include "./fmaw_geometry.h"
 
 namespace FMAW {
@@ -178,6 +179,13 @@ public:
     //--------------------------------------------------------------------------
     // Tile & palette settings.
     //--------------------------------------------------------------------------
+
+    /**
+     * Sets this sprite's tile and palette.
+     * @param  tile New tile and palette to use.
+     * @return      Whether tile can be used or not.
+     */
+    bool setTile(Tile tile);
 
     /**
      * Sets this sprite's tile to given one.

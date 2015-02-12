@@ -7,17 +7,10 @@
 //----------// Tile entries
 //----------//------------------------------------------------------------------
 
+// Framework will handle memory positions! :)
 #define TILES_BUG_1       0  // Bug tiles (32x32 tile:  0 -> 15)
-#define TILES_BUG_2      16  // Bug tiles (32x32 tile: 16 -> 31)
-#define TILES_BUG_3      32  // Bug tiles (32x32 tile: 31 -> 47)
-
-//----------//------------------------------------------------------------------
-//----------// Palette entries
-//----------//------------------------------------------------------------------
-
-#define PAL_BUG_1         0  // Ball palette (entry 0 -> 15)
-#define PAL_BUG_2         1  // Ball palette (entry 16 -> 31)
-#define PAL_BUG_3         2  // Ball palette (entry 32 -> 47)
+#define TILES_BUG_2       1  // Bug tiles (32x32 tile: 16 -> 31)
+#define TILES_BUG_3       2  // Bug tiles (32x32 tile: 31 -> 47)
 
 //----------//------------------------------------------------------------------
 //----------// Other attributes
@@ -33,9 +26,7 @@ class Bug {
     // Palette of tile currently displayed.
     int currentTilePalette;
     // Tiles used to animate this bug.
-    int *tiles;
-    // Palettes used to animate this bug.
-    int *palettes;
+    FMAW::Tile *tiles;
 
     /**
      * Initializes this bug.

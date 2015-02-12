@@ -16,5 +16,6 @@ std::map<int, int> Tile::IDtoImgMemoryPosition {};
 int Tile::nextImgMemoryPosition = 0;
 std::map<int, int> Tile::IDtoPalMemoryPosition {};
 int Tile::nextPalMemoryPosition = 0;
+int Tile::nextID = 0;
 
 }  // namespace FMAW

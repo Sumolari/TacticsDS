@@ -142,6 +142,10 @@ Point Sprite::getPosition() {
 //----------// Tile & palette settings.
 //----------//------------------------------------------------------------------
 
+bool Sprite::setTile(Tile tile) {
+    return this->setTile(tile.imgMemory) && this->setPalette(tile.palMemory);
+}
+
 bool Sprite::setTile(uint16 tileIndex) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;
     if (tileIndex != tileIndexCapped) return false;
