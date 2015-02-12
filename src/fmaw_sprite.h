@@ -68,6 +68,15 @@ typedef enum t_spritePriority {
  */
 void clearAllSprites();
 
+/**
+ * Returns the amount of bytes in memory required to store a tile with given
+ * size.
+ *
+ * @param  mode Size of the tile to check.
+ * @return      Amount of bytes in memory requiered to store given tile.
+ */
+uint16 bytesForSpriteSizeMode(SpriteSizeMode mode);
+
 //------------------------------------------------------------------------------
 // Sprite class.
 //------------------------------------------------------------------------------

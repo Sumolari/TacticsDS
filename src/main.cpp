@@ -47,7 +47,7 @@
 
 #include "./bug.h"
 
-Bug g_bug;
+Bug g_bug = Bug(FMAW::Sprite(0));
 
 FixedReal g_camera_x;
 FixedReal g_camera_y;
@@ -181,7 +181,6 @@ void update_graphics() {
 int main(void) {
     setupInterrupts();
     setupGraphics();
-    g_bug = Bug(FMAW::Sprite(0));
     resetBug();
 
     while (1) {

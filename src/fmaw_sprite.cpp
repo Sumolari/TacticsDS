@@ -22,6 +22,33 @@ void clearAllSprites() {
     }
 }
 
+uint16 bytesForSpriteSizeMode(SpriteSizeMode mode) {
+    switch (mode) {
+        case square8x8:
+            return 1;
+        case wide16x8:
+        case tall8x16:
+            return 2;
+        case square16x16:
+        case wide32x8:
+        case tall8x32:
+            return 4;
+        case wide32x16:
+        case tall16x32:
+            return 8;
+        case square32x32:
+            return 16;
+        case wide64x32:
+        case tall32x64:
+            return 32;
+        case square64x64:
+            return 64;
+        case unknown:
+        default:
+            return 0;
+    }
+}
+
 //------------------------------------------------------------------------------
 // Sprite class.
 //------------------------------------------------------------------------------
@@ -37,7 +64,7 @@ bool Sprite::setXPosition(int x) {
     if (isNegative) x = -x;
 
     uint16 xCapped = x & 0x00FF;
-    //if (x != xCapped) return false;
+    // if (x != xCapped) return false;
 
     // If x was negative we have to apply 2's complement.
     if (isNegative) x = twosComplement9B(x);
@@ -58,7 +85,7 @@ bool Sprite::setYPosition(int y) {
     if (isNegative) y = -y;
 
     uint16 yCapped = y & 0x007F;
-    //if (y != yCapped) return false;
+    // if (y != yCapped) return false;
 
     // If x was negative we have to apply 2's complement.
     if (isNegative) y = twosComplement8B(y);

@@ -7,6 +7,7 @@
 #include "./fmaw_math.h"
 #include "./fmaw_geometry.h"
 #include "./fmaw_debug.h"
+#include "./fmaw_tile.h"
 #include "./fmaw_background.h"
 #include "./fmaw_sprite.h"
 

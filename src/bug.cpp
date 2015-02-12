@@ -5,6 +5,7 @@
 #include <nds.h>
 
 #include "./fmaw_macros.h"
+#include "./fmaw_tile.h"
 
 #include "./gfx_Bug_1.h"
 #include "./gfx_Bug_2.h"
@@ -28,6 +29,36 @@ void Bug::init() {
     this->palettes[3] = PAL_BUG_2;
     this->currentTileID = 0;
 
+    /*
+    FMAW::TileAttributes tile_1_attrib {
+        gfx_Bug_1Tiles,
+        gfx_Bug_1TilesLen,
+        gfx_Bug_1Pal,
+        gfx_Bug_1PalLen
+    };
+    FMAW::TileAttributes tile_2_attrib {
+        gfx_Bug_2Tiles,
+        gfx_Bug_2TilesLen,
+        gfx_Bug_2Pal,
+        gfx_Bug_2PalLen
+    };
+    FMAW::TileAttributes tile_3_attrib {
+        gfx_Bug_3Tiles,
+        gfx_Bug_3TilesLen,
+        gfx_Bug_3Pal,
+        gfx_Bug_3PalLen
+    };
+
+    FMAW::Tile tile_1(0, tile_1_attrib);
+    FMAW::Tile tile_2(16, tile_2_attrib);
+    FMAW::Tile tile_3(32, tile_3_attrib);
+
+    dmaCopyHalfWords(3, gfx_Bug_1Tiles, tile2objram(TILES_BUG_1),
+                     gfx_Bug_1TilesLen);
+    dmaCopyHalfWords(3, gfx_Bug_1Pal, pal2objram(PAL_BUG_1), gfx_Bug_1PalLen);
+    */
+
+    /**/
     dmaCopyHalfWords(3, gfx_Bug_1Tiles, tile2objram(TILES_BUG_1),
                      gfx_Bug_1TilesLen);
     dmaCopyHalfWords(3, gfx_Bug_2Tiles, tile2objram(TILES_BUG_2),
@@ -38,6 +69,7 @@ void Bug::init() {
     dmaCopyHalfWords(3, gfx_Bug_1Pal, pal2objram(PAL_BUG_1), gfx_Bug_1PalLen);
     dmaCopyHalfWords(3, gfx_Bug_2Pal, pal2objram(PAL_BUG_2), gfx_Bug_2PalLen);
     dmaCopyHalfWords(3, gfx_Bug_3Pal, pal2objram(PAL_BUG_3), gfx_Bug_3PalLen);
+    /**/
 
     this->currentTileID = 0;
 }
