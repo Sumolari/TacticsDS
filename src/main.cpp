@@ -173,11 +173,8 @@ void update_graphics() {
 
 int main(void) {
     setupInterrupts();
-    setupGraphics();
-
     FMAW::Timer::init();
-
-    g_bug.reset();
+    setupGraphics();
 
     auto func = [](int ID) {
         g_bug.update();

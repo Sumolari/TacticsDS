@@ -14,6 +14,8 @@
 #define SPRITES_IDLE_ANIMATION 4
 
 void Bug::init() {
+    this->reset();
+
     this->tiles = reinterpret_cast<FMAW::Tile *>(
                       malloc(SPRITES_IDLE_ANIMATION * sizeof(FMAW::Tile)));
 
