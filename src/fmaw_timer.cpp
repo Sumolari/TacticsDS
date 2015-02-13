@@ -12,8 +12,38 @@ namespace FMAW {
 
 namespace Timer {
 
-// The speed of the timer when using ClockDivider_1024
+/**
+ * The speed of the timer when using ClockDivider_1024
+ */
 #define TIMER_SPEED (BUS_CLOCK/1024)
+
+/**
+ * Macro to convert given tick-time to milliseconds.
+ * @param  x Time to convert to milliseconds, expressed as clock-ticks.
+ * @return   Time in milliseconds.
+ */
+#define TICKS_TO_MS(x) x / TIMER_SPEED * 1000 + \
+    ((x % TIMER_SPEED) * 1000) / TIMER_SPEED
+
+/**
+ * Macro to convert given milliseconds to clock-ticks.
+ * @param  x Milliseconds to convert to clock-ticks.
+ * @return   Time in clock-ticks.
+ */
+#define MS_TO_TICKS(x) x * BUS_CLOCK / 1000
+
+/**
+ * Maximum amount of ticks that will be counted before reseting counter to 1.
+ */
+#define MAX_TICKS 100000
+
+/**
+ * Macro that given an amount of ticks returns the corresponding, wrapped,
+ * amount of ticks.
+ * @param  x Initial amount of ticks
+ * @return   Wrapped, valid, amount of ticks.
+ */
+#define TICKS_TO_VALID_RANGE(x) x % MAX_TICKS
 
 typedef struct t_callback {
     /**
@@ -21,11 +51,11 @@ typedef struct t_callback {
      */
     int ID;
     /**
-     * Time when callback was added, used as offset.
+     * Time when callback was added, used as offset, in ticks.
      */
     unsigned int  init;
     /**
-     * Amount of time to wait.
+     * Amount of time to wait, in ticks.
      */
     unsigned int  delta;
     /**
@@ -60,15 +90,14 @@ void init() {
 
 int enqueue_function(void (*callback)(int), unsigned int delta,
                      bool repetitive) {
-    Callback _callback;
-    _callback.ID = next_registered_function_id;
-    _callback.init = ticks + delta;
-    _callback.delta = delta;
-    _callback.repetitive = repetitive;
-    _callback.toBeRemoved = false;
-    _callback.function = callback;
-
-    registered_functions[next_registered_function_id] = _callback;
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        TICKS_TO_VALID_RANGE(ticks + MS_TO_TICKS(delta)),
+        MS_TO_TICKS(delta),
+        repetitive,
+        false,
+        callback
+    };
     return next_registered_function_id++;
 }
 
@@ -83,30 +112,32 @@ bool dequeue_function(int id) {
 void check() {
     std::vector<int> toBeRemoved;
 
-    ticks += timerElapsed(0);
+    ticks = TICKS_TO_VALID_RANGE(ticks + timerElapsed(0));
 
-    unsigned int ticks_ms = ticks / TIMER_SPEED * 1000 +
-                            ((ticks % TIMER_SPEED) * 1000) / TIMER_SPEED;
+    // unsigned int ticks_ms = TICKS_TO_MS(ticks);
 
-    FMAW::printf("Ticks: %d", ticks);
-    FMAW::printf("Ticks in ms: %u", ticks_ms);
+    // FMAW::printf("Ticks: %d", ticks);
+    // FMAW::printf("Ticks in ms: %u", ticks_ms);
 
     for (
         auto it = registered_functions.begin();
         it != registered_functions.end();
         it++
     ) {
-        Callback entry = it->second;
+        Callback entry = registered_functions[it->first];
 
-        FMAW::printf("Init time: %u", entry.init);
-
-        if (!entry.toBeRemoved && ticks_ms > entry.init) {
+        if (!entry.toBeRemoved && ticks > entry.init) {
             entry.function(entry.ID);
             if (entry.repetitive)
-                entry.init = ticks + entry.delta;
+                registered_functions[it->first].init = TICKS_TO_VALID_RANGE(
+                        ticks + entry.delta);
             else
                 dequeue_function(entry.ID);
-            FMAW::printf("Next time: %u", entry.init);
+            /*
+            FMAW::printf("Next time for %u: %u _ %u <-> %u", entry.ID,
+                         registered_functions[it->first].init, entry.init,
+                         ticks);
+                         */
         }
 
         if (entry.toBeRemoved)
