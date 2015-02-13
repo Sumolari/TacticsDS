@@ -30,7 +30,7 @@ namespace Timer {
  * @param  x Milliseconds to convert to clock-ticks.
  * @return   Time in clock-ticks.
  */
-#define MS_TO_TICKS(x) x * BUS_CLOCK / 1000
+#define MS_TO_TICKS(x) x * TIMER_SPEED / 1000
 
 /**
  * Maximum amount of ticks that will be counted before reseting counter to 1.
@@ -43,7 +43,7 @@ namespace Timer {
  * @param  x Initial amount of ticks
  * @return   Wrapped, valid, amount of ticks.
  */
-#define TICKS_TO_VALID_RANGE(x) x % MAX_TICKS
+#define TICKS_TO_VALID_RANGE(x) (x % MAX_TICKS)
 
 typedef struct t_callback {
     /**
@@ -93,7 +93,7 @@ int enqueue_function(void (*callback)(int), unsigned int delta,
     registered_functions[next_registered_function_id] = {
         next_registered_function_id,
         TICKS_TO_VALID_RANGE(ticks + MS_TO_TICKS(delta)),
-        MS_TO_TICKS(delta),
+        TICKS_TO_VALID_RANGE(MS_TO_TICKS(delta)),
         repetitive,
         false,
         callback
@@ -133,11 +133,11 @@ void check() {
                         ticks + entry.delta);
             else
                 dequeue_function(entry.ID);
-            /*
-            FMAW::printf("Next time for %u: %u _ %u <-> %u", entry.ID,
-                         registered_functions[it->first].init, entry.init,
-                         ticks);
-                         */
+            /**/
+            FMAW::printf("Next time for %u: %u _ %u (%u)", entry.ID,
+                         registered_functions[it->first].init,
+                         ticks, entry.delta);
+            /**/
         }
 
         if (entry.toBeRemoved)

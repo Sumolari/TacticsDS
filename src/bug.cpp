@@ -14,7 +14,6 @@
 #define SPRITES_IDLE_ANIMATION 4
 
 void Bug::init() {
-    this->timer = 0;
     this->tiles = reinterpret_cast<FMAW::Tile *>(
                       malloc(SPRITES_IDLE_ANIMATION * sizeof(FMAW::Tile)));
 
@@ -47,35 +46,22 @@ void Bug::init() {
     this->tiles[3] = tile_2;
 
     this->currentTileID = 0;
+
+    this->width = BUG_HEIGHT;
+    this->height = BUG_HEIGHT;
+    this->sprite.setSizeMode(FMAW::square32x32);
+    this->sprite.setTile(this->tiles[this->currentTileID]);
+    this->sprite.enable();
 }
 
 void Bug::update() {
-    this->timer++;
-
-    if (this->timer > frames_in_ms(100)) {
-        this->timer = 0;
-        this->currentTileID += 1;
-        this->currentTileID %= SPRITES_IDLE_ANIMATION;
-    }
+    this->currentTileID += 1;
+    this->currentTileID %= SPRITES_IDLE_ANIMATION;
 
     this->sprite.setTile(this->tiles[this->currentTileID]);
 }
 
-void Bug::render(int camera_x, int camera_y) {
-    FixedReal x, y;
-    x = ((this->x - BUG_HEIGHT) >> 8) - camera_x;
-    y = ((this->y - BUG_HEIGHT) >> 8) - camera_y;
-
-    if (x <= -16 || y <= -16 || x >= 256 || y >= 192) {
-        this->sprite.disable();
-        return;
-    }
-
-    this->sprite.setPosition(x, y);
-    this->sprite.setSizeMode(FMAW::square32x32);
-}
-
-void Bug::print() {
-    FMAW::printf("Bug using sprite:");
-    this->sprite.print();
+void Bug::reset() {
+    this->x = 128 << 8;  // FixedReal(128);
+    this->y = 64 << 8;   // FixedReal(64);
 }

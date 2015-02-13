@@ -67,11 +67,6 @@ void setupInterrupts(void) {
     irqEnable(IRQ_VBLANK);   // Enable vblank interrupt.
 }
 
-void resetBug(void) {
-    g_bug.x = 128 << 8;  // FixedReal(128);
-    g_bug.y = 64 << 8;  // FixedReal(64);
-}
-
 /**
  * Sets up graphics.
  * Calling this method will require to reinitialize all sprites!
@@ -157,7 +152,7 @@ void setupGraphics(void) {
     REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
     REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
 
-    g_bug.sprite.enable();
+    g_bug = Bug(FMAW::Sprite(0));
 }
 
 void process_input() { }
@@ -182,14 +177,13 @@ int main(void) {
 
     FMAW::Timer::init();
 
-    g_bug = Bug(FMAW::Sprite(0));
-    resetBug();
+    g_bug.reset();
 
     auto func = [](int ID) {
         g_bug.update();
     };
 
-    FMAW::Timer::enqueue_function(func, 1500, true);
+    FMAW::Timer::enqueue_function(func, 200, true);
 
     while (1) {
         // Rendering period:

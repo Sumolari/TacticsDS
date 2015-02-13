@@ -18,9 +18,8 @@
 
 #define BUG_HEIGHT        23
 
-class Bug {
-    // Last time bug changed sprite.
-    unsigned int timer;
+class Bug : public FMAW::Character {
+protected:
     // ID of tile currently displayed.
     int currentTileID;
     // Palette of tile currently displayed.
@@ -28,49 +27,28 @@ class Bug {
     // Tiles used to animate this bug.
     FMAW::Tile *tiles;
 
-    /**
-     * Initializes this bug.
-     */
-    void init();
+    virtual void init();
 public:
-    // X coordinate.
-    FixedReal x;
-    // Y coordinate.
-    FixedReal y;
-    // Sprite of this bug.
-    FMAW::Sprite sprite;
-
     /**
-     * Creates a new ball using a new sprite.
+     * Creates a new Bug using a new sprite.
      */
-    Bug(): sprite(FMAW::Sprite()) {
+    Bug() {
         init();
     };
 
     /**
-     * Creates a new ball given its sprite.
+     * Creates a new Bug given its sprite.
      */
-    Bug(FMAW::Sprite sprite): sprite(sprite) {
+    Bug(FMAW::Sprite sprite): Character(sprite) {
         init();
     };
 
-    /**
-     * Updates this ball's position based on its velocity.
-     * @param id  ID of the callback that will be called.
-     */
-    void update();
+    virtual void update();
 
     /**
-     * Renders this ball in given frame.
-     * @param camera_x [description]
-     * @param camera_y [description]
+     * Resets position of this bug.
      */
-    void render(int camera_x, int camera_y);
-
-    /**
-     * Displays information about this ball.
-     */
-    void print();
+    void reset();
 };
 
 #endif
