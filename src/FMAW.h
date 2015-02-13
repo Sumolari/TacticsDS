@@ -10,5 +10,6 @@
 #include "./fmaw_tile.h"
 #include "./fmaw_background.h"
 #include "./fmaw_sprite.h"
+#include "./fmaw_timer.h"
 
 #endif

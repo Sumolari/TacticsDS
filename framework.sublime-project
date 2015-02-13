@@ -1,94 +1,135 @@
 {
-	"folders": [ {
-		"name": "Source",
-		"path": "./src",
-		"file_exclude_patterns": [ "fmaw*" ]
-	}, {
-		"name": "FMAW",
-		"path": "./FMAW",
-		"file_include_patterns": [ "fmaw*" ]
-	}, {
-		"name": "Builds",
-		"path": "./build"
-	}, {
-		"name": "Assets",
-		"path": "./assets"
-	}, {
-		"name": "Documentation",
-		"path": "./doc"
-	}, {
-		"name": "Root",
-		"follow_symlinks": true,
-		"file_exclude_patterns": [ "framework.sublime-project" ],
-		"folder_exclude_patterns": [ "doc", "assets", "src", "build" ],
-		"path": "."
-	} ],
-	"settings": {
-		"tab_size": 4,
-		"translate_tabs_to_spaces": false,
-		"AStyleFormatter": {
-			"debug": false,
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"fmaw*"
+			],
+			"follow_symlinks": true,
+			"name": "Source",
+			"path": "src"
+		},
+		{
+			"file_include_patterns":
+			[
+				"fmaw*"
+			],
+			"follow_symlinks": true,
+			"name": "FMAW",
+			"path": "FMAW"
+		},
+		{
+			"follow_symlinks": true,
+			"name": "Builds",
+			"path": "build"
+		},
+		{
+			"follow_symlinks": true,
+			"name": "Assets",
+			"path": "assets"
+		},
+		{
+			"follow_symlinks": true,
+			"name": "Documentation",
+			"path": "doc"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"framework.sublime-project"
+			],
+			"folder_exclude_patterns":
+			[
+				"doc",
+				"assets",
+				"src",
+				"build"
+			],
+			"follow_symlinks": true,
+			"name": "Root",
+			"path": "."
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/stopwatch"
+		}
+	],
+	"settings":
+	{
+		"AStyleFormatter":
+		{
 			"autoformat_on_save": true,
-			"options_default": {
+			"debug": false,
+			"options_c":
+			{
+				"additional_options":
+				[
+				],
+				"additional_options_file": "",
 				"style": "google",
-				"indent": "spaces",
-				"indent-spaces": 4,
-				"attach-namespaces": false,
-				"attach-classes": false,
-				"attach-inlines": false,
-				"attach-extern-c": false,
-				"indent-classes": false,
-				"indent-modifiers": false,
-				"indent-switches": true,
-				"indent-cases": true,
-				"indent-namespaces": false,
-				"indent-labels": false,
-				"indent-preproc-define": true,
-				"indent-preproc-cond": false,
-				"indent-col1-comments": true,
-				"min-conditional-indent": 2,
-				"max-instatement-indent": 40,
-				"break-blocks": "",
-				"pad-oper": true,
-				"pad-paren": false,
-				"pad-paren-out": false,
-				"pad-first-paren-out": false,
-				"pad-paren-in": false,
-				"pad-header": true,
-				"unpad-paren": true,
-				"delete-empty-lines": false,
-				"fill-empty-lines": false,
-				"align-pointer": "name",
-				"align-reference": "name",
-				"break-closing-brackets": false,
-				"break-elseifs": false,
+				"use_only_additional_options": false
+			},
+			"options_c++":
+			{
+				"additional_options":
+				[
+				],
+				"additional_options_file": "",
+				"style": "google",
+				"use_only_additional_options": false
+			},
+			"options_default":
+			{
 				"add-brackets": false,
 				"add-one-line-brackets": false,
-				"remove-brackets": false,
+				"align-method-colon": true,
+				"align-pointer": "name",
+				"align-reference": "name",
+				"attach-classes": false,
+				"attach-extern-c": false,
+				"attach-inlines": false,
+				"attach-namespaces": false,
+				"break-after-logical": false,
+				"break-blocks": "",
+				"break-closing-brackets": false,
+				"break-elseifs": false,
+				"close-templates": false,
+				"convert-tabs": true,
+				"delete-empty-lines": false,
+				"fill-empty-lines": false,
+				"indent": "spaces",
+				"indent-cases": true,
+				"indent-classes": false,
+				"indent-col1-comments": true,
+				"indent-labels": false,
+				"indent-modifiers": false,
+				"indent-namespaces": false,
+				"indent-preproc-cond": false,
+				"indent-preproc-define": true,
+				"indent-spaces": 4,
+				"indent-switches": true,
 				"keep-one-line-blocks": false,
 				"keep-one-line-statements": true,
-				"convert-tabs": true,
-				"close-templates": false,
-				"remove-comment-prefix": false,
 				"max-code-length": 80,
-				"break-after-logical": false,
-				"align-method-colon": true,
+				"max-instatement-indent": 40,
+				"min-conditional-indent": 2,
+				"pad-first-paren-out": false,
+				"pad-header": true,
+				"pad-method-colon": "none",
 				"pad-method-prefix": true,
+				"pad-oper": true,
+				"pad-paren": false,
+				"pad-paren-in": false,
+				"pad-paren-out": false,
+				"remove-brackets": false,
+				"remove-comment-prefix": false,
+				"style": "google",
 				"unpad-method-prefix": false,
-				"pad-method-colon": "none"
-			},
-			"options_c": {
-				"style": "google",
-				"use_only_additional_options": false,
-				"additional_options_file": "",
-				"additional_options": []
-			},
-			"options_c++": {
-				"style": "google",
-				"use_only_additional_options": false,
-				"additional_options_file": "",
-				"additional_options": []
+				"unpad-paren": true
 			}
-		}
+		},
+		"tab_size": 4,
+		"translate_tabs_to_spaces": false
 	}
 }

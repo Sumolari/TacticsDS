@@ -20,6 +20,7 @@ typedef struct t_tile_attrib {
 //------------------------------------------------------------------------------
 
 class Tile {
+    typedef Tile self;
 private:
     /**
      * Tile's ID -> tile's image memory position mapping.
@@ -45,16 +46,25 @@ private:
     static int nextID;
 
 public:
+    /**
+     * Memory address for image data of this tile.
+     */
     int imgMemory;
+
+    /**
+     * Memory address for palette data of this tile.
+     */
     int palMemory;
+
+    /**
+     * ID of this tile.
+     */
     int ID;
 
     /**
      * Creates a new tile given the ID that will be used to refer to this tile.
      */
     Tile(TileAttributes attributes) {
-        typedef Tile self;
-
         FMAW::printf("I'm copying tiles of length %d to %d",
                      attributes.tilesLength,
                      self::nextImgMemoryPosition);
@@ -85,6 +95,16 @@ public:
         // This ID has been used!
         self::nextID++;
     };
+
+    /**
+     * Returns tile associated with given ID.
+     */
+    Tile(int ID) {
+        this->ID = ID;
+        this->imgMemory = self::IDtoImgMemoryPosition[ID];
+        this->palMemory = self::IDtoPalMemoryPosition[ID];
+    }
+
 };
 
 }

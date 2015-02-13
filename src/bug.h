@@ -56,6 +56,7 @@ public:
 
     /**
      * Updates this ball's position based on its velocity.
+     * @param id  ID of the callback that will be called.
      */
     void update();
 

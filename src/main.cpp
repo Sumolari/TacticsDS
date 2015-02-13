@@ -166,7 +166,7 @@ void update_camera() { }
 
 void update_logic() {
     process_input();
-    g_bug.update();
+    FMAW::Timer::check();
     update_camera();
 }
 
@@ -179,8 +179,17 @@ void update_graphics() {
 int main(void) {
     setupInterrupts();
     setupGraphics();
+
+    FMAW::Timer::init();
+
     g_bug = Bug(FMAW::Sprite(0));
     resetBug();
+
+    auto func = [](int ID) {
+        g_bug.update();
+    };
+
+    FMAW::Timer::enqueue_function(func, 1500, true);
 
     while (1) {
         // Rendering period:
