@@ -13,4 +13,13 @@
 #include "./fmaw_character.h"
 #include "./fmaw_timer.h"
 
+namespace FMAW {
+
+/**
+ * Initializes framework.
+ */
+void init();
+
+}
+
 #endif

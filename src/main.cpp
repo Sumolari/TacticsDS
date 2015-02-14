@@ -56,43 +56,32 @@ FixedReal g_camera_y;
 // Main code section
 //------------------------------------------------------------------------------
 
-// rand_r seed.
-unsigned int seed = 12345;
-
-/**
- * Sets up interrupts.
- */
-void setupInterrupts(void) {
-    irqInit();               // Initialize interrups.
-    irqEnable(IRQ_VBLANK);   // Enable vblank interrupt.
-}
-
 /**
  * Sets up graphics.
  * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
-    vramSetBankE(VRAM_E_MAIN_BG);
-    vramSetBankF(VRAM_F_MAIN_SPRITE);
-
     // Generate the first blank tile by clearing it to zero.
     for (int n = 0; n < 16; n++)
         BG_GFX[n] = 0;
 
-    // Copy BG graphics.
-    dmaCopyHalfWords(3, gfx_brickTiles, tile2bgram(TILE_BRICK),
-                     gfx_brickTilesLen);
-    dmaCopyHalfWords(3, gfx_gradientTiles, tile2bgram(TILE_GRADIENT),
-                     gfx_gradientTilesLen);
+    FMAW::TileAttributes brick_attributes {
+        gfx_brickTiles,
+        gfx_brickTilesLen,
+        gfx_brickPal,
+        gfx_brickPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::TileAttributes gradient_attributes {
+        gfx_gradientTiles,
+        gfx_gradientTilesLen,
+        gfx_gradientPal,
+        gfx_gradientPalLen,
+        FMAW::TypeBackground
+    };
 
-    // Copy Sprites graphics.
-
-    // BG palettes go to palette memory.
-    dmaCopyHalfWords(3, gfx_brickPal, pal2bgram(PAL_BRICKS), gfx_brickPalLen);
-    dmaCopyHalfWords(3, gfx_gradientPal, pal2bgram(PAL_GRADIENT),
-                     gfx_gradientPalLen);
-
-    // Sprite palettes go to palette memory.
+    FMAW::Tile brick_tile(brick_attributes);
+    FMAW::Tile gradient_tile(gradient_attributes);
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
@@ -102,11 +91,6 @@ void setupGraphics(void) {
 
     FMAW::Background bgGradient(1);
     bgGradient.setScreenBaseBlock(2);
-
-    videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |
-                 DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D_LAYOUT);
-
-    FMAW::clearAllSprites();
 
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     bgBricks.clearAllTiles();
@@ -122,8 +106,7 @@ void setupGraphics(void) {
             if ((x & 1) ^ (y & 1))
                 bgBricks.enableHorizontalFlip(tile_id);
 
-            bgBricks.setTile(tile_id, TILE_BRICK);
-            bgBricks.setPalette(tile_id, PAL_BRICKS);
+            bgBricks.setTile(tile_id, brick_tile);
         }
     }
     // Did we say 6 first rows? We wanted 6 LAST rows!
@@ -131,13 +114,13 @@ void setupGraphics(void) {
 
     // Set tilemap entries for 8 first rows of background 1 (gradient).
     for (int y = 0; y < 8; y++) {
-        int tile_index = TILE_GRADIENT + y;
+        int tile_index = gradient_tile.imgMemory + y;
         int y32 = y * 32;
 
         for (int x = 0; x < 32; x++) {
             int tile_id = x + y32;
             bgGradient.setTile(tile_id, tile_index);
-            bgGradient.setPalette(tile_id, PAL_GRADIENT);
+            bgGradient.setPalette(tile_id, gradient_tile.palMemory);
         }
     }
 
@@ -172,8 +155,7 @@ void update_graphics() {
 }
 
 int main(void) {
-    setupInterrupts();
-    FMAW::Timer::init();
+    FMAW::init();
     setupGraphics();
 
     auto func = [](int ID) {

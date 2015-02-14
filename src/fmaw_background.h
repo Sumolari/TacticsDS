@@ -2,6 +2,7 @@
 #define FMAW_BACKGROUND_H
 
 #include "./fmaw_types.h"
+#include "./fmaw_tile.h"
 
 #include <nds.h>
 
@@ -182,6 +183,14 @@ public:
     //--------------------------------------------------------------------------
     // Tile & palette settings.
     //--------------------------------------------------------------------------
+
+    /**
+     * Sets tile of given tile in this background to given one.
+     * @param  tile_id    ID of the affected tile.
+     * @param  tile       Tile to use.
+     * @return            Whether change could be applied or not.
+     */
+    bool setTile(background_tile_id tile_id, Tile tile);
 
     /**
      * Sets tile index of given tile in this background to given one.

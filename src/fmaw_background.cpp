@@ -2,8 +2,10 @@
 
 #include <nds.h>
 
-#include "./fmaw_types.h"
 #include "./fmaw_background.h"
+
+#include "./fmaw_types.h"
+#include "./fmaw_tile.h"
 #include "./fmaw_debug.h"
 
 namespace FMAW {
@@ -80,6 +82,11 @@ uint8 Background::getHorizontalOffset() {
 //----------//------------------------------------------------------------------
 //----------// Tile & palette settings.
 //----------//------------------------------------------------------------------
+
+bool Background::setTile(background_tile_id tile_id, Tile tile) {
+    return this->setTile(tile_id, tile.imgMemory)
+           && this->setPalette(tile_id, tile.palMemory);
+}
 
 bool Background::setTile(background_tile_id tile_id, uint16 tileIndex) {
     uint16 tileIndexCapped = tileIndex & 0x01FF;

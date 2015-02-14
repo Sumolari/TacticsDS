@@ -23,19 +23,22 @@ void Bug::init() {
         gfx_Bug_1Tiles,
         gfx_Bug_1TilesLen,
         gfx_Bug_1Pal,
-        gfx_Bug_1PalLen
+        gfx_Bug_1PalLen,
+        FMAW::TypeSprite
     };
     FMAW::TileAttributes tile_2_attrib {
         gfx_Bug_2Tiles,
         gfx_Bug_2TilesLen,
         gfx_Bug_2Pal,
-        gfx_Bug_2PalLen
+        gfx_Bug_2PalLen,
+        FMAW::TypeSprite
     };
     FMAW::TileAttributes tile_3_attrib {
         gfx_Bug_3Tiles,
         gfx_Bug_3TilesLen,
         gfx_Bug_3Pal,
-        gfx_Bug_3PalLen
+        gfx_Bug_3PalLen,
+        FMAW::TypeSprite
     };
 
     FMAW::Tile tile_1(tile_1_attrib);

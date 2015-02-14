@@ -13,9 +13,11 @@
 namespace FMAW {
 
 std::map<int, int> Tile::IDtoImgMemoryPosition {};
-int Tile::nextImgMemoryPosition = 0;
+int Tile::nextSpriteImgMemoryPosition = 0;
+int Tile::nextBackgroundImgMemoryPosition = 1;
 std::map<int, int> Tile::IDtoPalMemoryPosition {};
-int Tile::nextPalMemoryPosition = 0;
+int Tile::nextSpritePalMemoryPosition = 0;
+int Tile::nextBackgroundPalMemoryPosition = 1;
 int Tile::nextID = 0;
 
 }  // namespace FMAW
