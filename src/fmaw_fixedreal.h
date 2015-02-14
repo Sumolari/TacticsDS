@@ -9,9 +9,9 @@ public:
   /*
   fixedreal(double d, short int fs); // fixedreal (32-fs).fs with value d
   fixedreal(double d);  // fixedreal 24.8 with value d
-  fixedreal(int n, short int fs); // fixedreal (32-fs).fs with value (n).0
-  fixedreal(int n); // fixedreal 24.8 with value (n).0
   */
+  fixedreal(int n, short int fs); // fixedreal (32-fs).fs with value (n).0
+  //fixedreal(int n); // fixedreal 24.8 with value (n).0
   fixedreal(short int fs);  // fixedreal (32-fs).fs with value 0.0
   fixedreal();      // fixedreal 24.8 with value 0.0
   
