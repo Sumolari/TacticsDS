@@ -36,4 +36,6 @@ public:
   bool operator>=(const self &x, const self &y);
   bool operator<=(const self &x, const self &y);
   */
-}
+};
+
+#endif
