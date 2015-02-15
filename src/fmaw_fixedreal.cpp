@@ -58,13 +58,13 @@ fixedreal::fixedreal(double d)
 fixedreal& fixedreal::operator+=(const fixedreal x){
   int res;
   if( fraction_size > x.fraction_size ){
-    res = (x.num << (fraction_size - x.fraction_size)) + num;
+    res = num + (x.num << (fraction_size - x.fraction_size));
   }
   else if( fraction_size < x.fraction_size ){
-    res = (num << (x.fraction_size - fraction_size)) + x.num;
+    res = num + (x.num >> (x.fraction_size - fraction_size));
   }
   else{
-    res = x.num + num;
+    res = num + x.num;
   }
   
   num = res;
