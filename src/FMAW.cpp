@@ -1,4 +1,4 @@
-// Copyright 2015 Lluís Ulzurrun de Asanza Sàez
+// Copyright 2015 FMAW
 
 #include "./FMAW.h"
 #include <nds.h>
