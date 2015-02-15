@@ -14,8 +14,8 @@ public:
   fixedreal();      // fixedreal 24.8 with value 0.0
   
   fixedreal& operator+=(const fixedreal x); // add x to self
-  /*
   fixedreal& operator-=(const fixedreal x); // substract x from self
+  /*
   fixedreal& operator*=(const fixedreal x); // multiply self by x
   fixedreal& operator/=(const fixedreal x); // divide self by x
   */
