@@ -55,6 +55,23 @@ fixedreal::fixedreal(double d)
 }
 */
 
+fixedreal& fixedreal::operator+=(const fixedreal x){
+  int res;
+  if( fraction_size > x.fraction_size ){
+    res = (x.num << (fraction_size - x.fraction_size)) + num;
+  }
+  else if( fraction_size < x.fraction_size ){
+    res = (num << (x.fraction_size - fraction_size)) + x.num;
+  }
+  else{
+    res = x.num + num;
+  }
+  
+  num = res;
+  
+  return *this;
+}
+
 // implementation of fixedreal's raw() method.
 int fixedreal::raw() const{
   return fixedreal::num;
@@ -70,6 +87,8 @@ int main(){
   printf("%d is a 0, just like %d.\n", fr->raw(), fr2->raw() );
   printf("%d is a 5 in 22.10 format.\n", fr3->raw() );
   printf("%d is a 1.11 in 24.8 format.\n", fr4->raw() );
+  *fr3 += *fr4;
+  printf("%d is the sum of the two before.\n", fr3->raw() );
   
   return 0;
 }*/
