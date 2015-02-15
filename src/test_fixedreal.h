@@ -6,6 +6,7 @@
 #include "./catch.hpp"
 
 #include "./fmaw_fixedreal.h"
+#include "./fmaw_fixedreal.cpp"
 
 namespace FixedRealTests {
 
@@ -54,7 +55,7 @@ TEST_CASE("FixedReal can be initialized", "[FixedReal]") {
     }
 }
 
-TEST_CASE("FixedReal support basic arithmetic", "[FixedReal]") {
+TEST_CASE("FixedReal supports basic arithmetic", "[FixedReal]") {
     FixedReal a {3.1415, 8};
     SECTION("two FixedReal with the same precision can be added") {
         FixedReal b {3, 8};
@@ -106,6 +107,36 @@ TEST_CASE("FixedReal support basic arithmetic", "[FixedReal]") {
         REQUIRE((a / b).toDouble() - 1.04716 < 0.00001);
         FixedReal c {3.1415, 16};
         REQUIRE((a / c).toDouble() - 1 < 0.00002);
+    }
+}
+
+TEST_CASE("FixedReal supports comparisons", "[FixedReal]") {
+    FixedReal a {3.1415, 8};
+    SECTION("two FixedReal with the same precision can be compared") {
+        FixedReal b {3, 8};
+        REQUIRE(a < b);
+        REQUIRE(a <= b);
+        REQUIRE_FALSE(a == b);
+        REQUIRE_FALSE(a >= b);
+        REQUIRE_FALSE(a > b);
+        FixedReal c {3.1415, 8};
+        REQUIRE(a <= c);
+        REQUIRE(a == c);
+        REQUIRE(a >= c);
+        REQUIRE_FALSE(a > c);
+    }
+    SECTION("two FixedReal with different precision can be compared") {
+        FixedReal b {3, 0};
+        REQUIRE(a < b);
+        REQUIRE(a <= b);
+        REQUIRE_FALSE(a == b);
+        REQUIRE_FALSE(a >= b);
+        REQUIRE_FALSE(a > b);
+        FixedReal c {3.1415, 16};
+        REQUIRE(a <= c);
+        REQUIRE(a == c);
+        REQUIRE(a >= c);
+        REQUIRE_FALSE(a > c);
     }
 }
 
