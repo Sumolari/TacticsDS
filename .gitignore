@@ -4,4 +4,5 @@ build/
 doc/html/
 doc/latex/
 *.sublime-workspace
-test.exe
+*.test
+*.exe
