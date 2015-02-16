@@ -1,0 +1,179 @@
+\documentclass[12pt,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{anysize}
+\usepackage{eurosym}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{etoolbox}
+\usepackage{relsize}
+\usepackage{hyperref}
+\marginsize{2cm}{2cm}{1cm}{3cm}
+\parskip 2ex
+\parindent 0cm
+\title{Práctica 1}
+\author{Lluís Ulzurrun de Asanza Sàez}
+\date{}
+
+\renewcommand{\contentsname}{Índice}
+\renewcommand{\figurename}{Figura}
+
+%\pagenumbering{gobble}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\begin{document}
+
+    \maketitle
+    
+    \tableofcontents
+    
+    \newpage
+        
+    \section{Preparación del entorno}
+    
+    He preparado mi entorno de trabajo sobre Debian 7.8, versión de 32 bits\footnote{Inicialmente mi intención era trabajar sobre Debian 7.8 x64 pero tras problemas con Wine y No\$GBA decidí usar la versión de 32 bits.}.
+        
+	\subsection{Instalación de dependencias}
+	
+	Antes de poder instalar el kit de herramientas para desarrollar para la Nintendo DS es necesario preparar el sistema para poder utilizar estas herramientas. Concretamente las dependencias del toolkit son {\tt make}, {\tt gcc} y {\tt tar}. El paquete {\tt desmume} es necesario si se quieren probar los proyectos usando el emulador  DeSmuME mientras que los paquetes {\tt wine} y {\tt unzip} son necesarios para poder emular el hardware objetivo mediante No\$GBA.
+	
+	Esta última posibilidad es muy interesante ya que No\$GBA dispone de una versión especial orientada a facilitar en gran medida el desarrollo de software para la Nintendo DS e incluye, entre otras herramientas, un navegador de código ensamblador para poder saber qué instrucción está ejecutando la consola en cada momento y una consola de debug lo que permite imprimir mensajes desde la aplicación sin necesidad de interactuar con los controladores de las pantallas.
+	
+	A pesar de no ser estrictamente necesario en mi caso he instalado algunas dependencias adicionales, entre ellas utilidades como {\tt wget} o {\tt g++}.
+	
+\begin{figure}[ht]
+\begin{verbatim}
+sudo apt-get update -qy
+sudo apt-get upgrade -qy
+sudo apt-get install wget tar make gcc g++ desmume wine unzip libc++6 libc6 -qy
+\end{verbatim}[frame=single]
+	\caption{Los comandos ejecutados para instalar las dependencias en mi entorno de trabajo}
+	\label{fig:installDependencies}
+\end{figure}
+	
+\begin{figure}[h!]
+	\caption{Resultados de la instalación de dependencias.}
+	\label{fig:dependency}
+	\centering
+	\includegraphics[width=0.95\textwidth]{P1Media/Dependencias}
+\end{figure}
+	
+	\subsection{Instalación de las herramientas de desarrollo}
+	
+	Los pasos para la instalación de las herramientas de la guía de la práctica eran muy claros pero para facilitarme la instalación de las herramientas en múltiples entornos de trabajo he agrupado todas las instrucciones en un único fichero para que instalar el kit de desarrollo fuese más sencillo.
+	
+	Este script descarga {\tt devkitARM}, lo instala, prepara los archivos de configuración necesarios (realmente es tan sencillo como añadir un par de variables de entorno), descarga los ejemplos y los compila.
+	
+\begin{figure}[ht]
+\begin{verbatim}[frame=single]
+cd ~/
+wget -O ~/devkitARMupdate.pl http://goo.gl/rjbq5P
+chmod a+x ~/devkitARMupdate.pl
+~/devkitARMupdate.pl
+export DEVKITPRO=~/devkitPro
+export DEVKITARM=${DEVKITPRO}/devkitARM
+echo "export DEVKITPRO=~/devkitPro" >>  ~/.bashrc
+echo "export DEVKITARM=${DEVKITPRO}/devkitARM" >>  ~/.bashrc
+echo "export DEVKITPRO=~/devkitPro" >>  ~/.zshrc
+echo "export DEVKITARM=${DEVKITPRO}/devkitARM" >>  ~/.zshrc
+wget -O /tmp/examples.tar.bz2 http://goo.gl/l5I1x1
+tar xjvf /tmp/examples.tar.bz2
+cd ~/devkitPro/examples/nds
+make
+cd ~/
+wget -O nogba.zip http://www.emuparadise.me/emulators/files/user/n-west-w-1776.zip
+unzip nogba.zip
+\end{verbatim}
+	\label{fig:installToolkit}
+	\caption{Los comandos ejecutados para instalar las herramientas de desarrollo y compilar los ejemplos}
+\end{figure}
+
+\begin{figure}[h!]
+	\caption{Resultados de la instalación del toolkit.}
+	\label{fig:dependency}
+	\centering
+	\includegraphics[width=0.95\textwidth]{P1Media/Toolkit}
+\end{figure}
+
+	Nótese que este script no siempre funcionará de forma automática: algunos los enlaces usados son los enlaces de descarga directa temporales de {\tt SourceForge.net}, que expiran tras cierto tiempo. Cuando expiran es necesario esperar unos segundos para descargar el fichero y es posible que el script lo que descargue sean las páginas de espera en lugar de los ficheros deseados. La solución es simple: basta con acceder al link de descarga caducado mediante un navegador web y extraer el nuevo link de descarga inmediata (aparece bajo el título ``direct link'').
+	
+	\newpage
+	
+	\section{Ejecución}
+	
+	\subsection{Compilación de los proyectos de prueba}
+	
+	Los proyectos de prueba pueden compilarse tanto mediante el comando {\tt make} ejecutado en la raíz de la carpeta que contiene los programas de ejemplo como mediante el mismo comando {\tt make} ejecutado en la carpeta de cada proyecto. La diferencia radica en que mediante el primer método se compilan todas las aplicaciones de ejemplo mientras que la segunda opción únicamente compila un proyecto concreto, dependiendo de las necesidades de cada momento convendrá usar una aproximación u otra.
+	
+\begin{figure}[h!]
+	\caption{Resultados de la compilación del proyecto {\tt Hello World}.}
+	\label{fig:dependency}
+	\centering
+	\includegraphics[width=0.95\textwidth]{P1Media/Compilado}
+\end{figure}
+	
+	\subsection{Emulación de los proyectos de prueba}
+	
+	El emulador DeSmuME puede ser invocado desde la terminal mediante el comando {\tt desmume <ruta a fichero .nds>}, sin embargo No\$GBA no acepta ningún argumento, además requiere ser invocado mediante {\tt wine} por lo que en mi entorno he dispuesto de los siguientes alias:
+	
+\begin{figure}[ht]
+\begin{verbatim}[frame=single]
+alias nocashgba="wine ~/NOcashGBA.exe"
+alias nocashgbadebug="wine ~/NOcashGBAdebug.exe"
+\end{verbatim}
+	\label{fig:nocashAlias}
+	\caption{Alias para ejecutar No\$GBA más cómodamente.}
+\end{figure}
+	
+\begin{figure}[h!]
+	\caption{{\tt Hello World} ejecutado en {\tt DeSmuME}.}
+	\label{fig:dependency}
+	\centering
+	\includegraphics[width=0.95\textwidth]{P1Media/DeSmuME}
+\end{figure}
+	
+\begin{figure}[h!]
+	\caption{{\tt Hello World} ejecutado en {\tt No\$GBA}.}
+	\label{fig:dependency}
+	\centering
+	\includegraphics[width=0.95\textwidth]{P1Media/NoCash}
+\end{figure}
+
+\begin{figure}[h!]
+	\caption{{\tt Hello World} ejecutado en {\tt No\$GBA} debugger.}
+	\label{fig:dependency}
+	\centering
+	\includegraphics[width=0.95\textwidth]{P1Media/NoCashDebug}
+\end{figure}
+	
+	\subsection{Ejecución de los proyectos de prueba sobre hardware real}
+	
+	Los programas desarrollados también se pueden ejecutar sobre hardware real mediante el uso de Flashcards para evitar el firmado de código. Las aplicaciones funcionan tanto en Nintendo DS como en Nintendo 2DS o 3DS gracias a la capa de compatibilidad que incluyen las consolas modernas de Nintendo.
+	
+\begin{figure}[h!]
+	\caption{{\tt Hello World} ejecutado en una Nintendo 3DS.}
+	\label{fig:dependency}
+	\centering
+	\includegraphics[width=0.95\textwidth,angle=270]{P1Media/3DS}
+\end{figure}
+	
+	\section{Automatización de la instalación del entorno de desarrollo}
+	
+	Generalmente suelo trabajar sobre Mac OS X pero en algunas ocasiones resulta conveniente utilizar una máquina virtual a fin de evitar ciertos problemas de compatibilidad, sobre todo con librerías ya existentes en el sistema que resultan incompatibles con los programas a utilizar.
+	
+	Recurro a virtualizadores como VirtualBox o Parallels Desktop manejados mediante Vagrant para agilizar la puesta a punto del entorno, sin embargo en esta ocasión apostar por Vagrant no fue una buena decisión ya que me encontré con problemas a la hora de conseguir habilitar el entorno de escritorio por lo que finalmente instalé Debian en la máquina virtual manualmente y aproveché el script que tenía preparado para \emph{provisionar} la máquina para instalar todo el software necesario.
+	
+\begin{figure}
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,language=Ruby,frame=single]{../vagrant/Vagrantfile}
+	\label{fig:Vagrantfile}
+	\caption{Fichero {\tt Vagrantfile} de definición de la máquina virtual. Los archivos referidos en este fichero se corresponden con los fragmentos detallados en los apartados previos. El fichero {\tt personal.sh} únicamente instala {\tt vim} y {\tt zsh}.}
+\end{figure}
+
+\end{document}
