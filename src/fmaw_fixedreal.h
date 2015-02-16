@@ -76,7 +76,11 @@ public:
     /**
      *  Returns the NewFixedReal value converted to natural integer.
      */
-    int toInt() const;  // return the integer part of the NewFixedReal number
+    int toInt() const;
+    /**
+     *  Overloads int casting operator. Calls toInt() method.
+     */
+    operator int() const;
     /*
     // TODO: Document me properly!
     double toDouble() const;  // return the NewFixedReal number as a double
