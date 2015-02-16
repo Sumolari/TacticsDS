@@ -38,17 +38,28 @@ public:
     NewFixedReal();
 
     /**
-     *  Adds x to this instance of FixedReal. In case of 
+     *  Adds x to this instance of FixedReal, modifying its value, and
+     *  returns a reference to this instance. In case of non-matching
+     *  precisions, the one on this instance is preserved.
+     */
+    NewFixedReal &operator+=(const NewFixedReal x);
+    /**
+     *  Adds x to this instance of FixedReal and returns the result. In case of 
      *  non-matching precisions, the one on this instance is preserved.
      */
-    NewFixedReal &operator+=(const NewFixedReal x); // add x to self
-    // TODO: Add support for + operator (not just += operator).
+    NewFixedReal operator+(const NewFixedReal x);
+    
     /**
      *  Substracts x to this instance of FixedReal. In case of 
      *  non-matching precisions, the one on this instance is preserved.
      */
-    NewFixedReal &operator-=(const NewFixedReal x); // substract x from self
-    // TODO: Add support for - operator (not just -= operator).
+    NewFixedReal &operator-=(const NewFixedReal x);
+    /**
+     *  Substracts x to this instance of FixedReal and returns the result.
+     *  In case of non-matching precisions, the one on this instance 
+     *  is preserved.
+     */
+    NewFixedReal operator-(const NewFixedReal x);
     /*
     // TODO: Document me properly!
     NewFixedReal& operator*=(const NewFixedReal x); // multiply self by x
