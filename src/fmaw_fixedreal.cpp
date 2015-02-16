@@ -82,23 +82,4 @@ NewFixedReal &NewFixedReal::operator-=(const NewFixedReal x) {
 int NewFixedReal::raw() const {
     return this->num;
 }
-
-/*
-int main(){
-  NewFixedReal* fr = new NewFixedReal;
-  NewFixedReal* fr2 = new NewFixedReal(24);
-  NewFixedReal* fr3 = new NewFixedReal(5, 10);
-  NewFixedReal* fr4 = new NewFixedReal(1.11, 8);
-
-  printf("%d is a 0, just like %d.\n", fr->raw(), fr2->raw() );
-  printf("%d is a 5 in 22.10 format.\n", fr3->raw() );
-  printf("%d is a 1.11 in 24.8 format.\n", fr4->raw() );
-  *fr3 += *fr4;
-  printf("%d is the sum of the two before.\n", fr3->raw() );
-  *fr3 -= *fr4;
-  printf("%d is a 5 in 22.10 format again.\n", fr3->raw() );
-
-  return 0;
-}*/
-
 }  // namespace FMAW

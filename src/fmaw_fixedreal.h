@@ -1,6 +1,8 @@
 #ifndef FMAW_FIXEDREAL_H
 #define FMAW_FIXEDREAL_H
 
+#include <iostream>
+
 namespace FMAW {
 
 // TODO: Remove "New" prefix from class name once it can substitute Framework's
@@ -10,21 +12,41 @@ private:
     int num;
     short int fraction_size;
 public:
-    // TODO: Document me properly!
-    NewFixedReal(double d, short int fs); // NewFixedReal (32-fs).fs with value d
+    /**
+     *  Creates a NewFixedReal instance with precision (32-fs).fs and
+     *  an initial value of d.
+     *
+     *  Warning: Precision loss is to be expected
+     */
+    NewFixedReal(double d, short int fs);
     //NewFixedReal(double d);  // NewFixedReal 24.8 with value d
-    // TODO: Document me properly!
-    NewFixedReal(int n, short int fs); // NewFixedReal (32-fs).fs with value (n).0
+    /**
+     *  Creates a NewFixedReal instance with precision (32-fs).fs and
+     *  an initial value of (n).0.
+     */
+    NewFixedReal(int n, short int fs);
     //NewFixedReal(int n); // NewFixedReal 24.8 with value (n).0
-    // TODO: Document me properly!
-    NewFixedReal(short int fs);  // NewFixedReal (32-fs).fs with value 0.0
-    // TODO: Document me properly!
-    NewFixedReal();      // NewFixedReal 24.8 with value 0.0
+    /**
+     *  Creates a NewFixedReal instance with precision (32-fs).fs and
+     *  an initial value of 0.0.
+     */
+    NewFixedReal(short int fs);
+    /**
+     *  Creates a NewFixedReal instance with precision 24.8 and
+     *  an initial value of 0.0.
+     */
+    NewFixedReal();
 
-    // TODO: Document me properly!
+    /**
+     *  Adds x to this instance of FixedReal. In case of 
+     *  non-matching precisions, the one on this instance is preserved.
+     */
     NewFixedReal &operator+=(const NewFixedReal x); // add x to self
     // TODO: Add support for + operator (not just += operator).
-    // TODO: Document me properly!
+    /**
+     *  Substracts x to this instance of FixedReal. In case of 
+     *  non-matching precisions, the one on this instance is preserved.
+     */
     NewFixedReal &operator-=(const NewFixedReal x); // substract x from self
     // TODO: Add support for - operator (not just -= operator).
     /*
@@ -36,8 +58,10 @@ public:
     // TODO: Add support for / operator (not just /= operator).
     */
 
-    // TODO: Document me properly!
-    int raw() const;  // return the NewFixedReal number as is
+    /**
+     *  Returns the NewFixedReal value as is, without converting to any type.
+     */
+    int raw() const;
     /*
     // TODO: Document me properly!
     int toInt() const;  // return the integer part of the NewFixedReal number
@@ -60,6 +84,10 @@ public:
     bool operator<=(const self &x, const self &y);
     */
 };
+
+std::ostream& operator<<(std::ostream &strm, const NewFixedReal &a) {
+  return strm << a.raw();
+}
 
 }
 
