@@ -84,8 +84,14 @@ public:
 
     /**
      *  Returns the NewFixedReal value converted to natural double.
+     *  
+     *  Warning: Precision loss is to be expected.
      */
     double toDouble() const;
+    /**
+     *  Overloads double casting operator. Calls toDouble() method.
+     */
+    operator double() const;
 
     /*
     // TODO: Document me properly!
