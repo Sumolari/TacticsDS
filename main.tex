@@ -1,0 +1,54 @@
+\documentclass[12pt,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{anysize}
+\usepackage{eurosym}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{etoolbox}
+\usepackage{relsize}
+\usepackage{hyperref}
+\usepackage[framemethod=default]{mdframed}
+\usepackage{float}
+\marginsize{2cm}{2cm}{1cm}{3cm}
+\parskip 2ex
+\parindent 0cm
+\title{Porfolio}
+\author{Víctor Grau Moreso \and Mark Holland \and Lluís Ulzurrun de Asanza Sàez}
+\date{}
+
+\renewcommand{\contentsname}{Índice}
+\renewcommand{\figurename}{Figura}
+
+%\pagenumbering{gobble}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\begin{document}
+
+\lstset{
+basicstyle=\ttfamily,
+keywordstyle=\color{blue},
+commentstyle=\color{black},
+stringstyle=\color{purple},
+frame=single,
+tabsize=2}
+
+    \maketitle
+    
+    \tableofcontents
+    
+    \newpage
+        
+    \include{P1}
+    
+    \include{P2}
+    
+\end{document}

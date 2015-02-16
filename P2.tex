@@ -1,0 +1,142 @@
+
+\section{Práctica 2 - Acceso al Hardware}
+
+\subsection{PersonalData}
+
+Hemos imprimido todos los valores que nos ofrece el struct de {\tt PersonalData}. Se puede observar en la \textbf{Figura \ref{s1}} que hemos escogido el color verde para los nombres y el gris para los valores. Hemos observado que en el emulador No\$GBA, no están definidos algunos de los valores como el \emph{nombre} y el \emph{mensaje personal} pero en el emulador DeSmuMe si que existen valores para todos.
+
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.75]{P2Media/personaldata.png}
+\caption{Captura del programa PersonalData.}
+\label{s1}
+\end{figure}
+  
+\newpage
+  
+\subsection{Paso del tiempo}
+
+\subsubsection{stopwatch}
+
+A continuación están las respuestas de los ejercicios planteados en el boletin.
+
+\begin{enumerate}
+	\item \textbf{¿Cual es la definición (prototipo) de esta función?}
+		\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=C,frame=single]
+void timerStart( int timer, ClockDivider divider, u16 ticks, VoidFn callback )
+		\end{lstlisting}
+
+	\item \textbf{Busque también la definición de los argumentos segundo y tercero.}
+
+	{\tt ClockDivider\_1024} equivale a dividir el reloj por 1024 ($\approx 32.7284$ kHz) y el 0 como parámetro para el número de ticks antes de desbordar hace que cada tick de nuestro timer equivalga a un tick de reloj.
+
+\end{enumerate}
+
+\subsubsection{timercallback}
+
+\begin{enumerate}
+	\item \textbf{¿Qué significa la función que se le pasa como tercer parámetro?}
+
+	Calcula el valor correcto para el desbordamiento de ticks para una frecuencia dada.
+
+	\item \textbf{¿Cual es la definición (prototpipo) de la función, el cuarto parámetro, que puede ser llamada por el timer?}
+
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=C,frame=single]
+void timerCallBack()
+	\end{lstlisting}
+	
+	\item \textbf{¿Cómo se le pasa/recoge información a/desde esa función?}
+
+	Con la variable global {\tt play}.
+		
+\end{enumerate}
+
+\subsubsection{RealTimeClock}
+
+\begin{enumerate}
+	\item \textbf{¿Qué dos funciones se utilizan para averiguar la hora y la fecha?}
+
+	Primero llama a {\tt time} para que devuelve un struct con el Unix Time, después utiliza {\tt gmtime} para tratar este {\tt time\_t} struct y devolver otro struct con el tiempo en un formato más manejable.
+
+	Sus prototipos son los siguientes:
+
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=C,frame=single]
+time_t time(time_t *t)
+struct tm *gmtime(const time_t *timer)
+	\end{lstlisting}
+
+	\item \textbf{¿Cómo inicializa este ejemplo el uso de las dos pantallas de la consola?}
+	
+	Con las líneas \#103 y \#106:
+	
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=C,frame=single]
+         lcdMainOnTop(); // Del fichero system.h
+videoSetMode(MODE_0_3D); // Del fichero video.h
+	\end{lstlisting}
+\end{enumerate}
+
+\newpage
+
+\subsection{Gestión de entrada}
+
+\subsubsection{keyboard/keyboard\_async}
+
+Proporciona un teclado con una consola donde aparece lo que se teclea.
+
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.75]{P2Media/keyboard_async.png}
+\caption{keyboard\_async}
+\end{figure}
+
+\subsubsection{keyboard/keyboard\_stdin}
+
+Lee del teclado como entrada estandard con un tipico program de hola \$(inserta\_nombre).
+
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.75]{P2Media/keyboard_stdin.png}
+\caption{keyboard\_stdin}
+\end{figure}
+
+\subsubsection{Touch\_Pad/touch\_area/}
+
+Indice en pantalla que punto de los ejes x/y esta tocando la pantalla el usuario y con que cantidad de fuerza.
+
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.75]{P2Media/touch_area.png}
+\caption{touch\_area}
+\end{figure}
+
+\subsubsection{Touch\_Pad/touch\_look/}
+
+Proporciona en la pantalla de arriba un mundo 3D donde podemos "mirar" utilizando la pantalla de abajo deslizando el dedo.
+
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.75]{P2Media/touch_look.png}
+\caption{touch\_look}
+\end{figure}
+
+\subsubsection{Touch\_Pad/touch\_test/}
+
+Parecido al \emph{test\_area} pero proporcionando más información como que botones están siendo pulsados.
+
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.5]{P2Media/touch_test.png}
+\caption{touch\_test}
+\end{figure}
+
+\subsection{Trabajo autónomo}
+
+Mediante los ejemplos indicados no hubo gran problema para realizar el ejercico, lo único que ha requerido refescar un poco ha sido para mostrar contenido en la pantalla de arriba manteniendo el menu en la de abajo.
+
+A continuación dejamos capturas del programa mostrando el valor de \texttt{name} y lo mismo trás darle a la función de \texttt{lcdSwap}.
+
+\begin{figure}[H] 
+\centering
+\includegraphics[scale=0.35]{P2Media/prog.png}
+\caption{Programa con menu}
+\end{figure}
