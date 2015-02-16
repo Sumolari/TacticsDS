@@ -106,4 +106,8 @@ NewFixedReal NewFixedReal::operator-(const NewFixedReal x) {
 int NewFixedReal::raw() const {
     return this->num;
 }
+int NewFixedReal::toInt() const {
+    int res = this->num >> this->fraction_size;
+    return res;
+}
 }  // namespace FMAW
