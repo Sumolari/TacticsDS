@@ -124,16 +124,12 @@ void setupGraphics(void) {
         }
     }
 
-    // Enable alpha blending of background 1.
-    // My guess: BLEND_DST_BACKDROP is the 14th bit at 1, BLEND_SRC_BG1 is the
-    //           2nd bit at 1 and BLEND_ALPHA are bits 8th and 7th at 10.
-    //           BLEND_DST_BACKDROP 0010000000000000
-    //           BLEND_SRC_BG1      0000000000000010
-    //           BLEND_ALPHA        0000000010000000
-    //           -----------------------------------
-    //                              0010000010000010
-    REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
-    REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
+    bgGradient.useAsAlphaBlendingSrc();
+    FMAW::Background::useBackdropAsAlphaDst();
+    FMAW::Background::setAlphaBlendingMode(FMAW::babmAlphaBlending);
+
+    FMAW::Background::setAlphaBlendingCoefficientOne(16);
+    FMAW::Background::setAlphaBlendingCoefficientTwo(16);
 
     g_bug = Bug(FMAW::Sprite(0));
 }

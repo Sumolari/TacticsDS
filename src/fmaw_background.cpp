@@ -233,6 +233,123 @@ BackgroundPriority Background::getPriority() {
     }
 }
 
+
+//----------//------------------------------------------------------------------
+//----------// Alpha settings.
+//----------//------------------------------------------------------------------
+
+void Background::useAsAlphaBlendingSrc() {
+    int andMask = 0xFFFF;
+    int orMask  = 0x0000;
+
+    switch (this->id) {
+        case 0:
+            orMask = 0x0001;
+            andMask = 0xFEFF;
+            break;
+        case 1:
+            orMask = 0x0002;
+            andMask = 0xFDFF;
+            break;
+        case 2:
+            orMask = 0x0004;
+            andMask = 0xFBFF;
+            break;
+        case 3:
+            orMask = 0x0008;
+            andMask = 0xF7FF;
+            break;
+        default:
+            return;
+    }
+
+    REG_BLDCNT &= andMask;
+    REG_BLDCNT |= orMask;
+}
+
+void Background::useAsAlphaBlendingDst() {
+    int andMask = 0xFFFF;
+    int orMask  = 0x0000;
+
+    switch (this->id) {
+        case 0:
+            orMask = 0x0100;
+            andMask = 0xFFFE;
+            break;
+        case 1:
+            orMask = 0x0200;
+            andMask = 0xFFFD;
+            break;
+        case 2:
+            orMask = 0x0400;
+            andMask = 0xFFFB;
+            break;
+        case 3:
+            orMask = 0x0800;
+            andMask = 0xFFF7;
+            break;
+        default:
+            return;
+    }
+
+    REG_BLDCNT &= andMask;
+    REG_BLDCNT |= orMask;
+}
+
+void Background::useBackdropAsAlphaSrc() {
+    int andMask = 0x1FFF;
+    int orMask  = 0x0020;
+    REG_BLDCNT &= andMask;
+    REG_BLDCNT |= orMask;
+}
+
+void Background::useBackdropAsAlphaDst() {
+    int andMask = 0xFFDF;
+    int orMask  = 0x2000;
+    REG_BLDCNT &= andMask;
+    REG_BLDCNT |= orMask;
+}
+
+void Background::setAlphaBlendingMode(BackgroundAlphaBlendingMode mode) {
+    int orMask = 0x0000;
+    int andMask = 0x0000;
+    switch (mode) {
+        case babmDisable:
+            orMask = 0x0000;
+            andMask = 0xFF3F;
+            break;
+        case babmAlphaBlending:
+            orMask = 0x0040;
+            andMask = 0xFF3F;
+            break;
+        case babmFadeImageBright:
+            orMask = 0x0080;
+            andMask = 0xFF3F;
+            break;
+        case babmFadeImageDark:
+            orMask = 0x00C0;
+            andMask = 0xFF3F;
+            break;
+    }
+    REG_BLDCNT &= andMask;
+    REG_BLDCNT |= orMask;
+}
+
+bool Background::setAlphaBlendingCoefficientOne(uint8 coeff) {
+    if (coeff < 0 || coeff > 16) return false;
+    coeff |= 0xFFE0;
+    REG_BLDALPHA &= coeff;
+    return true;
+}
+
+bool Background::setAlphaBlendingCoefficientTwo(uint8 coeff) {
+    if (coeff < 0 || coeff > 16) return false;
+    coeff = coeff << 8;
+    coeff |= 0xE0FF;
+    REG_BLDALPHA &= coeff;
+    return true;
+}
+
 //----------//------------------------------------------------------------------
 //----------// Other settings.
 //----------//------------------------------------------------------------------

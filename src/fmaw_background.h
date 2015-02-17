@@ -32,6 +32,13 @@ typedef uint8 background_id;
 // Type that defines the ID of a background tile.
 typedef uint16 background_tile_id;
 
+typedef enum t_alphaBlendingMode {
+    babmDisable,
+    babmAlphaBlending,
+    babmFadeImageBright,
+    babmFadeImageDark
+} BackgroundAlphaBlendingMode;
+
 void setBackgroundColor(unsigned int color);
 
 class Background {
@@ -177,8 +184,6 @@ public:
      * @return This background's horizontal offset.
      */
     uint8 getHorizontalOffset();
-
-
 
     //--------------------------------------------------------------------------
     // Tile & palette settings.
@@ -369,6 +374,58 @@ public:
      * @return This background's priority.
      */
     BackgroundPriority getPriority();
+
+    //--------------------------------------------------------------------------
+    // Alpha settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets this background as source background for alpha blending.
+     * If this background was destination background for alpha blending it
+     * won't be anymore.
+     */
+    void useAsAlphaBlendingSrc();
+
+    /**
+     * Sets this background as destination background for alpha blending.
+     * If this background was source background for alpha blending it won't be
+     * anymore.
+     */
+    void useAsAlphaBlendingDst();
+
+    /**
+     * Use backdrop as source for alpha blending.
+     * If backdrop was used as destination for alpha blending it won't be
+     * anymore.
+     */
+    static void useBackdropAsAlphaSrc();
+
+    /**
+     * Use backdrop as source for alpha blending.
+     * If backdrop was used as destination for alpha blending it won't be
+     * anymore.
+     */
+    static void useBackdropAsAlphaDst();
+
+    /**
+     * Sets alpha blending mode for all backgrounds.
+     * @param mode New alpha blending mode.
+     */
+    static void setAlphaBlendingMode(BackgroundAlphaBlendingMode mode);
+
+    /**
+     * Sets value for alpha blending coefficient A.
+     * @param  coeff Value, unsigned from 0 to 16.
+     * @return       Whether new value could be set or not.
+     */
+    static bool setAlphaBlendingCoefficientOne(uint8 coeff);
+
+    /**
+     * Sets value for alpha blending coefficient B.
+     * @param  coeff Value, unsigned from 0 to 16.
+     * @return       Whether new value could be set or not.
+     */
+    static bool setAlphaBlendingCoefficientTwo(uint8 coeff);
 
     //--------------------------------------------------------------------------
     // Other settings.
