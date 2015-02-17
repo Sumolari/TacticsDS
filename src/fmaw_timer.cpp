@@ -114,11 +114,6 @@ void check() {
 
     ticks = TICKS_TO_VALID_RANGE(ticks + timerElapsed(0));
 
-    // unsigned int ticks_ms = TICKS_TO_MS(ticks);
-
-    // FMAW::printf("Ticks: %d", ticks);
-    // FMAW::printf("Ticks in ms: %u", ticks_ms);
-
     for (
         auto it = registered_functions.begin();
         it != registered_functions.end();
@@ -133,11 +128,6 @@ void check() {
                         ticks + entry.delta);
             else
                 dequeue_function(entry.ID);
-            /**/
-            FMAW::printf("Next time for %u: %u _ %u (%u)", entry.ID,
-                         registered_functions[it->first].init,
-                         ticks, entry.delta);
-            /**/
         }
 
         if (entry.toBeRemoved)
