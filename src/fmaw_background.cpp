@@ -337,16 +337,15 @@ void Background::setAlphaBlendingMode(BackgroundAlphaBlendingMode mode) {
 
 bool Background::setAlphaBlendingCoefficientOne(uint8 coeff) {
     if (coeff < 0 || coeff > 16) return false;
-    coeff |= 0xFFE0;
-    REG_BLDALPHA &= coeff;
+    REG_BLDALPHA &= 0xFFE0;
+    REG_BLDALPHA |= coeff;
     return true;
 }
 
 bool Background::setAlphaBlendingCoefficientTwo(uint8 coeff) {
     if (coeff < 0 || coeff > 16) return false;
-    coeff = coeff << 8;
-    coeff |= 0xE0FF;
-    REG_BLDALPHA &= coeff;
+    REG_BLDALPHA &= 0xE0FF;
+    REG_BLDALPHA |= (coeff << 8);
     return true;
 }
 

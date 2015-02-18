@@ -128,7 +128,7 @@ void setupGraphics(void) {
     FMAW::Background::useBackdropAsAlphaDst();
     FMAW::Background::setAlphaBlendingMode(FMAW::babmAlphaBlending);
 
-    FMAW::Background::setAlphaBlendingCoefficientOne(16);
+    FMAW::Background::setAlphaBlendingCoefficientOne(4);
     FMAW::Background::setAlphaBlendingCoefficientTwo(16);
 
     g_bug = Bug(FMAW::Sprite(0));
