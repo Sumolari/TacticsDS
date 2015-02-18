@@ -1,86 +1,75 @@
 {
-	"folders":
-	[
-		{
-			"file_exclude_patterns":
-			[
-				"fmaw*"
-			],
-			"follow_symlinks": true,
-			"name": "Source",
-			"path": "src"
-		},
-		{
-			"file_include_patterns":
-			[
-				"fmaw*"
-			],
-			"follow_symlinks": true,
-			"name": "FMAW",
-			"path": "FMAW"
-		},
-		{
-			"follow_symlinks": true,
-			"name": "Builds",
-			"path": "build"
-		},
-		{
-			"follow_symlinks": true,
-			"name": "Assets",
-			"path": "assets"
-		},
-		{
-			"follow_symlinks": true,
-			"name": "Documentation",
-			"path": "doc"
-		},
-		{
-			"file_exclude_patterns":
-			[
-				"framework.sublime-project"
-			],
-			"folder_exclude_patterns":
-			[
-				"doc",
-				"assets",
-				"src",
-				"build"
-			],
-			"follow_symlinks": true,
-			"name": "Root",
-			"path": "."
-		},
-		{
-			"follow_symlinks": true,
-			"path": "/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/stopwatch"
-		}
-	],
-	"settings":
-	{
-		"AStyleFormatter":
-		{
+	"folders": [ {
+		"file_exclude_patterns": [
+			"fmaw*",
+			"catch.hpp",
+			"test_*",
+			"tests.hpp"
+		],
+		"follow_symlinks": true,
+		"name": "Source",
+		"path": "src"
+	}, {
+		"file_include_patterns": [
+			"fmaw*"
+		],
+		"follow_symlinks": true,
+		"name": "FMAW",
+		"path": "FMAW"
+	}, {
+		"file_include_patterns": [
+			"test_*",
+			"tests.hpp",
+			"catch.hpp"
+		],
+		"follow_symlinks": true,
+		"name": "Tests",
+		"path": "tests"
+	}, {
+		"follow_symlinks": true,
+		"name": "Builds",
+		"path": "build"
+	}, {
+		"follow_symlinks": true,
+		"name": "Assets",
+		"path": "assets"
+	}, {
+		"follow_symlinks": true,
+		"name": "Documentation",
+		"path": "doc"
+	}, {
+		"file_exclude_patterns": [
+			"framework.sublime-project"
+		],
+		"folder_exclude_patterns": [
+			"doc",
+			"assets",
+			"src",
+			"build",
+			"tests",
+			"FMAW"
+		],
+		"follow_symlinks": true,
+		"name": "Root",
+		"path": "."
+	} ],
+	"settings": {
+		"AStyleFormatter": {
 			"autoformat_on_save": true,
 			"debug": false,
-			"options_c":
-			{
-				"additional_options":
-				[
-				],
+			"options_c": {
+				"additional_options": [],
 				"additional_options_file": "",
 				"style": "google",
 				"use_only_additional_options": false
 			},
-			"options_c++":
-			{
-				"additional_options":
-				[
-				],
+			"options_c++": {
+				"additional_options": [],
 				"additional_options_file": "",
 				"style": "google",
 				"use_only_additional_options": false
 			},
-			"options_default":
-			{
+			"options_default": {
 				"add-brackets": false,
 				"add-one-line-brackets": false,
 				"align-method-colon": true,

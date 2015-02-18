@@ -38,7 +38,7 @@ CFLAGS	:=	-g -Wall -O2\
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM9
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
@@ -106,7 +106,7 @@ $(BUILD):
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba $(TARGET).test
 
 #-------------------------------------------------------------------------------
 doc:
@@ -114,6 +114,10 @@ doc:
 
 doc-%:
 	$(DOXY) $(DOXYFILE).$*
+#-------------------------------------------------------------------------------
+test:
+	g++ src/tests.hpp -std=c++11 -o$(TARGET).test
+	./$(TARGET).test
 
 #-------------------------------------------------------------------------------
 else
