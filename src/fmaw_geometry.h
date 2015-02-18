@@ -3,10 +3,6 @@
 
 #include "./fmaw_types.h"
 
-#include <nds.h>
-
-#include "./fmaw_debug.h"
-
 namespace FMAW {
 
 typedef struct t_point {
@@ -29,78 +25,61 @@ private:
     /**
      * Sets addresses of internal registers based on current ID of transform.
      */
-    void selectRegister() {
-        this->PA = OAM + this->id * 16 + 3;
-        this->PB = OAM + this->id * 16 + 7;
-        this->PC = OAM + this->id * 16 + 11;
-        this->PD = OAM + this->id * 16 + 15;
-    }
+    void selectRegister();
 
 public:
     // ID of this transform.
     uint8 id;
     // Next empty transform.
     static uint8 nextEmptyTransform;
+
     /**
      * Creates an empty, zero-filled, transform.
      */
     Transform() : id(nextEmptyTransform++) {
         this->selectRegister();
-    };
+    }
 
     /**
      * Returns transform with given identifier.
      */
     Transform(uint8 id) : id(id) {
         this->selectRegister();
-    };
+    }
 
     /**
      * Returns an AND-friendly bitmask to set the index of this Transform.
      * @return AND-friendly bitmask to set the index of this Transform.
      */
-    uint16 IDbitMask() {
-        return ((this->id & 0x001F)  << 9) | 0xC1FF;
-    }
+    uint16 IDbitMask();
 
-    void clear() {
-        *this->PA = 0;
-        *this->PB = 0;
-        *this->PC = 0;
-        *this->PD = 0;
-    }
+    /**
+     * Resets this transform to 0.
+     */
+    void clear();
 
     /**
      * Sets this transform to identify transform.
      */
-    void setIdentity() {
-        *this->PA = 1 << 8;
-        *this->PB = 0;
-        *this->PC = 0;
-        *this->PD = 1 << 8;
-    }
+    void setIdentity();
 
-    void applyRotation(double angle) {
+    /**
+     * Applies a rotation of given angle, CCW.
+     * @param angle Angle to rotate.
+     */
+    void applyRotation(double angle);
 
-    }
+    /**
+     * Applies given scaling.
+     * @param x Horizontal scaling.
+     * @param y Vertical scaling.
+     */
+    void applyScaling(FixedReal x, FixedReal y);
 
-    void applyScaling(FixedReal x, FixedReal y) {
-        *this->PA = (((*this->PA) * x) >> 8);
-        *this->PB = (((*this->PB) * y) >> 8);
-        *this->PC = (((*this->PC) * x) >> 8);
-        *this->PD = (((*this->PD) * y) >> 8);
-    }
-
-    void print() {
-        printf("%s\r\n  Transform %u:%s\r\n%f %f\r\n%f %f\r\n%s",
-               "\r\n|----------------|", this->id, "\r\n|----------------|",
-               *this->PA,
-               *this->PB,
-               *this->PC,
-               *this->PD,
-               "|----------------|"
-              );
-    }
+    /**
+     * Displays information about this transform.
+     */
+    void print();
 
 };
 

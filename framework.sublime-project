@@ -54,14 +54,12 @@
 			"doc",
 			"assets",
 			"src",
-			"build"
+			"build",
+			"FMAW-*"
 		],
 		"follow_symlinks": true,
 		"name": "Root",
 		"path": "."
-	}, {
-		"follow_symlinks": true,
-		"path": "/Users/sumolari/Dropbox/Universidad/Cuarto/Semestre B/AEV/LAB/stopwatch"
 	} ],
 	"settings": {
 		"AStyleFormatter": {

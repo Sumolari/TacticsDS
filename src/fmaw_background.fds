@@ -20,6 +20,43 @@ void setBackgroundColor(unsigned int color) {
 
 background_id Background::nextEmptyBackground = 0;
 
+void Background::selectRegister() {
+    switch (this->id) {
+        case 0:
+            this->reg = &REG_BG0CNT;
+            this->vOffset = &REG_BG0VOFS;
+            this->hOffset = &REG_BG0HOFS;
+            break;
+        case 1:
+            this->reg = &REG_BG1CNT;
+            this->vOffset = &REG_BG1VOFS;
+            this->hOffset = &REG_BG1HOFS;
+            break;
+        case 2:
+            this->reg = &REG_BG2CNT;
+            this->vOffset = &REG_BG2VOFS;
+            this->hOffset = &REG_BG2HOFS;
+            break;
+        case 3:
+            this->reg = &REG_BG3CNT;
+            this->vOffset = &REG_BG3VOFS;
+            this->hOffset = &REG_BG3HOFS;
+            break;
+    }
+}
+
+Background::Background() : id(nextEmptyBackground++) {
+    this->clear();
+    this->selectRegister();
+    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(0);
+}
+
+Background::Background(background_id id) : id(id) {
+    this->selectRegister();
+    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
+                      this->getScreenBaseBlock());
+}
+
 //----------//------------------------------------------------------------------
 //----------// Position.
 //----------//------------------------------------------------------------------

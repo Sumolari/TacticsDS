@@ -2,7 +2,11 @@
 #define FMAW_H
 
 #include "./fmaw_constants.h"
+
+#ifdef NDS
 #include "./fmaw_macros.h"
+#endif
+
 #include "./fmaw_types.h"
 #include "./fmaw_math.h"
 #include "./fmaw_geometry.h"

@@ -4,8 +4,6 @@
 #include "./fmaw_types.h"
 #include "./fmaw_tile.h"
 
-#include <nds.h>
-
 namespace FMAW {
 
 #define TOTAL_BACKGROUNDS 4  // Total amount of backgrounds available.
@@ -56,30 +54,7 @@ private:
     /**
      * Sets internal register attrbute to proper address based on ID.
      */
-    void selectRegister() {
-        switch (this->id) {
-            case 0:
-                this->reg = &REG_BG0CNT;
-                this->vOffset = &REG_BG0VOFS;
-                this->hOffset = &REG_BG0HOFS;
-                break;
-            case 1:
-                this->reg = &REG_BG1CNT;
-                this->vOffset = &REG_BG1VOFS;
-                this->hOffset = &REG_BG1HOFS;
-                break;
-            case 2:
-                this->reg = &REG_BG2CNT;
-                this->vOffset = &REG_BG2VOFS;
-                this->hOffset = &REG_BG2HOFS;
-                break;
-            case 3:
-                this->reg = &REG_BG3CNT;
-                this->vOffset = &REG_BG3VOFS;
-                this->hOffset = &REG_BG3HOFS;
-                break;
-        }
-    }
+    void selectRegister();
 
 public:
     // ID of this background.
@@ -90,21 +65,13 @@ public:
     /**
      * Default constructor takes a valid ID automatically.
      */
-    Background() : id(nextEmptyBackground++) {
-        this->clear();
-        this->selectRegister();
-        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(0);
-    };
+    Background();
 
     /**
      * Constructor for Background with given ID. Background should have been
      * previously created otherwise results are not defined.
      */
-    Background(background_id id) : id(id) {
-        this->selectRegister();
-        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
-                          this->getScreenBaseBlock());
-    };
+    Background(background_id id);
 
     //--------------------------------------------------------------------------
     // Position.
