@@ -122,4 +122,77 @@ double NewFixedReal::toDouble() const {
 NewFixedReal::operator double() const{
   return this->toDouble();
 }
+
+bool NewFixedReal::operator==(const NewFixedReal x) const{
+  bool res;
+  if (fraction_size > x.fraction_size) {
+      res = num == (x.num << (fraction_size - x.fraction_size));
+  } else if (fraction_size < x.fraction_size) {
+      res = num == (x.num >> (x.fraction_size - fraction_size));
+  } else {
+      res = num == x.num;
+  }
+
+  return res;
+}
+bool NewFixedReal::operator!=(const NewFixedReal x) const{
+  bool res;
+  if (fraction_size > x.fraction_size) {
+      res = num != (x.num << (fraction_size - x.fraction_size));
+  } else if (fraction_size < x.fraction_size) {
+      res = num != (x.num >> (x.fraction_size - fraction_size));
+  } else {
+      res = num != x.num;
+  }
+
+  return res;
+}
+bool NewFixedReal::operator>(const NewFixedReal x) const{
+  bool res;
+  if (fraction_size > x.fraction_size) {
+      res = num > (x.num << (fraction_size - x.fraction_size));
+  } else if (fraction_size < x.fraction_size) {
+      res = num > (x.num >> (x.fraction_size - fraction_size));
+  } else {
+      res = num > x.num;
+  }
+
+  return res;
+}
+bool NewFixedReal::operator<(const NewFixedReal x) const{
+  bool res;
+  if (fraction_size > x.fraction_size) {
+      res = num < (x.num << (fraction_size - x.fraction_size));
+  } else if (fraction_size < x.fraction_size) {
+      res = num < (x.num >> (x.fraction_size - fraction_size));
+  } else {
+      res = num < x.num;
+  }
+
+  return res;
+}
+bool NewFixedReal::operator>=(const NewFixedReal x) const{
+  bool res;
+  if (fraction_size > x.fraction_size) {
+      res = num >= (x.num << (fraction_size - x.fraction_size));
+  } else if (fraction_size < x.fraction_size) {
+      res = num >= (x.num >> (x.fraction_size - fraction_size));
+  } else {
+      res = num >= x.num;
+  }
+
+  return res;
+}
+bool NewFixedReal::operator<=(const NewFixedReal x) const{
+  bool res;
+  if (fraction_size > x.fraction_size) {
+      res = num <= (x.num << (fraction_size - x.fraction_size));
+  } else if (fraction_size < x.fraction_size) {
+      res = num <= (x.num >> (x.fraction_size - fraction_size));
+  } else {
+      res = num <= x.num;
+  }
+
+  return res;
+}
 }  // namespace FMAW

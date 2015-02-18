@@ -44,19 +44,19 @@ public:
      */
     NewFixedReal &operator+=(const NewFixedReal x);
     /**
-     *  Adds x to this instance of FixedReal and returns the result. In case of 
+     *  Adds x to this instance of FixedReal and returns the result. In case of
      *  non-matching precisions, the one on this instance is preserved.
      */
     NewFixedReal operator+(const NewFixedReal x);
-    
+
     /**
-     *  Substracts x to this instance of FixedReal. In case of 
+     *  Substracts x to this instance of FixedReal. In case of
      *  non-matching precisions, the one on this instance is preserved.
      */
     NewFixedReal &operator-=(const NewFixedReal x);
     /**
      *  Substracts x to this instance of FixedReal and returns the result.
-     *  In case of non-matching precisions, the one on this instance 
+     *  In case of non-matching precisions, the one on this instance
      *  is preserved.
      */
     NewFixedReal operator-(const NewFixedReal x);
@@ -84,7 +84,7 @@ public:
 
     /**
      *  Returns the NewFixedReal value converted to natural double.
-     *  
+     *
      *  Warning: Precision loss is to be expected.
      */
     double toDouble() const;
@@ -93,20 +93,36 @@ public:
      */
     operator double() const;
 
-    /*
-    // TODO: Document me properly!
-    bool operator==(const self &x, const self &y);
-    // TODO: Document me properly!
-    bool operator!=(const self &x, const self &y);
-    // TODO: Document me properly!
-    bool operator>(const self &x, const self &y);
-    // TODO: Document me properly!
-    bool operator<(const self &x, const self &y);
-    // TODO: Document me properly!
-    bool operator>=(const self &x, const self &y);
-    // TODO: Document me properly!
-    bool operator<=(const self &x, const self &y);
-    */
+    /**
+     *  Returns true if FixedReal x is equal to this instance of FixedReal.
+     *  False otherwise.
+     */
+    bool operator==(const NewFixedReal x) const;
+    /**
+     *  Returns false if FixedReal x is equal to this instance of FixedReal.
+     *  True otherwise.
+     */
+    bool operator!=(const NewFixedReal x) const;
+    /**
+     *  Returns true if this instance of FixedReal is greater than FixedReal x.
+     *  False otherwise.
+     */
+    bool operator>(const NewFixedReal x) const;
+    /**
+     *  Returns true if this instance of FixedReal is lesser than FixedReal x.
+     *  False otherwise.
+     */
+    bool operator<(const NewFixedReal x) const;
+    /**
+     *  Returns true if this instance of FixedReal is greater than  or equal to
+     *  FixedReal x. False otherwise.
+     */
+    bool operator>=(const NewFixedReal x) const;
+    /**
+     *  Returns true if this instance of FixedReal is lesser than  or equal to
+     *  FixedReal x. False otherwise.
+     */
+    bool operator<=(const NewFixedReal x) const;
 };
 
 std::ostream& operator<<(std::ostream &strm, const NewFixedReal &a) {
