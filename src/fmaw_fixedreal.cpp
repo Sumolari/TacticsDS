@@ -114,4 +114,12 @@ int NewFixedReal::toInt() const {
 NewFixedReal::operator int() const{
   return this->toInt();
 }
+
+double NewFixedReal::toDouble() const {
+    double res = static_cast<double>(this->num) / (1 << this->fraction_size);
+    return res;
+}
+NewFixedReal::operator double() const{
+  return this->toDouble();
+}
 }  // namespace FMAW

@@ -81,10 +81,17 @@ public:
      *  Overloads int casting operator. Calls toInt() method.
      */
     operator int() const;
-    /*
-    // TODO: Document me properly!
-    double toDouble() const;  // return the NewFixedReal number as a double
-    */
+
+    /**
+     *  Returns the NewFixedReal value converted to natural double.
+     *  
+     *  Warning: Precision loss is to be expected.
+     */
+    double toDouble() const;
+    /**
+     *  Overloads double casting operator. Calls toDouble() method.
+     */
+    operator double() const;
 
     /*
     // TODO: Document me properly!
