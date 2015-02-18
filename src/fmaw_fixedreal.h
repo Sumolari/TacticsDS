@@ -123,11 +123,9 @@ public:
      *  FixedReal x. False otherwise.
      */
     bool operator<=(const NewFixedReal x) const;
-};
 
-std::ostream& operator<<(std::ostream &strm, const NewFixedReal &a) {
-  return strm << a.raw();
-}
+    friend std::ostream& operator<<(std::ostream &strm, const NewFixedReal &a);
+};
 
 }
 

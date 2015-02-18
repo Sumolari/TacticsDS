@@ -195,4 +195,8 @@ bool NewFixedReal::operator<=(const NewFixedReal x) const{
 
   return res;
 }
+
+std::ostream& operator<<(std::ostream &strm, const NewFixedReal &a) {
+  return strm << a.raw();
+}
 }  // namespace FMAW
