@@ -34,20 +34,15 @@
 
 #define BACKDROP_COLOR RGB8(190, 255, 255)
 
-//----------//------------------------------------------------------------------
-//----------// Screen base blocks pointed
-//----------//------------------------------------------------------------------
-
-#define bg0map    (reinterpret_cast<u16*>BG_MAP_RAM(1))
-#define bg1map    (reinterpret_cast<u16*>BG_MAP_RAM(2))
-
 //------------------------------------------------------------------------------
 // Game objects
 //------------------------------------------------------------------------------
 
 #include "./bug.h"
+#include "./warrior.h"
 
 Bug g_bug;
+// Warrior g_warrior;
 
 FixedReal g_camera_x;
 FixedReal g_camera_y;
@@ -132,6 +127,7 @@ void setupGraphics(void) {
     FMAW::Background::setAlphaBlendingCoefficientTwo(16);
 
     g_bug = Bug(FMAW::Sprite(0));
+    // g_warrior = Warrior(FMAW::Sprite(1));
 }
 
 void process_input() { }
@@ -146,6 +142,7 @@ void update_logic() {
 
 void update_graphics() {
     g_bug.render(g_camera_x >> 8, g_camera_y >> 8);
+    // g_warrior.render(g_camera_x >> 8, g_camera_y >> 8);
 
     REG_BG0HOFS = g_camera_x >> 8;  // REG_BG0HOFS = g_camera_x.toInt();
 }
@@ -156,6 +153,7 @@ int main(void) {
 
     auto func = [](int ID) {
         g_bug.update();
+        // g_warrior.update();
     };
 
     FMAW::Timer::enqueue_function(func, 200, true);
