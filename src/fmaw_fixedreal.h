@@ -13,11 +13,11 @@ public:
   fixedreal(short int fs);  // fixedreal (32-fs).fs with value 0.0
   fixedreal();      // fixedreal 24.8 with value 0.0
   
+  fixedreal& operator+=(const fixedreal x); // add x to self
   /*
-  self &operator+=(const self &x); // add x to self
-  self &operator-=(const self &x); // substract x from self
-  self &operator*=(const self &x); // multiply self by x
-  self &operator/=(const self &x); // divide self by x
+  fixedreal& operator-=(const fixedreal x); // substract x from self
+  fixedreal& operator*=(const fixedreal x); // multiply self by x
+  fixedreal& operator/=(const fixedreal x); // divide self by x
   */
   
   int raw() const;  // return the fixedreal number as is
