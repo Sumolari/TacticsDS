@@ -39,6 +39,37 @@ public:
     };
 
     /**
+     * Sets X position of this character.
+     * @param x New X coordinate.
+     */
+    virtual void setXPosition(FixedReal x);
+
+    /**
+     * Sets Y position of this character.
+     * @param y New Y coordinate.
+     */
+    virtual void setYPosition(FixedReal y);
+
+    /**
+     * Sets X and Y position of this character.
+     * @param x New X coordinate.
+     * @param y New Y coordinate.
+     */
+    virtual void setPosition(FixedReal x, FixedReal y);
+
+    /**
+     * Returns current X position of this character.
+     * @return Current X position of this character.
+     */
+    virtual FixedReal getXPosition();
+
+    /**
+     * Returns current Y position of this character.
+     * @return Current Y position of this character.
+     */
+    virtual FixedReal getYPosition();
+
+    /**
      * Updates this character's attribute.
      * This method should be called manually once per frame.
      */
