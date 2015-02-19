@@ -116,7 +116,7 @@ doc-%:
 	$(DOXY) $(DOXYFILE).$*
 #-------------------------------------------------------------------------------
 test:
-	g++ src/tests.hpp -std=c++11 -o$(TARGET).test
+	g++ src/tests.cpp -std=gnu++0x -o$(TARGET).test -fexceptions -DTEST
 	./$(TARGET).test
 
 #-------------------------------------------------------------------------------

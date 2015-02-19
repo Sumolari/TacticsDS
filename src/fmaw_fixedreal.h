@@ -69,7 +69,7 @@ public:
      *  Multiplies x to this instance of FixedReal. The precision of
      *  this instance is preserved.
      */
-    NewFixedReal& operator*=(const NewFixedReal x);
+    NewFixedReal &operator*=(const NewFixedReal x);
     /**
      *  Multiplies x to this instance of FixedReal and returns the result.
      *  The precision of this instance is the one preserved.
@@ -82,7 +82,7 @@ public:
      *  Divides this instance of FixedReal by x. The precision of
      *  this instance is preserved.
      */
-    NewFixedReal& operator/=(const NewFixedReal x);
+    NewFixedReal &operator/=(const NewFixedReal x);
     /**
      *  Divides this instance of FixedReal by x and returns the result.
      *  The precision of this instance is preserved.
@@ -90,8 +90,6 @@ public:
     NewFixedReal operator/(const NewFixedReal x);
     NewFixedReal operator/(const int x);
     NewFixedReal operator/(const double x);
-
-
 
     /**
      *  Returns the NewFixedReal value as is, without converting to any type.
@@ -112,6 +110,7 @@ public:
      *  Warning: Precision loss is to be expected.
      */
     double toDouble() const;
+
     /**
      *  Overloads double casting operator. Calls toDouble() method.
      */
@@ -122,33 +121,38 @@ public:
      *  False otherwise.
      */
     bool operator==(const NewFixedReal x) const;
+
     /**
      *  Returns false if FixedReal x is equal to this instance of FixedReal.
      *  True otherwise.
      */
     bool operator!=(const NewFixedReal x) const;
+
     /**
      *  Returns true if this instance of FixedReal is greater than FixedReal x.
      *  False otherwise.
      */
     bool operator>(const NewFixedReal x) const;
+
     /**
      *  Returns true if this instance of FixedReal is lesser than FixedReal x.
      *  False otherwise.
      */
     bool operator<(const NewFixedReal x) const;
+
     /**
      *  Returns true if this instance of FixedReal is greater than  or equal to
      *  FixedReal x. False otherwise.
      */
     bool operator>=(const NewFixedReal x) const;
+
     /**
      *  Returns true if this instance of FixedReal is lesser than  or equal to
      *  FixedReal x. False otherwise.
      */
     bool operator<=(const NewFixedReal x) const;
 
-    friend std::ostream& operator<<(std::ostream &strm, const NewFixedReal &a);
+    friend std::ostream &operator<<(std::ostream &strm, const NewFixedReal &a);
 };
 
 }

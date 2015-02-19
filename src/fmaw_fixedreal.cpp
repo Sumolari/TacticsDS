@@ -7,7 +7,7 @@ namespace FMAW {
 
 NewFixedReal::NewFixedReal() : num {0}, fraction_size {8} {}
 
-NewFixedReal::NewFixedReal(short int  fs) {
+NewFixedReal::NewFixedReal(short int fs) {
     if (fs < 0 || fs > 31)
         throw std::length_error {"Precision cannot be bigger than "
                                  "31 bits and it cannot be negative"
@@ -17,7 +17,7 @@ NewFixedReal::NewFixedReal(short int  fs) {
     fraction_size = fs;
 }
 
-NewFixedReal::NewFixedReal(int n, short int  fs) {
+NewFixedReal::NewFixedReal(int n, short int fs) {
     if (fs < 0 || fs > 31)
         throw std::length_error {"Precision cannot be bigger than "
                                  "31 bits and it cannot be negative"
@@ -33,7 +33,7 @@ NewFixedReal::NewFixedReal(int n)
 }
 */
 
-NewFixedReal::NewFixedReal(double d, short int  fs) {
+NewFixedReal::NewFixedReal(double d, short int fs) {
     if (fs < 0 || fs > 31)
         throw std::length_error {"Precision cannot be bigger than "
                                  "31 bits and it cannot be negative"
@@ -63,8 +63,9 @@ NewFixedReal &NewFixedReal::operator+=(const NewFixedReal x) {
 
     return *this;
 }
+
 NewFixedReal NewFixedReal::operator+(const NewFixedReal x) {
-    NewFixedReal* res = new NewFixedReal(fraction_size);
+    NewFixedReal *res = new NewFixedReal(fraction_size);
     if (fraction_size > x.fraction_size) {
         res->num = num + (x.num << (fraction_size - x.fraction_size));
     } else if (fraction_size < x.fraction_size) {
@@ -75,13 +76,15 @@ NewFixedReal NewFixedReal::operator+(const NewFixedReal x) {
 
     return *res;
 }
+
 NewFixedReal NewFixedReal::operator+(const int x) {
-    NewFixedReal* res = new NewFixedReal(x,1);
+    NewFixedReal *res = new NewFixedReal(x, 1);
 
     return (*this + *res);
 }
+
 NewFixedReal NewFixedReal::operator+(const double x) {
-    NewFixedReal* res = new NewFixedReal(x,8);
+    NewFixedReal *res = new NewFixedReal(x, 8);
 
     return (*this + *res);
 }
@@ -101,7 +104,7 @@ NewFixedReal &NewFixedReal::operator-=(const NewFixedReal x) {
     return *this;
 }
 NewFixedReal NewFixedReal::operator-(const NewFixedReal x) {
-    NewFixedReal* res = new NewFixedReal(fraction_size);
+    NewFixedReal *res = new NewFixedReal(fraction_size);
     if (fraction_size > x.fraction_size) {
         res->num = num - (x.num << (fraction_size - x.fraction_size));
     } else if (fraction_size < x.fraction_size) {
@@ -112,13 +115,15 @@ NewFixedReal NewFixedReal::operator-(const NewFixedReal x) {
 
     return *res;
 }
+
 NewFixedReal NewFixedReal::operator-(const int x) {
-    NewFixedReal* res = new NewFixedReal(x,1);
+    NewFixedReal *res = new NewFixedReal(x, 1);
 
     return (*this - *res);
 }
+
 NewFixedReal NewFixedReal::operator-(const double x) {
-    NewFixedReal* res = new NewFixedReal(x,8);
+    NewFixedReal *res = new NewFixedReal(x, 8);
 
     return (*this - *res);
 }
@@ -128,21 +133,24 @@ NewFixedReal &NewFixedReal::operator*=(const NewFixedReal x) {
 
     return *this;
 }
+
 NewFixedReal NewFixedReal::operator*(const NewFixedReal x) {
-    NewFixedReal* res = new NewFixedReal(fraction_size);
+    NewFixedReal *res = new NewFixedReal(fraction_size);
     res->num = (num * x.num) >> x.fraction_size;
 
     return *res;
 }
+
 NewFixedReal NewFixedReal::operator*(const int x) {
-    NewFixedReal* res = new NewFixedReal(x,1);
+    NewFixedReal *res = new NewFixedReal(x, 1);
 
-    return (*this * *res);
+    return (*this **res);
 }
-NewFixedReal NewFixedReal::operator*(const double x) {
-    NewFixedReal* res = new NewFixedReal(x,8);
 
-    return (*this * *res);
+NewFixedReal NewFixedReal::operator*(const double x) {
+    NewFixedReal *res = new NewFixedReal(x, 8);
+
+    return (*this **res);
 }
 
 NewFixedReal &NewFixedReal::operator/=(const NewFixedReal x) {
@@ -151,20 +159,23 @@ NewFixedReal &NewFixedReal::operator/=(const NewFixedReal x) {
 
     return *this;
 }
+
 NewFixedReal NewFixedReal::operator/(const NewFixedReal x) {
-    NewFixedReal* res = new NewFixedReal(fraction_size);
+    NewFixedReal *res = new NewFixedReal(fraction_size);
     int aux = (this->num) << x.fraction_size;
     res->num = aux / x.num;
 
     return *res;
 }
+
 NewFixedReal NewFixedReal::operator/(const int x) {
-    NewFixedReal* res = new NewFixedReal(x,1);
+    NewFixedReal *res = new NewFixedReal(x, 1);
 
     return (*this / *res);
 }
+
 NewFixedReal NewFixedReal::operator/(const double x) {
-    NewFixedReal* res = new NewFixedReal(x,8);
+    NewFixedReal *res = new NewFixedReal(x, 8);
 
     return (*this / *res);
 }
@@ -177,92 +188,100 @@ int NewFixedReal::toInt() const {
     int res = this->num >> this->fraction_size;
     return res;
 }
-NewFixedReal::operator int() const{
-  return this->toInt();
+
+NewFixedReal::operator int() const {
+    return this->toInt();
 }
 
 double NewFixedReal::toDouble() const {
     double res = static_cast<double>(this->num) / (1 << this->fraction_size);
     return res;
 }
-NewFixedReal::operator double() const{
-  return this->toDouble();
+
+NewFixedReal::operator double() const {
+    return this->toDouble();
 }
 
-bool NewFixedReal::operator==(const NewFixedReal x) const{
-  bool res;
-  if (fraction_size > x.fraction_size) {
-      res = num == (x.num << (fraction_size - x.fraction_size));
-  } else if (fraction_size < x.fraction_size) {
-      res = num == (x.num >> (x.fraction_size - fraction_size));
-  } else {
-      res = num == x.num;
-  }
+bool NewFixedReal::operator==(const NewFixedReal x) const {
+    bool res;
+    if (fraction_size > x.fraction_size) {
+        res = num == (x.num << (fraction_size - x.fraction_size));
+    } else if (fraction_size < x.fraction_size) {
+        res = num == (x.num >> (x.fraction_size - fraction_size));
+    } else {
+        res = num == x.num;
+    }
 
-  return res;
-}
-bool NewFixedReal::operator!=(const NewFixedReal x) const{
-  bool res;
-  if (fraction_size > x.fraction_size) {
-      res = num != (x.num << (fraction_size - x.fraction_size));
-  } else if (fraction_size < x.fraction_size) {
-      res = num != (x.num >> (x.fraction_size - fraction_size));
-  } else {
-      res = num != x.num;
-  }
-
-  return res;
-}
-bool NewFixedReal::operator>(const NewFixedReal x) const{
-  bool res;
-  if (fraction_size > x.fraction_size) {
-      res = num > (x.num << (fraction_size - x.fraction_size));
-  } else if (fraction_size < x.fraction_size) {
-      res = num > (x.num >> (x.fraction_size - fraction_size));
-  } else {
-      res = num > x.num;
-  }
-
-  return res;
-}
-bool NewFixedReal::operator<(const NewFixedReal x) const{
-  bool res;
-  if (fraction_size > x.fraction_size) {
-      res = num < (x.num << (fraction_size - x.fraction_size));
-  } else if (fraction_size < x.fraction_size) {
-      res = num < (x.num >> (x.fraction_size - fraction_size));
-  } else {
-      res = num < x.num;
-  }
-
-  return res;
-}
-bool NewFixedReal::operator>=(const NewFixedReal x) const{
-  bool res;
-  if (fraction_size > x.fraction_size) {
-      res = num >= (x.num << (fraction_size - x.fraction_size));
-  } else if (fraction_size < x.fraction_size) {
-      res = num >= (x.num >> (x.fraction_size - fraction_size));
-  } else {
-      res = num >= x.num;
-  }
-
-  return res;
-}
-bool NewFixedReal::operator<=(const NewFixedReal x) const{
-  bool res;
-  if (fraction_size > x.fraction_size) {
-      res = num <= (x.num << (fraction_size - x.fraction_size));
-  } else if (fraction_size < x.fraction_size) {
-      res = num <= (x.num >> (x.fraction_size - fraction_size));
-  } else {
-      res = num <= x.num;
-  }
-
-  return res;
+    return res;
 }
 
-std::ostream& operator<<(std::ostream &strm, const NewFixedReal &a) {
-  return strm << a.raw();
+bool NewFixedReal::operator!=(const NewFixedReal x) const {
+    bool res;
+    if (fraction_size > x.fraction_size) {
+        res = num != (x.num << (fraction_size - x.fraction_size));
+    } else if (fraction_size < x.fraction_size) {
+        res = num != (x.num >> (x.fraction_size - fraction_size));
+    } else {
+        res = num != x.num;
+    }
+
+    return res;
 }
+
+bool NewFixedReal::operator>(const NewFixedReal x) const {
+    bool res;
+    if (fraction_size > x.fraction_size) {
+        res = num > (x.num << (fraction_size - x.fraction_size));
+    } else if (fraction_size < x.fraction_size) {
+        res = num > (x.num >> (x.fraction_size - fraction_size));
+    } else {
+        res = num > x.num;
+    }
+
+    return res;
+}
+
+bool NewFixedReal::operator<(const NewFixedReal x) const {
+    bool res;
+    if (fraction_size > x.fraction_size) {
+        res = num < (x.num << (fraction_size - x.fraction_size));
+    } else if (fraction_size < x.fraction_size) {
+        res = num < (x.num >> (x.fraction_size - fraction_size));
+    } else {
+        res = num < x.num;
+    }
+
+    return res;
+}
+
+bool NewFixedReal::operator>=(const NewFixedReal x) const {
+    bool res;
+    if (fraction_size > x.fraction_size) {
+        res = num >= (x.num << (fraction_size - x.fraction_size));
+    } else if (fraction_size < x.fraction_size) {
+        res = num >= (x.num >> (x.fraction_size - fraction_size));
+    } else {
+        res = num >= x.num;
+    }
+
+    return res;
+}
+
+bool NewFixedReal::operator<=(const NewFixedReal x) const {
+    bool res;
+    if (fraction_size > x.fraction_size) {
+        res = num <= (x.num << (fraction_size - x.fraction_size));
+    } else if (fraction_size < x.fraction_size) {
+        res = num <= (x.num >> (x.fraction_size - fraction_size));
+    } else {
+        res = num <= x.num;
+    }
+
+    return res;
+}
+
+std::ostream &operator<<(std::ostream &strm, const NewFixedReal &a) {
+    return strm << a.raw();
+}
+
 }  // namespace FMAW
