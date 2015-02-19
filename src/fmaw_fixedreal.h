@@ -77,8 +77,11 @@ public:
      *  this instance is preserved.
      */
     NewFixedReal& operator/=(const NewFixedReal x);
-    // TODO: Add support for / operator (not just /= operator).
-
+    /**
+     *  Divides this instance of FixedReal by x and returns the result.
+     *  The precision of this instance is preserved.
+     */
+    NewFixedReal operator/(const NewFixedReal x);
 
     /**
      *  Returns the NewFixedReal value as is, without converting to any type.

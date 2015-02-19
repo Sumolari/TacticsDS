@@ -121,12 +121,13 @@ NewFixedReal &NewFixedReal::operator/=(const NewFixedReal x) {
 
     return *this;
 }
-/*NewFixedReal NewFixedReal::operator*(const NewFixedReal x) {
+NewFixedReal NewFixedReal::operator/(const NewFixedReal x) {
     NewFixedReal* res = new NewFixedReal(fraction_size);
-    res->num = (num * x.num) >> x.fraction_size;
+    int aux = (this->num) << x.fraction_size;
+    res->num = aux / x.num;
 
     return *res;
-}*/
+}
 
 int NewFixedReal::raw() const {
     return this->num;
