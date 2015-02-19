@@ -262,6 +262,38 @@ int whileButtonArrowRightPressed(void (*callback)());
 int onButtonArrowRightReleased(void (*callback)());
 
 //------------------------------------------------------------------------------
+// Handling Touch & Mouse.
+//------------------------------------------------------------------------------
+
+/**
+ * Registers a callback that will be called when a touch is detected.
+ * Coordinates of the touch will be given as parameters.
+ * @param callback  Function to be called. Receives x and y cooordinates of
+ *                  touch as parameters.
+ * @return Identifier of the callback so it can be registered later.
+ */
+int onTouchPressed(void (*callback)(int, int));
+
+/**
+ * Registers a callback that will be called when a touch is moved.
+ * New coordinates of the touch will be given as parameters.
+ * @param callback  Function to be called. Receives new x and y cooordinates of
+ *                  touch as parameters.
+ * @return Identifier of the callback so it can be registered later.
+ */
+int onTouchMoved(void (*callback)(int, int));
+
+/**
+ * Registers a callback that will be called when a touch finishes.
+ * Coordinates of the last position of finished touch will be given as
+ * parameters.
+ * @param callback  Function to be called. Receives x and y cooordinates of
+ *                  last position of touch as parameters.
+ * @return Identifier of the callback so it can be registered later.
+ */
+int onTouchReleased(void (*callback)(int, int));
+
+//------------------------------------------------------------------------------
 // Callback handling.
 //------------------------------------------------------------------------------
 

@@ -235,6 +235,25 @@ int onButtonArrowRightReleased(void (*callback)()) {
 }
 
 //------------------------------------------------------------------------------
+// Handling Touch & Mouse.
+//------------------------------------------------------------------------------
+
+// TODO(lluis): Implement this method!
+int onTouchPressed(void (*callback)(int, int)) {
+    return -1;
+}
+
+// TODO(lluis): Implement this method!
+int onTouchMoved(void (*callback)(int, int)) {
+    return -1;
+}
+
+// TODO(lluis): Implement this method!
+int onTouchReleased(void (*callback)(int, int)) {
+    return -1;
+}
+
+//------------------------------------------------------------------------------
 // Callback handling.
 //------------------------------------------------------------------------------
 
