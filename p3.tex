@@ -29,7 +29,7 @@
 
     \section{Gestión de los controles}
 
-    Hemos realizado un program que imprima por pantalla el estado de los 13 botones mediante el enum \texttt{KEYPAD\_BITS} y la función \texttt{keysHeld()}. El color del texto cambia dependiendo de si está pulsado o no ese boton.
+    Hemos realizado un programa que imprima por pantalla el estado de los 13 botones mediante el enum \texttt{KEYPAD\_BITS} y la función \texttt{keysHeld()}. El color del texto cambia dependiendo de si está pulsado o no ese botón.
     
     \begin{figure}[H] 
     \centering
@@ -55,7 +55,7 @@
 
     \subsection{print\_both\_screens}
 
-    Con este programa lo que han conseguido es lanzar dos consolas simultaneamente uno en cada pantalla de la nds. Para esto tiene que hacer uso del video mode y bancos de vram para ambas pantallas. Luego mediante la función de \texttt{consoleSelect} puede ir cambiando de consola para los printf que realiza. En la pantalla superior imprime un mensaje estático y en la pantalla inferior hace uso de la funcionalidad táctil mostrando en que punto se está pulsando la pantalla táctil.
+    Con este programa lo que han conseguido es lanzar dos consolas simultáneamente, uno en cada pantalla de la nds. Para esto tienen que hacer uso del video mode y bancos de vram para ambas pantallas. Luego mediante la función de \texttt{consoleSelect} puede ir cambiando de consola para los \texttt{printf} que realiza. En la pantalla superior imprime un mensaje estático y en la pantalla inferior hace uso de la funcionalidad táctil mostrando en que punto se está pulsando la pantalla táctil.
 
     \begin{figure}[H] 
     \centering
@@ -67,7 +67,7 @@
 
     \subsection{rotation}
 
-    Este programa juega con una imagen puesta como fondo en la pantalla principal, mediante las teclas permite hacer varias transformaciones de la imagen con el uso de funciones de libnds. Podemos ajustar donde está centrada la imagen, el tamaño en ambas ejes y el angulo en ambas direcciones. Por alguna razón, en el código del ejemplo, utiliza la tecla \emph{START} para cambiar el centro de la imagen en el eje x, pero también utiliza esta tecla para salir del programa. Comentando la linea que hace \texttt{break} al pulsar la tecla \emph{START} ya podemos cambiar el centro de la imagen en el eje x.
+    Este programa juega con una imagen puesta como fondo en la pantalla principal, mediante las teclas permite hacer varias transformaciones de la imagen con el uso de funciones de libnds. Podemos ajustar donde está centrada la imagen, el tamaño en ambas ejes y el ángulo en ambas direcciones. Por alguna razón, en el código del ejemplo, utiliza la tecla \emph{START} para cambiar el centro de la imagen en el eje x, pero también utiliza esta tecla para salir del programa. Comentando la linea que hace \texttt{break} al pulsar la tecla \emph{START} ya podemos cambiar el centro de la imagen en el eje x.
 
     \begin{figure}[H] 
     \centering
@@ -90,7 +90,7 @@
     
     \subsection{console\_windows}
 
-    Con el ultimo ejemplo observamos que tenemos dos cajas en pantalla y dependiendo en que lado de la pantalla tocamos la pantalla, va escribiendo las coordinadas del toque en la caja correspondiente a esa mitad en vertical de la pantalla. Consigue esto con la función de \texttt{consoleSetWindow} variando el valor del eje x para cada una de las cajas y asi imprimiendo dentro de ellas.
+    Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiendo en que lado de la pantalla tocamos la pantalla, va escribiendo las coordinadas del toque en la caja correspondiente a esa mitad en vertical de la pantalla. Consigue esto con la función de \texttt{consoleSetWindow} variando el valor del eje x para cada una de las cajas y así imprimiendo dentro de ellas.
 
     \begin{figure}[H] 
     \centering
