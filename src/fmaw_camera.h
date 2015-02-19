@@ -7,20 +7,21 @@
 
 namespace FMAW {
 
-class Camera {
-public:
-    /**
-     * Sets horizontal offset of the camera.
-     * @param x New horizontal offset of the camera.
-     */
-    static void setHorizontalOffset(FixedReal x);
+namespace Camera {
 
-    /**
-     * Sets vertical offset of the camera.
-     * @param y New vertical offset of the camera.
-     */
-    static void setVerticalOffset(FixedReal y);
-};
+/**
+ * Sets horizontal offset of the camera.
+ * @param x New horizontal offset of the camera.
+ */
+void setHorizontalOffset(FixedReal x);
+
+/**
+ * Sets vertical offset of the camera.
+ * @param y New vertical offset of the camera.
+ */
+void setVerticalOffset(FixedReal y);
+
+}
 
 }
 

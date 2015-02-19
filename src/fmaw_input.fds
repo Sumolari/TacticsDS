@@ -1,0 +1,154 @@
+// Copyright 2015 FMAW
+
+#include "./fmaw_input.h"
+
+#include <map>
+
+namespace FMAW {
+
+namespace Input {
+
+// Here we will store registered functions.
+std::map<int, void (*)()> registered_functions {};
+
+// Next ID that can be used.
+int next_registered_function_id = 0;
+
+int onButtonPressed(ButtonType button, void (*callback)()) {
+    return 0;
+}
+
+int onButtonReleased(ButtonType button, void (*callback)()) {
+    return 0;
+}
+
+//------------------------------------------------------------------------------
+// Handling Button A.
+//------------------------------------------------------------------------------
+
+int onButtonAPressed(void (*callback)()) {
+    return onButtonPressed(ButtonA, callback);
+}
+
+int onButtonAReleased(void (*callback)()) {
+    return onButtonReleased(ButtonA, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button B.
+//------------------------------------------------------------------------------
+
+int onButtonBPressed(void (*callback)()) {
+    return onButtonPressed(ButtonB, callback);
+}
+
+int onButtonBReleased(void (*callback)()) {
+    return onButtonReleased(ButtonB, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button L.
+//------------------------------------------------------------------------------
+
+int onButtonLPressed(void (*callback)()) {
+    return onButtonPressed(ButtonL, callback);
+}
+
+int onButtonLReleased(void (*callback)()) {
+    return onButtonReleased(ButtonL, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button R.
+//------------------------------------------------------------------------------
+
+int onButtonRPressed(void (*callback)()) {
+    return onButtonPressed(ButtonR, callback);
+}
+
+int onButtonRReleased(void (*callback)()) {
+    return onButtonReleased(ButtonR, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Select.
+//------------------------------------------------------------------------------
+
+int onButtonSelectPressed(void (*callback)()) {
+    return onButtonPressed(ButtonL, callback);
+}
+
+int onButtonSelectReleased(void (*callback)()) {
+    return onButtonReleased(ButtonL, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Start.
+//------------------------------------------------------------------------------
+
+int onButtonStartPressed(void (*callback)()) {
+    return onButtonPressed(ButtonStart, callback);
+}
+
+int onButtonStartReleased(void (*callback)()) {
+    return onButtonReleased(ButtonStart, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Up.
+//------------------------------------------------------------------------------
+
+int onButtonArrowUpPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowUp, callback);
+}
+
+int onButtonArrowUpReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowUp, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Down.
+//------------------------------------------------------------------------------
+
+int onButtonArrowDownPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowDown, callback);
+}
+
+int onButtonArrowDownReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowDown, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Left.
+//------------------------------------------------------------------------------
+
+int onButtonArrowLeftPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowLeft, callback);
+}
+
+int onButtonArrowLeftReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowLeft, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Right.
+//------------------------------------------------------------------------------
+
+int onButtonArrowRightPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowRight, callback);
+}
+
+int onButtonArrowRightReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowRight, callback);
+}
+
+//------------------------------------------------------------------------------
+// Callback handling.
+//------------------------------------------------------------------------------
+
+void unregisterCallback(int identifier) {
+}
+
+}  // namespace Input
+
+}  // namespace FMAW

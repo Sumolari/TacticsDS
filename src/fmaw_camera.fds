@@ -4,12 +4,16 @@
 
 namespace FMAW {
 
-void Camera::setHorizontalOffset(FixedReal x) {
+namespace Camera {
+
+void setHorizontalOffset(FixedReal x) {
     REG_BG0HOFS = x;
 }
 
-void Camera::setVerticalOffset(FixedReal y) {
+void setVerticalOffset(FixedReal y) {
     REG_BG0VOFS = y;
 }
+
+}  // namespace Camera
 
 }  // namespace FMAW
