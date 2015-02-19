@@ -1,30 +1,39 @@
 {
 	"folders": [ {
 		"file_exclude_patterns": [
-			"fmaw*",
-			"catch.hpp",
-			"test_*",
-			"tests.hpp"
+			"fmaw*"
 		],
 		"follow_symlinks": true,
 		"name": "Source",
 		"path": "src"
 	}, {
 		"file_include_patterns": [
-			"fmaw*"
+			"fmaw*.h"
 		],
 		"follow_symlinks": true,
-		"name": "FMAW",
-		"path": "FMAW"
+		"name": "FMAW - Headers",
+		"path": "FMAW-Headers"
 	}, {
 		"file_include_patterns": [
-			"test_*",
-			"tests.hpp",
-			"catch.hpp"
+			"fmaw*.cpp"
 		],
 		"follow_symlinks": true,
-		"name": "Tests",
-		"path": "tests"
+		"name": "FMAW - CPP",
+		"path": "FMAW-CPP"
+	}, {
+		"file_include_patterns": [
+			"fmaw*.fds"
+		],
+		"follow_symlinks": true,
+		"name": "FMAW - NDS",
+		"path": "FMAW-NDS"
+	}, {
+		"file_include_patterns": [
+			"fmaw*.fgl"
+		],
+		"follow_symlinks": true,
+		"name": "FMAW - OpenGL",
+		"path": "FMAW-OpenGL"
 	}, {
 		"follow_symlinks": true,
 		"name": "Builds",
@@ -46,8 +55,7 @@
 			"assets",
 			"src",
 			"build",
-			"tests",
-			"FMAW"
+			"FMAW-*"
 		],
 		"follow_symlinks": true,
 		"name": "Root",

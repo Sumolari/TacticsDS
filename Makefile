@@ -34,7 +34,8 @@ CFLAGS	:=	-g -Wall -O2\
  			-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
 			-ffast-math \
 			-std=gnu++0x \
-			-libbost \
+			-lboost \
+			-DNDS \
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM9
