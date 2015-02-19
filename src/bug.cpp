@@ -2,9 +2,6 @@
 
 #include "./bug.h"
 
-#include <nds.h>
-
-#include "./fmaw_macros.h"
 #include "./fmaw_tile.h"
 
 #include "./gfx_Bug_1.h"

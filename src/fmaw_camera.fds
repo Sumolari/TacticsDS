@@ -1,0 +1,15 @@
+// Copyright 2015 FMAW
+
+#include "./fmaw_camera.h"
+
+namespace FMAW {
+
+void Camera::setHorizontalOffset(FixedReal x) {
+    //REG_BG0HOFS = x;
+}
+
+void Camera::setVerticalOffset(FixedReal y) {
+    //REG_BG0VOFS = y;
+}
+
+}  // namespace FMAW
