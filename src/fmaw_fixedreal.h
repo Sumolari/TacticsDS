@@ -48,6 +48,8 @@ public:
      *  non-matching precisions, the one on this instance is preserved.
      */
     NewFixedReal operator+(const NewFixedReal x);
+    NewFixedReal operator+(const int x);
+    NewFixedReal operator+(const double x);
 
     /**
      *  Substracts x to this instance of FixedReal. In case of
@@ -60,6 +62,8 @@ public:
      *  is preserved.
      */
     NewFixedReal operator-(const NewFixedReal x);
+    NewFixedReal operator-(const int x);
+    NewFixedReal operator-(const double x);
 
     /**
      *  Multiplies x to this instance of FixedReal. The precision of
@@ -71,6 +75,8 @@ public:
      *  The precision of this instance is the one preserved.
      */
     NewFixedReal operator*(const NewFixedReal x);
+    NewFixedReal operator*(const int x);
+    NewFixedReal operator*(const double x);
 
     /**
      *  Divides this instance of FixedReal by x. The precision of
@@ -82,6 +88,10 @@ public:
      *  The precision of this instance is preserved.
      */
     NewFixedReal operator/(const NewFixedReal x);
+    NewFixedReal operator/(const int x);
+    NewFixedReal operator/(const double x);
+
+
 
     /**
      *  Returns the NewFixedReal value as is, without converting to any type.

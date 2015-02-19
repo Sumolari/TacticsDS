@@ -75,6 +75,16 @@ NewFixedReal NewFixedReal::operator+(const NewFixedReal x) {
 
     return *res;
 }
+NewFixedReal NewFixedReal::operator+(const int x) {
+    NewFixedReal* res = new NewFixedReal(x,1);
+
+    return (*this + *res);
+}
+NewFixedReal NewFixedReal::operator+(const double x) {
+    NewFixedReal* res = new NewFixedReal(x,8);
+
+    return (*this + *res);
+}
 
 NewFixedReal &NewFixedReal::operator-=(const NewFixedReal x) {
     int res;
@@ -102,6 +112,16 @@ NewFixedReal NewFixedReal::operator-(const NewFixedReal x) {
 
     return *res;
 }
+NewFixedReal NewFixedReal::operator-(const int x) {
+    NewFixedReal* res = new NewFixedReal(x,1);
+
+    return (*this - *res);
+}
+NewFixedReal NewFixedReal::operator-(const double x) {
+    NewFixedReal* res = new NewFixedReal(x,8);
+
+    return (*this - *res);
+}
 
 NewFixedReal &NewFixedReal::operator*=(const NewFixedReal x) {
     this->num = (this->num * x.num) >> x.fraction_size;
@@ -113,6 +133,16 @@ NewFixedReal NewFixedReal::operator*(const NewFixedReal x) {
     res->num = (num * x.num) >> x.fraction_size;
 
     return *res;
+}
+NewFixedReal NewFixedReal::operator*(const int x) {
+    NewFixedReal* res = new NewFixedReal(x,1);
+
+    return (*this * *res);
+}
+NewFixedReal NewFixedReal::operator*(const double x) {
+    NewFixedReal* res = new NewFixedReal(x,8);
+
+    return (*this * *res);
 }
 
 NewFixedReal &NewFixedReal::operator/=(const NewFixedReal x) {
@@ -127,6 +157,16 @@ NewFixedReal NewFixedReal::operator/(const NewFixedReal x) {
     res->num = aux / x.num;
 
     return *res;
+}
+NewFixedReal NewFixedReal::operator/(const int x) {
+    NewFixedReal* res = new NewFixedReal(x,1);
+
+    return (*this / *res);
+}
+NewFixedReal NewFixedReal::operator/(const double x) {
+    NewFixedReal* res = new NewFixedReal(x,8);
+
+    return (*this / *res);
 }
 
 int NewFixedReal::raw() const {
