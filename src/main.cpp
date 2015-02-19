@@ -1,7 +1,5 @@
 // Copyright 2015 FMAW
 
-#include <nds.h>
-#include <nds/debug.h>
 #include <sstream>
 
 #include "./FMAW.h"  // Import our awesome framework!
@@ -34,20 +32,15 @@
 
 #define BACKDROP_COLOR RGB8(190, 255, 255)
 
-//----------//------------------------------------------------------------------
-//----------// Screen base blocks pointed
-//----------//------------------------------------------------------------------
-
-#define bg0map    (reinterpret_cast<u16*>BG_MAP_RAM(1))
-#define bg1map    (reinterpret_cast<u16*>BG_MAP_RAM(2))
-
 //------------------------------------------------------------------------------
 // Game objects
 //------------------------------------------------------------------------------
 
 #include "./bug.h"
+#include "./warrior.h"
 
 Bug g_bug;
+Warrior g_warrior;
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -61,10 +54,6 @@ FMAW::FixedReal g_camera_y;
  * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
-    // Generate the first blank tile by clearing it to zero.
-    for (int n = 0; n < 16; n++)
-        BG_GFX[n] = 0;
-
     FMAW::TileAttributes brick_attributes {
         gfx_brickTiles,
         gfx_brickTilesLen,
@@ -124,18 +113,17 @@ void setupGraphics(void) {
         }
     }
 
-    // Enable alpha blending of background 1.
-    // My guess: BLEND_DST_BACKDROP is the 14th bit at 1, BLEND_SRC_BG1 is the
-    //           2nd bit at 1 and BLEND_ALPHA are bits 8th and 7th at 10.
-    //           BLEND_DST_BACKDROP 0010000000000000
-    //           BLEND_SRC_BG1      0000000000000010
-    //           BLEND_ALPHA        0000000010000000
-    //           -----------------------------------
-    //                              0010000010000010
-    REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BACKDROP;
-    REG_BLDALPHA = (4) + (16 << 8);  // This is computed at compile time.
+    bgGradient.useAsAlphaBlendingSrc();
+    FMAW::Background::useBackdropAsAlphaDst();
+    FMAW::Background::setAlphaBlendingMode(FMAW::babmAlphaBlending);
+
+    FMAW::Background::setAlphaBlendingCoefficientOne(4);
+    FMAW::Background::setAlphaBlendingCoefficientTwo(16);
 
     g_bug = Bug(FMAW::Sprite(0));
+    g_warrior = Warrior(FMAW::Sprite(1));
+    g_warrior.setXPosition(FMAW::FixedReal(155, 8));
+    g_warrior.setYPosition(FMAW::FixedReal(75, 8));
 }
 
 void process_input() { }
@@ -150,8 +138,9 @@ void update_logic() {
 
 void update_graphics() {
     g_bug.render(g_camera_x, g_camera_y);
+    g_warrior.render(g_camera_x, g_camera_y);
 
-    REG_BG0HOFS = g_camera_x.raw();
+    FMAW::Camera::setHorizontalOffset(g_camera_x);
 }
 
 int main(void) {
@@ -160,6 +149,7 @@ int main(void) {
 
     auto func = [](int ID) {
         g_bug.update();
+        g_warrior.update();
     };
 
     FMAW::Timer::enqueue_function(func, 200, true);
