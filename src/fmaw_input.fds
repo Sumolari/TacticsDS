@@ -81,6 +81,10 @@ int onButtonAPressed(void (*callback)()) {
     return onButtonPressed(ButtonA, callback);
 }
 
+int whileButtonAPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
+}
+
 int onButtonAReleased(void (*callback)()) {
     return onButtonReleased(ButtonA, callback);
 }
@@ -91,6 +95,10 @@ int onButtonAReleased(void (*callback)()) {
 
 int onButtonBPressed(void (*callback)()) {
     return onButtonPressed(ButtonB, callback);
+}
+
+int whileButtonBPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
 }
 
 int onButtonBReleased(void (*callback)()) {
@@ -105,6 +113,10 @@ int onButtonLPressed(void (*callback)()) {
     return onButtonPressed(ButtonL, callback);
 }
 
+int whileButtonLPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
+}
+
 int onButtonLReleased(void (*callback)()) {
     return onButtonReleased(ButtonL, callback);
 }
@@ -115,6 +127,10 @@ int onButtonLReleased(void (*callback)()) {
 
 int onButtonRPressed(void (*callback)()) {
     return onButtonPressed(ButtonR, callback);
+}
+
+int whileButtonRPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
 }
 
 int onButtonRReleased(void (*callback)()) {
@@ -129,6 +145,10 @@ int onButtonSelectPressed(void (*callback)()) {
     return onButtonPressed(ButtonL, callback);
 }
 
+int whileButtonSelectPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
+}
+
 int onButtonSelectReleased(void (*callback)()) {
     return onButtonReleased(ButtonL, callback);
 }
@@ -139,6 +159,10 @@ int onButtonSelectReleased(void (*callback)()) {
 
 int onButtonStartPressed(void (*callback)()) {
     return onButtonPressed(ButtonStart, callback);
+}
+
+int whileButtonStartPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
 }
 
 int onButtonStartReleased(void (*callback)()) {
@@ -153,6 +177,10 @@ int onButtonArrowUpPressed(void (*callback)()) {
     return onButtonPressed(ButtonArrowUp, callback);
 }
 
+int whileButtonArrowUpPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
+}
+
 int onButtonArrowUpReleased(void (*callback)()) {
     return onButtonReleased(ButtonArrowUp, callback);
 }
@@ -163,6 +191,10 @@ int onButtonArrowUpReleased(void (*callback)()) {
 
 int onButtonArrowDownPressed(void (*callback)()) {
     return onButtonPressed(ButtonArrowDown, callback);
+}
+
+int whileButtonArrowDownPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
 }
 
 int onButtonArrowDownReleased(void (*callback)()) {
@@ -177,6 +209,10 @@ int onButtonArrowLeftPressed(void (*callback)()) {
     return onButtonPressed(ButtonArrowLeft, callback);
 }
 
+int whileButtonArrowLeftPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
+}
+
 int onButtonArrowLeftReleased(void (*callback)()) {
     return onButtonReleased(ButtonArrowLeft, callback);
 }
@@ -187,6 +223,10 @@ int onButtonArrowLeftReleased(void (*callback)()) {
 
 int onButtonArrowRightPressed(void (*callback)()) {
     return onButtonPressed(ButtonArrowRight, callback);
+}
+
+int whileButtonArrowRightPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
 }
 
 int onButtonArrowRightReleased(void (*callback)()) {
