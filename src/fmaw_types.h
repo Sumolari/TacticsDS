@@ -4,13 +4,9 @@
 typedef unsigned char uint8;
 typedef unsigned short int uint16;
 
-#include <nds.h>
-#include <nds/debug.h>
-
-#include <iostream>
-#include <sstream>
-using namespace std;
-
 #include "./fmaw_fixedreal.h"
+
+typedef uint16 u16;
+typedef volatile u16 vu16;
 
 #endif

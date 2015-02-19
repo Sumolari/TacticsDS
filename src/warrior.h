@@ -1,0 +1,54 @@
+#ifndef WARRIOR_H
+#define WARRIOR_H
+
+#include "./FMAW.h"
+
+//----------//------------------------------------------------------------------
+//----------// Tile entries
+//----------//------------------------------------------------------------------
+
+// Framework will handle memory positions! :)
+#define TILES_WARRIOR_1       0  // Warrior tiles (32x32 tile:  0 -> 15)
+#define TILES_WARRIOR_2       1  // Warrior tiles (32x32 tile: 16 -> 31)
+#define TILES_WARRIOR_3       2  // Warrior tiles (32x32 tile: 31 -> 47)
+
+//----------//------------------------------------------------------------------
+//----------// Other attributes
+//----------//------------------------------------------------------------------
+
+#define WARRIOR_HEIGHT        16
+
+class Warrior : public FMAW::Character {
+protected:
+    // ID of tile currently displayed.
+    int currentTileID;
+    // Palette of tile currently displayed.
+    int currentTilePalette;
+    // Tiles used to animate this Warrior.
+    FMAW::Tile *tiles;
+
+    virtual void init();
+public:
+    /**
+     * Creates a new Warrior using a new sprite.
+     */
+    Warrior() {
+        init();
+    };
+
+    /**
+     * Creates a new Warrior given its sprite.
+     */
+    Warrior(FMAW::Sprite sprite): Character(sprite) {
+        init();
+    };
+
+    virtual void update();
+
+    /**
+     * Resets position of this Warrior.
+     */
+    void reset();
+};
+
+#endif
