@@ -60,10 +60,18 @@ public:
      *  is preserved.
      */
     NewFixedReal operator-(const NewFixedReal x);
+
+    /**
+     *  Multiplies x to this instance of FixedReal. The precision of
+     *  this instance is preserved.
+     */
+    NewFixedReal& operator*=(const NewFixedReal x);
+    /**
+     *  Multiplies x to this instance of FixedReal and returns the result.
+     *  The precision of this instance is the one preserved.
+     */
+    //NewFixedReal operator*(const NewFixedReal x);
     /*
-    // TODO: Document me properly!
-    NewFixedReal& operator*=(const NewFixedReal x); // multiply self by x
-    // TODO: Add support for * operator (not just *= operator).
     // TODO: Document me properly!
     NewFixedReal& operator/=(const NewFixedReal x); // divide self by x
     // TODO: Add support for / operator (not just /= operator).
