@@ -6,6 +6,27 @@
 
 namespace FMAW {
 
+void Character::setXPosition(FixedReal x) {
+    this->x = x;
+}
+
+void Character::setYPosition(FixedReal y) {
+    this->y = y;
+}
+
+void Character::setPosition(FixedReal x, FixedReal y) {
+    this->x = x;
+    this->y = y;
+}
+
+FixedReal Character::getXPosition() {
+    return this->x;
+}
+
+FixedReal Character::getYPosition() {
+    return this->y;
+}
+
 void Character::render(int camera_x, int camera_y) {
     FixedReal x, y;
     x = ((this->x - this->width) >> 8) - camera_x;

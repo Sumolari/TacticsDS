@@ -8,6 +8,7 @@
 #endif
 
 #include "./fmaw_types.h"
+#include "./fmaw_camera.h"
 #include "./fmaw_math.h"
 #include "./fmaw_geometry.h"
 #include "./fmaw_debug.h"

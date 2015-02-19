@@ -1,7 +1,5 @@
 // Copyright 2015 Lluís Ulzurrun de Asanza Sàez
 
-#include <nds.h>
-#include <nds/debug.h>
 #include <sstream>
 
 #include "./FMAW.h"  // Import our awesome framework!
@@ -42,7 +40,7 @@
 #include "./warrior.h"
 
 Bug g_bug;
-// Warrior g_warrior;
+Warrior g_warrior;
 
 FixedReal g_camera_x;
 FixedReal g_camera_y;
@@ -56,10 +54,6 @@ FixedReal g_camera_y;
  * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
-    // Generate the first blank tile by clearing it to zero.
-    for (int n = 0; n < 16; n++)
-        BG_GFX[n] = 0;
-
     FMAW::TileAttributes brick_attributes {
         gfx_brickTiles,
         gfx_brickTilesLen,
@@ -127,7 +121,9 @@ void setupGraphics(void) {
     FMAW::Background::setAlphaBlendingCoefficientTwo(16);
 
     g_bug = Bug(FMAW::Sprite(0));
-    // g_warrior = Warrior(FMAW::Sprite(1));
+    g_warrior = Warrior(FMAW::Sprite(1));
+    g_warrior.setXPosition(155 << 8);
+    g_warrior.setYPosition(75 << 8);
 }
 
 void process_input() { }
@@ -142,9 +138,9 @@ void update_logic() {
 
 void update_graphics() {
     g_bug.render(g_camera_x >> 8, g_camera_y >> 8);
-    // g_warrior.render(g_camera_x >> 8, g_camera_y >> 8);
+    g_warrior.render(g_camera_x >> 8, g_camera_y >> 8);
 
-    REG_BG0HOFS = g_camera_x >> 8;  // REG_BG0HOFS = g_camera_x.toInt();
+    FMAW::Camera::setHorizontalOffset(g_camera_x >> 8);
 }
 
 int main(void) {
@@ -153,7 +149,7 @@ int main(void) {
 
     auto func = [](int ID) {
         g_bug.update();
-        // g_warrior.update();
+        g_warrior.update();
     };
 
     FMAW::Timer::enqueue_function(func, 200, true);
