@@ -70,7 +70,7 @@ public:
      *  Multiplies x to this instance of FixedReal and returns the result.
      *  The precision of this instance is the one preserved.
      */
-    //NewFixedReal operator*(const NewFixedReal x);
+    NewFixedReal operator*(const NewFixedReal x);
     /*
     // TODO: Document me properly!
     NewFixedReal& operator/=(const NewFixedReal x); // divide self by x
