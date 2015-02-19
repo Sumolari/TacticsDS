@@ -6,12 +6,13 @@
 
 namespace FMAW {
 
-void Character::render(int camera_x, int camera_y) {
+void Character::render(FixedReal camera_x, FixedReal camera_y) {
     FixedReal x, y;
-    x = ((this->x - this->width) >> 8) - camera_x;
-    y = ((this->y - this->height) >> 8) - camera_y;
+    x = (this->x - FixedReal(this->width, 8)) - camera_x;
+    y = (this->y - FixedReal(this->height, 8)) - camera_y;
 
-    if (x <= -16 || y <= -16 || x >= 256 || y >= 192) {
+    if (x <= FixedReal(-16, 8) || y <= FixedReal(-16, 8) ||
+            x >= FixedReal(256, 8) || y >= FixedReal(192, 8)) {
         this->sprite.disable();
         return;
     }

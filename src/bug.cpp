@@ -67,6 +67,6 @@ void Bug::update() {
 }
 
 void Bug::reset() {
-    this->x = 128 << 8;  // FixedReal(128);
-    this->y = 64 << 8;   // FixedReal(64);
+    this->x = FMAW::FixedReal(128,  8);
+    this->y = FMAW::FixedReal(64, 8);
 }

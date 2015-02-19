@@ -49,7 +49,7 @@ public:
      * @param camera_x Position of the camera in the X-axis.
      * @param camera_y Position of the camera in the Y-axis.
      */
-    virtual void render(int camera_x, int camera_y);
+    virtual void render(FixedReal camera_x, FixedReal camera_y);
 
     /**
      * Displays information about this character.

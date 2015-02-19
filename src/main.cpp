@@ -49,8 +49,8 @@
 
 Bug g_bug;
 
-FixedReal g_camera_x;
-FixedReal g_camera_y;
+FMAW::FixedReal g_camera_x;
+FMAW::FixedReal g_camera_y;
 
 //------------------------------------------------------------------------------
 // Main code section
@@ -149,9 +149,9 @@ void update_logic() {
 }
 
 void update_graphics() {
-    g_bug.render(g_camera_x >> 8, g_camera_y >> 8);
+    g_bug.render(g_camera_x, g_camera_y);
 
-    REG_BG0HOFS = g_camera_x >> 8;  // REG_BG0HOFS = g_camera_x.toInt();
+    REG_BG0HOFS = g_camera_x.raw();
 }
 
 int main(void) {

@@ -11,7 +11,6 @@ typedef unsigned short int uint16;
 #include <sstream>
 using namespace std;
 
-typedef int FixedReal;
-typedef int PreciseFixedReal;
+#include "./fmaw_fixedreal.h"
 
 #endif

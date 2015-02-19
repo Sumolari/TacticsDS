@@ -85,10 +85,10 @@ public:
     }
 
     void applyScaling(FixedReal x, FixedReal y) {
-        *this->PA = (((*this->PA) * x) >> 8);
-        *this->PB = (((*this->PB) * y) >> 8);
-        *this->PC = (((*this->PC) * x) >> 8);
-        *this->PD = (((*this->PD) * y) >> 8);
+        *this->PA = (FixedReal(*(this->PA), 8) * x).raw();
+        *this->PB = (FixedReal(*(this->PB), 8) * y).raw();
+        *this->PC = (FixedReal(*(this->PC), 8) * x).raw();
+        *this->PD = (FixedReal(*(this->PD), 8) * y).raw();
     }
 
     void print() {

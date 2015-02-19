@@ -10,7 +10,7 @@
 
 namespace FixedRealTests {
 
-typedef FMAW::NewFixedReal FixedReal;  // Class will be named FixedReal.
+typedef FMAW::FixedReal FixedReal;
 
 TEST_CASE("FixedReal can be initialized", "[FixedReal]") {
     SECTION("constructor with precision represents 0") {
