@@ -62,7 +62,7 @@ unzip gba.zip
 \end{verbatim}
 \end{mdframed}
 
-	\caption{Los comandos ejecutados para instalar las herramientas de desarrollo y compilar los ejemplos}
+	\caption{Los comandos ejecutados para instalar las herramientas de desarrollo y compilar los ejemplos.}
 	\label{fig:installToolkit}
 \end{figure}
 
@@ -145,7 +145,34 @@ alias nocashgbadebug="wine ~/NOcashGBAdebug.exe"
 	Recurrimos a virtualizadores como VirtualBox o Parallels Desktop manejados mediante Vagrant para agilizar la puesta a punto del entorno, sin embargo en esta ocasión apostar por Vagrant no fue una buena decisión ya que nos encontramos con problemas a la hora de conseguir habilitar el entorno de escritorio por lo que finalmente instalamos Debian en la máquina virtual manualmente y aprovechamos el script que teníamos preparado para \emph{provisionar} la máquina para instalar todo el software necesario.
 	
 \begin{figure}
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,language=Ruby,frame=single]{../vagrant/Vagrantfile}
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Ruby,frame=single]
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "puphpet/debian75-x64"
+  config.ssh.forward_x11 = true
+  config.vm.synced_folder "../LAB", "/LAB"
+  config.vm.provider "virtualbox" do |v|
+    v.name = "AEV"
+    v.memory = 3096
+    v.cpus = 2
+    v.gui = true
+  end
+  config.vm.provider "parallels" do |v|
+    v.name = "AEV"
+    v.update_guest_tools = true
+    v.memory = 3096
+    v.cpus = 2
+    v.customize ["set", :id, "--on-window-close", "keep-running"]
+  end
+  config.vm.provision "shell", path: "dependencies.sh", privileged: false
+  config.vm.provision "shell", path: "personal.sh", privileged: false
+  config.vm.provision "shell", path: "tools.sh", privileged: false
+end
+\end{lstlisting}
+
 	\caption{Fichero {\tt Vagrantfile} de definición de la máquina virtual. Los archivos referidos en este fichero se corresponden con los fragmentos detallados en los apartados previos. El fichero {\tt personal.sh} únicamente instala {\tt vim} y {\tt zsh}.}
 	\label{fig:Vagrantfile}
 \end{figure}

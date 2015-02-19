@@ -1,0 +1,22 @@
+title:            Tactics DS
+description:      A small grid-based game powered by a custom framework for Nintendo DS and PC
+url:              http://sumolari.github.io/TacticsDS
+signoff:          Mark, Víctor y Lluís
+disqus_shortname: # disqus comment thread for post header options. ( leave blank if unwanted. )
+facebook_appid:   # appid for like button, remove from /_includes/share.html if unwanted.
+google_analytics: # set tracking, remove from /javascripts/basic.js if unwanted.
+
+links:
+  - name:         Sobre nosotros
+    url:          /about
+  - name:         Blog de desarrollo
+    url:          /
+  - name:         GitHub
+    url:          http://github.com/sumolari/TacticsDS
+    external:     true
+highlighter:      pygments
+permalink:        pretty
+markdown:         redcarpet
+redcarpet:
+  extensions:
+    - smart
