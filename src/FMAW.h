@@ -2,9 +2,14 @@
 #define FMAW_H
 
 #include "./fmaw_constants.h"
+
+#ifdef NDS
 #include "./fmaw_macros.h"
+#endif
+
 #include "./fmaw_types.h"
 #include "./fmaw_fixedreal.h"
+#include "./fmaw_camera.h"
 #include "./fmaw_math.h"
 #include "./fmaw_geometry.h"
 #include "./fmaw_debug.h"
