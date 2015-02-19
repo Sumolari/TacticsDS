@@ -1,6 +1,8 @@
 #ifndef FMAW_MACROS
 #define FMAW_MACROS
 
+#include <nds.h>
+
 // Macro for calculating BG VRAM memory address with tile index.
 #define tile2bgram(t)   (BG_GFX + (t) * 16)
 
