@@ -2,24 +2,75 @@
 
 #include "./fmaw_input.h"
 
+#include <nds.h>
 #include <map>
 
 namespace FMAW {
 
 namespace Input {
 
+typedef enum {
+    OnPressed,
+    OnReleased,
+    WhilePressed
+} InputMode;
+
+typedef struct t_callback {
+    /**
+     * ID of this callback.
+     */
+    int ID;
+    /**
+     * Button that will trigger this callback.
+     */
+    ButtonType button;
+    /**
+     * Whether this callback should be called when button is pressed, released,
+     * while it is pressed, etc.
+     */
+    InputMode  mode;
+    /**
+     * Function to be called.
+     */
+    void (*function)();
+} Callback;
+
 // Here we will store registered functions.
-std::map<int, void (*)()> registered_functions {};
+std::map<int, Callback> registered_functions {};
+
+std::map<ButtonType, bool> currentlyPressedButtons {};
 
 // Next ID that can be used.
 int next_registered_function_id = 0;
 
 int onButtonPressed(ButtonType button, void (*callback)()) {
-    return 0;
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        OnPressed,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+int whileButtonPressed(ButtonType button, void (*callback)()) {
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        WhilePressed,
+        callback
+    };
+    return next_registered_function_id++;
 }
 
 int onButtonReleased(ButtonType button, void (*callback)()) {
-    return 0;
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        OnReleased,
+        callback
+    };
+    return next_registered_function_id++;
 }
 
 //------------------------------------------------------------------------------
@@ -146,7 +197,73 @@ int onButtonArrowRightReleased(void (*callback)()) {
 // Callback handling.
 //------------------------------------------------------------------------------
 
-void unregisterCallback(int identifier) {
+void callCallback(ButtonType button, InputMode mode) {
+    auto rf = registered_functions;
+    for (auto it = rf.begin(); it != rf.end(); it++) {
+        Callback callback = it->second;
+        if (callback.button == button && callback.mode == mode) {
+            callback.function();
+        }
+    }
+}
+
+void callCallbacksOnPressed(ButtonType button) {
+    callCallback(button, OnPressed);
+}
+
+void callCallbacksWhilePressed(ButtonType button) {
+    callCallback(button, WhilePressed);
+}
+
+void callCallbacksOnReleased(ButtonType button) {
+    callCallback(button, OnReleased);
+}
+
+void check() {
+    int keysh = keysHeld();
+    int ndsKeys[BUTTONS_COUNT] = {KEY_A,
+                                  KEY_B,
+                                  KEY_SELECT,
+                                  KEY_START,
+                                  KEY_L,
+                                  KEY_R,
+                                  KEY_UP,
+                                  KEY_DOWN,
+                                  KEY_LEFT,
+                                  KEY_RIGHT
+                                 };
+    ButtonType frameworkTypes[BUTTONS_COUNT] = BUTTONS;
+
+    // For each button that we handle...
+    for (int i = 0; i < BUTTONS_COUNT; i++) {
+        // If button is pressed...
+        if (keysh & ndsKeys[i]) {
+            // If it wasn't pressed before...
+            if (!currentlyPressedButtons[ frameworkTypes[i] ]) {
+                // We set it as pressed.
+                currentlyPressedButtons[ frameworkTypes[i] ] = true;
+                // We call proper callbacks.
+                callCallbacksOnPressed(frameworkTypes[i]);
+            }
+            // We call proper callbacks.
+            callCallbacksWhilePressed(frameworkTypes[i]);
+        } else if (currentlyPressedButtons[ frameworkTypes[i] ]) {
+            // If button was pressed before but it is not longer pressed...
+            // We set it as not pressed.
+            currentlyPressedButtons[ frameworkTypes[i] ] = false;
+            // We call proper callback.
+            callCallbacksOnReleased(frameworkTypes[i]);
+        }
+    }
+}
+
+bool unregisterCallback(int id) {
+    if (registered_functions.find(id) !=
+            registered_functions.end()) {
+        registered_functions.erase(id);
+        return true;
+    }
+    return false;
 }
 
 }  // namespace Input

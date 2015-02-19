@@ -5,18 +5,11 @@ namespace FMAW {
 
 namespace Input {
 
-typedef enum {
-    ButtonA,
-    ButtonB,
-    ButtonSelect,
-    ButtonStart,
-    ButtonL,
-    ButtonR,
-    ButtonArrowUp,
-    ButtonArrowDown,
-    ButtonArrowLeft,
-    ButtonArrowRight
-} ButtonType;
+#define BUTTONS_COUNT 10
+#define BUTTONS {ButtonA, ButtonB, ButtonSelect, ButtonStart, ButtonL, ButtonR,\
+        ButtonArrowUp, ButtonArrowDown, ButtonArrowLeft, ButtonArrowRight }
+
+typedef enum BUTTONS ButtonType;
 
 //------------------------------------------------------------------------------
 // Handling Button A.
@@ -203,10 +196,15 @@ int onButtonArrowRightReleased(void (*callback));
 //------------------------------------------------------------------------------
 
 /**
+ * Checks if any button has been pressed and calls proper method.
+ */
+void check();
+
+/**
  * Unregisters callback with given identifier so it won't be called again.
  * @param identifier Identifier of callback to be unregistered.
  */
-void unregisterCallback(int identifier);
+bool unregisterCallback(int identifier);
 
 }
 

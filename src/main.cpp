@@ -126,12 +126,10 @@ void setupGraphics(void) {
     g_warrior.setYPosition(75 << 8);
 }
 
-void process_input() { }
-
 void update_camera() { }
 
 void update_logic() {
-    process_input();
+    FMAW::Input::check();
     FMAW::Timer::check();
     update_camera();
 }
