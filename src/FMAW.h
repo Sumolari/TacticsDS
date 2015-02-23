@@ -17,6 +17,7 @@
 #include "./fmaw_sprite.h"
 #include "./fmaw_character.h"
 #include "./fmaw_timer.h"
+#include "./fmaw_input.h"
 
 namespace FMAW {
 

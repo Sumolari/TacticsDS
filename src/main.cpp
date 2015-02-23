@@ -126,12 +126,10 @@ void setupGraphics(void) {
     g_warrior.setYPosition(75 << 8);
 }
 
-void process_input() { }
-
 void update_camera() { }
 
 void update_logic() {
-    process_input();
+    FMAW::Input::check();
     FMAW::Timer::check();
     update_camera();
 }
@@ -153,6 +151,23 @@ int main(void) {
     };
 
     FMAW::Timer::enqueue_function(func, 200, true);
+
+    auto pulsaFlechaIzquierda = []() {
+        FMAW::printf("Has pulsado la flecha izquierda");
+    };
+    FMAW::Input::onButtonArrowLeftPressed(pulsaFlechaIzquierda);
+
+    auto mantenFlechaIzquierda = []() {
+        FMAW::printf("Mantienes la flecha izquierda pulsada");
+    };
+    FMAW::Input::whileButtonArrowLeftPressed(mantenFlechaIzquierda);
+
+    auto sueltaFlechaIzquierda = []() {
+        FMAW::printf("Has soltado la flecha izquierda");
+    };
+    FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
+
+
 
     while (1) {
         // Rendering period:

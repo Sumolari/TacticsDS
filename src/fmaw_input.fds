@@ -1,0 +1,332 @@
+// Copyright 2015 FMAW
+
+#include "./fmaw_input.h"
+#include "./fmaw_debug.h"
+
+#include <nds.h>
+#include <map>
+
+namespace FMAW {
+
+namespace Input {
+
+typedef enum {
+    OnPressed,
+    OnReleased,
+    WhilePressed
+} InputMode;
+
+typedef struct t_callback {
+    /**
+     * ID of this callback.
+     */
+    int ID;
+    /**
+     * Button that will trigger this callback.
+     */
+    ButtonType button;
+    /**
+     * Whether this callback should be called when button is pressed, released,
+     * while it is pressed, etc.
+     */
+    InputMode  mode;
+    /**
+     * Function to be called.
+     */
+    void (*function)();
+} Callback;
+
+// Here we will store registered functions.
+std::map<int, Callback> registered_functions {};
+
+std::map<ButtonType, bool> currentlyPressedButtons {};
+
+// Next ID that can be used.
+int next_registered_function_id = 0;
+
+int onButtonPressed(ButtonType button, void (*callback)()) {
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        OnPressed,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+int whileButtonPressed(ButtonType button, void (*callback)()) {
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        WhilePressed,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+int onButtonReleased(ButtonType button, void (*callback)()) {
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        OnReleased,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+//------------------------------------------------------------------------------
+// Handling Button A.
+//------------------------------------------------------------------------------
+
+int onButtonAPressed(void (*callback)()) {
+    return onButtonPressed(ButtonA, callback);
+}
+
+int whileButtonAPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonA, callback);
+}
+
+int onButtonAReleased(void (*callback)()) {
+    return onButtonReleased(ButtonA, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button B.
+//------------------------------------------------------------------------------
+
+int onButtonBPressed(void (*callback)()) {
+    return onButtonPressed(ButtonB, callback);
+}
+
+int whileButtonBPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonB, callback);
+}
+
+int onButtonBReleased(void (*callback)()) {
+    return onButtonReleased(ButtonB, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button L.
+//------------------------------------------------------------------------------
+
+int onButtonLPressed(void (*callback)()) {
+    return onButtonPressed(ButtonL, callback);
+}
+
+int whileButtonLPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonL, callback);
+}
+
+int onButtonLReleased(void (*callback)()) {
+    return onButtonReleased(ButtonL, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button R.
+//------------------------------------------------------------------------------
+
+int onButtonRPressed(void (*callback)()) {
+    return onButtonPressed(ButtonR, callback);
+}
+
+int whileButtonRPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonR, callback);
+}
+
+int onButtonRReleased(void (*callback)()) {
+    return onButtonReleased(ButtonR, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Select.
+//------------------------------------------------------------------------------
+
+int onButtonSelectPressed(void (*callback)()) {
+    return onButtonPressed(ButtonSelect, callback);
+}
+
+int whileButtonSelectPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonSelect, callback);
+}
+
+int onButtonSelectReleased(void (*callback)()) {
+    return onButtonReleased(ButtonSelect, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Start.
+//------------------------------------------------------------------------------
+
+int onButtonStartPressed(void (*callback)()) {
+    return onButtonPressed(ButtonStart, callback);
+}
+
+int whileButtonStartPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonStart, callback);
+}
+
+int onButtonStartReleased(void (*callback)()) {
+    return onButtonReleased(ButtonStart, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Up.
+//------------------------------------------------------------------------------
+
+int onButtonArrowUpPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowUp, callback);
+}
+
+int whileButtonArrowUpPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonArrowUp, callback);
+}
+
+int onButtonArrowUpReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowUp, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Down.
+//------------------------------------------------------------------------------
+
+int onButtonArrowDownPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowDown, callback);
+}
+
+int whileButtonArrowDownPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonArrowDown, callback);
+}
+
+int onButtonArrowDownReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowDown, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Left.
+//------------------------------------------------------------------------------
+
+int onButtonArrowLeftPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowLeft, callback);
+}
+
+int whileButtonArrowLeftPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonArrowLeft, callback);
+}
+
+int onButtonArrowLeftReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowLeft, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Right.
+//------------------------------------------------------------------------------
+
+int onButtonArrowRightPressed(void (*callback)()) {
+    return onButtonPressed(ButtonArrowRight, callback);
+}
+
+int whileButtonArrowRightPressed(void (*callback)()) {
+    return whileButtonPressed(ButtonArrowRight, callback);
+}
+
+int onButtonArrowRightReleased(void (*callback)()) {
+    return onButtonReleased(ButtonArrowRight, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Touch & Mouse.
+//------------------------------------------------------------------------------
+
+// TODO(lluis): Implement this method!
+int onTouchPressed(void (*callback)(int, int)) {
+    return -1;
+}
+
+// TODO(lluis): Implement this method!
+int onTouchMoved(void (*callback)(int, int)) {
+    return -1;
+}
+
+// TODO(lluis): Implement this method!
+int onTouchReleased(void (*callback)(int, int)) {
+    return -1;
+}
+
+//------------------------------------------------------------------------------
+// Callback handling.
+//------------------------------------------------------------------------------
+
+void callCallback(ButtonType button, InputMode mode) {
+    auto rf = registered_functions;
+    for (auto it = rf.begin(); it != rf.end(); it++) {
+        Callback callback = it->second;
+        if (callback.button == button && callback.mode == mode) {
+            callback.function();
+        }
+    }
+}
+
+void callCallbacksOnPressed(ButtonType button) {
+    callCallback(button, OnPressed);
+}
+
+void callCallbacksWhilePressed(ButtonType button) {
+    callCallback(button, WhilePressed);
+}
+
+void callCallbacksOnReleased(ButtonType button) {
+    callCallback(button, OnReleased);
+}
+
+void check() {
+    scanKeys();
+    int keysh = keysHeld();
+    int ndsKeys[BUTTONS_COUNT] = {KEY_A,
+                                  KEY_B,
+                                  KEY_SELECT,
+                                  KEY_START,
+                                  KEY_L,
+                                  KEY_R,
+                                  KEY_UP,
+                                  KEY_DOWN,
+                                  KEY_LEFT,
+                                  KEY_RIGHT
+                                 };
+    ButtonType frameworkTypes[BUTTONS_COUNT] = BUTTONS;
+
+    // For each button that we handle...
+    for (int i = 0; i < BUTTONS_COUNT; i++) {
+        // If button is pressed...
+        if (keysh & ndsKeys[i]) {
+            // If it wasn't pressed before...
+            if (!currentlyPressedButtons[ frameworkTypes[i] ]) {
+                // We set it as pressed.
+                currentlyPressedButtons[ frameworkTypes[i] ] = true;
+                // We call proper callbacks.
+                callCallbacksOnPressed(frameworkTypes[i]);
+            }
+            // We call proper callbacks.
+            callCallbacksWhilePressed(frameworkTypes[i]);
+        } else if (currentlyPressedButtons[ frameworkTypes[i] ]) {
+            // If button was pressed before but it is not longer pressed...
+            // We set it as not pressed.
+            currentlyPressedButtons[ frameworkTypes[i] ] = false;
+            // We call proper callback.
+            callCallbacksOnReleased(frameworkTypes[i]);
+        }
+    }
+}
+
+bool unregisterCallback(int id) {
+    if (registered_functions.find(id) !=
+            registered_functions.end()) {
+        registered_functions.erase(id);
+        return true;
+    }
+    return false;
+}
+
+}  // namespace Input
+
+}  // namespace FMAW
