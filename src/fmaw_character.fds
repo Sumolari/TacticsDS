@@ -60,6 +60,8 @@ animation_id Character::animateToPosition(Point position, unsigned int duration,
             this->setPosition(this->animations[id].finalPosition);
             // Dequeue enqueued function.
             Timer::dequeue_function(callback_id);
+            // Call completion callback.
+            this->animations[id].callback(true);
         } else {
             Point finalPosition = this->animations[id].finalPosition;
             Point initialPosition = this->animations[id].initialPosition;
@@ -103,6 +105,7 @@ animation_id Character::animateToPosition(Point position, unsigned int duration,
 bool Character::cancelAnimation(animation_id id) {
     if (this->animations.find(id) != this->animations.end()) {
         Timer::dequeue_function(this->animations[id].callback_id);
+        this->animations[id].callback(false);
         this->animations.erase(id);
         return true;
     }
