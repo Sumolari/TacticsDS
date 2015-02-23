@@ -4,10 +4,9 @@
 typedef unsigned char uint8;
 typedef unsigned short int uint16;
 
+#include "./fmaw_fixedreal.h"
+
 typedef uint16 u16;
 typedef volatile u16 vu16;
-
-typedef int FixedReal;
-typedef int PreciseFixedReal;
 
 #endif

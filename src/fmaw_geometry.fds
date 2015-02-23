@@ -35,10 +35,12 @@ void Transform::setIdentity() {
 void Transform::applyRotation(double angle) {}
 
 void Transform::applyScaling(FixedReal x, FixedReal y) {
+    /*
     *this->PA = (((*this->PA) * x) >> 8);
     *this->PB = (((*this->PB) * y) >> 8);
     *this->PC = (((*this->PC) * x) >> 8);
     *this->PD = (((*this->PD) * y) >> 8);
+    */
 }
 
 void Transform::print() {

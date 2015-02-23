@@ -1,4 +1,4 @@
-// Copyright 2015 Lluís Ulzurrun de Asanza Sàez
+// Copyright 2015 FMAW
 
 #ifdef NDS
 #include "./fmaw_sprite.fds"

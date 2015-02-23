@@ -1,4 +1,4 @@
-// Copyright 2015 Lluís Ulzurrun de Asanza Sàez
+// Copyright 2015 FMAW
 
 #include <sstream>
 
@@ -42,8 +42,8 @@
 Bug g_bug;
 Warrior g_warrior;
 
-FixedReal g_camera_x;
-FixedReal g_camera_y;
+FMAW::FixedReal g_camera_x;
+FMAW::FixedReal g_camera_y;
 
 //------------------------------------------------------------------------------
 // Main code section
@@ -122,8 +122,8 @@ void setupGraphics(void) {
 
     g_bug = Bug(FMAW::Sprite(0));
     g_warrior = Warrior(FMAW::Sprite(1));
-    g_warrior.setXPosition(155 << 8);
-    g_warrior.setYPosition(75 << 8);
+    g_warrior.setXPosition(FMAW::FixedReal(155, 8));
+    g_warrior.setYPosition(FMAW::FixedReal(75, 8));
 }
 
 void update_camera() { }
@@ -135,10 +135,10 @@ void update_logic() {
 }
 
 void update_graphics() {
-    g_bug.render(g_camera_x >> 8, g_camera_y >> 8);
-    g_warrior.render(g_camera_x >> 8, g_camera_y >> 8);
+    g_bug.render(g_camera_x, g_camera_y);
+    g_warrior.render(g_camera_x, g_camera_y);
 
-    FMAW::Camera::setHorizontalOffset(g_camera_x >> 8);
+    FMAW::Camera::setHorizontalOffset(g_camera_x);
 }
 
 int main(void) {

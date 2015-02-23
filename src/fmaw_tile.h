@@ -78,71 +78,12 @@ public:
     /**
      * Creates a new tile given the ID that will be used to refer to this tile.
      */
-    Tile(TileAttributes attributes) {
-
-        if (attributes.type == TypeSprite) {
-            this->imgMemory = self::nextSpriteImgMemoryPosition;
-            this->palMemory = self::nextSpritePalMemoryPosition;
-            // Move pointer so next tile will be stored properly.
-            // This is equivalent to: attributes.tilesLength / 32
-            self::nextSpriteImgMemoryPosition += attributes.tilesLength >> 5;
-            // TODO: Update this to handle multiple size palettes.
-            self::nextSpritePalMemoryPosition++;
-        } else {
-            this->imgMemory = self::nextBackgroundImgMemoryPosition;
-            this->palMemory = self::nextBackgroundPalMemoryPosition;
-            // Move pointer so next tile will be stored properly.
-            // This is equivalent to: attributes.tilesLength / 32
-            self::nextBackgroundImgMemoryPosition += attributes.tilesLength >> 5;
-            // TODO: Update this to handle multiple size palettes.
-            self::nextBackgroundPalMemoryPosition++;
-        }
-
-
-        FMAW::printf("I'm copying tiles of length %d to %d",
-                     attributes.tilesLength, this->imgMemory);
-
-        if (attributes.type == TypeSprite) {
-            // Copy to memory.
-            dmaCopyHalfWords(3,
-                             attributes.tilesArray,
-                             tile2objram(this->imgMemory),
-                             attributes.tilesLength);
-
-            dmaCopyHalfWords(3,
-                             attributes.paletteArray,
-                             pal2objram(this->palMemory),
-                             attributes.paletteLength);
-        } else {
-            // Copy to memory.
-            dmaCopyHalfWords(3,
-                             attributes.tilesArray,
-                             tile2bgram(this->imgMemory),
-                             attributes.tilesLength);
-
-            dmaCopyHalfWords(3,
-                             attributes.paletteArray,
-                             pal2bgram(this->palMemory),
-                             attributes.paletteLength);
-        }
-
-        this->ID = this->nextID;
-
-        // Store memory address of this tile.
-        self::IDtoImgMemoryPosition[ID] = this->imgMemory;
-        self::IDtoPalMemoryPosition[ID] = this->palMemory;
-        // This ID has been used!
-        self::nextID++;
-    };
+    Tile(TileAttributes attributes);
 
     /**
      * Returns tile associated with given ID.
      */
-    Tile(int ID) {
-        this->ID = ID;
-        this->imgMemory = self::IDtoImgMemoryPosition[ID];
-        this->palMemory = self::IDtoPalMemoryPosition[ID];
-    }
+    Tile(int ID);
 
 };
 
