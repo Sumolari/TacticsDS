@@ -7,11 +7,11 @@ namespace FMAW {
 namespace Camera {
 
 void setHorizontalOffset(FixedReal x) {
-    REG_BG0HOFS = x;
+    REG_BG0HOFS = x.raw();
 }
 
 void setVerticalOffset(FixedReal y) {
-    REG_BG0VOFS = y;
+    REG_BG0VOFS = y.raw();
 }
 
 }  // namespace Camera
