@@ -2,6 +2,7 @@
 #define FMAW_TIMER_H
 
 #include <map>
+#include <functional>
 
 namespace FMAW {
 
@@ -22,7 +23,7 @@ void init();
  *                    being called.
  * @return            An identificar to cancel enqueued action later.
  */
-int enqueue_function(void (*callback)(int), unsigned int delta,
+int enqueue_function(std::function<void(int)> callback, unsigned int delta,
                      bool repetitive);
 
 /**

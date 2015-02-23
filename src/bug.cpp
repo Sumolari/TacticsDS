@@ -1,5 +1,7 @@
 // Copyright 2015 FMAW
 
+#include <cstdlib>
+
 #include "./bug.h"
 
 #include "./fmaw_tile.h"
@@ -54,6 +56,19 @@ void Bug::init() {
     this->sprite.setSizeMode(FMAW::square32x32);
     this->sprite.setTile(this->tiles[this->currentTileID]);
     this->sprite.enable();
+
+    //std::function<void(bool)> move_bug_a = [this](bool success) {};
+
+    /*
+    std::function<void(bool)> move_bug_a = [this, move_bug_a](bool success) {
+        int newX = rand() % WINDOW_WIDTH;
+        int newY = rand() % WINDOW_HEIGHT;
+
+        FMAW::Point p = { newX, newY };
+
+        FMAW::Character::animateToPosition(p, 500, move_bug_a);
+    };
+    */
 }
 
 void Bug::update() {
@@ -66,4 +81,15 @@ void Bug::update() {
 void Bug::reset() {
     this->x = FMAW::FixedReal(128,  8);
     this->y = FMAW::FixedReal(64, 8);
+}
+
+void Bug::randomMovement() {
+    int newX = rand() % WINDOW_WIDTH;
+    int newY = rand() % WINDOW_HEIGHT;
+
+    FMAW::Point p = { newX, newY };
+
+    FMAW::printf("I'll go to %d %d", newX, newY);
+
+    FMAW::Character::animateToPosition(p, 500);
 }

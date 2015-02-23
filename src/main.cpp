@@ -121,6 +121,7 @@ void setupGraphics(void) {
     FMAW::Background::setAlphaBlendingCoefficientTwo(16);
 
     g_bug = Bug(FMAW::Sprite(0));
+    g_bug.randomMovement();
     g_warrior = Warrior(FMAW::Sprite(1));
     g_warrior.setXPosition(FMAW::FixedReal(155, 8));
     g_warrior.setYPosition(FMAW::FixedReal(75, 8));
@@ -166,7 +167,6 @@ int main(void) {
         FMAW::printf("Has soltado la flecha izquierda");
     };
     FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
-
 
 
     while (1) {

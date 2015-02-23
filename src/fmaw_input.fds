@@ -33,7 +33,7 @@ typedef struct t_callback {
     /**
      * Function to be called.
      */
-    void (*function)();
+    std::function<void(void)> function;
 } Callback;
 
 // Here we will store registered functions.
@@ -44,7 +44,7 @@ std::map<ButtonType, bool> currentlyPressedButtons {};
 // Next ID that can be used.
 int next_registered_function_id = 0;
 
-int onButtonPressed(ButtonType button, void (*callback)()) {
+int onButtonPressed(ButtonType button, std::function<void(void)> callback) {
     registered_functions[next_registered_function_id] = {
         next_registered_function_id,
         button,
@@ -54,7 +54,7 @@ int onButtonPressed(ButtonType button, void (*callback)()) {
     return next_registered_function_id++;
 }
 
-int whileButtonPressed(ButtonType button, void (*callback)()) {
+int whileButtonPressed(ButtonType button, std::function<void(void)> callback) {
     registered_functions[next_registered_function_id] = {
         next_registered_function_id,
         button,
@@ -64,7 +64,7 @@ int whileButtonPressed(ButtonType button, void (*callback)()) {
     return next_registered_function_id++;
 }
 
-int onButtonReleased(ButtonType button, void (*callback)()) {
+int onButtonReleased(ButtonType button, std::function<void(void)> callback) {
     registered_functions[next_registered_function_id] = {
         next_registered_function_id,
         button,
@@ -78,15 +78,15 @@ int onButtonReleased(ButtonType button, void (*callback)()) {
 // Handling Button A.
 //------------------------------------------------------------------------------
 
-int onButtonAPressed(void (*callback)()) {
+int onButtonAPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonA, callback);
 }
 
-int whileButtonAPressed(void (*callback)()) {
+int whileButtonAPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonA, callback);
 }
 
-int onButtonAReleased(void (*callback)()) {
+int onButtonAReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonA, callback);
 }
 
@@ -94,15 +94,15 @@ int onButtonAReleased(void (*callback)()) {
 // Handling Button B.
 //------------------------------------------------------------------------------
 
-int onButtonBPressed(void (*callback)()) {
+int onButtonBPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonB, callback);
 }
 
-int whileButtonBPressed(void (*callback)()) {
+int whileButtonBPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonB, callback);
 }
 
-int onButtonBReleased(void (*callback)()) {
+int onButtonBReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonB, callback);
 }
 
@@ -110,15 +110,15 @@ int onButtonBReleased(void (*callback)()) {
 // Handling Button L.
 //------------------------------------------------------------------------------
 
-int onButtonLPressed(void (*callback)()) {
+int onButtonLPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonL, callback);
 }
 
-int whileButtonLPressed(void (*callback)()) {
+int whileButtonLPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonL, callback);
 }
 
-int onButtonLReleased(void (*callback)()) {
+int onButtonLReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonL, callback);
 }
 
@@ -126,15 +126,15 @@ int onButtonLReleased(void (*callback)()) {
 // Handling Button R.
 //------------------------------------------------------------------------------
 
-int onButtonRPressed(void (*callback)()) {
+int onButtonRPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonR, callback);
 }
 
-int whileButtonRPressed(void (*callback)()) {
+int whileButtonRPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonR, callback);
 }
 
-int onButtonRReleased(void (*callback)()) {
+int onButtonRReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonR, callback);
 }
 
@@ -142,15 +142,15 @@ int onButtonRReleased(void (*callback)()) {
 // Handling Button Select.
 //------------------------------------------------------------------------------
 
-int onButtonSelectPressed(void (*callback)()) {
+int onButtonSelectPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonSelect, callback);
 }
 
-int whileButtonSelectPressed(void (*callback)()) {
+int whileButtonSelectPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonSelect, callback);
 }
 
-int onButtonSelectReleased(void (*callback)()) {
+int onButtonSelectReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonSelect, callback);
 }
 
@@ -158,15 +158,15 @@ int onButtonSelectReleased(void (*callback)()) {
 // Handling Button Start.
 //------------------------------------------------------------------------------
 
-int onButtonStartPressed(void (*callback)()) {
+int onButtonStartPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonStart, callback);
 }
 
-int whileButtonStartPressed(void (*callback)()) {
+int whileButtonStartPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonStart, callback);
 }
 
-int onButtonStartReleased(void (*callback)()) {
+int onButtonStartReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonStart, callback);
 }
 
@@ -174,15 +174,15 @@ int onButtonStartReleased(void (*callback)()) {
 // Handling Button Arrow Up.
 //------------------------------------------------------------------------------
 
-int onButtonArrowUpPressed(void (*callback)()) {
+int onButtonArrowUpPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonArrowUp, callback);
 }
 
-int whileButtonArrowUpPressed(void (*callback)()) {
+int whileButtonArrowUpPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonArrowUp, callback);
 }
 
-int onButtonArrowUpReleased(void (*callback)()) {
+int onButtonArrowUpReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonArrowUp, callback);
 }
 
@@ -190,15 +190,15 @@ int onButtonArrowUpReleased(void (*callback)()) {
 // Handling Button Arrow Down.
 //------------------------------------------------------------------------------
 
-int onButtonArrowDownPressed(void (*callback)()) {
+int onButtonArrowDownPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonArrowDown, callback);
 }
 
-int whileButtonArrowDownPressed(void (*callback)()) {
+int whileButtonArrowDownPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonArrowDown, callback);
 }
 
-int onButtonArrowDownReleased(void (*callback)()) {
+int onButtonArrowDownReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonArrowDown, callback);
 }
 
@@ -206,15 +206,15 @@ int onButtonArrowDownReleased(void (*callback)()) {
 // Handling Button Arrow Left.
 //------------------------------------------------------------------------------
 
-int onButtonArrowLeftPressed(void (*callback)()) {
+int onButtonArrowLeftPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonArrowLeft, callback);
 }
 
-int whileButtonArrowLeftPressed(void (*callback)()) {
+int whileButtonArrowLeftPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonArrowLeft, callback);
 }
 
-int onButtonArrowLeftReleased(void (*callback)()) {
+int onButtonArrowLeftReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonArrowLeft, callback);
 }
 
@@ -222,15 +222,15 @@ int onButtonArrowLeftReleased(void (*callback)()) {
 // Handling Button Arrow Right.
 //------------------------------------------------------------------------------
 
-int onButtonArrowRightPressed(void (*callback)()) {
+int onButtonArrowRightPressed(std::function<void(void)> callback) {
     return onButtonPressed(ButtonArrowRight, callback);
 }
 
-int whileButtonArrowRightPressed(void (*callback)()) {
+int whileButtonArrowRightPressed(std::function<void(void)> callback) {
     return whileButtonPressed(ButtonArrowRight, callback);
 }
 
-int onButtonArrowRightReleased(void (*callback)()) {
+int onButtonArrowRightReleased(std::function<void(void)> callback) {
     return onButtonReleased(ButtonArrowRight, callback);
 }
 
