@@ -33,7 +33,7 @@ class Grid {
      * @param  ip IndexPath, location of the cell.
      * @return    Cell located at given path.
      */
-    Cell cellAtIndexPath(IndexPath ip);
+    Cell *cellAtIndexPath(IndexPath ip);
 
     /**
      * Moves the character in given cell to given cell.
@@ -46,9 +46,14 @@ class Grid {
                                      unsigned int duration);
 
     /**
-     * Draw the grid and the cells.
+     * Draws the grid and the cells.
      */
-    void render();
+    void renderBackground();
+
+    /**
+     * Draws the characters in the cells.
+     */
+    void renderCharacters();
 };
 
 #endif

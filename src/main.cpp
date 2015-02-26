@@ -11,6 +11,7 @@
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
 #include "./black.h"
+#include "./blank.h"
 
 //------------------------------------------------------------------------------
 // Background tile entries
@@ -53,17 +54,24 @@ FMAW::FixedReal g_camera_y;
  * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
-    /*
-        FMAW::TileAttributes black_tile_attributes {
-            blackTiles,
-            blackTilesLen,
-            blackPal,
-            blackPalLen,
-            FMAW::TypeBackground
-        };
-        FMAW::Tile black_tile(black_tile_attributes);
-        FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
-    */
+    FMAW::TileAttributes blank_tile_attributes {
+        blankTiles,
+        blankTilesLen,
+        blankPal,
+        blankPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile blank_tile(blank_tile_attributes);
+
+    FMAW::TileAttributes black_tile_attributes {
+        blackTiles,
+        blackTilesLen,
+        blackPal,
+        blackPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile black_tile(black_tile_attributes);
+    FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
 
     FMAW::TileAttributes brick_attributes {
         gfx_brickTiles,
@@ -74,36 +82,6 @@ void setupGraphics(void) {
     };
     FMAW::Tile brick_tile(brick_attributes);
     FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
-
-    FMAW::TileAttributes brick_attributes_2 {
-        gfx_brickTiles,
-        gfx_brickTilesLen,
-        gfx_brickPal,
-        gfx_brickPalLen,
-        FMAW::TypeBackground
-    };
-    FMAW::Tile brick_tile_2(brick_attributes_2);
-    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile_2.ID);
-
-    FMAW::TileAttributes brick_attributes_3 {
-        gfx_brickTiles,
-        gfx_brickTilesLen,
-        gfx_brickPal,
-        gfx_brickPalLen,
-        FMAW::TypeBackground
-    };
-    FMAW::Tile brick_tile_3(brick_attributes_3);
-    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile_3.ID);
-
-    FMAW::TileAttributes brick_attributes_4 {
-        gfx_brickTiles,
-        gfx_brickTilesLen,
-        gfx_brickPal,
-        gfx_brickPalLen,
-        FMAW::TypeBackground
-    };
-    FMAW::Tile brick_tile_4(brick_attributes_4);
-    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile_4.ID);
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
@@ -117,11 +95,10 @@ void setupGraphics(void) {
     //FMAW::Background(3).clearAllTiles();
 
     FMAW::Background bgBricks(0);
-    bgBricks.setScreenBaseBlock(1);
+    bgBricks.setScreenBaseBlock(2);
 
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     bgBricks.clearAllTiles();
-
 
     // Set tilemap entries for 6 first rows of background 0 (bricks).
     for (int y = 0; y < 6; y++) {
@@ -137,7 +114,9 @@ void setupGraphics(void) {
         }
     }
     // Did we say 6 first rows? We wanted 6 LAST rows!
-    bgBricks.setVerticalOffset(112);
+    //bgBricks.setVerticalOffset(112);
+
+    grid.renderBackground();
 }
 
 void update_camera() { }
@@ -149,7 +128,6 @@ void update_logic() {
 }
 
 void update_graphics() {
-    grid.render();
     FMAW::Camera::setHorizontalOffset(g_camera_x);
 }
 

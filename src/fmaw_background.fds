@@ -51,11 +51,9 @@ Background::Background() : id(nextEmptyBackground++) {
     this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
                       this->getScreenBaseBlock());
     nextEmptyBackground = nextEmptyBackground % TOTAL_BACKGROUNDS;
-    FMAW::printf("Se ha instanciado el fondo %d", this->id);
 }
 
 Background::Background(background_id id) : id(id) {
-    FMAW::printf("Se ha instanciado el fondo %d de forma explicita", this->id);
     this->selectRegister();
     this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
                       this->getScreenBaseBlock());
@@ -80,7 +78,7 @@ bool Background::setScreenBaseBlock(uint8 newScreenBaseBlock) {
     if (newScreenBaseBlock > 31 || newScreenBaseBlock < 0) return false;
     *this->reg &= 0xE0FF;
     *this->reg |= newScreenBaseBlock << 8;
-    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(newScreenBaseBlock);
+    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(this->getScreenBaseBlock());
     return true;
 }
 

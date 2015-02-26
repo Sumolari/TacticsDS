@@ -41,9 +41,7 @@ void setBackgroundColor(unsigned int color);
 
 class Background {
 
-private:
-    // Tiles register array.
-    u16 *tiles;
+  private:
     // Register holding this background data.
     vu16 *reg;
     // Register holding this background's vertical offset.
@@ -56,7 +54,9 @@ private:
      */
     void selectRegister();
 
-public:
+  public:
+    // Tiles register array.
+    u16 *tiles;
     // ID of this background.
     background_id id;
     // Next empty background.

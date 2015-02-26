@@ -20,37 +20,44 @@ Grid::Grid() {
             for (int i = 0; i < tiles_per_cell; i++)
                 tiles.push_back(tile_id++);
             IndexPath path {row, col};
-            Cell c = this->cellAtIndexPath(path);
-            c.tiles = tiles;
-            c.background = FMAW::Background(0);
+            Cell *c = this->cellAtIndexPath(path);
+            c->tiles = tiles;
+            c->background = FMAW::Background(0);
             if (row % 2 == col % 2) {
-                c.setBackgroundType(CellBGBlack);
-                this->cells.push_back(c);
+                FMAW::printf("La celda %d %d es negra", row, col);
+                c->setBackgroundType(CellBGBlack);
+            } else {
+                FMAW::printf("La celda %d %d es blanca", row, col);
+                c->setBackgroundType(CellBGNone);
             }
         }
     }
 }
 
-Cell Grid::cellAtIndexPath(IndexPath ip) {
-    return this->cells[ ip.row * this->cols + ip.col ];
+Cell *Grid::cellAtIndexPath(IndexPath ip) {
+    return &this->cells[ ip.row * this->cols + ip.col ];
 }
 
 bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
                                        unsigned int duration) {
-    Cell f = this->cellAtIndexPath(from);
-    Cell t = this->cellAtIndexPath(to);
-    if (!t.isOccupied() && f.isOccupied()) {
-        FMAW::Character *c = f.getCharacter();
-        c->animateToPosition(t.getCenter(), duration);
-        t.setCharacter(c);
-        f.setCharacter(nullptr);
+    Cell *f = this->cellAtIndexPath(from);
+    Cell *t = this->cellAtIndexPath(to);
+    if (!t->isOccupied() && f->isOccupied()) {
+        FMAW::Character *c = f->getCharacter();
+        c->animateToPosition(t->getCenter(), duration);
+        t->setCharacter(c);
+        f->setCharacter(nullptr);
         return true;
     }
     return false;
 }
 
-void Grid::render() {
-    for (Cell cell : this->cells) {
-        cell.render();
+void Grid::renderBackground() {
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath p{row, col};
+            FMAW::printf("Dibujando la celda %d %d", row, col);
+            this->cellAtIndexPath(p)->renderBackground();
+        }
     }
 }

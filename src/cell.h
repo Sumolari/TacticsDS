@@ -42,6 +42,11 @@ class Cell {
 
   public:
     /**
+     * Creates an empty cell.
+     */
+    Cell();
+
+    /**
      * Background that will be used to draw this cell.
      */
     FMAW::Background background;
@@ -89,9 +94,9 @@ class Cell {
     FMAW::Character *setCharacter(FMAW::Character *newCharacter);
 
     /**
-     * Draws this cell.
+     * Draws this cell's background.
      */
-    void render();
+    void renderBackground();
 };
 
 #endif

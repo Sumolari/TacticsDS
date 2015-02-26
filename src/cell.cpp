@@ -8,18 +8,9 @@
 
 #include "./gfx_brick.h"
 
-
-/**
- * Black tile.
- */
-FMAW::TileAttributes black_tile_attributes {
-    blackTiles,
-    blackTilesLen,
-    blackPal,
-    blackPalLen,
-    FMAW::TypeBackground
-};
-FMAW::Tile black_tile(black_tile_attributes);
+Cell::Cell() {
+    this->background = FMAW::Background(0);
+}
 
 CellBackgroundType Cell::getBackgroundType() {
     return this->backgroundType;
@@ -47,19 +38,24 @@ FMAW::Character *Cell::setCharacter(FMAW::Character *newCharacter) {
     return prev;
 }
 
-void Cell::render() {
+void Cell::renderBackground() {
     switch (this->backgroundType) {
         case CellBGBlack:
+            FMAW::printf("NEGRA");
             for (auto tile_id : this->tiles) {
-                this->background.setTile(tile_id, black_tile);
+                this->background.setScreenBaseBlock(2);
+                this->background.setTile(tile_id, FMAW::Tile(1));
             }
             break;
         case CellBGNone:
         case CellBGWhite:
         default:
+            FMAW::printf("ESTA NO SE PINTA");
             break;
     }
+    /*
     if (this->characterInCell != nullptr) {
         this->characterInCell->render();
     }
+    */
 }
