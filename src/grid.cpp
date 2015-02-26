@@ -11,14 +11,24 @@ Grid::Grid() {
     this->cols = WINDOW_WIDTH / CELL_WIDTH;
     this->cells = std::vector<Cell>(this->rows * this->cols);
 
-    int tile_id = 0;
-    int tiles_per_cell = CELL_WIDTH / TILE_WIDTH * CELL_HEIGHT / TILE_HEIGHT;
+    int cols_per_cell = CELL_WIDTH / TILE_WIDTH;
+    int rows_per_cell = CELL_HEIGHT / TILE_HEIGHT;
 
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
             std::vector<FMAW::background_tile_id> tiles;
-            for (int i = 0; i < tiles_per_cell; i++)
-                tiles.push_back(tile_id++);
+
+            int upperLeft = col * cols_per_cell + row * this->cols *
+                            cols_per_cell * rows_per_cell;
+
+            for (int j = 0; j < rows_per_cell; j++)
+                for (int i = 0; i < cols_per_cell; i++) {
+                    FMAW::printf("Celda %d %d toma la tile %d", row, col,
+                                 upperLeft + j * this->cols * cols_per_cell + i
+                                );
+                    tiles.push_back(upperLeft + j * this->cols
+                                    * cols_per_cell + i);
+                }
             IndexPath path {row, col};
             Cell *c = this->cellAtIndexPath(path);
             c->tiles = tiles;
