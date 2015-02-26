@@ -6,7 +6,7 @@ date: 2015-02-12 09:40:00
 
 ## PersonalData
 
-Hemos imprimido todos los valores que nos ofrece el struct de {\tt PersonalData}. Se puede observar en la imagen que hemos escogido el color verde para los nombres y el gris para los valores. Hemos observado que en el emulador No$GBA, no están definidos algunos de los valores como el *nombre* y el *mensaje personal* pero en el emulador DeSmuMe sí que existen valores para todos.
+Hemos imprimido todos los valores que nos ofrece el struct de `PersonalData`. Se puede observar en la imagen que hemos escogido el color verde para los nombres y el gris para los valores. Hemos observado que en el emulador No$GBA, no están definidos algunos de los valores como el *nombre* y el *mensaje personal* pero en el emulador DeSmuMe sí que existen valores para todos.
 
 
 > ![Captura del programa PersonalData.](../../../../P2Media/personaldata.png)
