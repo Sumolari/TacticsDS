@@ -48,10 +48,14 @@ void Background::selectRegister() {
 Background::Background() : id(nextEmptyBackground++) {
     this->clear();
     this->selectRegister();
-    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(0);
+    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
+                      this->getScreenBaseBlock());
+    nextEmptyBackground = nextEmptyBackground % TOTAL_BACKGROUNDS;
+    FMAW::printf("Se ha instanciado el fondo %d", this->id);
 }
 
 Background::Background(background_id id) : id(id) {
+    FMAW::printf("Se ha instanciado el fondo %d de forma explicita", this->id);
     this->selectRegister();
     this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
                       this->getScreenBaseBlock());
@@ -395,6 +399,7 @@ void Background::clear() {
 }
 
 void Background::clearAllTiles() {
+    FMAW::printf("Clearing from %p to %p", this->tiles, &this->tiles[1024]);
     for (int n = 0; n < 1024; n++)
         this->tiles[n] = 0;
 }

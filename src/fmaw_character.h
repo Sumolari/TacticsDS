@@ -63,15 +63,15 @@ class Character {
     FixedReal x;
     // Y coordinate.
     FixedReal y;
-    // Sprite of this bug.
-    FMAW::Sprite sprite;
-
     /**
      * Initializes this character.
      */
-    virtual void init() = 0;
+    virtual void init();
 
   public:
+    // Sprite of this character.
+    FMAW::Sprite sprite;
+
     /**
      * Creates a new character using a new sprite.
      */
@@ -170,7 +170,12 @@ class Character {
      * Updates this character's attribute.
      * This method should be called manually once per frame.
      */
-    virtual void update() = 0;
+    virtual void update();
+
+    /**
+     * Renders this character in Zero frame.
+     */
+    virtual void render();
 
     /**
      * Renders this character in given frame.

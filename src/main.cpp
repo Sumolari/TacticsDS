@@ -10,6 +10,7 @@
 
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
+#include "./black.h"
 
 //------------------------------------------------------------------------------
 // Background tile entries
@@ -36,11 +37,9 @@
 // Game objects
 //------------------------------------------------------------------------------
 
-#include "./bug.h"
-#include "./warrior.h"
+#include "./grid.h"
 
-Bug g_bug;
-Warrior g_warrior;
+Grid grid;
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -54,6 +53,18 @@ FMAW::FixedReal g_camera_y;
  * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
+    /*
+        FMAW::TileAttributes black_tile_attributes {
+            blackTiles,
+            blackTilesLen,
+            blackPal,
+            blackPalLen,
+            FMAW::TypeBackground
+        };
+        FMAW::Tile black_tile(black_tile_attributes);
+        FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
+    */
+
     FMAW::TileAttributes brick_attributes {
         gfx_brickTiles,
         gfx_brickTilesLen,
@@ -61,29 +72,56 @@ void setupGraphics(void) {
         gfx_brickPalLen,
         FMAW::TypeBackground
     };
-    FMAW::TileAttributes gradient_attributes {
-        gfx_gradientTiles,
-        gfx_gradientTilesLen,
-        gfx_gradientPal,
-        gfx_gradientPalLen,
+    FMAW::Tile brick_tile(brick_attributes);
+    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
+
+    FMAW::TileAttributes brick_attributes_2 {
+        gfx_brickTiles,
+        gfx_brickTilesLen,
+        gfx_brickPal,
+        gfx_brickPalLen,
         FMAW::TypeBackground
     };
+    FMAW::Tile brick_tile_2(brick_attributes_2);
+    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile_2.ID);
 
-    FMAW::Tile brick_tile(brick_attributes);
-    FMAW::Tile gradient_tile(gradient_attributes);
+    FMAW::TileAttributes brick_attributes_3 {
+        gfx_brickTiles,
+        gfx_brickTilesLen,
+        gfx_brickPal,
+        gfx_brickPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile brick_tile_3(brick_attributes_3);
+    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile_3.ID);
+
+    FMAW::TileAttributes brick_attributes_4 {
+        gfx_brickTiles,
+        gfx_brickTilesLen,
+        gfx_brickPal,
+        gfx_brickPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile brick_tile_4(brick_attributes_4);
+    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile_4.ID);
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
 
+    /*
+        FMAW::Background other{1};
+        other.setScreenBaseBlock(2);
+        other.clearAllTiles();
+    */
+    //FMAW::Background(2).clearAllTiles();
+    //FMAW::Background(3).clearAllTiles();
+
     FMAW::Background bgBricks(0);
     bgBricks.setScreenBaseBlock(1);
 
-    FMAW::Background bgGradient(1);
-    bgGradient.setScreenBaseBlock(2);
-
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     bgBricks.clearAllTiles();
-    bgGradient.clearAllTiles();
+
 
     // Set tilemap entries for 6 first rows of background 0 (bricks).
     for (int y = 0; y < 6; y++) {
@@ -100,31 +138,6 @@ void setupGraphics(void) {
     }
     // Did we say 6 first rows? We wanted 6 LAST rows!
     bgBricks.setVerticalOffset(112);
-
-    // Set tilemap entries for 8 first rows of background 1 (gradient).
-    for (int y = 0; y < 8; y++) {
-        int tile_index = gradient_tile.imgMemory + y;
-        int y32 = y * 32;
-
-        for (int x = 0; x < 32; x++) {
-            int tile_id = x + y32;
-            bgGradient.setTile(tile_id, tile_index);
-            bgGradient.setPalette(tile_id, gradient_tile.palMemory);
-        }
-    }
-
-    bgGradient.useAsAlphaBlendingSrc();
-    FMAW::Background::useBackdropAsAlphaDst();
-    FMAW::Background::setAlphaBlendingMode(FMAW::babmAlphaBlending);
-
-    FMAW::Background::setAlphaBlendingCoefficientOne(4);
-    FMAW::Background::setAlphaBlendingCoefficientTwo(16);
-
-    g_bug = Bug(FMAW::Sprite(0));
-    g_bug.randomMovement();
-    g_warrior = Warrior(FMAW::Sprite(1));
-    g_warrior.setXPosition(FMAW::FixedReal(155, 8));
-    g_warrior.setYPosition(FMAW::FixedReal(75, 8));
 }
 
 void update_camera() { }
@@ -136,9 +149,7 @@ void update_logic() {
 }
 
 void update_graphics() {
-    g_bug.render(g_camera_x, g_camera_y);
-    g_warrior.render(g_camera_x, g_camera_y);
-
+    grid.render();
     FMAW::Camera::setHorizontalOffset(g_camera_x);
 }
 
@@ -146,12 +157,14 @@ int main(void) {
     FMAW::init();
     setupGraphics();
 
+    /*
     auto func = [](int ID) {
         g_bug.update();
         g_warrior.update();
     };
 
     FMAW::Timer::enqueue_function(func, 200, true);
+    */
 
     auto pulsaFlechaIzquierda = []() {
         FMAW::printf("Has pulsado la flecha izquierda");

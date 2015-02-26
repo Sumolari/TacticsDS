@@ -11,6 +11,8 @@
 
 namespace FMAW {
 
+void Character::init() {}
+
 void Character::setXPosition(FixedReal x) {
     this->x = x;
 }
@@ -117,6 +119,12 @@ bool Character::cancelAnimation(animation_id id) {
 Point Character::getPosition() {
     Point p {this->x, this->y};
     return p;
+}
+
+void Character::update() {}
+
+void Character::render() {
+    this->render(FixedReal(8), FixedReal(8));
 }
 
 void Character::render(FixedReal camera_x, FixedReal camera_y) {
