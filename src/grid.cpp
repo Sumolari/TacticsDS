@@ -23,9 +23,6 @@ Grid::Grid() {
 
             for (int j = 0; j < rows_per_cell; j++)
                 for (int i = 0; i < cols_per_cell; i++) {
-                    FMAW::printf("Celda %d %d toma la tile %d", row, col,
-                                 upperLeft + j * this->cols * cols_per_cell + i
-                                );
                     tiles.push_back(upperLeft + j * this->cols
                                     * cols_per_cell + i);
                 }
@@ -34,11 +31,9 @@ Grid::Grid() {
             c->tiles = tiles;
             c->background = FMAW::Background(0);
             if (row % 2 == col % 2) {
-                FMAW::printf("La celda %d %d es negra", row, col);
-                c->setBackgroundType(CellBGBlack);
+                c->setBackgroundType(CellBGGrass);
             } else {
-                FMAW::printf("La celda %d %d es blanca", row, col);
-                c->setBackgroundType(CellBGNone);
+                c->setBackgroundType(CellBGBase);
             }
         }
     }

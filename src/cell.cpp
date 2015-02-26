@@ -40,8 +40,19 @@ FMAW::Character *Cell::setCharacter(FMAW::Character *newCharacter) {
 
 void Cell::renderBackground() {
     switch (this->backgroundType) {
+        case CellBGBase:
+        case CellBGBridge:
+        case CellBGForest:
+        case CellBGGrass:
+        case CellBGMountain:
+        case CellBGRiver:
+            this->background.setScreenBaseBlock(2);
+            for (auto tile_id : this->tiles) {
+                this->background.setTile(tile_id,
+                                         FMAW::Tile(this->backgroundType));
+            }
+            break;
         case CellBGBlack:
-            FMAW::printf("NEGRA");
             for (auto tile_id : this->tiles) {
                 this->background.setScreenBaseBlock(2);
                 this->background.setTile(tile_id, FMAW::Tile(1));
@@ -50,7 +61,6 @@ void Cell::renderBackground() {
         case CellBGNone:
         case CellBGWhite:
         default:
-            FMAW::printf("ESTA NO SE PINTA");
             break;
     }
     /*

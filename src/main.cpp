@@ -10,8 +10,16 @@
 
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
-#include "./black.h"
-#include "./blank.h"
+
+#include "./gfx_black.h"
+#include "./gfx_blank.h"
+
+#include "./gfx_Base.h"
+#include "./gfx_Bridge.h"
+#include "./gfx_Forest.h"
+#include "./gfx_Grass.h"
+#include "./gfx_Mountain.h"
+#include "./gfx_River.h"
 
 //------------------------------------------------------------------------------
 // Background tile entries
@@ -55,33 +63,97 @@ FMAW::FixedReal g_camera_y;
  */
 void setupGraphics(void) {
     FMAW::TileAttributes blank_tile_attributes {
-        blankTiles,
-        blankTilesLen,
-        blankPal,
-        blankPalLen,
+        gfx_blankTiles,
+        gfx_blankTilesLen,
+        gfx_blankPal,
+        gfx_blankPalLen,
         FMAW::TypeBackground
     };
     FMAW::Tile blank_tile(blank_tile_attributes);
 
     FMAW::TileAttributes black_tile_attributes {
-        blackTiles,
-        blackTilesLen,
-        blackPal,
-        blackPalLen,
+        gfx_blackTiles,
+        gfx_blackTilesLen,
+        gfx_blackPal,
+        gfx_blackPalLen,
         FMAW::TypeBackground
     };
     FMAW::Tile black_tile(black_tile_attributes);
     FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
 
-    FMAW::TileAttributes brick_attributes {
+    FMAW::TileAttributes brick_tile_attributes {
         gfx_brickTiles,
         gfx_brickTilesLen,
         gfx_brickPal,
         gfx_brickPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile brick_tile(brick_attributes);
+    FMAW::Tile brick_tile(brick_tile_attributes);
     FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
+
+    //------------------------------------------------------------------------//
+
+    FMAW::TileAttributes gfx_Base_attributes {
+        gfx_BaseTiles,
+        gfx_BaseTilesLen,
+        gfx_BasePal,
+        gfx_BasePalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile base_tile(gfx_Base_attributes);
+    FMAW::printf("El fondo Base tiene ID=%d", base_tile.ID);
+
+    FMAW::TileAttributes gfx_Bridge_attributes {
+        gfx_BridgeTiles,
+        gfx_BridgeTilesLen,
+        gfx_BridgePal,
+        gfx_BridgePalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Bridge_tile(gfx_Bridge_attributes);
+    FMAW::printf("El fondo Bridge tiene ID=%d", Bridge_tile.ID);
+
+    FMAW::TileAttributes gfx_Forest_attributes {
+        gfx_ForestTiles,
+        gfx_ForestTilesLen,
+        gfx_ForestPal,
+        gfx_ForestPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Forest_tile(gfx_Forest_attributes);
+    FMAW::printf("El fondo Forest tiene ID=%d", Forest_tile.ID);
+
+    FMAW::TileAttributes gfx_Grass_attributes {
+        gfx_GrassTiles,
+        gfx_GrassTilesLen,
+        gfx_GrassPal,
+        gfx_GrassPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Grass_tile(gfx_Grass_attributes);
+    FMAW::printf("El fondo Grass tiene ID=%d", Grass_tile.ID);
+
+    FMAW::TileAttributes gfx_Mountain_attributes {
+        gfx_MountainTiles,
+        gfx_MountainTilesLen,
+        gfx_MountainPal,
+        gfx_MountainPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Mountain_tile(gfx_Mountain_attributes);
+    FMAW::printf("El fondo Mountain tiene ID=%d", Mountain_tile.ID);
+
+    FMAW::TileAttributes gfx_River_attributes {
+        gfx_RiverTiles,
+        gfx_RiverTilesLen,
+        gfx_RiverPal,
+        gfx_RiverPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile River_tile(gfx_River_attributes);
+    FMAW::printf("El fondo River tiene ID=%d", River_tile.ID);
+
+    //------------------------------------------------------------------------//
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
@@ -96,6 +168,10 @@ void setupGraphics(void) {
 
     FMAW::Background bgBricks(0);
     bgBricks.setScreenBaseBlock(2);
+
+    FMAW::Background(1).setScreenBaseBlock(3);
+    FMAW::Background(2).setScreenBaseBlock(4);
+    FMAW::Background(3).setScreenBaseBlock(5);
 
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     bgBricks.clearAllTiles();

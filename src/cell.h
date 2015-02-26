@@ -19,7 +19,14 @@ typedef struct t_indexPath {
 typedef enum t_cellBackgroundType {
     CellBGNone = 0,
     CellBGWhite = 1,
-    CellBGBlack = 2
+    CellBGBlack = 2,
+    // -------------
+    CellBGBase = 3,
+    CellBGBridge = 4,
+    CellBGForest = 5,
+    CellBGGrass = 6,
+    CellBGMountain = 7,
+    CellBGRiver = 8
 } CellBackgroundType;
 
 #define CELL_WIDTH  16
