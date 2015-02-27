@@ -69,6 +69,12 @@ Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiend
 >
 > Captura del programa libfat en el emulador DeSmuMe.
 
+Con la version por defecto de **DeSmuMe** nos sale un error, esto es debido a que no inicializa un sistema de ficheros por defecto. Pero, tenemos a nuestra disposición la version `desmume-glade` que efectivamente si que carga bien el programa de ejemplo.
+
+> ![Captura del programa libfat en el emulador DeSmuMe-glade.
+](../p3media/fat_glade.png)
+>
+> Captura del programa libfat en el emulador DeSmuMe-glade.
 
 ####NO$GBA
 
@@ -97,8 +103,10 @@ Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiend
 
 ####DeSmuMe
 
+En este ejemplo además de listar los ficheros existentes, crea algunos archivos para que el ejemplo tenga salida.
+
 > ![Captura del programa nitrofs en el emulador DeSmuMe.
-](../../../../p3media/nitrofs.png)
+](../p3media/nitrofs.png)
 > 
 > Captura del programa nitrofs en el emulador DeSmuMe.
 
