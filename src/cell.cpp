@@ -47,9 +47,11 @@ void Cell::renderBackground() {
         case CellBGMountain:
         case CellBGRiver:
             this->background.setScreenBaseBlock(2);
-            for (auto tile_id : this->tiles) {
-                this->background.setTile(tile_id,
-                                         FMAW::Tile(this->backgroundType));
+            for (int i = 0; i < this->tiles.size(); ++i) {
+                this->background.setTile(this->tiles[i],
+                    FMAW::Tile(this->backgroundType).imgMemory + i);
+                this->background.setPalette(this->tiles[i],
+                    FMAW::Tile(this->backgroundType).palMemory);
             }
             break;
         case CellBGBlack:

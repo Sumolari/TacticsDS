@@ -158,14 +158,6 @@ void setupGraphics(void) {
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
 
-    /*
-        FMAW::Background other{1};
-        other.setScreenBaseBlock(2);
-        other.clearAllTiles();
-    */
-    //FMAW::Background(2).clearAllTiles();
-    //FMAW::Background(3).clearAllTiles();
-
     FMAW::Background bgBricks(0);
     bgBricks.setScreenBaseBlock(2);
 
@@ -190,7 +182,7 @@ void setupGraphics(void) {
         }
     }
     // Did we say 6 first rows? We wanted 6 LAST rows!
-    //bgBricks.setVerticalOffset(112);
+    // bgBricks.setVerticalOffset(112);
 
     grid.renderBackground();
 }
@@ -235,6 +227,12 @@ int main(void) {
     };
     FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
 
+    IndexPath p{3, 6};
+    grid.cellAtIndexPath(p)->setBackgroundType(CellBGMountain);
+
+    grid.cellAtIndexPath({4,4})->setBackgroundType(CellBGRiver);
+
+    grid.renderBackground();
 
     while (1) {
         // Rendering period:
