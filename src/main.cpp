@@ -207,27 +207,13 @@ int main(void) {
     FMAW::init();
     setupGraphics();
 
-    auto pulsaFlechaIzquierda = []() {
-        FMAW::printf("Has pulsado la flecha izquierda");
-    };
-    FMAW::Input::onButtonArrowLeftPressed(pulsaFlechaIzquierda);
-
-    auto mantenFlechaIzquierda = []() {
-        FMAW::printf("Mantienes la flecha izquierda pulsada");
-    };
-    FMAW::Input::whileButtonArrowLeftPressed(mantenFlechaIzquierda);
-
-    auto sueltaFlechaIzquierda = []() {
-        FMAW::printf("Has soltado la flecha izquierda");
-    };
-    FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
-
     grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
 
     grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
 
+    IndexPath warrior_path = {0, 0};
     Warrior warrior;
-    grid.cellAtIndexPath({0, 0})->setCharacter(&warrior);
+    grid.cellAtIndexPath(warrior_path)->setCharacter(&warrior);
 
     auto func = [&warrior](int ID) {
         warrior.update();
@@ -235,23 +221,45 @@ int main(void) {
 
     FMAW::Timer::enqueue_function(func, 200, true);
 
-    int prev_col = 0;
-    int prev_row = 0;
 
-    auto move_warrior = [&prev_col, &prev_row, &warrior](int ID) {
-        int new_col = (prev_col < grid.numCols()) ? prev_col + 1 : 0;
-        int new_row = (new_col == 0) ? prev_row + 1 : prev_row;
-
-        FMAW::printf("La guerrera se mueve de %d %d a %d %d!",
-                     prev_row, prev_col,
-                     new_row, new_col);
-        grid.moveCharacterFromCellToCell({prev_row, prev_col}, {new_row, new_col}, 100);
-
-        prev_col = new_col;
-        prev_row = new_row;
+    auto releaseLeftArrow = []() {
+        grid.selectLeftCell();
+        FMAW::printf("Has soltado la flecha izquierda");
     };
+    FMAW::Input::onButtonArrowLeftReleased(releaseLeftArrow);
 
-    FMAW::Timer::enqueue_function(move_warrior, 5000, true);
+    auto releaseRightArrow = []() {
+        grid.selectRightCell();
+        FMAW::printf("Has soltado la flecha derecha");
+    };
+    FMAW::Input::onButtonArrowRightReleased(releaseRightArrow);
+
+    auto releaseUpArrow = []() {
+        grid.selectTopCell();
+        FMAW::printf("Has soltado la flecha arriba");
+    };
+    FMAW::Input::onButtonArrowUpReleased(releaseUpArrow);
+
+    auto releaseDownArrow = []() {
+        grid.selectBottomCell();
+        FMAW::printf("Has soltado la flecha abajo");
+    };
+    FMAW::Input::onButtonArrowDownReleased(releaseDownArrow);
+
+    auto releaseA = [&warrior_path]() {
+        FMAW::printf("La guerrera se va de %d %d a %d %d",
+                     warrior_path.row,
+                     warrior_path.col,
+                     grid.getSelectedPath().row,
+                     grid.getSelectedPath().col);
+        grid.moveCharacterFromCellToCell(warrior_path,
+                                         grid.getSelectedPath(), 500);
+        warrior_path.row = grid.getSelectedPath().row;
+        warrior_path.col = grid.getSelectedPath().col;
+        FMAW::printf("Has soltado la tecla A");
+    };
+    FMAW::Input::onButtonAReleased(releaseA);
+
 
     grid.renderBackground();
 
