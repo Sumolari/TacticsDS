@@ -85,7 +85,7 @@ bool unregisterCallback(int identifier);
 
 ¿Se ve la idea? **No** más variables auxiliares. **No** más limitaciones. **No** más rodeos para conseguir el objetivo. Un API directa a lo que nos interesa. Sí, suponéis bien pensando que por cada botón disponemos de 3 métodos para añadir un callback. Sí, suponéis bien al pensar que en un futuro cambiaremos el tipo de los parámetros de puntero a función void a función anónima de C++11. 
 
-Pero eso no es lo importante. Lo importante es que ahora podemos tener manejar la entrada del usuario de forma expresiva, clara y limpia:
+Pero eso no es lo importante. Lo importante es que ahora podemos manejar la entrada del usuario de forma expresiva, clara y limpia:
 
 {% highlight cpp %}
 auto pulsaFlechaIzquierda = []() {
