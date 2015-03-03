@@ -26,4 +26,6 @@ cd ~/TacticsDS
 {% endhighlight %}
 1. Como comando para ejecutar los tests usaremos únicamente `make` (en realidad nosotros tenemos algunos tests unitarios que se pueden ejecutar con `make test` pero son pequeños tests para verificar el correcto funcionamiento del componente de aritmética en coma fija y realmente no cubre demasiada parte del proyecto, de modo que con confirmar que el proyecto se compila nos es suficiente, de momento).
 
-Con esto podemos comprobar el estado del proyecto cada vez que hacemos `push` al repositorio y corregir rápidamente estos despistes.
+Con esto podemos comprobar el estado del proyecto cada vez que hacemos `push` al repositorio y corregir rápidamente estos despistes. 
+
+![Estado de la rama master](https://magnum-ci.com/status/ec748ea24dd8096d90e6b94241cf6151.png)
