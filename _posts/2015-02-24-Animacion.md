@@ -11,46 +11,44 @@ Nosotros creemos ser ordenados pero también somos lo suficientemente avispados 
 La clase `Character` representa todos los objetos que en la DS se muestran en pantalla mediante `Sprites`, esto es, cualquier cosa que se muestra en pantalla y no es un `background`. Por tanto un `Character` necesita almacenar información sobre el `Sprite` con el que se dibujará y su posición en la pantalla.
 
 Además de con los métodos necesarios para manipular los atributos del objeto, contamos con 4 métodos de animación: {% highlight cpp %}
+/**
+ * Moves this character to given position animatedly.
+ * @param position Final position of the character.
+ * @param duration Time it'll take to move the character.
+ * @return         Identifier of the animation that will be performed.
+ */
+animation_id animateToPosition(Point position, unsigned int duration);
 
-	/**
-     * Moves this character to given position animatedly.
-     * @param position Final position of the character.
-     * @param duration Time it'll take to move the character.
-     * @return         Identifier of the animation that will be performed.
-     */
-    animation_id animateToPosition(Point position, unsigned int duration);
+/**
+ * Moves this character to given position animatedly.
+ * @param position Final position of the character.
+ * @param duration Time it'll take to move the character.
+ * @param callback Function that will be called when animation finishes.
+ *                 It'll receive whether animation finished successfully
+ *                 (true) or not (false).
+ */
+animation_id animateToPosition(Point position, unsigned int duration,
+                               std::function<void(bool)> callback);
 
-    /**
-     * Moves this character to given position animatedly.
-     * @param position Final position of the character.
-     * @param duration Time it'll take to move the character.
-     * @param callback Function that will be called when animation finishes.
-     *                 It'll receive whether animation finished successfully
-     *                 (true) or not (false).
-     */
-    animation_id animateToPosition(Point position, unsigned int duration,
-                                   std::function<void(bool)> callback);
+/**
+ * Moves this character to given position animatedly.
+ * @param position Final position of the character.
+ * @param duration Time it'll take to move the character.
+ * @param type     Type of animation to be performed.
+ * @param callback Function that will be called when animation finishes.
+ *                 It'll receive whether animation finished successfully
+ *                 (true) or not (false).
+ */
+animation_id animateToPosition(Point position, unsigned int duration,
+                               AnimationType type,
+                               std::function<void(bool)> callback);
 
-    /**
-     * Moves this character to given position animatedly.
-     * @param position Final position of the character.
-     * @param duration Time it'll take to move the character.
-     * @param type     Type of animation to be performed.
-     * @param callback Function that will be called when animation finishes.
-     *                 It'll receive whether animation finished successfully
-     *                 (true) or not (false).
-     */
-    animation_id animateToPosition(Point position, unsigned int duration,
-                                   AnimationType type,
-                                   std::function<void(bool)> callback);
-
-    /**
-     * Cancels animation with given ID.
-     * @param  id ID of animation to cancel.
-     * @return    Whether animation was cancelled or not.
-     */
-    bool cancelAnimation(animation_id id);
-        
+/**
+ * Cancels animation with given ID.
+ * @param  id ID of animation to cancel.
+ * @return    Whether animation was cancelled or not.
+ */
+bool cancelAnimation(animation_id id);    
 {% endhighlight %}
 
 Actualmente el framework únicamente soporta animación de las coordenadas del `Character`, además mediante interpolación lineal, aunque está preparado para que en un futuro se implementen otras funciones de interpolación.
