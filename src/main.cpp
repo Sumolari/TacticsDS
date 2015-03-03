@@ -8,6 +8,8 @@
 // Graphic references
 //------------------------------------------------------------------------------
 
+#include "./warrior.h"
+
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
 
@@ -227,10 +229,12 @@ int main(void) {
     };
     FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
 
-    IndexPath p{3, 6};
-    grid.cellAtIndexPath(p)->setBackgroundType(CellBGMountain);
+    grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
 
-    grid.cellAtIndexPath({4,4})->setBackgroundType(CellBGRiver);
+    grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
+
+    Warrior warrior;
+    grid.cellAtIndexPath({10, 3})->setCharacter(&warrior);
 
     grid.renderBackground();
 

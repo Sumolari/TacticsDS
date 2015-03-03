@@ -12,6 +12,10 @@ Cell::Cell() {
     this->background = FMAW::Background(0);
 }
 
+void Cell::setCenter(FMAW::Point newCenter) {
+    this->center = newCenter;
+}
+
 CellBackgroundType Cell::getBackgroundType() {
     return this->backgroundType;
 }
@@ -35,6 +39,7 @@ FMAW::Character *Cell::getCharacter() {
 FMAW::Character *Cell::setCharacter(FMAW::Character *newCharacter) {
     FMAW::Character *prev = this->characterInCell;
     this->characterInCell = newCharacter;
+    newCharacter->setPosition(this->center);
     return prev;
 }
 
@@ -48,9 +53,11 @@ void Cell::renderBackground() {
         case CellBGRiver:
             this->background.setScreenBaseBlock(2);
             for (int i = 0; i < this->tiles.size(); ++i) {
-                this->background.setTile(this->tiles[i],
+                this->background.setTile(
+                    this->tiles[i],
                     FMAW::Tile(this->backgroundType).imgMemory + i);
-                this->background.setPalette(this->tiles[i],
+                this->background.setPalette(
+                    this->tiles[i],
                     FMAW::Tile(this->backgroundType).palMemory);
             }
             break;
@@ -65,9 +72,7 @@ void Cell::renderBackground() {
         default:
             break;
     }
-    /*
     if (this->characterInCell != nullptr) {
         this->characterInCell->render();
     }
-    */
 }

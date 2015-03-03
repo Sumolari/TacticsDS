@@ -16,6 +16,9 @@ Grid::Grid() {
 
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
+            FMAW::Point center = {row * 16 + 8, col * 16 + 8};
+            FMAW::printf("Cell at %d %d has center %d %d", row, col, center.x, center.y);
+
             std::vector<FMAW::background_tile_id> tiles;
 
             int upperLeft = col * cols_per_cell + row * this->cols *
@@ -29,6 +32,7 @@ Grid::Grid() {
             IndexPath path {row, col};
             Cell *c = this->cellAtIndexPath(path);
             c->tiles = tiles;
+            c->setCenter(center);
             c->background = FMAW::Background(0);
             if (row % 2 == col % 2) {
                 c->setBackgroundType(CellBGGrass);
@@ -61,7 +65,7 @@ void Grid::renderBackground() {
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
             IndexPath p{row, col};
-            FMAW::printf("Dibujando la celda %d %d", row, col);
+            //FMAW::printf("Dibujando la celda %d %d", row, col);
             this->cellAtIndexPath(p)->renderBackground();
         }
     }
