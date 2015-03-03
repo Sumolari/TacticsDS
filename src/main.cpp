@@ -211,14 +211,14 @@ int main(void) {
 
     grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
 
-    IndexPath warrior_path = {0, 0};
-    Warrior warrior;
-    grid.cellAtIndexPath(warrior_path)->setCharacter(&warrior);
+    Warrior warriorA, warriorB;
+    grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
+    grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
 
-    auto func = [&warrior](int ID) {
-        warrior.update();
+    auto func = [&warriorA, &warriorB](int ID) {
+        warriorA.update();
+        warriorB.update();
     };
-
     FMAW::Timer::enqueue_function(func, 200, true);
 
 
@@ -246,19 +246,28 @@ int main(void) {
     };
     FMAW::Input::onButtonArrowDownReleased(releaseDownArrow);
 
-    auto releaseA = [&warrior_path]() {
-        FMAW::printf("La guerrera se va de %d %d a %d %d",
-                     warrior_path.row,
-                     warrior_path.col,
+    IndexPath pick_up_path = {0, 0};
+    auto releaseA = [&pick_up_path]() {
+        FMAW::printf("Se mueve de %d %d a %d %d",
+                     pick_up_path.row,
+                     pick_up_path.col,
                      grid.getSelectedPath().row,
                      grid.getSelectedPath().col);
-        grid.moveCharacterFromCellToCell(warrior_path,
+        grid.moveCharacterFromCellToCell(pick_up_path,
                                          grid.getSelectedPath(), 500);
-        warrior_path.row = grid.getSelectedPath().row;
-        warrior_path.col = grid.getSelectedPath().col;
         FMAW::printf("Has soltado la tecla A");
     };
     FMAW::Input::onButtonAReleased(releaseA);
+
+    auto releaseB = [&pick_up_path]() {
+        pick_up_path.row = grid.getSelectedPath().row;
+        pick_up_path.col = grid.getSelectedPath().col;
+        FMAW::printf("Se ha marcado la celda %d %d",
+                     pick_up_path.row,
+                     pick_up_path.col);
+        FMAW::printf("Has soltado la tecla B");
+    };
+    FMAW::Input::onButtonBReleased(releaseB);
 
 
     grid.renderBackground();
