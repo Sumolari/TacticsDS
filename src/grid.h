@@ -54,6 +54,18 @@ class Grid {
      * Draws the characters in the cells.
      */
     void renderCharacters();
+
+    /**
+     * Returns the amount of rows in this grid.
+     * @return Amount of rows in this grid.
+     */
+    int numRows();
+
+    /**
+     * Returns the amount of columns in this grid.
+     * @return Amount of columns in this grid.
+     */
+    int numCols();
 };
 
 #endif

@@ -16,8 +16,7 @@ Grid::Grid() {
 
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
-            FMAW::Point center = {row * 16 + 8, col * 16 + 8};
-            FMAW::printf("Cell at %d %d has center %d %d", row, col, center.x, center.y);
+            FMAW::Point center = {col * 16 + 16, row * 16 + 16};
 
             std::vector<FMAW::background_tile_id> tiles;
 
@@ -53,8 +52,9 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
     Cell *t = this->cellAtIndexPath(to);
     if (!t->isOccupied() && f->isOccupied()) {
         FMAW::Character *c = f->getCharacter();
-        c->animateToPosition(t->getCenter(), duration);
         t->setCharacter(c);
+        c->setPosition(f->getCenter());
+        c->animateToPosition(t->getCenter(), duration);
         f->setCharacter(nullptr);
         return true;
     }
@@ -65,8 +65,24 @@ void Grid::renderBackground() {
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
             IndexPath p{row, col};
-            //FMAW::printf("Dibujando la celda %d %d", row, col);
             this->cellAtIndexPath(p)->renderBackground();
         }
     }
+}
+
+void Grid::renderCharacters() {
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath p{row, col};
+            this->cellAtIndexPath(p)->renderCharacter();
+        }
+    }
+}
+
+int Grid::numRows() {
+    return this->rows;
+}
+
+int Grid::numCols() {
+    return this->cols;
 }

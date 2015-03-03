@@ -1,6 +1,7 @@
 // Copyright 2015 FMAW
 
 #include <sstream>
+#include <cstdlib>
 
 #include "./FMAW.h"  // Import our awesome framework!
 
@@ -199,20 +200,12 @@ void update_logic() {
 
 void update_graphics() {
     FMAW::Camera::setHorizontalOffset(g_camera_x);
+    grid.renderCharacters();
 }
 
 int main(void) {
     FMAW::init();
     setupGraphics();
-
-    /*
-    auto func = [](int ID) {
-        g_bug.update();
-        g_warrior.update();
-    };
-
-    FMAW::Timer::enqueue_function(func, 200, true);
-    */
 
     auto pulsaFlechaIzquierda = []() {
         FMAW::printf("Has pulsado la flecha izquierda");
@@ -234,7 +227,31 @@ int main(void) {
     grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
 
     Warrior warrior;
-    grid.cellAtIndexPath({10, 3})->setCharacter(&warrior);
+    grid.cellAtIndexPath({0, 0})->setCharacter(&warrior);
+
+    auto func = [&warrior](int ID) {
+        warrior.update();
+    };
+
+    FMAW::Timer::enqueue_function(func, 200, true);
+
+    int prev_col = 0;
+    int prev_row = 0;
+
+    auto move_warrior = [&prev_col, &prev_row, &warrior](int ID) {
+        int new_col = (prev_col < grid.numCols()) ? prev_col + 1 : 0;
+        int new_row = (new_col == 0) ? prev_row + 1 : prev_row;
+
+        FMAW::printf("La guerrera se mueve de %d %d a %d %d!",
+                     prev_row, prev_col,
+                     new_row, new_col);
+        grid.moveCharacterFromCellToCell({prev_row, prev_col}, {new_row, new_col}, 100);
+
+        prev_col = new_col;
+        prev_row = new_row;
+    };
+
+    FMAW::Timer::enqueue_function(move_warrior, 5000, true);
 
     grid.renderBackground();
 

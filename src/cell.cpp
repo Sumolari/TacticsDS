@@ -39,7 +39,9 @@ FMAW::Character *Cell::getCharacter() {
 FMAW::Character *Cell::setCharacter(FMAW::Character *newCharacter) {
     FMAW::Character *prev = this->characterInCell;
     this->characterInCell = newCharacter;
-    newCharacter->setPosition(this->center);
+    if (newCharacter != nullptr) {
+        newCharacter->setPosition(this->center);
+    }
     return prev;
 }
 
@@ -72,6 +74,9 @@ void Cell::renderBackground() {
         default:
             break;
     }
+}
+
+void Cell::renderCharacter() {
     if (this->characterInCell != nullptr) {
         this->characterInCell->render();
     }

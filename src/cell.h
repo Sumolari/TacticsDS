@@ -57,7 +57,7 @@ class Cell {
      * Sets center of this cell.
      * @param newCenter New center of this cell.
      */
-    void setCenter( FMAW::Point newCenter );
+    void setCenter(FMAW::Point newCenter);
 
     /**
      * Background that will be used to draw this cell.
@@ -110,6 +110,11 @@ class Cell {
      * Draws this cell's background.
      */
     void renderBackground();
+
+    /**
+     * Draws this cell's character.
+     */
+    void renderCharacter();
 };
 
 #endif
