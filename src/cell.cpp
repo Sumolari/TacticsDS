@@ -4,8 +4,6 @@
 
 #include <vector>
 
-#include "./black.h"
-
 #include "./gfx_brick.h"
 
 Cell::Cell() {
