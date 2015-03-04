@@ -206,7 +206,7 @@ void update_graphics() {
 }
 
 int main(void) {
-    FMAW::init();
+    FMAW::init(update_graphics, update_logic);
     setupGraphics();
 
     grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
@@ -271,21 +271,9 @@ int main(void) {
     };
     FMAW::Input::onButtonBReleased(releaseB);
 
-
     grid.renderBackground();
 
-    while (1) {
-        // Rendering period:
-        // Update game objects.
-        update_logic();
-
-        // Wait for the vblank period.
-        swiWaitForVBlank();
-
-        // VBlank period: (safe yo modify graphics)
-        // Move the graphics around.
-        update_graphics();
-    }
+    FMAW::start();
 
     return 0;
 }

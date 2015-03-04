@@ -1,5 +1,7 @@
 // Copyright 2015 FMAW
 
+#ifdef OPENGL
+
 #include <sstream>
 #include <cstdlib>
 
@@ -300,3 +302,5 @@ int main(void) {
 
     return 0;
 }
+
+#endif

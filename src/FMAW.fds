@@ -5,8 +5,8 @@
 
 namespace FMAW {
 
-void (*)() display;
-void (*)() update;
+void (*display)();
+void (*update)();
 
 void init(void (*displayCallback)(), void (*updateCallback)()) {
     irqInit();               // Initialize interrups.

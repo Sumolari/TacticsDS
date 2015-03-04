@@ -2,6 +2,8 @@
 
 #include "./fmaw_camera.h"
 
+#include <nds.h>
+
 namespace FMAW {
 
 namespace Camera {
