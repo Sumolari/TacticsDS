@@ -1,5 +1,11 @@
 // Copyright 2015 FMAW
 
+#ifdef OPENGL
+
+#include "./opengldemo.fgl"
+
+#else
+
 #include <sstream>
 #include <cstdlib>
 
@@ -287,3 +293,5 @@ int main(void) {
 
     return 0;
 }
+
+#endif
