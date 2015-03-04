@@ -2,12 +2,6 @@
 .SUFFIXES:
 #-------------------------------------------------------------------------------
 
-ifeq ($(strip $(DEVKITARM)),)
-$(error "Please set DEVKITARM in your environment.")
-endif
-
-include $(DEVKITARM)/ds_rules
-
 #-------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
@@ -17,8 +11,7 @@ include $(DEVKITARM)/ds_rules
 # DOCDIR is the path where documentation will be stored
 # DOXYFILE is the file with settings for documentation the generator
 #-------------------------------------------------------------------------------
-TARGET		:=	$(shell basename $(CURDIR))
-BUILD		:=	build
+TARGET		:=	$(shell basename "$(CURDIR)")
 SOURCES		:=	assets src data
 INCLUDES	:=	include build
 DOXY        :=  doxygen
@@ -28,50 +21,61 @@ DOXYFILE    :=  $(DOCDIR)/Doxyfile
 #-------------------------------------------------------------------------------
 # options for code generation
 #-------------------------------------------------------------------------------
-ARCH	:=	-mthumb -mthumb-interwork
+ARCH	:=
 
 CFLAGS	:=	-g -Wall -O2\
- 			-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
-			-ffast-math \
 			-std=gnu++0x \
-			-lboost \
-			-DNDS \
+			-DOPENGL \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM9
+CFLAGS	+=	$(INCLUDE)
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions
 
+LDFLAGS_WIN :=
+LDFLAGS_LNX :=
+LDFLAGS_MAC := -framework GLUT -framework OpenGL -framework Cocoa
+
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 #-------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #-------------------------------------------------------------------------------
-LIBS	:= -lnds9
-
+LIBS	:=
 
 #-------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level
 # containing include and lib
 #-------------------------------------------------------------------------------
-LIBDIRS	:=	$(LIBNDS)
+LIBDIRS_WIN :=
+LIBDIRS_LNX :=
+LIBDIRS_MAC := /usr/local/lib /usr/local/include
+
+#-------------------------------------------------------------------------------
+
+ifeq ($(OS),Windows_NT)
+    LDFLAGS := $(LDFLAGS_WIN)
+	LIBDIRS := $(LIBDIRS_WIN)
+else
+	UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+        LDFLAGS := $(LDFLAGS_LNX)
+		LIBDIRS := $(LIBDIRS_LNX)
+    endif
+    ifeq ($(UNAME_S),Darwin)
+        LDFLAGS := $(LDFLAGS_MAC)
+		LIBDIRS := $(LIBDIRS_MAC)
+		CXXFLAGS += -D__APPLE__
+    endif
+endif
 
 #-------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add
 # additional rules for different file extensions
 #-------------------------------------------------------------------------------
-ifneq ($(BUILD),$(notdir $(CURDIR)))
-#-------------------------------------------------------------------------------
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
-export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
-export DEPSDIR	:=	$(CURDIR)/$(BUILD)
-
-CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
-SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
-BINFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.bin)))
 PNGFILES    :=  $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.png)))
 
 #-------------------------------------------------------------------------------
@@ -88,26 +92,32 @@ else
 endif
 #-------------------------------------------------------------------------------
 
-export OFILES	:=	$(PNGFILES:.png=.o) $(BINFILES:.bin=.o) \
-					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+export OFILES	:=	$(CPPFILES:.cpp=.o)
 
-export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
-					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
-					-I$(CURDIR)/$(BUILD)
+export INCLUDE	:=	$(foreach dir,$(LIBDIRS),-I$(dir)) \
+					$(foreach dir,$(INCLUDES),-I$(dir))
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: $(BUILD) clean doc
+.PHONY: all clean doc build
 
 #-------------------------------------------------------------------------------
-$(BUILD):
-	@[ -d $@ ] || mkdir -p $@
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+all: clean common build
+
+#-------------------------------------------------------------------------------
+common:
+	rm -rf _assets_
+	mkdir _assets_
+	$(foreach image,$(PNGFILES),cp assets/$(image) _assets_/$(image);)
+
+#-------------------------------------------------------------------------------
+build:
+	g++ src/main_opengl.cpp src/FMAW.cpp src/fmaw_*.cpp $(INCLUDE) $(LDFLAGS) $(CXXFLAGS) -o$(TARGET).exe
 
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba $(TARGET).test
+	@rm -fr $(BUILD) $(TARGET).exe _assets_ $(TARGET).test $(TARGET).exe.dSYM
 
 #-------------------------------------------------------------------------------
 doc:
@@ -115,38 +125,10 @@ doc:
 
 doc-%:
 	$(DOXY) $(DOXYFILE).$*
+
 #-------------------------------------------------------------------------------
 test:
 	g++ src/tests.cpp -std=gnu++0x -o$(TARGET).test -fexceptions -DTEST
 	./$(TARGET).test
 
-#-------------------------------------------------------------------------------
-else
-
-DEPENDS	:=	$(OFILES:.o=.d)
-
-#-------------------------------------------------------------------------------
-# main targets
-#-------------------------------------------------------------------------------
-$(OUTPUT).nds	: 	$(OUTPUT).elf
-$(OUTPUT).elf	:	$(OFILES)
-
-#-------------------------------------------------------------------------------
-# GRIT rule for converting the PNG files
-#-------------------------------------------------------------------------------
-%.s %.h : %.png %.grit
-#-------------------------------------------------------------------------------
-	@grit $< -fts
-
-#-------------------------------------------------------------------------------
-%.o	:	%.bin
-#-------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	$(bin2o)
-
-
--include $(DEPENDS)
-
-#-------------------------------------------------------------------------------
-endif
 #-------------------------------------------------------------------------------
