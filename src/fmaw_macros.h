@@ -1,6 +1,8 @@
 #ifndef FMAW_MACROS
 #define FMAW_MACROS
 
+#ifdef NDS
+
 #include <nds.h>
 
 // Macro for calculating BG VRAM memory address with tile index.
@@ -17,5 +19,7 @@
 
 // Returns the amount of frames that will be displayed in
 #define frames_in_ms(x) (x / 16)
+
+#endif
 
 #endif

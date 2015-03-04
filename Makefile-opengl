@@ -64,6 +64,7 @@ else
     ifeq ($(UNAME_S),Darwin)
         LDFLAGS := $(LDFLAGS_MAC)
 		LIBDIRS := $(LIBDIRS_MAC)
+		CXXFLAGS += -D__APPLE__
     endif
 endif
 
@@ -93,7 +94,8 @@ endif
 
 export OFILES	:=	$(CPPFILES:.cpp=.o)
 
-export INCLUDE	:=	$(foreach dir,$(LIBDIRS),-I$(dir))
+export INCLUDE	:=	$(foreach dir,$(LIBDIRS),-I$(dir)) \
+					$(foreach dir,$(INCLUDES),-I$(dir))
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
@@ -110,7 +112,7 @@ common:
 
 #-------------------------------------------------------------------------------
 build:
-	g++ src/main.cpp $(INCLUDE) $(LDFLAGS) $(CXXFLAGS) -o$(TARGET).exe
+	g++ src/main_opengl.cpp src/FMAW.cpp src/fmaw_*.cpp $(INCLUDE) $(LDFLAGS) $(CXXFLAGS) -o$(TARGET).exe
 
 #-------------------------------------------------------------------------------
 clean:

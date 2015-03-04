@@ -1,12 +1,18 @@
 #ifndef FMAW_H
 #define FMAW_H
 
-#include "./fmaw_constants.h"
-
-#ifdef NDS
-#include "./fmaw_macros.h"
+#ifdef OPENGL
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/freeglut.h>
+#endif
 #endif
 
+#include "./fmaw_constants.h"
+#include "./fmaw_macros.h"
 #include "./fmaw_types.h"
 #include "./fmaw_fixedreal.h"
 #include "./fmaw_camera.h"
@@ -20,12 +26,19 @@
 #include "./fmaw_timer.h"
 #include "./fmaw_input.h"
 
+#include <functional>
+
 namespace FMAW {
 
 /**
  * Initializes framework.
  */
-void init();
+void init(void (*displayCallback)(), void (*updateCallback)());
+
+/**
+ * Starts game.
+ */
+void start();
 
 }
 

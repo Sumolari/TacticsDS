@@ -1,7 +1,5 @@
 // Copyright 2015 FMAW
 
-#ifdef NDS
-
 #include <sstream>
 #include <cstdlib>
 
@@ -53,7 +51,7 @@
 
 #include "./grid.h"
 
-Grid grid;
+// Grid grid;
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -74,7 +72,7 @@ void setupGraphics(void) {
         gfx_blankPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile blank_tile(blank_tile_attributes);
+    // FMAW::Tile blank_tile(blank_tile_attributes);
 
     FMAW::TileAttributes black_tile_attributes {
         gfx_blackTiles,
@@ -83,8 +81,8 @@ void setupGraphics(void) {
         gfx_blackPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile black_tile(black_tile_attributes);
-    FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
+    // FMAW::Tile black_tile(black_tile_attributes);
+    // FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
 
     FMAW::TileAttributes brick_tile_attributes {
         gfx_brickTiles,
@@ -93,8 +91,8 @@ void setupGraphics(void) {
         gfx_brickPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile brick_tile(brick_tile_attributes);
-    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
+    // FMAW::Tile brick_tile(brick_tile_attributes);
+    // FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
 
     //------------------------------------------------------------------------//
 
@@ -105,8 +103,8 @@ void setupGraphics(void) {
         gfx_BasePalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile base_tile(gfx_Base_attributes);
-    FMAW::printf("El fondo Base tiene ID=%d", base_tile.ID);
+    // FMAW::Tile base_tile(gfx_Base_attributes);
+    // FMAW::printf("El fondo Base tiene ID=%d", base_tile.ID);
 
     FMAW::TileAttributes gfx_Bridge_attributes {
         gfx_BridgeTiles,
@@ -115,8 +113,8 @@ void setupGraphics(void) {
         gfx_BridgePalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile Bridge_tile(gfx_Bridge_attributes);
-    FMAW::printf("El fondo Bridge tiene ID=%d", Bridge_tile.ID);
+    // FMAW::Tile Bridge_tile(gfx_Bridge_attributes);
+    // FMAW::printf("El fondo Bridge tiene ID=%d", Bridge_tile.ID);
 
     FMAW::TileAttributes gfx_Forest_attributes {
         gfx_ForestTiles,
@@ -125,8 +123,8 @@ void setupGraphics(void) {
         gfx_ForestPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile Forest_tile(gfx_Forest_attributes);
-    FMAW::printf("El fondo Forest tiene ID=%d", Forest_tile.ID);
+    // FMAW::Tile Forest_tile(gfx_Forest_attributes);
+    // FMAW::printf("El fondo Forest tiene ID=%d", Forest_tile.ID);
 
     FMAW::TileAttributes gfx_Grass_attributes {
         gfx_GrassTiles,
@@ -135,8 +133,8 @@ void setupGraphics(void) {
         gfx_GrassPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile Grass_tile(gfx_Grass_attributes);
-    FMAW::printf("El fondo Grass tiene ID=%d", Grass_tile.ID);
+    // FMAW::Tile Grass_tile(gfx_Grass_attributes);
+    // FMAW::printf("El fondo Grass tiene ID=%d", Grass_tile.ID);
 
     FMAW::TileAttributes gfx_Mountain_attributes {
         gfx_MountainTiles,
@@ -145,8 +143,8 @@ void setupGraphics(void) {
         gfx_MountainPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile Mountain_tile(gfx_Mountain_attributes);
-    FMAW::printf("El fondo Mountain tiene ID=%d", Mountain_tile.ID);
+    // FMAW::Tile Mountain_tile(gfx_Mountain_attributes);
+    // FMAW::printf("El fondo Mountain tiene ID=%d", Mountain_tile.ID);
 
     FMAW::TileAttributes gfx_River_attributes {
         gfx_RiverTiles,
@@ -155,60 +153,70 @@ void setupGraphics(void) {
         gfx_RiverPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile River_tile(gfx_River_attributes);
-    FMAW::printf("El fondo River tiene ID=%d", River_tile.ID);
+    // FMAW::Tile River_tile(gfx_River_attributes);
+    // FMAW::printf("El fondo River tiene ID=%d", River_tile.ID);
 
     //------------------------------------------------------------------------//
 
     // Set backdrop color.
-    FMAW::setBackgroundColor(BACKDROP_COLOR);
+    // FMAW::setBackgroundColor(BACKDROP_COLOR);
 
-    FMAW::Background bgBricks(0);
-    bgBricks.setScreenBaseBlock(2);
+    // FMAW::Background bgBricks(0);
+    // bgBricks.setScreenBaseBlock(2);
 
-    FMAW::Background(1).setScreenBaseBlock(3);
-    FMAW::Background(2).setScreenBaseBlock(4);
-    FMAW::Background(3).setScreenBaseBlock(5);
+    // FMAW::Background(1).setScreenBaseBlock(3);
+    // FMAW::Background(2).setScreenBaseBlock(4);
+    // FMAW::Background(3).setScreenBaseBlock(5);
 
     // Clear entire bricks' tilemap and gradient's tilemap to zero
-    bgBricks.clearAllTiles();
+    // bgBricks.clearAllTiles();
 
     // Set tilemap entries for 6 first rows of background 0 (bricks).
-    for (int y = 0; y < 6; y++) {
-        for (int x = 0; x < 32; x++) {
-            int tile_id = x + y * 32;  // Product optimized at compile time!
+    // for (int y = 0; y < 6; y++) {
+    //     for (int x = 0; x < 32; x++) {
+    //         int tile_id = x + y * 32;  // Product optimized at compile time!
 
-            // Either odd columns of even rows or even columns of odd rows...
-            // if (( x % 2 == 0 && y % 2 == 1 ) || (x % 2 == 1 && y % 2 == 0 ))
-            if ((x & 1) ^ (y & 1))
-                bgBricks.enableHorizontalFlip(tile_id);
+    // Either odd columns of even rows or even columns of odd rows...
+    // if (( x % 2 == 0 && y % 2 == 1 ) || (x % 2 == 1 && y % 2 == 0 ))
+    //         if ((x & 1) ^ (y & 1))
+    //             bgBricks.enableHorizontalFlip(tile_id);
 
-            bgBricks.setTile(tile_id, brick_tile);
-        }
-    }
+    //         bgBricks.setTile(tile_id, brick_tile);
+    //     }
+    // }
     // Did we say 6 first rows? We wanted 6 LAST rows!
     // bgBricks.setVerticalOffset(112);
 
-    grid.renderBackground();
+    // grid.renderBackground();
 }
 
-void update_camera() { }
-
 void update_logic() {
-    FMAW::Input::check();
-    FMAW::Timer::check();
-    update_camera();
+    // FMAW::Input::check();
+    // FMAW::Timer::check();
 }
 
 void update_graphics() {
-    FMAW::Camera::setHorizontalOffset(g_camera_x);
-    grid.renderCharacters();
+    // FMAW::Camera::setHorizontalOffset(g_camera_x);
+    // grid.renderCharacters();
 }
 
+inline void swiWaitForVBlank() {}
+
 int main(void) {
-    FMAW::init();
+    auto display = []() {
+        // Rendering period:
+        // Update game objects.
+        update_logic();
+
+        // VBlank period: (safe yo modify graphics)
+        // Move the graphics around.
+        update_graphics();
+    };
+
+    FMAW::init(display, nullptr);
     setupGraphics();
 
+    /*
     grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
 
     grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
@@ -273,7 +281,9 @@ int main(void) {
 
 
     grid.renderBackground();
+    */
 
+    /*
     while (1) {
         // Rendering period:
         // Update game objects.
@@ -286,8 +296,7 @@ int main(void) {
         // Move the graphics around.
         update_graphics();
     }
+    */
 
     return 0;
 }
-
-#endif

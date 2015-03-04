@@ -6,6 +6,8 @@
 
 #ifdef NDS
 #include "./fmaw_constants.fds"
+#else
+#include "./fmaw_constants.fgl"
 #endif
 
 #endif

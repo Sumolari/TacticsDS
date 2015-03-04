@@ -3,8 +3,6 @@
 
 #include "./fmaw_types.h"
 
-#include <nds.h>
-
 namespace FMAW {
 
 namespace Camera {

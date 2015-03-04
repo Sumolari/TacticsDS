@@ -5,7 +5,10 @@
 
 namespace FMAW {
 
-void init() {
+void (*)() display;
+void (*)() update;
+
+void init(void (*displayCallback)(), void (*updateCallback)()) {
     irqInit();               // Initialize interrups.
     irqEnable(IRQ_VBLANK);   // Enable vblank interrupt.
 
@@ -17,6 +20,24 @@ void init() {
 
     videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |
                  DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D_LAYOUT);
+
+    display = displayCallback;
+    update = updateCallback;
+}
+
+void start() {
+    while (1) {
+        // Rendering period:
+        // Update game objects.
+        update();
+
+        // Wait for the vblank period.
+        swiWaitForVBlank();
+
+        // VBlank period: (safe yo modify graphics)
+        // Move the graphics around.
+        display();
+    }
 }
 
 }  // namespace FMAW
