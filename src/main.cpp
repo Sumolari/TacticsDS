@@ -1,6 +1,7 @@
 // Copyright 2015 FMAW
 
 #include <sstream>
+#include <cstdlib>
 
 #include "./FMAW.h"  // Import our awesome framework!
 
@@ -8,10 +9,20 @@
 // Graphic references
 //------------------------------------------------------------------------------
 
+#include "./warrior.h"
+
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
-#include "./black.h"
-#include "./blank.h"
+
+#include "./gfx_black.h"
+#include "./gfx_blank.h"
+
+#include "./gfx_Base.h"
+#include "./gfx_Bridge.h"
+#include "./gfx_Forest.h"
+#include "./gfx_Grass.h"
+#include "./gfx_Mountain.h"
+#include "./gfx_River.h"
 
 //------------------------------------------------------------------------------
 // Background tile entries
@@ -55,47 +66,107 @@ FMAW::FixedReal g_camera_y;
  */
 void setupGraphics(void) {
     FMAW::TileAttributes blank_tile_attributes {
-        blankTiles,
-        blankTilesLen,
-        blankPal,
-        blankPalLen,
+        gfx_blankTiles,
+        gfx_blankTilesLen,
+        gfx_blankPal,
+        gfx_blankPalLen,
         FMAW::TypeBackground
     };
     FMAW::Tile blank_tile(blank_tile_attributes);
 
     FMAW::TileAttributes black_tile_attributes {
-        blackTiles,
-        blackTilesLen,
-        blackPal,
-        blackPalLen,
+        gfx_blackTiles,
+        gfx_blackTilesLen,
+        gfx_blackPal,
+        gfx_blackPalLen,
         FMAW::TypeBackground
     };
     FMAW::Tile black_tile(black_tile_attributes);
     FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
 
-    FMAW::TileAttributes brick_attributes {
+    FMAW::TileAttributes brick_tile_attributes {
         gfx_brickTiles,
         gfx_brickTilesLen,
         gfx_brickPal,
         gfx_brickPalLen,
         FMAW::TypeBackground
     };
-    FMAW::Tile brick_tile(brick_attributes);
+    FMAW::Tile brick_tile(brick_tile_attributes);
     FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
+
+    //------------------------------------------------------------------------//
+
+    FMAW::TileAttributes gfx_Base_attributes {
+        gfx_BaseTiles,
+        gfx_BaseTilesLen,
+        gfx_BasePal,
+        gfx_BasePalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile base_tile(gfx_Base_attributes);
+    FMAW::printf("El fondo Base tiene ID=%d", base_tile.ID);
+
+    FMAW::TileAttributes gfx_Bridge_attributes {
+        gfx_BridgeTiles,
+        gfx_BridgeTilesLen,
+        gfx_BridgePal,
+        gfx_BridgePalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Bridge_tile(gfx_Bridge_attributes);
+    FMAW::printf("El fondo Bridge tiene ID=%d", Bridge_tile.ID);
+
+    FMAW::TileAttributes gfx_Forest_attributes {
+        gfx_ForestTiles,
+        gfx_ForestTilesLen,
+        gfx_ForestPal,
+        gfx_ForestPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Forest_tile(gfx_Forest_attributes);
+    FMAW::printf("El fondo Forest tiene ID=%d", Forest_tile.ID);
+
+    FMAW::TileAttributes gfx_Grass_attributes {
+        gfx_GrassTiles,
+        gfx_GrassTilesLen,
+        gfx_GrassPal,
+        gfx_GrassPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Grass_tile(gfx_Grass_attributes);
+    FMAW::printf("El fondo Grass tiene ID=%d", Grass_tile.ID);
+
+    FMAW::TileAttributes gfx_Mountain_attributes {
+        gfx_MountainTiles,
+        gfx_MountainTilesLen,
+        gfx_MountainPal,
+        gfx_MountainPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile Mountain_tile(gfx_Mountain_attributes);
+    FMAW::printf("El fondo Mountain tiene ID=%d", Mountain_tile.ID);
+
+    FMAW::TileAttributes gfx_River_attributes {
+        gfx_RiverTiles,
+        gfx_RiverTilesLen,
+        gfx_RiverPal,
+        gfx_RiverPalLen,
+        FMAW::TypeBackground
+    };
+    FMAW::Tile River_tile(gfx_River_attributes);
+    FMAW::printf("El fondo River tiene ID=%d", River_tile.ID);
+
+    //------------------------------------------------------------------------//
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
 
-    /*
-        FMAW::Background other{1};
-        other.setScreenBaseBlock(2);
-        other.clearAllTiles();
-    */
-    //FMAW::Background(2).clearAllTiles();
-    //FMAW::Background(3).clearAllTiles();
-
     FMAW::Background bgBricks(0);
     bgBricks.setScreenBaseBlock(2);
+
+    FMAW::Background(1).setScreenBaseBlock(3);
+    FMAW::Background(2).setScreenBaseBlock(4);
+    FMAW::Background(3).setScreenBaseBlock(5);
 
     // Clear entire bricks' tilemap and gradient's tilemap to zero
     bgBricks.clearAllTiles();
@@ -114,7 +185,7 @@ void setupGraphics(void) {
         }
     }
     // Did we say 6 first rows? We wanted 6 LAST rows!
-    //bgBricks.setVerticalOffset(112);
+    // bgBricks.setVerticalOffset(112);
 
     grid.renderBackground();
 }
@@ -129,20 +200,12 @@ void update_logic() {
 
 void update_graphics() {
     FMAW::Camera::setHorizontalOffset(g_camera_x);
+    grid.renderCharacters();
 }
 
 int main(void) {
     FMAW::init();
     setupGraphics();
-
-    /*
-    auto func = [](int ID) {
-        g_bug.update();
-        g_warrior.update();
-    };
-
-    FMAW::Timer::enqueue_function(func, 200, true);
-    */
 
     auto pulsaFlechaIzquierda = []() {
         FMAW::printf("Has pulsado la flecha izquierda");
@@ -159,6 +222,38 @@ int main(void) {
     };
     FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
 
+    grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
+
+    grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
+
+    Warrior warrior;
+    grid.cellAtIndexPath({0, 0})->setCharacter(&warrior);
+
+    auto func = [&warrior](int ID) {
+        warrior.update();
+    };
+
+    FMAW::Timer::enqueue_function(func, 200, true);
+
+    int prev_col = 0;
+    int prev_row = 0;
+
+    auto move_warrior = [&prev_col, &prev_row, &warrior](int ID) {
+        int new_col = (prev_col < grid.numCols()) ? prev_col + 1 : 0;
+        int new_row = (new_col == 0) ? prev_row + 1 : prev_row;
+
+        FMAW::printf("La guerrera se mueve de %d %d a %d %d!",
+                     prev_row, prev_col,
+                     new_row, new_col);
+        grid.moveCharacterFromCellToCell({prev_row, prev_col}, {new_row, new_col}, 100);
+
+        prev_col = new_col;
+        prev_row = new_row;
+    };
+
+    FMAW::Timer::enqueue_function(move_warrior, 5000, true);
+
+    grid.renderBackground();
 
     while (1) {
         // Rendering period:
