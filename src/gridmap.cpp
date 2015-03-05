@@ -3,37 +3,35 @@
 #include <iostream>
 #include <fstream>
 #include "./grid.h"
+#include "./gridmap.h"
+#include <fat.h>
+#include <nds.h>
 
 namespace GridMap{
 
-/**
- * Loads the default map into the given grid.
- * @param g       Grid in which to load the map.
- */
-void loadDefaultGridMap( Grid g ) { loadGridMap("defaultMap", g); }
+void loadDefaultGridMap( Grid &g ) { loadGridMap("defaultMap", g); }
 
-/**
- * Loads the map with given name into the given grid.
- * @param mapName Name of the map to load.
- * @param g       Grid in which to load the map.
- */ 
 void loadGridMap( const char* mapName, Grid &g ){
-	std::ifstream mapFile;
-	mapFile.open( mapName );
+	FILE* test = fopen ("/defaultMap", "r");
 	
 	int rows, cols, aux;
 	
-	mapFile >> rows >> cols;
-	for( int row = 0; i < rows; i++ ){
-		for( int col = 0; j < cols; j++ ){
-			mapFile >> aux;
+	fscanf( test, "%d %d\n", &rows, &cols );
+	for( int row = 0; row < rows; row++ ){
+		for( int col = 0; col < cols; col++ ){
+			if(col < cols-1) fscanf( test, "%d ", &aux );
+			else fscanf( test, "%d\n", &aux );
 			
 			IndexPath path {row, col};
-			g.cellAtIndexPath(path)->setBackgroundType( aux );
+			g.cellAtIndexPath(path)->setBackgroundType( 
+				static_cast<CellBackgroundType>(aux)
+			);
+			
+			g.cellAtIndexPath(path)->renderBackground();
 		}
 	}
 	
-	mapFile.close();
+	fclose(test);
 }
 
 }

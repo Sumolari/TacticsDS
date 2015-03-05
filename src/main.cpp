@@ -2,6 +2,8 @@
 
 #include <sstream>
 #include <cstdlib>
+#include <fat.h>
+#include <nds.h>
 
 #include "./FMAW.h"  // Import our awesome framework!
 
@@ -50,6 +52,7 @@
 //------------------------------------------------------------------------------
 
 #include "./grid.h"
+#include "./gridmap.h"
 
 Grid grid;
 
@@ -187,6 +190,7 @@ void setupGraphics(void) {
     // Did we say 6 first rows? We wanted 6 LAST rows!
     // bgBricks.setVerticalOffset(112);
 
+	GridMap::loadDefaultGridMap( grid );
     grid.renderBackground();
 }
 
@@ -204,6 +208,8 @@ void update_graphics() {
 }
 
 int main(void) {
+	consoleDemoInit();
+	fatInitDefault();
     FMAW::init();
     setupGraphics();
 
@@ -222,9 +228,9 @@ int main(void) {
     };
     FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
 
-    grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
+    //grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
 
-    grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
+    //grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
 
     Warrior warrior;
     grid.cellAtIndexPath({0, 0})->setCharacter(&warrior);
