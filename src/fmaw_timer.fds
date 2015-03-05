@@ -69,7 +69,7 @@ typedef struct t_callback {
     /**
      * Function to be called.
      */
-    void (*function)(int);
+    std::function<void(int)> function;
 } Callback;
 
 // Here we will store registered functions.
@@ -88,7 +88,7 @@ void init() {
     }
 }
 
-int enqueue_function(void (*callback)(int), unsigned int delta,
+int enqueue_function(std::function<void(int)> callback, unsigned int delta,
                      bool repetitive) {
     registered_functions[next_registered_function_id] = {
         next_registered_function_id,

@@ -5,14 +5,60 @@
 #include "./fmaw_types.h"
 #include "./fmaw_sprite.h"
 
+#include <map>
+#include <functional>
+
 namespace FMAW {
 
+typedef enum {
+    ATLinear = 0
+} AnimationType;
+
+typedef int animation_id;
+
+typedef struct t_animation {
+    /**
+     * ID of this callback.
+     */
+    int ID;
+    /**
+     * ID of this callback when registered with Timer API.
+     */
+    int callback_id;
+    /**
+     * Position of the Character when animation started.
+     */
+    Point initialPosition;
+    /**
+     * Final position of the Character.
+     */
+    Point finalPosition;
+    /**
+     * Duration of the animation, in milliseconds.
+     */
+    unsigned int duration;
+    /**
+     * Remaining duration of the animation, in milliseconds.
+     */
+    unsigned int remainingDuration;
+    /**
+     * Type of animation to perform.
+     */
+    AnimationType type;
+    /**
+     * Callback to be called when animation is finished.
+     */
+    std::function<void(bool)> callback;
+} Animation;
+
 class Character {
-protected:
+  protected:
     // Width of the character.
     int width;
     // Height of the character.
     int height;
+    // Animations to be performed.
+    std::map<animation_id, Animation> animations;
     // X coordinate.
     FixedReal x;
     // Y coordinate.
@@ -25,7 +71,7 @@ protected:
      */
     virtual void init() = 0;
 
-public:
+  public:
     /**
      * Creates a new character using a new sprite.
      */
@@ -51,11 +97,56 @@ public:
     virtual void setYPosition(FixedReal y);
 
     /**
-     * Sets X and Y position of this character.
+     * Sets new position of this character.
      * @param x New X coordinate.
      * @param y New Y coordinate.
      */
     virtual void setPosition(FixedReal x, FixedReal y);
+
+    /**
+     * Sets X and Y position of this character.
+     * @param position New position.
+     */
+    virtual void setPosition(Point position);
+
+    /**
+     * Moves this character to given position animatedly.
+     * @param position Final position of the character.
+     * @param duration Time it'll take to move the character.
+     * @return         Identifier of the animation that will be performed.
+     */
+    animation_id animateToPosition(Point position, unsigned int duration);
+
+    /**
+     * Moves this character to given position animatedly.
+     * @param position Final position of the character.
+     * @param duration Time it'll take to move the character.
+     * @param callback Function that will be called when animation finishes.
+     *                 It'll receive whether animation finished successfully
+     *                 (true) or not (false).
+     */
+    animation_id animateToPosition(Point position, unsigned int duration,
+                                   std::function<void(bool)> callback);
+
+    /**
+     * Moves this character to given position animatedly.
+     * @param position Final position of the character.
+     * @param duration Time it'll take to move the character.
+     * @param type     Type of animation to be performed.
+     * @param callback Function that will be called when animation finishes.
+     *                 It'll receive whether animation finished successfully
+     *                 (true) or not (false).
+     */
+    animation_id animateToPosition(Point position, unsigned int duration,
+                                   AnimationType type,
+                                   std::function<void(bool)> callback);
+
+    /**
+     * Cancels animation with given ID.
+     * @param  id ID of animation to cancel.
+     * @return    Whether animation was cancelled or not.
+     */
+    bool cancelAnimation(animation_id id);
 
     /**
      * Returns current X position of this character.
@@ -68,6 +159,12 @@ public:
      * @return Current Y position of this character.
      */
     virtual FixedReal getYPosition();
+
+    /**
+     * Returns current position of this character.
+     * @return Current position of this character.
+     */
+    virtual Point getPosition();
 
     /**
      * Updates this character's attribute.

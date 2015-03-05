@@ -19,7 +19,7 @@
 #define BUG_HEIGHT        23
 
 class Bug : public FMAW::Character {
-protected:
+  protected:
     // ID of tile currently displayed.
     int currentTileID;
     // Palette of tile currently displayed.
@@ -28,7 +28,7 @@ protected:
     FMAW::Tile *tiles;
 
     virtual void init();
-public:
+  public:
     /**
      * Creates a new Bug using a new sprite.
      */
@@ -49,6 +49,11 @@ public:
      * Resets position of this bug.
      */
     void reset();
+
+    /**
+     * Moves this bug to a random location.
+     */
+    void randomMovement();
 };
 
 #endif
