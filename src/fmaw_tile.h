@@ -21,13 +21,23 @@ typedef struct t_tile_attrib {
     const TileType type;
 } TileAttributes;
 
+/**
+ * Width in pixels of a tile.
+ */
+#define TILE_WIDTH  8
+
+/**
+ * Height in pixels of a tile.
+ */
+#define TILE_HEIGHT 8
+
 //------------------------------------------------------------------------------
 // Tile class.
 //------------------------------------------------------------------------------
 
 class Tile {
     typedef Tile self;
-private:
+  private:
     /**
      * Tile's ID -> tile's image memory position mapping.
      */
@@ -59,7 +69,7 @@ private:
      */
     static int nextID;
 
-public:
+  public:
     /**
      * Memory address for image data of this tile.
      */

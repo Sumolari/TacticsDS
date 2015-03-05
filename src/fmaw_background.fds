@@ -48,7 +48,9 @@ void Background::selectRegister() {
 Background::Background() : id(nextEmptyBackground++) {
     this->clear();
     this->selectRegister();
-    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(0);
+    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
+                      this->getScreenBaseBlock());
+    nextEmptyBackground = nextEmptyBackground % TOTAL_BACKGROUNDS;
 }
 
 Background::Background(background_id id) : id(id) {
@@ -76,7 +78,7 @@ bool Background::setScreenBaseBlock(uint8 newScreenBaseBlock) {
     if (newScreenBaseBlock > 31 || newScreenBaseBlock < 0) return false;
     *this->reg &= 0xE0FF;
     *this->reg |= newScreenBaseBlock << 8;
-    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(newScreenBaseBlock);
+    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(this->getScreenBaseBlock());
     return true;
 }
 
@@ -395,6 +397,7 @@ void Background::clear() {
 }
 
 void Background::clearAllTiles() {
+    FMAW::printf("Clearing from %p to %p", this->tiles, &this->tiles[1024]);
     for (int n = 0; n < 1024; n++)
         this->tiles[n] = 0;
 }

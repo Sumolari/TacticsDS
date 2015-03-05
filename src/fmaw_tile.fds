@@ -14,10 +14,10 @@ namespace FMAW {
 
 std::map<int, int> Tile::IDtoImgMemoryPosition {};
 int Tile::nextSpriteImgMemoryPosition = 0;
-int Tile::nextBackgroundImgMemoryPosition = 1;
+int Tile::nextBackgroundImgMemoryPosition = 0;
 std::map<int, int> Tile::IDtoPalMemoryPosition {};
 int Tile::nextSpritePalMemoryPosition = 0;
-int Tile::nextBackgroundPalMemoryPosition = 1;
+int Tile::nextBackgroundPalMemoryPosition = 0;
 int Tile::nextID = 0;
 
 /**
@@ -59,12 +59,13 @@ Tile::Tile(TileAttributes attributes) {
                          pal2objram(this->palMemory),
                          attributes.paletteLength);
     } else {
+        FMAW::printf("Destination (IMG): %p", tile2bgram(this->imgMemory));
         // Copy to memory.
         dmaCopyHalfWords(3,
                          attributes.tilesArray,
                          tile2bgram(this->imgMemory),
                          attributes.tilesLength);
-
+        FMAW::printf("Destination (PAL): %p", pal2bgram(this->palMemory));
         dmaCopyHalfWords(3,
                          attributes.paletteArray,
                          pal2bgram(this->palMemory),
