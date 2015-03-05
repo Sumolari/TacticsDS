@@ -13,12 +13,18 @@ typedef enum t_tile_type {
     TypeSprite
 } TileType;
 
+typedef enum t_tile_screen {
+    ScreenMain,
+    ScreenSub
+} TileScreen;
+
 typedef struct t_tile_attrib {
     const unsigned int *tilesArray;
     const int tilesLength;
     const unsigned short *paletteArray;
     const int paletteLength;
     const TileType type;
+    const TileScreen screen;
 } TileAttributes;
 
 /**

@@ -51,6 +51,7 @@
 // Game objects
 //------------------------------------------------------------------------------
 
+#include "./main_menu.h"
 #include "./grid.h"
 
 Grid grid;
@@ -72,7 +73,8 @@ void setupGraphics(void) {
         gfx_blankTilesLen,
         gfx_blankPal,
         gfx_blankPalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile blank_tile(blank_tile_attributes);
 
@@ -81,7 +83,8 @@ void setupGraphics(void) {
         gfx_blackTilesLen,
         gfx_blackPal,
         gfx_blackPalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile black_tile(black_tile_attributes);
     FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
@@ -91,7 +94,8 @@ void setupGraphics(void) {
         gfx_brickTilesLen,
         gfx_brickPal,
         gfx_brickPalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile brick_tile(brick_tile_attributes);
     FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
@@ -103,7 +107,8 @@ void setupGraphics(void) {
         gfx_BaseTilesLen,
         gfx_BasePal,
         gfx_BasePalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile base_tile(gfx_Base_attributes);
     FMAW::printf("El fondo Base tiene ID=%d", base_tile.ID);
@@ -113,7 +118,8 @@ void setupGraphics(void) {
         gfx_BridgeTilesLen,
         gfx_BridgePal,
         gfx_BridgePalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile Bridge_tile(gfx_Bridge_attributes);
     FMAW::printf("El fondo Bridge tiene ID=%d", Bridge_tile.ID);
@@ -123,7 +129,8 @@ void setupGraphics(void) {
         gfx_ForestTilesLen,
         gfx_ForestPal,
         gfx_ForestPalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile Forest_tile(gfx_Forest_attributes);
     FMAW::printf("El fondo Forest tiene ID=%d", Forest_tile.ID);
@@ -133,7 +140,8 @@ void setupGraphics(void) {
         gfx_GrassTilesLen,
         gfx_GrassPal,
         gfx_GrassPalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile Grass_tile(gfx_Grass_attributes);
     FMAW::printf("El fondo Grass tiene ID=%d", Grass_tile.ID);
@@ -143,7 +151,8 @@ void setupGraphics(void) {
         gfx_MountainTilesLen,
         gfx_MountainPal,
         gfx_MountainPalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile Mountain_tile(gfx_Mountain_attributes);
     FMAW::printf("El fondo Mountain tiene ID=%d", Mountain_tile.ID);
@@ -153,7 +162,8 @@ void setupGraphics(void) {
         gfx_RiverTilesLen,
         gfx_RiverPal,
         gfx_RiverPalLen,
-        FMAW::TypeBackground
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
     };
     FMAW::Tile River_tile(gfx_River_attributes);
     FMAW::printf("El fondo River tiene ID=%d", River_tile.ID);
@@ -272,6 +282,8 @@ int main(void) {
     FMAW::Input::onButtonBReleased(releaseB);
 
     grid.renderBackground();
+
+    MainMenu::render();
 
     FMAW::start();
 

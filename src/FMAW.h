@@ -40,6 +40,11 @@ void init(void (*displayCallback)(), void (*updateCallback)());
  */
 void start();
 
+/**
+ * Swaps main screen and background screen.
+ */
+void swapScreens();
+
 }
 
 #endif

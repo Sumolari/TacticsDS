@@ -6,7 +6,7 @@
 
 namespace FMAW {
 
-#define TOTAL_BACKGROUNDS 4  // Total amount of backgrounds available.
+#define TOTAL_BACKGROUNDS 8  // Total amount of backgrounds available..
 
 // Type defining the different priorities of backgrounds.
 typedef enum t_backgroundPriority {
