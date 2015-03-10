@@ -6,6 +6,7 @@
 #include <cstdlib>
 
 #include "./FMAW.h"  // Import our awesome framework!
+#include "./memtrack.h"
 
 //------------------------------------------------------------------------------
 // Graphic references
@@ -280,6 +281,12 @@ int main(void) {
         FMAW::printf("Has soltado la tecla B");
     };
     FMAW::Input::onButtonBReleased(releaseB);
+
+    auto releaseStart = []() {
+        FMAW::swapScreens();
+        MemTrack::TrackListMemoryUsage();
+    };
+    FMAW::Input::onButtonStartReleased(releaseStart);
 
     grid.renderBackground();
 
