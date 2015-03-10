@@ -54,28 +54,28 @@ FixedReal &FixedReal::operator+=(const FixedReal x) {
 }
 
 FixedReal FixedReal::operator+(const FixedReal x) {
-    FixedReal *res = new FixedReal(fraction_size);
+    FixedReal res(fraction_size);
     if (fraction_size > x.fraction_size) {
-        res->num = num + (x.num << (fraction_size - x.fraction_size));
+        res.num = num + (x.num << (fraction_size - x.fraction_size));
     } else if (fraction_size < x.fraction_size) {
-        res->num = num + (x.num >> (x.fraction_size - fraction_size));
+        res.num = num + (x.num >> (x.fraction_size - fraction_size));
     } else {
-        res->num = num + x.num;
+        res.num = num + x.num;
     }
 
-    return *res;
+    return res;
 }
 
 FixedReal FixedReal::operator+(const int x) {
-    FixedReal *res = new FixedReal(x, 1);
+    FixedReal res(x, 1);
 
-    return (*this + *res);
+    return (*this + res);
 }
 
 FixedReal FixedReal::operator+(const double x) {
-    FixedReal *res = new FixedReal(x, 8);
+    FixedReal res(x, 8);
 
-    return (*this + *res);
+    return (*this + res);
 }
 
 FixedReal &FixedReal::operator-=(const FixedReal x) {
@@ -94,28 +94,28 @@ FixedReal &FixedReal::operator-=(const FixedReal x) {
 }
 
 FixedReal FixedReal::operator-(const FixedReal x) {
-    FixedReal *res = new FixedReal(fraction_size);
+    FixedReal res(fraction_size);
     if (fraction_size > x.fraction_size) {
-        res->num = num - (x.num << (fraction_size - x.fraction_size));
+        res.num = num - (x.num << (fraction_size - x.fraction_size));
     } else if (fraction_size < x.fraction_size) {
-        res->num = num - (x.num >> (x.fraction_size - fraction_size));
+        res.num = num - (x.num >> (x.fraction_size - fraction_size));
     } else {
-        res->num = num - x.num;
+        res.num = num - x.num;
     }
 
-    return *res;
+    return res;
 }
 
 FixedReal FixedReal::operator-(const int x) {
-    FixedReal *res = new FixedReal(x, 1);
+    FixedReal res(x, 1);
 
-    return (*this - *res);
+    return (*this - res);
 }
 
 FixedReal FixedReal::operator-(const double x) {
-    FixedReal *res = new FixedReal(x, 8);
+    FixedReal res(x, 8);
 
-    return (*this - *res);
+    return (*this - res);
 }
 
 FixedReal &FixedReal::operator*=(const FixedReal x) {
@@ -125,22 +125,22 @@ FixedReal &FixedReal::operator*=(const FixedReal x) {
 }
 
 FixedReal FixedReal::operator*(const FixedReal x) {
-    FixedReal *res = new FixedReal(fraction_size);
-    res->num = (num * x.num) >> x.fraction_size;
+    FixedReal res(fraction_size);
+    res.num = (num * x.num) >> x.fraction_size;
 
-    return *res;
+    return res;
 }
 
 FixedReal FixedReal::operator*(const int x) {
-    FixedReal *res = new FixedReal(x, 1);
+    FixedReal res(x, 1);
 
-    return (*this **res);
+    return (*this * res);
 }
 
 FixedReal FixedReal::operator*(const double x) {
-    FixedReal *res = new FixedReal(x, 8);
+    FixedReal res(x, 8);
 
-    return (*this **res);
+    return (*this * res);
 }
 
 FixedReal &FixedReal::operator/=(const FixedReal x) {
@@ -151,23 +151,23 @@ FixedReal &FixedReal::operator/=(const FixedReal x) {
 }
 
 FixedReal FixedReal::operator/(const FixedReal x) {
-    FixedReal *res = new FixedReal(fraction_size);
+    FixedReal res(fraction_size);
     int aux = (this->num) << x.fraction_size;
-    res->num = aux / x.num;
+    res.num = aux / x.num;
 
-    return *res;
+    return res;
 }
 
 FixedReal FixedReal::operator/(const int x) {
-    FixedReal *res = new FixedReal(x, 1);
+    FixedReal res(x, 1);
 
-    return (*this / *res);
+    return (*this / res);
 }
 
 FixedReal FixedReal::operator/(const double x) {
-    FixedReal *res = new FixedReal(x, 8);
+    FixedReal res(x, 8);
 
-    return (*this / *res);
+    return (*this / res);
 }
 
 int FixedReal::raw() const {
