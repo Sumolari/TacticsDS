@@ -19,6 +19,12 @@ void makeMenuForeground();
 void makeMenuBackground();
 
 /**
+ * Returns whether menu is on foreground or not.
+ * @return Whether menu is on foreground or not.
+ */
+bool menuIsInForeground();
+
+/**
  * Enqueues callbacks for main menu handling.
  */
 void enqueueMenuCallbacks();

@@ -63,6 +63,10 @@ void makeMenuBackground() {
     if (menuCurrentlyOnForegroundScreen) FMAW::swapScreens();
 }
 
+bool menuIsInForeground() {
+    return menuCurrentlyOnForegroundScreen;
+}
+
 void enqueueMenuCallbacks() {
     if (touchCallbackID == -1) {
         touchCallbackID = FMAW::Input::onTouchReleased(touchCallback);
