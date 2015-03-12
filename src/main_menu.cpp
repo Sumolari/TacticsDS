@@ -135,10 +135,6 @@ void MainMenu::render() {
 
         for (int id = 0; id < TOTAL_TILES; id++) {
             this->background.setTile(id, this->current_tile.imgMemory + id);
-            FMAW::printf("Tile %p will have memory address %p (%p)",
-                         this->background.tiles + id,
-                         this->current_tile.imgMemory + id,
-                         this->background.tiles[id]);
             this->background.setPalette(id, this->current_tile.palMemory);
         }
 
@@ -177,7 +173,10 @@ void MainMenu::enqueueCallbacks() {
     }
     if (this->upArrowCallbackID == -1) {
         auto upArrowCallback = [this]() {
-            this->currentlySelectedOption++;
+            this->currentlySelectedOption--;
+            if (this->currentlySelectedOption < 0) {
+                this->currentlySelectedOption += MAIN_MENU_NUM_OPTIONS;
+            }
             this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
             this->menuChangedBackgroundTile = true;
             this->adjustCurrentTile();
