@@ -113,17 +113,16 @@ Tile::Tile(TileAttributes attributes, int ID) {
             palram_memory = pal2bgramSub(this->palMemory);
         }
     }
-    /*
-        // Copy to memory.
-        dmaCopyHalfWords(3,
-                         attributes.tilesArray,
-                         objram_memory,
-                         attributes.tilesLength);
-        dmaCopyHalfWords(3,
-                         attributes.paletteArray,
-                         palram_memory,
-                         attributes.paletteLength);
-    */
+
+    // Copy to memory.
+    dmaCopyHalfWords(3,
+                     attributes.tilesArray,
+                     objram_memory,
+                     attributes.tilesLength);
+    dmaCopyHalfWords(3,
+                     attributes.paletteArray,
+                     palram_memory,
+                     attributes.paletteLength);
 }
 
 /**

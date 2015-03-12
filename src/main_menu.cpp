@@ -120,8 +120,11 @@ void MainMenu::adjustCurrentTile() {
                 break;
         }
     } else {
-        this->current_tile = FMAW::Tile(this->logo_attributes);
+        this->current_tile = FMAW::Tile(this->logo_attributes,
+                                        this->backgroundTileID);
     }
+
+    this->render();
 }
 
 void MainMenu::render() {
@@ -174,9 +177,10 @@ void MainMenu::enqueueCallbacks() {
     }
     if (this->upArrowCallbackID == -1) {
         auto upArrowCallback = [this]() {
-            this->menuChangedBackgroundTile = true;
             this->currentlySelectedOption++;
             this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
+            this->menuChangedBackgroundTile = true;
+            this->adjustCurrentTile();
             FMAW::printf("New selected option %d",
                          this->currentlySelectedOption);
         };
@@ -185,9 +189,10 @@ void MainMenu::enqueueCallbacks() {
     }
     if (this->downArrowCallbackID == -1) {
         auto downArrowCallback = [this]() {
-            this->menuChangedBackgroundTile = true;
             this->currentlySelectedOption++;
             this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
+            this->menuChangedBackgroundTile = true;
+            this->adjustCurrentTile();
             FMAW::printf("New selected option %d",
                          this->currentlySelectedOption);
         };

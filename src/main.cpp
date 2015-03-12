@@ -214,7 +214,6 @@ void update_logic() {
 
 void update_graphics() {
     FMAW::Camera::setHorizontalOffset(g_camera_x);
-    menu.render();
     grid.renderCharacters();
 }
 
