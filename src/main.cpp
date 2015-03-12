@@ -1,9 +1,9 @@
 // Copyright 2015 FMAW
 
-#include <sstream>
-#include <cstdlib>
 #include <fat.h>
 #include <nds.h>
+#include <sstream>
+#include <cstdlib>
 
 #include "./FMAW.h"  // Import our awesome framework!
 
@@ -190,7 +190,6 @@ void setupGraphics(void) {
     // Did we say 6 first rows? We wanted 6 LAST rows!
     // bgBricks.setVerticalOffset(112);
 
-	GridMap::loadDefaultGridMap( grid );
     grid.renderBackground();
 }
 
@@ -208,7 +207,7 @@ void update_graphics() {
 }
 
 int main(void) {
-	fatInitDefault();
+    fatInitDefault();
     FMAW::init();
     setupGraphics();
 
@@ -226,10 +225,6 @@ int main(void) {
         FMAW::printf("Has soltado la flecha izquierda");
     };
     FMAW::Input::onButtonArrowLeftReleased(sueltaFlechaIzquierda);
-
-    //grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
-
-    //grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
 
     Warrior warrior;
     grid.cellAtIndexPath({0, 0})->setCharacter(&warrior);
@@ -258,6 +253,7 @@ int main(void) {
 
     FMAW::Timer::enqueue_function(move_warrior, 5000, true);
 
+    GridMap::loadDefaultGridMap(grid);
     grid.renderBackground();
 
     while (1) {
