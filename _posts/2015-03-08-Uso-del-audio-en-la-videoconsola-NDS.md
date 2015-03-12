@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Práctica 4: Uso del audio en la videoconsola NDS
+title: Práctica 4 - Uso del audio en la videoconsola NDS
 date: 2015-03-08 15:07:00
 ---
 
