@@ -72,7 +72,7 @@ Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiend
 Con la version por defecto de **DeSmuMe** nos sale un error, esto es debido a que no inicializa un sistema de ficheros por defecto. Pero, tenemos a nuestra disposición la version `desmume-glade` que efectivamente sí que carga bien el programa de ejemplo.
 
 > ![Captura del programa libfat en el emulador DeSmuMe-glade.
-](../../../../p3media/fat_glade.png)
+](../../../../p3Media/fat_glade.png)
 >
 > Captura del programa libfat en el emulador DeSmuMe-glade.
 
