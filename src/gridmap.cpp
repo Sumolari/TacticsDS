@@ -12,7 +12,7 @@ namespace GridMap{
 void loadDefaultGridMap( Grid &g ) { loadGridMap("defaultMap", g); }
 
 void loadGridMap( const char* mapName, Grid &g ){
-	FILE* test = fopen ("/defaultMap", "r");
+	FILE* test = fopen ("./defaultMap", "r");
 	
 	int rows, cols, aux;
 	

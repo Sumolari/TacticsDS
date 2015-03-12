@@ -208,7 +208,6 @@ void update_graphics() {
 }
 
 int main(void) {
-	consoleDemoInit();
 	fatInitDefault();
     FMAW::init();
     setupGraphics();
