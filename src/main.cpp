@@ -205,6 +205,8 @@ int main(void) {
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
 
+    GridMap::loadDefaultGridMap(grid);
+
     Warrior warriorA, warriorB;
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
     grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
@@ -273,7 +275,6 @@ int main(void) {
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     menu.init();
-    GridMap::loadDefaultGridMap(grid);
     grid.renderBackground();
 
     FMAW::start();
