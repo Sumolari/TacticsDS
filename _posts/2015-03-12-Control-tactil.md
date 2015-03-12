@@ -99,9 +99,7 @@ this->aButtonCallbackID = FMAW::Input::onButtonAReleased(
 
 {% endhighlight %}
 
-> ![Menú interactivo.](http://i.imgur.com/2naHLBT.gifv)
->
-> [Menú interactivo](http://i.imgur.com/2naHLBT.gifv).
+> [Menú interactivo](https://youtu.be/pfpp07IfySs).
 
 Cabría destacar que este menú tiene trampa: todo el menú realmente está preprocesado y almacenado como una imagen de 256x192 píxeles. Esta imagen se cambia por la correspondiente a cada posible estado del menú en tiempo de ejecución. 
 
