@@ -31,7 +31,7 @@ CFLAGS	:=	-g -Wall -O2\
 CFLAGS	+=	$(INCLUDE)
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions
 
-LDFLAGS_WIN :=
+LDFLAGS_WIN := -L"C:\GL\lib" -lfreeglut -lglut32 -lglaux -lglew32 -lglui32 -lglui32d -lopengl32
 LDFLAGS_LNX :=
 LDFLAGS_MAC := -framework GLUT -framework OpenGL -framework Cocoa
 
@@ -46,7 +46,7 @@ LIBS	:=
 # list of directories containing libraries, this must be the top level
 # containing include and lib
 #-------------------------------------------------------------------------------
-LIBDIRS_WIN :=
+LIBDIRS_WIN := "C:\GL\include"
 LIBDIRS_LNX :=
 LIBDIRS_MAC := /usr/local/lib /usr/local/include
 
@@ -116,7 +116,7 @@ build:
 
 #-------------------------------------------------------------------------------
 clean:
-	@echo clean ...
+	#@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).exe _assets_ $(TARGET).test $(TARGET).exe.dSYM
 
 #-------------------------------------------------------------------------------
