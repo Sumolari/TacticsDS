@@ -1,81 +1,224 @@
 // Copyright 2015 FMAW
 
 #include "./main_menu.h"
-#include "./FMAW.h"
 
+//------------------------------------------------------------------------------
+// Graphic references
+//------------------------------------------------------------------------------
+
+#include "./gfx_logo.h"
 #include "./gfx_main_menu.h"
+#include "./gfx_main_menu_new_game.h"
+#include "./gfx_main_menu_load_game.h"
+#include "./gfx_main_menu_versus.h"
 
-namespace MainMenu {
+//------------------------------------------------------------------------------
+// Main Menu options
+//------------------------------------------------------------------------------
 
-bool menuCurrentlyOnForegroundScreen = false;
-int touchCallbackID = -1;
+/**
+ * ID of the Main Menu option that starts a new game.
+ */
+#define MAIN_MENU_OPTION_NEW_GAME    0
 
-auto touchCallback = [](int x, int y) {
-    FMAW::printf("Touch detected at %d %d", x, y);
-};
+/**
+ * ID of the Main Menu option that loads game.
+ */
+#define MAIN_MENU_OPTION_LOAD_GAME   1
 
-void render() {
-    FMAW::TileAttributes background_tile_attributes {
-        gfx_main_menuTiles,
-        gfx_main_menuTilesLen,
-        gfx_main_menuPal,
-        gfx_main_menuPalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenSub
-    };
-    FMAW::Tile background_tile(background_tile_attributes);
+/**
+ * ID of the Main Menu option that starts a new versus.
+ */
+#define MAIN_MENU_OPTION_VERSUS_GAME 2
 
-    FMAW::Background menuBackground(4);
+/**
+ * AMmount of options available in the main menu.
+ */
+#define MAIN_MENU_NUM_OPTIONS        3
 
-    menuBackground.setScreenBaseBlock(31);
-    menuBackground.clearAllTiles();
+//------------------------------------------------------------------------------
+// Main Menu
+//------------------------------------------------------------------------------
 
-    FMAW::printf("River background at %p", FMAW::Tile(8).imgMemory);
-    FMAW::printf("MainMenu background at %p", background_tile.imgMemory);
-    menuBackground.print();
-    FMAW::Background(0).print();
-    FMAW::printf("Hay %d tiles", gfx_main_menuTilesLen);
+MainMenu::MainMenu():
+    menuCurrentlyOnForegroundScreen(false),
+    menuChangedBackgroundTile(true),
+    touchCallbackID(-1),
+    upArrowCallbackID(-1),
+    downArrowCallbackID(-1),
+    aButtonCallbackID(-1),
+    currentlySelectedOption(MAIN_MENU_OPTION_NEW_GAME),
+    background(FMAW::Background(4)),
+    logo_attributes(FMAW::TileAttributes(
+                        gfx_logoTiles,
+                        gfx_logoTilesLen,
+                        gfx_logoPal,
+                        gfx_logoPalLen,
+                        FMAW::TypeBackground,
+                        FMAW::ScreenSub)),
+    main_menu_attributes(FMAW::TileAttributes(
+                             gfx_main_menuTiles,
+                             gfx_main_menuTilesLen,
+                             gfx_main_menuPal,
+                             gfx_main_menuPalLen,
+                             FMAW::TypeBackground,
+                             FMAW::ScreenSub)),
+    main_menu_new_game_attributes(FMAW::TileAttributes(
+                                      gfx_main_menu_new_gameTiles,
+                                      gfx_main_menu_new_gameTilesLen,
+                                      gfx_main_menu_new_gamePal,
+                                      gfx_main_menu_new_gamePalLen,
+                                      FMAW::TypeBackground,
+                                      FMAW::ScreenSub)),
+    main_menu_load_game_attributes(FMAW::TileAttributes(
+                                       gfx_main_menu_load_gameTiles,
+                                       gfx_main_menu_load_gameTilesLen,
+                                       gfx_main_menu_load_gamePal,
+                                       gfx_main_menu_load_gamePalLen,
+                                       FMAW::TypeBackground,
+                                       FMAW::ScreenSub)),
+    main_menu_versus_attributes(FMAW::TileAttributes(
+                                    gfx_main_menu_versusTiles,
+                                    gfx_main_menu_versusTilesLen,
+                                    gfx_main_menu_versusPal,
+                                    gfx_main_menu_versusPalLen,
+                                    FMAW::TypeBackground,
+                                    FMAW::ScreenSub)),
+    current_tile(FMAW::Tile(0)) {}
 
-    /*
-    for (int i = 0; i < this->tiles.size(); ++i) {
-        this->background.setTile(
-            this->tiles[i],
-            FMAW::Tile(this->backgroundType).imgMemory + i);
-        this->background.setPalette(
-            this->tiles[i],
-            FMAW::Tile(this->backgroundType).palMemory);
-    }
-    */
+void MainMenu::init() {
+    this->backgroundTileID = FMAW::Tile(logo_attributes).ID;
+    this->adjustCurrentTile();
+}
 
-    for (int id = 0; id < TOTAL_TILES; id++) {
-        // menuBackground.setTile(id, FMAW::Tile(8));
-        menuBackground.setTile(id, background_tile.imgMemory + id);
-        menuBackground.setPalette(id, background_tile.palMemory);
+void MainMenu::adjustCurrentTile() {
+    FMAW::printf("Current option is %d (%d) -> %d",
+                 this->currentlySelectedOption,
+                 this->isInForeground(),
+                 this->current_tile.ID);
+
+    if (this->isInForeground()) {
+        switch (this->currentlySelectedOption) {
+            case MAIN_MENU_OPTION_NEW_GAME:
+                this->current_tile = FMAW::Tile(
+                                         this->main_menu_new_game_attributes,
+                                         this->backgroundTileID);
+                break;
+            case MAIN_MENU_OPTION_LOAD_GAME:
+                this->current_tile = FMAW::Tile(
+                                         this->main_menu_load_game_attributes,
+                                         this->backgroundTileID);
+                break;
+            case MAIN_MENU_OPTION_VERSUS_GAME:
+                this->current_tile = FMAW::Tile(
+                                         this->main_menu_versus_attributes,
+                                         this->backgroundTileID);
+                break;
+            default:
+                this->current_tile = FMAW::Tile(this->main_menu_attributes,
+                                                this->backgroundTileID);
+                break;
+        }
+    } else {
+        this->current_tile = FMAW::Tile(this->logo_attributes);
     }
 }
 
-void makeMenuForeground() {
-    if (menuCurrentlyOnForegroundScreen) return;
+void MainMenu::render() {
+    if (this->menuChangedBackgroundTile) {
+        FMAW::printf("I'll print tile with ID %d", this->current_tile.ID);
+        this->background.setScreenBaseBlock(31);
+        this->background.clearAllTiles();
+
+        for (int id = 0; id < TOTAL_TILES; id++) {
+            this->background.setTile(id, this->current_tile.imgMemory + id);
+            FMAW::printf("Tile %p will have memory address %p (%p)",
+                         this->background.tiles + id,
+                         this->current_tile.imgMemory + id,
+                         this->background.tiles[id]);
+            this->background.setPalette(id, this->current_tile.palMemory);
+        }
+
+        this->menuChangedBackgroundTile = false;
+    }
+}
+
+void MainMenu::makeForeground() {
+    if (this->menuCurrentlyOnForegroundScreen) return;
+    this->menuCurrentlyOnForegroundScreen = true;
+    this->dequeueCallbacks();
+    this->enqueueCallbacks();
+    this->adjustCurrentTile();
     FMAW::swapScreens();
 }
 
-void makeMenuBackground() {
-    if (menuCurrentlyOnForegroundScreen) FMAW::swapScreens();
-}
-
-bool menuIsInForeground() {
-    return menuCurrentlyOnForegroundScreen;
-}
-
-void enqueueMenuCallbacks() {
-    if (touchCallbackID == -1) {
-        touchCallbackID = FMAW::Input::onTouchReleased(touchCallback);
+void MainMenu::makeBackground() {
+    if (this->menuCurrentlyOnForegroundScreen) {
+        this->menuCurrentlyOnForegroundScreen = false;
+        this->dequeueCallbacks();
+        this->adjustCurrentTile();
+        FMAW::swapScreens();
     }
 }
 
-void dequeueMenuCallbacks() {
-    FMAW::Input::unregisterCallback(touchCallbackID);
-    touchCallbackID = -1;
+bool MainMenu::isInForeground() {
+    return menuCurrentlyOnForegroundScreen;
 }
 
-}  // namespace MainMenu
+void MainMenu::enqueueCallbacks() {
+    if (this->touchCallbackID == -1) {
+        auto touchCallback = [](int x, int y) {
+            FMAW::printf("Touch detected at %d %d", x, y);
+        };
+        this->touchCallbackID = FMAW::Input::onTouchReleased(touchCallback);
+    }
+    if (this->upArrowCallbackID == -1) {
+        auto upArrowCallback = [this]() {
+            this->menuChangedBackgroundTile = true;
+            this->currentlySelectedOption++;
+            this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
+            FMAW::printf("New selected option %d",
+                         this->currentlySelectedOption);
+        };
+        this->upArrowCallbackID = FMAW::Input::onButtonArrowUpReleased(
+                                      upArrowCallback);
+    }
+    if (this->downArrowCallbackID == -1) {
+        auto downArrowCallback = [this]() {
+            this->menuChangedBackgroundTile = true;
+            this->currentlySelectedOption++;
+            this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
+            FMAW::printf("New selected option %d",
+                         this->currentlySelectedOption);
+        };
+        this->downArrowCallbackID = FMAW::Input::onButtonArrowDownReleased(
+                                        downArrowCallback);
+    }
+    if (this->aButtonCallbackID == -1) {
+        auto aButtonCallback = [this]() {
+            FMAW::printf("Selected option %d",
+                         this->currentlySelectedOption);
+        };
+        this->aButtonCallbackID = FMAW::Input::onButtonAReleased(
+                                      aButtonCallback);
+    }
+}
+
+void MainMenu::dequeueCallbacks() {
+    if (this->touchCallbackID != -1)  {
+        FMAW::Input::unregisterCallback(this->touchCallbackID);
+        this->touchCallbackID = -1;
+    }
+    if (this->upArrowCallbackID != -1)  {
+        FMAW::Input::unregisterCallback(this->upArrowCallbackID);
+        this->upArrowCallbackID = -1;
+    }
+    if (this->downArrowCallbackID != -1)  {
+        FMAW::Input::unregisterCallback(this->downArrowCallbackID);
+        this->downArrowCallbackID = -1;
+    }
+    if (this->aButtonCallbackID != -1)  {
+        FMAW::Input::unregisterCallback(this->aButtonCallbackID);
+        this->aButtonCallbackID = -1;
+    }
+}

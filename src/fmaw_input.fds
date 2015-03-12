@@ -239,17 +239,17 @@ int onButtonArrowRightReleased(std::function<void(void)> callback) {
 //------------------------------------------------------------------------------
 
 // TODO(lluis): Implement this method!
-int onTouchPressed(void (*callback)(int, int)) {
+int onTouchPressed(std::function<void(int, int)> callback) {
     return -1;
 }
 
 // TODO(lluis): Implement this method!
-int onTouchMoved(void (*callback)(int, int)) {
+int onTouchMoved(std::function<void(int, int)> callback) {
     return -1;
 }
 
 // TODO(lluis): Implement this method!
-int onTouchReleased(void (*callback)(int, int)) {
+int onTouchReleased(std::function<void(int, int)> callback) {
     return -1;
 }
 

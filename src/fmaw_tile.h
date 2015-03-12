@@ -25,6 +25,18 @@ typedef struct t_tile_attrib {
     const int paletteLength;
     const TileType type;
     const TileScreen screen;
+    t_tile_attrib(const unsigned int *tilesArray,
+                  const int tilesLength,
+                  const unsigned short *paletteArray,
+                  const int paletteLength,
+                  const TileType type,
+                  const TileScreen screen) :
+        tilesArray(tilesArray),
+        tilesLength(tilesLength),
+        paletteArray(paletteArray),
+        paletteLength(paletteLength),
+        type(type),
+        screen(screen) {}
 } TileAttributes;
 
 /**
@@ -92,9 +104,14 @@ class Tile {
     int ID;
 
     /**
-     * Creates a new tile given the ID that will be used to refer to this tile.
+     * Creates a new tile given the attributes defining the tile.
      */
     Tile(TileAttributes attributes);
+
+    /**
+     * Replaces tile with given ID with given attributes.
+     */
+    Tile(TileAttributes attributes, int ID);
 
     /**
      * Returns tile associated with given ID.

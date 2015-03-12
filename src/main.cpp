@@ -56,6 +56,7 @@
 #include "./grid.h"
 
 Grid grid;
+MainMenu menu;
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -213,6 +214,7 @@ void update_logic() {
 
 void update_graphics() {
     FMAW::Camera::setHorizontalOffset(g_camera_x);
+    menu.render();
     grid.renderCharacters();
 }
 
@@ -283,14 +285,17 @@ int main(void) {
     FMAW::Input::onButtonBReleased(releaseB);
 
     auto releaseStart = []() {
-        FMAW::swapScreens();
-        MemTrack::TrackListMemoryUsage();
+        if (menu.isInForeground()) {
+            menu.makeBackground();
+        } else {
+            menu.makeForeground();
+        }
+        // MemTrack::TrackListMemoryUsage();
     };
     FMAW::Input::onButtonStartReleased(releaseStart);
 
+    menu.init();
     grid.renderBackground();
-
-    MainMenu::render();
 
     FMAW::start();
 

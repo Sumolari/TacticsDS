@@ -1,39 +1,135 @@
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
-namespace MainMenu {
+#include "./FMAW.h"
 
-/**
- * Renders the main menu.
- */
-void render();
+class MainMenu {
+  private:
 
-/**
- * Moves main menu to touch screen.
- */
-void makeMenuForeground();
+    /**
+     * Whether main menu is currently on foreground screen or not.
+     */
+    bool menuCurrentlyOnForegroundScreen;
 
-/**
- * Moves main menu to non-touch screen.
- */
-void makeMenuBackground();
+    /**
+     * Whether main menu background tile changed after last time it was
+     * rendered or not.
+     */
+    bool menuChangedBackgroundTile;
 
-/**
- * Returns whether menu is on foreground or not.
- * @return Whether menu is on foreground or not.
- */
-bool menuIsInForeground();
+    /**
+     * ID of touch callback.
+     */
+    int touchCallbackID;
 
-/**
- * Enqueues callbacks for main menu handling.
- */
-void enqueueMenuCallbacks();
+    /**
+     * ID of up arrow callback.
+     */
+    int upArrowCallbackID;
 
-/**
- * Dequeues callbacks for main menu handling.
- */
-void dequeueMenuCallbacks();
+    /**
+     * ID of down arrow callback.
+     */
+    int downArrowCallbackID;
 
-}  // namespace MainMenu
+    /**
+     * ID of A button callback;
+     */
+    int aButtonCallbackID;
+
+    /**
+     * Background used to draw Main Menu.
+     */
+    FMAW::Background background;
+
+    /**
+     * Tile for logo.
+     */
+    FMAW::TileAttributes logo_attributes;
+
+    /**
+     * Tile for main menu with no selected option.
+     */
+    FMAW::TileAttributes main_menu_attributes;
+
+    /**
+     * Tile for main menu with New Game selected.
+     */
+    FMAW::TileAttributes main_menu_new_game_attributes;
+
+    /**
+     * Tile for main menu with Load Game selected.
+     */
+    FMAW::TileAttributes main_menu_load_game_attributes;
+
+    /**
+     * Tile for main menu with Versus selected.
+     */
+    FMAW::TileAttributes main_menu_versus_attributes;
+
+    /**
+     * ID of tile used to draw menu's background.
+     */
+    int backgroundTileID;
+
+    /**
+     * Tile that should be currently displayed.
+     */
+    FMAW::Tile current_tile;
+
+    /**
+     * Currently selected menu option.
+     */
+    int currentlySelectedOption;
+
+    /**
+     * Changes currently selected tile to match user's selected option.
+     */
+    void adjustCurrentTile();
+
+  public:
+
+    /**
+     * Initializes the Main Menu.
+     */
+    MainMenu();
+
+    /**
+     * Loads main menu assets.
+     */
+    void init();
+
+    /**
+     * Renders the main menu.
+     */
+    void render();
+
+    /**
+     * Moves main menu to touch screen.
+     */
+    void makeForeground();
+
+    /**
+     * Moves main menu to non-touch screen.
+     */
+    void makeBackground();
+
+    /**
+     * Returns whether menu is on foreground or not.
+     * @return Whether menu is on foreground or not.
+     */
+    bool isInForeground();
+
+    /**
+     * Enqueues callbacks for main menu handling.
+     */
+    void enqueueCallbacks();
+
+    /**
+     * Dequeues callbacks for main menu handling.
+     */
+    void dequeueCallbacks();
+
+};
 
 #endif

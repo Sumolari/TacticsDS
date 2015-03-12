@@ -42,7 +42,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <new>
 #include <cstring>
 
-#include "memtrack.h"
+#include "./memtrack.h"
 #undef new    // IMPORTANT!
 
 /* ------------------------------------------------------------ */
