@@ -36,7 +36,7 @@ Ampliando el programa anterior hemos añadido la opción de realizar llamadas a 
 
 Para realizar esto nos hemos basado en el programa de la práctica 2, *menus*, para ofrecer la posibilidad de reproducir PSG o Noise y permitir al usuario variar los 3 parámetros (frecuencia, volumen y pan) en ambos casos.
 
-> ![Captura del programa tonos2](../../../../p4media/tonos2.png)
+> ![Captura del programa tonos2](../../../../p4Media/tonos2.png)
 >
 > Captura del programa tonos2
 
@@ -63,7 +63,7 @@ Ahora para realizar la función de exportar el audio grabado a disco debemos rev
 
 Una vez guardada una locución, podemos abrirla en Audacity.
 
-> ![Captura de audacity con el fichero raw grabado con micrecord](../../../../p4media/micrecord.png)
+> ![Captura de audacity con el fichero raw grabado con micrecord](../../../../p4Media/micrecord.png)
 >
 > Captura de audacity con el fichero raw grabado con micrecord
 
