@@ -39,7 +39,30 @@ typedef struct t_callback {
 // Here we will store registered functions.
 std::map<int, Callback> registered_functions {};
 
+typedef struct t_callback_touch {
+    /**
+     * ID of this callback.
+     */
+    int ID;
+    /**
+     * Whether this callback should be called when button is pressed, released,
+     * while it is pressed, etc.
+     */
+    InputMode  mode;
+    /**
+     * Function to be called.
+     */
+    std::function<void(int, int)> function;
+} CallbackTouch;
+
+// Here we will store registered functions.
+std::map<int, CallbackTouch> registered_touch_functions {};
+
+// Here we store buttons currently pressed.
 std::map<ButtonType, bool> currentlyPressedButtons {};
+
+// Here we store position of last touch.
+touchPosition lastTouch = { 0, 0, 0, 0, 0, 0 };
 
 // Next ID that can be used.
 int next_registered_function_id = 0;
@@ -238,19 +261,31 @@ int onButtonArrowRightReleased(std::function<void(void)> callback) {
 // Handling Touch & Mouse.
 //------------------------------------------------------------------------------
 
-// TODO(lluis): Implement this method!
 int onTouchPressed(std::function<void(int, int)> callback) {
-    return -1;
+    registered_touch_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        OnPressed,
+        callback
+    };
+    return next_registered_function_id++;
 }
 
-// TODO(lluis): Implement this method!
 int onTouchMoved(std::function<void(int, int)> callback) {
-    return -1;
+    registered_touch_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        WhilePressed,
+        callback
+    };
+    return next_registered_function_id++;
 }
 
-// TODO(lluis): Implement this method!
 int onTouchReleased(std::function<void(int, int)> callback) {
-    return -1;
+    registered_touch_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        OnReleased,
+        callback
+    };
+    return next_registered_function_id++;
 }
 
 //------------------------------------------------------------------------------
@@ -314,6 +349,54 @@ void check() {
             currentlyPressedButtons[ frameworkTypes[i] ] = false;
             // We call proper callback.
             callCallbacksOnReleased(frameworkTypes[i]);
+        }
+    }
+
+    touchPosition newTouch;
+    touchRead(&newTouch);
+
+    if (lastTouch.rawx != newTouch.rawx ||
+            lastTouch.rawy != newTouch.rawy ||
+            lastTouch.px != newTouch.px ||
+            lastTouch.py != newTouch.py ||
+            lastTouch.z1 != newTouch.z1 ||
+            lastTouch.z2 != newTouch.z2) {
+        if (lastTouch.rawx == lastTouch.rawy &&
+                lastTouch.rawy == lastTouch.px &&
+                lastTouch.px == lastTouch.py &&
+                lastTouch.py == 0) {
+            // OnPressed!
+            auto rtf = registered_touch_functions;
+            for (auto it = rtf.begin(); it != rtf.end(); it++) {
+                CallbackTouch callback = it->second;
+                if (callback.mode == OnPressed) {
+                    callback.function(newTouch.px, newTouch.py);
+                }
+            }
+            lastTouch = newTouch;
+        } else if (newTouch.rawx == newTouch.rawy &&
+                   newTouch.rawy == newTouch.px &&
+                   newTouch.px == newTouch.py &&
+                   newTouch.py == 0) {
+            // OnReleased
+            auto rtf = registered_touch_functions;
+            for (auto it = rtf.begin(); it != rtf.end(); it++) {
+                CallbackTouch callback = it->second;
+                if (callback.mode == OnReleased) {
+                    callback.function(lastTouch.px, lastTouch.py);
+                }
+            }
+            lastTouch = newTouch;
+        } else  {
+            // WhilePressed!
+            auto rtf = registered_touch_functions;
+            for (auto it = rtf.begin(); it != rtf.end(); it++) {
+                CallbackTouch callback = it->second;
+                if (callback.mode == WhilePressed) {
+                    callback.function(newTouch.px, newTouch.py);
+                }
+            }
+            lastTouch = newTouch;
         }
     }
 }

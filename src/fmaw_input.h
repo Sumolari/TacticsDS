@@ -7,9 +7,10 @@ namespace FMAW {
 
 namespace Input {
 
-#define BUTTONS_COUNT 10
+#define BUTTONS_COUNT 11
 #define BUTTONS {ButtonA, ButtonB, ButtonSelect, ButtonStart, ButtonL, ButtonR,\
-        ButtonArrowUp, ButtonArrowDown, ButtonArrowLeft, ButtonArrowRight }
+        ButtonArrowUp, ButtonArrowDown, ButtonArrowLeft, ButtonArrowRight,\
+        Touch }
 
 typedef enum BUTTONS ButtonType;
 

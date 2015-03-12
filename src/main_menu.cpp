@@ -36,6 +36,21 @@
  */
 #define MAIN_MENU_NUM_OPTIONS        3
 
+/**
+ * Area where New Game button is located.
+ */
+#define MAIN_MENU_NEW_GAME_AREA      { { 20, 17}, { 235, 56} }
+
+/**
+ * Area where Load Game button is located.
+ */
+#define MAIN_MENU_LOAD_GAME_AREA     { { 20, 75}, { 235, 114} }
+
+/**
+ * Area where Versus button is located.
+ */
+#define MAIN_MENU_VERSUS_AREA        { { 20, 136}, { 235, 173} }
+
 //------------------------------------------------------------------------------
 // Main Menu
 //------------------------------------------------------------------------------
@@ -47,7 +62,6 @@ MainMenu::MainMenu():
     upArrowCallbackID(-1),
     downArrowCallbackID(-1),
     aButtonCallbackID(-1),
-    currentlySelectedOption(MAIN_MENU_OPTION_NEW_GAME),
     background(FMAW::Background(4)),
     logo_attributes(FMAW::TileAttributes(
                         gfx_logoTiles,
@@ -84,7 +98,8 @@ MainMenu::MainMenu():
                                     gfx_main_menu_versusPalLen,
                                     FMAW::TypeBackground,
                                     FMAW::ScreenSub)),
-    current_tile(FMAW::Tile(0)) {}
+    current_tile(FMAW::Tile(0)),
+    currentlySelectedOption(MAIN_MENU_OPTION_NEW_GAME) {}
 
 void MainMenu::init() {
     this->backgroundTileID = FMAW::Tile(logo_attributes).ID;
@@ -166,8 +181,15 @@ bool MainMenu::isInForeground() {
 
 void MainMenu::enqueueCallbacks() {
     if (this->touchCallbackID == -1) {
-        auto touchCallback = [](int x, int y) {
-            FMAW::printf("Touch detected at %d %d", x, y);
+        auto touchCallback = [this](int x, int y) {
+            if (FMAW::pointInArea({x, y}, MAIN_MENU_NEW_GAME_AREA)) {
+                this->currentlySelectedOption = MAIN_MENU_OPTION_NEW_GAME;
+            } else if (FMAW::pointInArea({x, y}, MAIN_MENU_LOAD_GAME_AREA)) {
+                this->currentlySelectedOption = MAIN_MENU_OPTION_LOAD_GAME;
+            } else if (FMAW::pointInArea({x, y}, MAIN_MENU_VERSUS_AREA)) {
+                this->currentlySelectedOption = MAIN_MENU_OPTION_VERSUS_GAME;
+            }
+            this->adjustCurrentTile();
         };
         this->touchCallbackID = FMAW::Input::onTouchReleased(touchCallback);
     }
@@ -180,8 +202,6 @@ void MainMenu::enqueueCallbacks() {
             this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
             this->menuChangedBackgroundTile = true;
             this->adjustCurrentTile();
-            FMAW::printf("New selected option %d",
-                         this->currentlySelectedOption);
         };
         this->upArrowCallbackID = FMAW::Input::onButtonArrowUpReleased(
                                       upArrowCallback);
@@ -192,8 +212,6 @@ void MainMenu::enqueueCallbacks() {
             this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
             this->menuChangedBackgroundTile = true;
             this->adjustCurrentTile();
-            FMAW::printf("New selected option %d",
-                         this->currentlySelectedOption);
         };
         this->downArrowCallbackID = FMAW::Input::onButtonArrowDownReleased(
                                         downArrowCallback);
