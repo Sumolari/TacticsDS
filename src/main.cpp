@@ -179,31 +179,10 @@ void setupGraphics(void) {
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
 
-    FMAW::Background bgBricks(0);
-    bgBricks.setScreenBaseBlock(2);
-
+    FMAW::Background(0).setScreenBaseBlock(2);
     FMAW::Background(1).setScreenBaseBlock(3);
     FMAW::Background(2).setScreenBaseBlock(4);
     FMAW::Background(3).setScreenBaseBlock(5);
-
-    // Clear entire bricks' tilemap and gradient's tilemap to zero
-    bgBricks.clearAllTiles();
-
-    // Set tilemap entries for 6 first rows of background 0 (bricks).
-    for (int y = 0; y < 6; y++) {
-        for (int x = 0; x < 32; x++) {
-            int tile_id = x + y * 32;  // Product optimized at compile time!
-
-            // Either odd columns of even rows or even columns of odd rows...
-            // if (( x % 2 == 0 && y % 2 == 1 ) || (x % 2 == 1 && y % 2 == 0 ))
-            if ((x & 1) ^ (y & 1))
-                bgBricks.enableHorizontalFlip(tile_id);
-
-            bgBricks.setTile(tile_id, brick_tile);
-        }
-    }
-    // Did we say 6 first rows? We wanted 6 LAST rows!
-    // bgBricks.setVerticalOffset(112);
 
     grid.renderBackground();
 }
