@@ -11,7 +11,7 @@ Comprobado que tenemos en local tanto la documentación como los ejemplos de DEV
 
 ##Gestión de los controles
 
-Hemos realizado un programa que imprima por pantalla el estado de los 13 botones mediante el enum `KEYPAD_BITS` y la función `keysHeld()`. El color del texto cambia dependiendo de si está pulsado o no ese botón.
+Hemos realizado un programa que imprime por pantalla el estado de los 13 botones mediante el enum `KEYPAD_BITS` y la función `keysHeld()`. El color del texto cambia dependiendo de si está pulsado o no ese botón.
 
 > ![Captura del programa keysHeld.](../../../../p3Media/keysHeld.png)
 >
@@ -37,7 +37,7 @@ Este programa juega con una imagen puesta como fondo en la pantalla principal, m
 
 ###rotscale_text
 
-Este ejemplo es muy similar al anterior, lo único que cambia es que al principio carga una fuente personalizada como en el ejemplo que hemos visto anteriormente y muestra la salida en la pantalla inferior. Hace las mismas operaciones sobre el fondo que el ejemplo anterior y consigue la referencia al fondo directamente de la consola. 
+Este ejemplo es muy similar al anterior, lo único que cambia es que al principio carga una fuente personalizada como en el ejemplo que hemos visto anteriormente y muestra la salida en la pantalla inferior. Hace las mismas operaciones sobre el fondo que en el ejemplo anterior y consigue la referencia al fondo directamente de la consola. 
 
 > ![Captura del programa rotscale_text.](../../../../p3Media/rotscale_text.png)
 >
@@ -45,7 +45,7 @@ Este ejemplo es muy similar al anterior, lo único que cambia es que al principi
 
 ###console_windows
 
-Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiendo en que lado de la pantalla tocamos la pantalla, va escribiendo las coordinadas del toque en la caja correspondiente a esa mitad en vertical de la pantalla. Consigue esto con la función de `consoleSetWindow` variando el valor del eje x para cada una de las cajas y así imprimiendo dentro de ellas.
+Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiendo en qué lado de la pantalla tocamos, va escribiendo las coordenadas del toque en la caja correspondiente a esa mitad vertical de la pantalla. Consigue esto con la función `consoleSetWindow`, variando el valor del eje x para cada una de las cajas e imprimiendo así dentro de ellas.
 
 > ![Captura del programa console_windows.](../../../../p3Media/console_windows.png)
 > 
@@ -69,6 +69,12 @@ Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiend
 >
 > Captura del programa libfat en el emulador DeSmuMe.
 
+Con la version por defecto de **DeSmuMe** nos sale un error, esto es debido a que no inicializa un sistema de ficheros por defecto. Pero, tenemos a nuestra disposición la version `desmume-glade` que efectivamente sí que carga bien el programa de ejemplo.
+
+> ![Captura del programa libfat en el emulador DeSmuMe-glade.
+](../p3media/fat_glade.png)
+>
+> Captura del programa libfat en el emulador DeSmuMe-glade.
 
 ####NO$GBA
 
@@ -96,6 +102,8 @@ Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiend
 * `fread`
 
 ####DeSmuMe
+
+En este ejemplo además de listar los ficheros existentes, crea algunos archivos para que el ejemplo tenga salida.
 
 > ![Captura del programa nitrofs en el emulador DeSmuMe.
 ](../../../../p3Media/nitrofs.png)
