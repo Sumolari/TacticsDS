@@ -2,6 +2,9 @@
 
 #ifdef NDS
 
+#include <fat.h>
+#include <nds.h>
+
 #include <sstream>
 #include <cstdlib>
 
@@ -54,6 +57,7 @@
 
 #include "./main_menu.h"
 #include "./grid.h"
+#include "./gridmap.h"
 
 Grid grid;
 MainMenu menu;
@@ -218,12 +222,9 @@ void update_graphics() {
 }
 
 int main(void) {
+    fatInitDefault();
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
-
-    grid.cellAtIndexPath({3, 6})->setBackgroundType(CellBGMountain);
-
-    grid.cellAtIndexPath({4, 4})->setBackgroundType(CellBGRiver);
 
     Warrior warriorA, warriorB;
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
@@ -234,7 +235,6 @@ int main(void) {
         warriorB.update();
     };
     FMAW::Timer::enqueue_function(func, 200, true);
-
 
     auto releaseLeftArrow = []() {
         grid.selectLeftCell();
@@ -294,6 +294,7 @@ int main(void) {
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     menu.init();
+    GridMap::loadDefaultGridMap(grid);
     grid.renderBackground();
 
     FMAW::start();
