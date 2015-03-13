@@ -6,3 +6,5 @@ doc/latex/
 *.sublime-workspace
 *.test
 *.exe
+_assets_
+*.dSYM/

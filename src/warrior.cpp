@@ -22,28 +22,32 @@ void Warrior::init() {
         swordmaster_female_1TilesLen,
         swordmaster_female_1Pal,
         swordmaster_female_1PalLen,
-        FMAW::TypeSprite
+        FMAW::TypeSprite,
+        FMAW::ScreenMain
     };
     FMAW::TileAttributes tile_2_attrib {
         swordmaster_female_2Tiles,
         swordmaster_female_2TilesLen,
         swordmaster_female_2Pal,
         swordmaster_female_2PalLen,
-        FMAW::TypeSprite
+        FMAW::TypeSprite,
+        FMAW::ScreenMain
     };
     FMAW::TileAttributes tile_3_attrib {
         swordmaster_female_3Tiles,
         swordmaster_female_3TilesLen,
         swordmaster_female_3Pal,
         swordmaster_female_3PalLen,
-        FMAW::TypeSprite
+        FMAW::TypeSprite,
+        FMAW::ScreenMain
     };
     FMAW::TileAttributes tile_4_attrib {
         swordmaster_female_4Tiles,
         swordmaster_female_4TilesLen,
         swordmaster_female_4Pal,
         swordmaster_female_4PalLen,
-        FMAW::TypeSprite
+        FMAW::TypeSprite,
+        FMAW::ScreenMain
     };
 
     FMAW::Tile tile_1(tile_1_attrib);
