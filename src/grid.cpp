@@ -6,6 +6,9 @@
 
 #include "./FMAW.h"
 
+#define CURSOR_WIDTH  32
+#define CURSOR_HEIGHT 32
+
 Grid::Grid() {
     this->rows = WINDOW_HEIGHT / CELL_HEIGHT;
     this->cols = WINDOW_WIDTH / CELL_WIDTH;
@@ -40,6 +43,11 @@ Grid::Grid() {
             }
         }
     }
+}
+
+void Grid::initCursor() {
+    this->cursor.init();
+    this->setSquareCursor();
 }
 
 Cell *Grid::cellAtIndexPath(IndexPath ip) {
@@ -85,6 +93,7 @@ void Grid::renderCharacters() {
             this->cellAtIndexPath(p)->renderCharacter();
         }
     }
+    this->cursor.render();
 }
 
 int Grid::numRows() {
@@ -102,35 +111,47 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
                               path.col != this->selectedPath.col)) {
         this->selectedPath = path;
         FMAW::printf("Seleccionada celda %d %d", path.row, path.col);
+
+        FMAW::Point p = this->cellAtSelectedPath()->getCenter();
+
+        this->cursor.setPosition({p.x - 16, p.y - 16});
         return true;
     }
     return false;
 }
 
 bool Grid::selectBottomCell() {
-    FMAW::printf("Quieres seleccionar la celda inferior");
     return this->selectCellAtIndexPath({this->selectedPath.row + 1,
                                         this->selectedPath.col
                                        });
 }
 
 bool Grid::selectTopCell() {
-    FMAW::printf("Quieres seleccionar la celda superior");
     return this->selectCellAtIndexPath({this->selectedPath.row - 1,
                                         this->selectedPath.col
                                        });
 }
 
 bool Grid::selectLeftCell() {
-    FMAW::printf("Quieres seleccionar la celda izquierda");
     return this->selectCellAtIndexPath({this->selectedPath.row,
                                         this->selectedPath.col - 1
                                        });
 }
 
 bool Grid::selectRightCell() {
-    FMAW::printf("Quieres seleccionar la celda derecho");
     return this->selectCellAtIndexPath({this->selectedPath.row,
                                         this->selectedPath.col + 1
                                        });
+}
+
+void Grid::setSquareCursor() {
+    this->cursor.setSquare();
+}
+
+void Grid::setArrowCursor() {
+    this->cursor.setArrow();
+}
+
+void Grid::setCrossCursor() {
+    this->cursor.setCross();
 }

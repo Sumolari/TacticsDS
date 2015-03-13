@@ -2,6 +2,8 @@
 #define WARRIOR_H
 
 #include "./FMAW.h"
+#include "./constants.h"
+#include "./unit.h"
 
 //----------//------------------------------------------------------------------
 //----------// Tile entries
@@ -18,8 +20,8 @@
 
 #define WARRIOR_HEIGHT        16
 
-class Warrior : public FMAW::Character {
-protected:
+class Warrior : public Unit {
+  protected:
     // ID of tile currently displayed.
     int currentTileID;
     // Palette of tile currently displayed.
@@ -28,18 +30,18 @@ protected:
     FMAW::Tile *tiles;
 
     virtual void init();
-public:
+  public:
     /**
      * Creates a new Warrior using a new sprite.
      */
-    Warrior() {
+    Warrior(int ownerID): Unit(ownerID) {
         init();
     };
 
     /**
      * Creates a new Warrior given its sprite.
      */
-    Warrior(FMAW::Sprite sprite): Character(sprite) {
+    Warrior(FMAW::Sprite sprite, int ownerID): Unit(sprite, ownerID) {
         init();
     };
 

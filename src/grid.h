@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "./cell.h"
+#include "./cursor.h"
 
 class Grid {
   private:
@@ -27,11 +28,21 @@ class Grid {
      */
     IndexPath selectedPath;
 
+    /**
+     * Sprite of the cursor to indicate which cell is selected.
+     */
+    Cursor cursor;
+
   public:
     /**
      * Creates a new grid.
      */
     Grid();
+
+    /**
+     * Initializes cursor.
+     */
+    void initCursor();
 
     /**
      * Returns cell located at given IndexPath.
@@ -123,6 +134,21 @@ class Grid {
      * @return Whether selected cell changed or not.
      */
     bool selectRightCell();
+
+    /**
+     * Sets the cursor to be an arrow.
+     */
+    void setArrowCursor();
+
+    /**
+     * Sets the cursor to be an square.
+     */
+    void setSquareCursor();
+
+    /**
+     * Sets the cursor to be a cross.
+     */
+    void setCrossCursor();
 };
 
 #endif

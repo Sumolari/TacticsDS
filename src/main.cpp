@@ -183,8 +183,6 @@ void setupGraphics(void) {
     FMAW::Background(1).setScreenBaseBlock(3);
     FMAW::Background(2).setScreenBaseBlock(4);
     FMAW::Background(3).setScreenBaseBlock(5);
-
-    grid.renderBackground();
 }
 
 void update_camera() { }
@@ -205,9 +203,11 @@ int main(void) {
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
 
+    grid.initCursor();
+
     GridMap::loadDefaultGridMap(grid);
 
-    Warrior warriorA, warriorB;
+    Warrior warriorA{0}, warriorB{1};
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
     grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
 
@@ -250,6 +250,7 @@ int main(void) {
                      grid.getSelectedPath().col);
         grid.moveCharacterFromCellToCell(pick_up_path,
                                          grid.getSelectedPath(), 500);
+        grid.setSquareCursor();
         FMAW::printf("Has soltado la tecla A");
     };
     FMAW::Input::onButtonAReleased(releaseA);
@@ -257,6 +258,7 @@ int main(void) {
     auto releaseB = [&pick_up_path]() {
         pick_up_path.row = grid.getSelectedPath().row;
         pick_up_path.col = grid.getSelectedPath().col;
+        grid.setArrowCursor();
         FMAW::printf("Se ha marcado la celda %d %d",
                      pick_up_path.row,
                      pick_up_path.col);
