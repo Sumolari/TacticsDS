@@ -248,17 +248,22 @@ void Grid::enqueueCallbacks() {
 void Grid::dequeueCallbacks() {
     if (this->upArrowCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->upArrowCallbackID);
+        this->upArrowCallbackID = -1;
     }
     if (this->rightArrowCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->rightArrowCallbackID);
+        this->rightArrowCallbackID = -1;
     }
     if (this->leftArrowCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->leftArrowCallbackID);
+        this->leftArrowCallbackID = -1;
     }
     if (this->downArrowCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->downArrowCallbackID);
+        this->downArrowCallbackID = -1;
     }
     if (this->aButtonCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->aButtonCallbackID);
+        this->aButtonCallbackID = -1;
     }
 }
