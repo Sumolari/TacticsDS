@@ -3,17 +3,19 @@
 
 #include "./FMAW.h"
 
+#include "./player.h"
+
 class Unit : public FMAW::Character {
   protected:
     // ID of player who owns this unit.
-    int ownerID;
+    PlayerID ownerID;
 
     virtual void init();
   public:
     /**
      * Creates a new unit using a new sprite.
      */
-    Unit(int ownerID);
+    Unit(PlayerID ownerID);
 
     /**
      * Creates a new unit given its sprite.
@@ -23,7 +25,7 @@ class Unit : public FMAW::Character {
     /**
      * Creates a new unit given its sprite and owner.
      */
-    Unit(FMAW::Sprite sprite, int ownerID);
+    Unit(FMAW::Sprite sprite, PlayerID ownerID);
 
     virtual void update();
 
@@ -31,7 +33,7 @@ class Unit : public FMAW::Character {
      * Returns the ID of the owner of this unit.
      * @return ID of the owner of this unit.
      */
-    int getOwner();
+    PlayerID getOwner();
 };
 
 #endif

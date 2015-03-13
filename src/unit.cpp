@@ -2,11 +2,11 @@
 
 #include "./unit.h"
 
-Unit::Unit(int ownerID) : Unit(FMAW::Sprite(), ownerID) {}
+Unit::Unit(PlayerID ownerID) : Unit(FMAW::Sprite(), ownerID) {}
 
 Unit::Unit(FMAW::Sprite sprite): Unit(sprite, 0) {}
 
-Unit::Unit(FMAW::Sprite sprite, int ownerID) :
+Unit::Unit(FMAW::Sprite sprite, PlayerID ownerID) :
     Character(sprite),
     ownerID(ownerID) {
     init();
@@ -16,6 +16,6 @@ void Unit::init() {}
 
 void Unit::update() {}
 
-int Unit::getOwner() {
+PlayerID Unit::getOwner() {
     return this->ownerID;
 }

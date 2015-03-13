@@ -34,14 +34,14 @@ class Warrior : public Unit {
     /**
      * Creates a new Warrior using a new sprite.
      */
-    Warrior(int ownerID): Unit(ownerID) {
+    Warrior(PlayerID ownerID): Unit(ownerID) {
         init();
     };
 
     /**
      * Creates a new Warrior given its sprite.
      */
-    Warrior(FMAW::Sprite sprite, int ownerID): Unit(sprite, ownerID) {
+    Warrior(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
         init();
     };
 

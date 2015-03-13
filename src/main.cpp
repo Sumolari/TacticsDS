@@ -58,6 +58,7 @@
 #include "./main_menu.h"
 #include "./grid.h"
 #include "./gridmap.h"
+#include "./turnManager.h"
 
 Grid grid;
 MainMenu menu;
@@ -199,6 +200,11 @@ void update_graphics() {
 }
 
 int main(void) {
+    Player blue;
+    TurnManager::addPlayer(&blue);
+    Player red;
+    TurnManager::addPlayer(&red);
+
     fatInitDefault();
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
@@ -207,7 +213,7 @@ int main(void) {
 
     GridMap::loadDefaultGridMap(grid);
 
-    Warrior warriorA{0}, warriorB{1};
+    Warrior warriorA{blue.getID()}, warriorB{red.getID()};
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
     grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
 
@@ -219,6 +225,8 @@ int main(void) {
 
     auto releaseB = []() {
         FMAW::printf("Tocaría cambiar de turno!");
+        TurnManager::finishTurn();
+        menu.adjustCurrentTile();
         FMAW::printf("Has soltado la tecla B");
     };
     FMAW::Input::onButtonBReleased(releaseB);

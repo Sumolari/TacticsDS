@@ -2,11 +2,14 @@
 
 #include "./main_menu.h"
 
+#include "./turnManager.h"
+
 //------------------------------------------------------------------------------
 // Graphic references
 //------------------------------------------------------------------------------
 
-#include "./gfx_logo.h"
+#include "./gfx_logo_blue.h"
+#include "./gfx_logo_red.h"
 #include "./gfx_main_menu.h"
 #include "./gfx_main_menu_new_game.h"
 #include "./gfx_main_menu_load_game.h"
@@ -63,13 +66,20 @@ MainMenu::MainMenu():
     downArrowCallbackID(-1),
     aButtonCallbackID(-1),
     background(FMAW::Background(4)),
-    logo_attributes(FMAW::TileAttributes(
-                        gfx_logoTiles,
-                        gfx_logoTilesLen,
-                        gfx_logoPal,
-                        gfx_logoPalLen,
-                        FMAW::TypeBackground,
-                        FMAW::ScreenSub)),
+    logo_attributes_blue(FMAW::TileAttributes(
+                             gfx_logo_blueTiles,
+                             gfx_logo_blueTilesLen,
+                             gfx_logo_bluePal,
+                             gfx_logo_bluePalLen,
+                             FMAW::TypeBackground,
+                             FMAW::ScreenSub)),
+    logo_attributes_red(FMAW::TileAttributes(
+                            gfx_logo_redTiles,
+                            gfx_logo_redTilesLen,
+                            gfx_logo_redPal,
+                            gfx_logo_redPalLen,
+                            FMAW::TypeBackground,
+                            FMAW::ScreenSub)),
     main_menu_attributes(FMAW::TileAttributes(
                              gfx_main_menuTiles,
                              gfx_main_menuTilesLen,
@@ -102,7 +112,7 @@ MainMenu::MainMenu():
     currentlySelectedOption(MAIN_MENU_OPTION_NEW_GAME) {}
 
 void MainMenu::init() {
-    this->backgroundTileID = FMAW::Tile(logo_attributes).ID;
+    this->backgroundTileID = FMAW::Tile(logo_attributes_blue).ID;
     this->adjustCurrentTile();
 }
 
@@ -134,8 +144,11 @@ void MainMenu::adjustCurrentTile() {
                                                 this->backgroundTileID);
                 break;
         }
+    } else if (TurnManager::currentPlayerID() == 0) {
+        this->current_tile = FMAW::Tile(this->logo_attributes_blue,
+                                        this->backgroundTileID);
     } else {
-        this->current_tile = FMAW::Tile(this->logo_attributes,
+        this->current_tile = FMAW::Tile(this->logo_attributes_red,
                                         this->backgroundTileID);
     }
 

@@ -43,9 +43,14 @@ class MainMenu {
     FMAW::Background background;
 
     /**
-     * Tile for logo.
+     * Tile for logo when playing blue player.
      */
-    FMAW::TileAttributes logo_attributes;
+    FMAW::TileAttributes logo_attributes_blue;
+
+    /**
+     * Tile for logo when playing red player.
+     */
+    FMAW::TileAttributes logo_attributes_red;
 
     /**
      * Tile for main menu with no selected option.
@@ -82,11 +87,6 @@ class MainMenu {
      */
     int currentlySelectedOption;
 
-    /**
-     * Changes currently selected tile to match user's selected option.
-     */
-    void adjustCurrentTile();
-
   public:
 
     /**
@@ -98,6 +98,11 @@ class MainMenu {
      * Loads main menu assets.
      */
     void init();
+
+    /**
+     * Changes currently selected tile to match user's selected option.
+     */
+    void adjustCurrentTile();
 
     /**
      * Renders the main menu.
