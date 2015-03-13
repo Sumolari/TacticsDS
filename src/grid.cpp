@@ -46,6 +46,14 @@ Cell *Grid::cellAtIndexPath(IndexPath ip) {
     return &this->cells[ ip.row * this->cols + ip.col ];
 }
 
+Cell *Grid::cellAtSelectedPath() {
+    return this->cellAtIndexPath(this->selectedPath);
+}
+
+IndexPath Grid::getSelectedPath() {
+    return this->selectedPath;
+}
+
 bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
                                        unsigned int duration) {
     Cell *f = this->cellAtIndexPath(from);
@@ -85,4 +93,44 @@ int Grid::numRows() {
 
 int Grid::numCols() {
     return this->cols;
+}
+
+bool Grid::selectCellAtIndexPath(IndexPath path) {
+    FMAW::printf("Quieres seleccionar la celda %d %d", path.row, path.col);
+    if (path.row < this->rows && path.col < this->cols && path.row >= 0 &&
+            path.col >= 0 && (path.row != this->selectedPath.row ||
+                              path.col != this->selectedPath.col)) {
+        this->selectedPath = path;
+        FMAW::printf("Seleccionada celda %d %d", path.row, path.col);
+        return true;
+    }
+    return false;
+}
+
+bool Grid::selectBottomCell() {
+    FMAW::printf("Quieres seleccionar la celda inferior");
+    return this->selectCellAtIndexPath({this->selectedPath.row + 1,
+                                        this->selectedPath.col
+                                       });
+}
+
+bool Grid::selectTopCell() {
+    FMAW::printf("Quieres seleccionar la celda superior");
+    return this->selectCellAtIndexPath({this->selectedPath.row - 1,
+                                        this->selectedPath.col
+                                       });
+}
+
+bool Grid::selectLeftCell() {
+    FMAW::printf("Quieres seleccionar la celda izquierda");
+    return this->selectCellAtIndexPath({this->selectedPath.row,
+                                        this->selectedPath.col - 1
+                                       });
+}
+
+bool Grid::selectRightCell() {
+    FMAW::printf("Quieres seleccionar la celda derecho");
+    return this->selectCellAtIndexPath({this->selectedPath.row,
+                                        this->selectedPath.col + 1
+                                       });
 }

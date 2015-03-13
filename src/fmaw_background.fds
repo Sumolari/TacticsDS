@@ -42,21 +42,51 @@ void Background::selectRegister() {
             this->vOffset = &REG_BG3VOFS;
             this->hOffset = &REG_BG3HOFS;
             break;
+        case 4:
+            this->reg = &REG_BG0CNT_SUB;
+            this->vOffset = &REG_BG0VOFS_SUB;
+            this->hOffset = &REG_BG0HOFS_SUB;
+            break;
+        case 5:
+            this->reg = &REG_BG1CNT_SUB;
+            this->vOffset = &REG_BG1VOFS_SUB;
+            this->hOffset = &REG_BG1HOFS_SUB;
+            break;
+        case 6:
+            this->reg = &REG_BG2CNT_SUB;
+            this->vOffset = &REG_BG2VOFS_SUB;
+            this->hOffset = &REG_BG2HOFS_SUB;
+            break;
+        case 7:
+            this->reg = &REG_BG3CNT_SUB;
+            this->vOffset = &REG_BG3VOFS_SUB;
+            this->hOffset = &REG_BG3HOFS_SUB;
+            break;
     }
 }
 
 Background::Background() : id(nextEmptyBackground++) {
     this->clear();
     this->selectRegister();
-    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
-                      this->getScreenBaseBlock());
+    if (2 * nextEmptyBackground >= TOTAL_BACKGROUNDS) {
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM_SUB(
+                          this->getScreenBaseBlock());
+    } else {
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
+                          this->getScreenBaseBlock());
+    }
     nextEmptyBackground = nextEmptyBackground % TOTAL_BACKGROUNDS;
 }
 
 Background::Background(background_id id) : id(id) {
     this->selectRegister();
-    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
-                      this->getScreenBaseBlock());
+    if (2 * id >= TOTAL_BACKGROUNDS) {
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM_SUB(
+                          this->getScreenBaseBlock());
+    } else {
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
+                          this->getScreenBaseBlock());
+    }
 }
 
 //----------//------------------------------------------------------------------
@@ -78,7 +108,15 @@ bool Background::setScreenBaseBlock(uint8 newScreenBaseBlock) {
     if (newScreenBaseBlock > 31 || newScreenBaseBlock < 0) return false;
     *this->reg &= 0xE0FF;
     *this->reg |= newScreenBaseBlock << 8;
-    this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(this->getScreenBaseBlock());
+
+    if (2 * this->id >= TOTAL_BACKGROUNDS) {
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM_SUB(
+                          this->getScreenBaseBlock());
+    } else {
+        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
+                          this->getScreenBaseBlock());
+    }
+
     return true;
 }
 
@@ -128,15 +166,15 @@ bool Background::setTile(background_tile_id tile_id, Tile tile) {
 }
 
 bool Background::setTile(background_tile_id tile_id, uint16 tileIndex) {
-    uint16 tileIndexCapped = tileIndex & 0x01FF;
+    uint16 tileIndexCapped = tileIndex & 0x03FF;
     if (tileIndex != tileIndexCapped) return false;
-    this->tiles[tile_id] &= 0xFE00;
+    this->tiles[tile_id] &= 0xFC00;
     this->tiles[tile_id] |= tileIndexCapped;
     return true;
 }
 
 uint16 Background::getTile(background_tile_id tile_id) {
-    return this->tiles[tile_id] & 0x01FF;
+    return this->tiles[tile_id] & 0x03FF;
 }
 
 bool Background::setPalette(background_tile_id tile_id, uint8 paletteIndex) {
@@ -403,8 +441,12 @@ void Background::clearAllTiles() {
 }
 
 void Background::print() {
-    printf("\r\nBackground %u: %s\r\n",
+    printf("\r\nBackground %u: %s",
            this->id, half_word_to_binary(*this->reg).c_str());
+    printf("\tRegister: %p", this->reg);
+    printf("\tvOffset: %p (%d)", this->vOffset, *(this->vOffset));
+    printf("\thOffset: %p (%d)", this->hOffset, *(this->hOffset));
+    printf("\tTiles: %p", this->tiles);
 }
 
 void Background::printTile(background_tile_id tile_id) {

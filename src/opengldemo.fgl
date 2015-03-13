@@ -1,0 +1,61 @@
+// Cabeceras.
+#include <iostream> // IO estandar de C++.
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/freeglut.h> // Freeglut.
+#endif
+
+// Funcion de callback de dibujo.
+void display()
+{
+	// Limpiar pantalla.
+	glClear( GL_COLOR_BUFFER_BIT );
+	
+	// Vaciar de ordenes graficas.
+	glFlush();
+}
+
+// Callback de redimension de la ventana.
+void reshape( GLint w, GLint h )
+{
+}
+
+
+// Programa principal.
+int main( int argc, char** argv )
+{
+	// Inicializar la glut.
+	glutInit( &argc, argv );
+	
+	// Dar de alta los buffers que vamos a usar.
+	glutInitDisplayMode( GLUT_SINGLE|GLUT_RGB );
+	
+	// Construir la ventana.
+	glutInitWindowPosition( 50, 200 ); // Posicion de la ventana.
+	glutInitWindowSize( 500, 400 ); // Tamanyo de la ventana.
+	glutCreateWindow( "Primer programa en OpenGL" ); // Crea con titulo.
+	
+	std::cout << "Arranca la práctica 1" << std::endl;
+	
+	// Registro de callbacks.
+	glutDisplayFunc( display );
+	glutReshapeFunc( reshape );
+	
+	// Color de fondo.
+	glClearColor( 0, 0, 0.3, 1 );
+	
+	// Hack para que en OS X el fondo sea correcto sin necesidad de
+	// redimensionar la ventana.
+	#ifdef __APPLE__
+		display();
+	#endif
+	
+	// Poner en marcha el bucle de eventos.
+	glutMainLoop();
+	
+	return 0;
+}

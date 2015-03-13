@@ -1,0 +1,4 @@
+// Copyright 2015 FMAW
+
+#define WINDOW_WIDTH  800
+#define WINDOW_HEIGHT 600
