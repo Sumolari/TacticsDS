@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "./turnManager.h"
 #include "./grid.h"
 
 #include "./FMAW.h"
@@ -9,7 +10,13 @@
 #define CURSOR_WIDTH  32
 #define CURSOR_HEIGHT 32
 
-Grid::Grid() {
+Grid::Grid():
+    downArrowCallbackID(-1),
+    upArrowCallbackID(-1),
+    leftArrowCallbackID(-1),
+    rightArrowCallbackID(-1),
+    aButtonCallbackID(-1) {
+    this->pickedUpCell = { -1, -1 };
     this->rows = WINDOW_HEIGHT / CELL_HEIGHT;
     this->cols = WINDOW_WIDTH / CELL_WIDTH;
     this->cells = std::vector<Cell>(this->rows * this->cols);
@@ -43,6 +50,8 @@ Grid::Grid() {
             }
         }
     }
+
+    this->pickedUpCell = {0, 0};
 }
 
 void Grid::initCursor() {
@@ -67,7 +76,7 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
     Cell *f = this->cellAtIndexPath(from);
     Cell *t = this->cellAtIndexPath(to);
     if (!t->isOccupied() && f->isOccupied()) {
-        FMAW::Character *c = f->getCharacter();
+        Unit *c = f->getCharacter();
         t->setCharacter(c);
         c->setPosition(f->getCenter());
         c->animateToPosition(t->getCenter(), duration);
@@ -103,6 +112,10 @@ int Grid::numRows() {
 int Grid::numCols() {
     return this->cols;
 }
+
+//------------------------------------------------------------------------------
+// Cell selection.
+//------------------------------------------------------------------------------
 
 bool Grid::selectCellAtIndexPath(IndexPath path) {
     FMAW::printf("Quieres seleccionar la celda %d %d", path.row, path.col);
@@ -144,6 +157,10 @@ bool Grid::selectRightCell() {
                                        });
 }
 
+//------------------------------------------------------------------------------
+// Cursor settings.
+//------------------------------------------------------------------------------
+
 void Grid::setSquareCursor() {
     this->cursor.setSquare();
 }
@@ -154,4 +171,94 @@ void Grid::setArrowCursor() {
 
 void Grid::setCrossCursor() {
     this->cursor.setCross();
+}
+
+//------------------------------------------------------------------------------
+// Callbacks.
+//------------------------------------------------------------------------------
+
+void Grid::enqueueCallbacks() {
+    auto releaseLeftArrow = [this]() {
+        this->selectLeftCell();
+    };
+    if (this->leftArrowCallbackID == -1) {
+        this->leftArrowCallbackID = FMAW::Input::onButtonArrowLeftReleased(
+                                        releaseLeftArrow);
+    }
+
+    auto releaseRightArrow = [this]() {
+        this->selectRightCell();
+    };
+    if (this->rightArrowCallbackID == -1) {
+        this->rightArrowCallbackID = FMAW::Input::onButtonArrowRightReleased(
+                                         releaseRightArrow);
+    }
+
+    auto releaseUpArrow = [this]() {
+        this->selectTopCell();
+    };
+    if (this->upArrowCallbackID == -1) {
+        this->upArrowCallbackID = FMAW::Input::onButtonArrowUpReleased(
+                                      releaseUpArrow);
+    }
+
+    auto releaseDownArrow = [this]() {
+        this->selectBottomCell();
+    };
+    if (this->downArrowCallbackID == -1) {
+        this->downArrowCallbackID = FMAW::Input::onButtonArrowDownReleased(
+                                        releaseDownArrow);
+    }
+
+    auto releaseA = [this]() {
+        if (this->cellAtSelectedPath()->isOccupied() &&
+                this->cellAtSelectedPath()->getCharacter()->getOwner() ==
+                TurnManager::currentPlayerID()) {
+            this->pickedUpCell.row = this->getSelectedPath().row;
+            this->pickedUpCell.col = this->getSelectedPath().col;
+            this->setArrowCursor();
+            FMAW::printf("Se ha marcado la celda %d %d",
+                         this->pickedUpCell.row,
+                         this->pickedUpCell.col);
+        } else if (this->cellAtSelectedPath()->isOccupied() &&
+                   this->cellAtSelectedPath()->getCharacter()->getOwner() !=
+                   TurnManager::currentPlayerID()) {
+            this->pickedUpCell.row = -1;
+            this->pickedUpCell.col = -1;
+            this->setSquareCursor();
+            FMAW::printf("Hay un enemigo en la celda %d %d",
+                         this->pickedUpCell.row,
+                         this->pickedUpCell.col);
+        } else if (this->pickedUpCell.row >= 0 && this->pickedUpCell.col >= 0) {
+            FMAW::printf("Se mueve de %d %d a %d %d",
+                         this->pickedUpCell.row,
+                         this->pickedUpCell.col,
+                         this->getSelectedPath().row,
+                         this->getSelectedPath().col);
+            this->moveCharacterFromCellToCell(this->pickedUpCell,
+                                              this->getSelectedPath(), 500);
+            this->setSquareCursor();
+        }
+    };
+    if (this->aButtonCallbackID == -1) {
+        this->aButtonCallbackID = FMAW::Input::onButtonAReleased(releaseA);
+    }
+}
+
+void Grid::dequeueCallbacks() {
+    if (this->upArrowCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->upArrowCallbackID);
+    }
+    if (this->rightArrowCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->rightArrowCallbackID);
+    }
+    if (this->leftArrowCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->leftArrowCallbackID);
+    }
+    if (this->downArrowCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->downArrowCallbackID);
+    }
+    if (this->aButtonCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->aButtonCallbackID);
+    }
 }

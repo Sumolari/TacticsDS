@@ -217,51 +217,8 @@ int main(void) {
     };
     FMAW::Timer::enqueue_function(func, 200, true);
 
-    auto releaseLeftArrow = []() {
-        grid.selectLeftCell();
-        FMAW::printf("Has soltado la flecha izquierda");
-    };
-    FMAW::Input::onButtonArrowLeftReleased(releaseLeftArrow);
-
-    auto releaseRightArrow = []() {
-        grid.selectRightCell();
-        FMAW::printf("Has soltado la flecha derecha");
-    };
-    FMAW::Input::onButtonArrowRightReleased(releaseRightArrow);
-
-    auto releaseUpArrow = []() {
-        grid.selectTopCell();
-        FMAW::printf("Has soltado la flecha arriba");
-    };
-    FMAW::Input::onButtonArrowUpReleased(releaseUpArrow);
-
-    auto releaseDownArrow = []() {
-        grid.selectBottomCell();
-        FMAW::printf("Has soltado la flecha abajo");
-    };
-    FMAW::Input::onButtonArrowDownReleased(releaseDownArrow);
-
-    IndexPath pick_up_path = {0, 0};
-    auto releaseA = [&pick_up_path]() {
-        FMAW::printf("Se mueve de %d %d a %d %d",
-                     pick_up_path.row,
-                     pick_up_path.col,
-                     grid.getSelectedPath().row,
-                     grid.getSelectedPath().col);
-        grid.moveCharacterFromCellToCell(pick_up_path,
-                                         grid.getSelectedPath(), 500);
-        grid.setSquareCursor();
-        FMAW::printf("Has soltado la tecla A");
-    };
-    FMAW::Input::onButtonAReleased(releaseA);
-
-    auto releaseB = [&pick_up_path]() {
-        pick_up_path.row = grid.getSelectedPath().row;
-        pick_up_path.col = grid.getSelectedPath().col;
-        grid.setArrowCursor();
-        FMAW::printf("Se ha marcado la celda %d %d",
-                     pick_up_path.row,
-                     pick_up_path.col);
+    auto releaseB = []() {
+        FMAW::printf("Tocaría cambiar de turno!");
         FMAW::printf("Has soltado la tecla B");
     };
     FMAW::Input::onButtonBReleased(releaseB);
@@ -269,14 +226,17 @@ int main(void) {
     auto releaseStart = []() {
         if (menu.isInForeground()) {
             menu.makeBackground();
+            grid.enqueueCallbacks();
         } else {
             menu.makeForeground();
+            grid.dequeueCallbacks();
         }
         // MemTrack::TrackListMemoryUsage();
     };
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     menu.init();
+    grid.enqueueCallbacks();
     grid.renderBackground();
 
     FMAW::start();

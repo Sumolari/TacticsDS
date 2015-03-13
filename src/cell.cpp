@@ -30,12 +30,12 @@ bool Cell::isOccupied() {
     return this->characterInCell != nullptr;
 }
 
-FMAW::Character *Cell::getCharacter() {
+Unit *Cell::getCharacter() {
     return this->characterInCell;
 }
 
-FMAW::Character *Cell::setCharacter(FMAW::Character *newCharacter) {
-    FMAW::Character *prev = this->characterInCell;
+Unit *Cell::setCharacter(Unit *newCharacter) {
+    Unit *prev = this->characterInCell;
     this->characterInCell = newCharacter;
     if (newCharacter != nullptr) {
         newCharacter->setPosition(this->center);
