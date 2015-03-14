@@ -215,6 +215,7 @@ int main(void) {
 
     Warrior warriorA{blue.getID()}, warriorB{red.getID()};
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
+    warriorA.print();
     grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
 
     auto func = [&warriorA, &warriorB](int ID) {
@@ -224,6 +225,7 @@ int main(void) {
     FMAW::Timer::enqueue_function(func, 200, true);
 
     auto releaseB = []() {
+        grid.resetUnitMovements();
         FMAW::printf("Tocaría cambiar de turno!");
         grid.resetPickedUpCell();
         TurnManager::finishTurn();
@@ -245,6 +247,7 @@ int main(void) {
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     menu.init();
+    grid.resetUnitMovements();
     grid.enqueueCallbacks();
     grid.renderBackground();
 

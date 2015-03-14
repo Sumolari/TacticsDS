@@ -57,6 +57,18 @@ Grid::Grid():
     this->recomputeReachableCells();
 }
 
+void Grid::resetUnitMovements() {
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath p{row, col};
+            Cell *c = this->cellAtIndexPath(p);
+            if (c->isOccupied()) {
+                c->getCharacter()->resetAvailableActions();
+            }
+        }
+    }
+}
+
 void Grid::initCursor() {
     this->cursor.init();
     this->setSquareCursor();
@@ -139,7 +151,12 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
                 this->setCrossCursor();
             }
         } else {
-            this->setSquareCursor();
+            Cell *c = this->cellAtSelectedPath();
+            if (c->isOccupied() && !c->getCharacter()->hasAvailableActions()) {
+                this->setCrossCursor();
+            } else {
+                this->setSquareCursor();
+            }
         }
 
         return true;
@@ -231,9 +248,12 @@ void Grid::enqueueCallbacks() {
     }
 
     auto releaseA = [this]() {
-        if (this->cellAtSelectedPath()->isOccupied() &&
-                this->cellAtSelectedPath()->getCharacter()->getOwner() ==
-                TurnManager::currentPlayerID()) {
+        Cell *c = this->cellAtSelectedPath();
+        Unit *u = c->getCharacter();
+        if (c->isOccupied() && u->hasAvailableActions() &&
+                u->getOwner() == TurnManager::currentPlayerID()) {
+            // If cell is occupied by a character owned by current player and
+            // it has available actions then we pick up it.
             this->pickedUpCell.row = this->getSelectedPath().row;
             this->pickedUpCell.col = this->getSelectedPath().col;
             this->setArrowCursor();
@@ -241,25 +261,30 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
             this->recomputeReachableCells();
-        } else if (this->cellAtSelectedPath()->isOccupied() &&
-                   this->cellAtSelectedPath()->getCharacter()->getOwner() !=
+        } else if (c->isOccupied() && u->getOwner() !=
                    TurnManager::currentPlayerID()) {
-            this->pickedUpCell.row = -1;
-            this->pickedUpCell.col = -1;
+            // If cell is occupied by a character owned by an enemy we release
+            // previously picked up cell and we reset the cursor.
+            this->resetPickedUpCell();
             this->setSquareCursor();
             FMAW::printf("Hay un enemigo en la celda %d %d",
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
-        } else if (this->pickedUpCell.row >= 0 && this->pickedUpCell.col >= 0) {
-            if (this->reachableCells[this->getSelectedPath()]) {
-                FMAW::printf("Se mueve de %d %d a %d %d",
-                             this->pickedUpCell.row,
-                             this->pickedUpCell.col,
-                             this->getSelectedPath().row,
-                             this->getSelectedPath().col);
-                this->moveCharacterFromCellToCell(this->pickedUpCell,
-                                                  this->getSelectedPath(), 100);
-                this->setSquareCursor();
+        } else if (this->hasPickedUpCell() &&
+                   this->reachableCells[this->getSelectedPath()]) {
+            // If there is a picked up cell and we can move to selected cell
+            // then we move the character and reset picked up cell.
+            FMAW::printf("Se mueve de %d %d a %d %d",
+                         this->pickedUpCell.row,
+                         this->pickedUpCell.col,
+                         this->getSelectedPath().row,
+                         this->getSelectedPath().col);
+            this->moveCharacterFromCellToCell(this->pickedUpCell,
+                                              this->getSelectedPath(), 100);
+            u->decreaseAvailableActions();
+            this->resetPickedUpCell();
+            if (!u->hasAvailableActions()) {
+                this->setCrossCursor();
             }
         }
     };
@@ -329,7 +354,6 @@ void Grid::recomputeReachableCells() {
         // While we have some cell to check we check it...
         while (pathsToCheck.size() > 0) {
             IndexPath path = pathsToCheck.front();  // Cell to check.
-            FMAW::printf("Exploring cell at %d %d", path.row, path.col);
             pathsToCheck.pop();  // We remove it as we have checked it.
             // If we go up...
             if (path.row > 0) {

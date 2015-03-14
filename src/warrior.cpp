@@ -19,6 +19,11 @@
 void Warrior::init() {
     this->reset();
 
+    this->movementCapacity = 4;
+    this->maximumAvailableActions = 1;
+    this->currentAvailableActions = 1;
+    this->print();
+
     this->tiles = reinterpret_cast<FMAW::Tile *>(
                       malloc(SPRITES_IDLE_ANIMATION * sizeof(FMAW::Tile)));
 
@@ -141,13 +146,20 @@ void Warrior::init() {
 }
 
 void Warrior::update() {
-    this->currentTileID += 1;
-    this->currentTileID %= SPRITES_IDLE_ANIMATION;
-
-    this->sprite.setTile(this->tiles[this->currentTileID]);
+    if (this->hasAvailableActions()) {
+        this->currentTileID += 1;
+        this->currentTileID %= SPRITES_IDLE_ANIMATION;
+        this->sprite.setTile(this->tiles[this->currentTileID]);
+    }
 }
 
 void Warrior::reset() {
     this->x = FMAW::FixedReal(128, 8);
     this->y = FMAW::FixedReal(64, 8);
+}
+
+void Warrior::print() {
+    FMAW::printf("%d of %d actions available, with %d movements",
+                 this->currentAvailableActions, this->maximumAvailableActions,
+                 this->movementCapacity);
 }

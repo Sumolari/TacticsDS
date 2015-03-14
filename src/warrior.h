@@ -35,7 +35,6 @@ class Warrior : public Unit {
      * Creates a new Warrior using a new sprite.
      */
     Warrior(PlayerID ownerID): Unit(ownerID) {
-        this->movementCapacity = 4;
         init();
     };
 
@@ -43,7 +42,6 @@ class Warrior : public Unit {
      * Creates a new Warrior given its sprite.
      */
     Warrior(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
-        this->movementCapacity = 4;
         init();
     };
 
@@ -53,6 +51,11 @@ class Warrior : public Unit {
      * Resets position of this Warrior.
      */
     void reset();
+
+    /**
+     * Prints debug information about this warrior.
+     */
+    void print();
 };
 
 #endif

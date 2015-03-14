@@ -43,6 +43,7 @@ Unit *Cell::setCharacter(Unit *newCharacter) {
     Unit *prev = this->characterInCell;
     this->characterInCell = newCharacter;
     if (newCharacter != nullptr) {
+        newCharacter->decreaseAvailableActions();
         newCharacter->setPosition(this->center);
     }
     return prev;

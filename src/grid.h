@@ -88,6 +88,11 @@ class Grid {
     Grid();
 
     /**
+     * Resets available movements for all units in the grid.
+     */
+    void resetUnitMovements();
+
+    /**
      * Initializes cursor.
      */
     void initCursor();

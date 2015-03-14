@@ -12,13 +12,24 @@ class Unit : public FMAW::Character {
      */
     PlayerID ownerID;
 
+
+    virtual void init();
+  public:
     /**
      * Amount of movement points that this Unit has available.
      */
     int movementCapacity;
 
-    virtual void init();
-  public:
+    /**
+     * Maximum amount of available actions this Unit has.
+     */
+    int maximumAvailableActions;
+
+    /**
+     * Amount of remaining available actions this Unit has.
+     */
+    int currentAvailableActions;
+
     /**
      * Creates a new unit using a new sprite.
      */
@@ -41,6 +52,22 @@ class Unit : public FMAW::Character {
      * @return Movement capacity of this Unit.
      */
     int getMovementCapacity();
+
+    /**
+     * Resets the internal counter of available actions.
+     */
+    void resetAvailableActions();
+
+    /**
+     * Decreases the internal counter of available actions.
+     */
+    void decreaseAvailableActions();
+
+    /**
+     * Returns whether this Unit has at least one available action or not.
+     * @return Whether this Unit has at least oen available action or not.
+     */
+    bool hasAvailableActions();
 
     /**
      * Returns the ID of the owner of this unit.
