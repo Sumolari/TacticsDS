@@ -1,10 +1,5 @@
 // Copyright 2015 FMAW
 
-#ifdef NDS
-
-#include <fat.h>
-#include <nds.h>
-
 #include <sstream>
 #include <cstdlib>
 
@@ -205,7 +200,6 @@ int main(void) {
     Player red;
     TurnManager::addPlayer(&red);
 
-    fatInitDefault();
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
 
@@ -255,5 +249,3 @@ int main(void) {
 
     return 0;
 }
-
-#endif

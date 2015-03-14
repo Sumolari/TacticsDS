@@ -2,6 +2,7 @@
 
 #include "./FMAW.h"
 #include <nds.h>
+#include <fat.h>
 
 namespace FMAW {
 
@@ -9,6 +10,7 @@ void (*display)();
 void (*update)();
 
 void init(void (*displayCallback)(), void (*updateCallback)()) {
+    fatInitDefault();
     vramSetBankE(VRAM_E_MAIN_BG);
     vramSetBankF(VRAM_F_MAIN_SPRITE);
 
