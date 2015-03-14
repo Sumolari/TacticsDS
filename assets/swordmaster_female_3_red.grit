@@ -6,7 +6,4 @@
 # 4-bit (16 color palette)
 -gB4
 
-# Disable optimization.
--Z!
-
--gT0xFF00FF
+-gT0xd46cbd

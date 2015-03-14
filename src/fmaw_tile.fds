@@ -90,6 +90,44 @@ Tile::Tile(TileAttributes attributes) {
 /**
  * Returns tile associated with given ID.
  */
+Tile::Tile(TileAttributes attributes, int ID) {
+    this->ID = ID;
+    this->imgMemory = self::IDtoImgMemoryPosition[ID];
+    this->palMemory = self::IDtoPalMemoryPosition[ID];
+
+    u16 *objram_memory;
+    u16 *palram_memory;
+
+    if (attributes.type == TypeSprite) {
+        objram_memory = tile2objram(this->imgMemory);
+        palram_memory = pal2objram(this->palMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2objramSub(this->imgMemory);
+            palram_memory = pal2objramSub(this->palMemory);
+        }
+    } else {
+        objram_memory = tile2bgram(this->imgMemory);
+        palram_memory = pal2bgram(this->palMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2bgramSub(this->imgMemory);
+            palram_memory = pal2bgramSub(this->palMemory);
+        }
+    }
+
+    // Copy to memory.
+    dmaCopyHalfWords(3,
+                     attributes.tilesArray,
+                     objram_memory,
+                     attributes.tilesLength);
+    dmaCopyHalfWords(3,
+                     attributes.paletteArray,
+                     palram_memory,
+                     attributes.paletteLength);
+}
+
+/**
+ * Returns tile associated with given ID.
+ */
 Tile::Tile(int ID) {
     this->ID = ID;
     this->imgMemory = self::IDtoImgMemoryPosition[ID];

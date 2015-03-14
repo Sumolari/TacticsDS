@@ -10,9 +10,22 @@ typedef struct t_point {
     int y;
 } Point;
 
+typedef struct t_area {
+    Point topLeft;
+    Point bottomRight;
+} Area;
+
+/**
+ * Returns whether given point is in given area.
+ * @param  p Point.
+ * @param  a Area.
+ * @return   Whether given point is in given area (true) or not (false).
+ */
+bool pointInArea(Point p, Area a);
+
 class Transform {
 
-private:
+  private:
     // Address of PA register.
     uint16 *PA;
     // Address of PB register.
@@ -27,7 +40,7 @@ private:
      */
     void selectRegister();
 
-public:
+  public:
     // ID of this transform.
     uint8 id;
     // Next empty transform.

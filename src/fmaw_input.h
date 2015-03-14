@@ -7,9 +7,10 @@ namespace FMAW {
 
 namespace Input {
 
-#define BUTTONS_COUNT 10
+#define BUTTONS_COUNT 11
 #define BUTTONS {ButtonA, ButtonB, ButtonSelect, ButtonStart, ButtonL, ButtonR,\
-        ButtonArrowUp, ButtonArrowDown, ButtonArrowLeft, ButtonArrowRight }
+        ButtonArrowUp, ButtonArrowDown, ButtonArrowLeft, ButtonArrowRight,\
+        Touch }
 
 typedef enum BUTTONS ButtonType;
 
@@ -274,7 +275,7 @@ int onButtonArrowRightReleased(std::function<void(void)> callback);
  *                  touch as parameters.
  * @return Identifier of the callback so it can be registered later.
  */
-int onTouchPressed(void (*callback)(int, int));
+int onTouchPressed(std::function<void(int, int)> callback);
 
 /**
  * Registers a callback that will be called when a touch is moved.
@@ -283,7 +284,7 @@ int onTouchPressed(void (*callback)(int, int));
  *                  touch as parameters.
  * @return Identifier of the callback so it can be registered later.
  */
-int onTouchMoved(void (*callback)(int, int));
+int onTouchMoved(std::function<void(int, int)> callback);
 
 /**
  * Registers a callback that will be called when a touch finishes.
@@ -293,7 +294,7 @@ int onTouchMoved(void (*callback)(int, int));
  *                  last position of touch as parameters.
  * @return Identifier of the callback so it can be registered later.
  */
-int onTouchReleased(void (*callback)(int, int));
+int onTouchReleased(std::function<void(int, int)> callback);
 
 //------------------------------------------------------------------------------
 // Callback handling.

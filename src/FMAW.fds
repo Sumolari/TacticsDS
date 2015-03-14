@@ -9,9 +9,6 @@ void (*display)();
 void (*update)();
 
 void init(void (*displayCallback)(), void (*updateCallback)()) {
-    irqInit();               // Initialize interrups.
-    irqEnable(IRQ_VBLANK);   // Enable vblank interrupt.
-
     vramSetBankE(VRAM_E_MAIN_BG);
     vramSetBankF(VRAM_F_MAIN_SPRITE);
 

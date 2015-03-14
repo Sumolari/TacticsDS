@@ -9,4 +9,4 @@
 # Disable optimization.
 -Z!
 
--gT0xFF00FF
+-gT0xF0FF0F

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "./FMAW.h"
+#include "./unit.h"
 
 typedef struct t_indexPath {
     /**
@@ -43,9 +44,9 @@ class Cell {
      */
     FMAW::Point center;
     /**
-     * Character located at this cell.
+     * Unit located at this cell.
      */
-    FMAW::Character *characterInCell;
+    Unit *characterInCell;
 
   public:
     /**
@@ -94,17 +95,17 @@ class Cell {
     bool isOccupied();
 
     /**
-     * Returns the character occupying this cell.
-     * @return Character occupying this cell.
+     * Returns the Unit occupying this cell.
+     * @return Unit occupying this cell.
      */
-    FMAW::Character *getCharacter();
+    Unit *getCharacter();
 
     /**
-     * Sets the character occupying this cell.
-     * @param newCharacter New character that will occupy this cell.
-     * @return Previous character occupying this cell.
+     * Sets the Unit occupying this cell.
+     * @param newCharacter New Unit that will occupy this cell.
+     * @return Previous Unit occupying this cell.
      */
-    FMAW::Character *setCharacter(FMAW::Character *newCharacter);
+    Unit *setCharacter(Unit *newCharacter);
 
     /**
      * Draws this cell's background.

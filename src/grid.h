@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "./cell.h"
+#include "./cursor.h"
 
 class Grid {
   private:
@@ -27,11 +28,51 @@ class Grid {
      */
     IndexPath selectedPath;
 
+    /**
+     * Currently picked up cell's path.
+     */
+    IndexPath pickedUpCell;
+
+    /**
+     * Sprite of the cursor to indicate which cell is selected.
+     */
+    Cursor cursor;
+
+    /**
+     * ID of the callback triggered when down arrow is released.
+     */
+    int downArrowCallbackID;
+
+    /**
+     * ID of the callback triggered when up arrow is released.
+     */
+    int upArrowCallbackID;
+
+    /**
+     * ID of the callback triggered when left arrow is released.
+     */
+    int leftArrowCallbackID;
+
+    /**
+     * ID of the callback triggered when right arrow is released.
+     */
+    int rightArrowCallbackID;
+
+    /**
+     * ID of the callback triggered when a button is released.
+     */
+    int aButtonCallbackID;
+
   public:
     /**
      * Creates a new grid.
      */
     Grid();
+
+    /**
+     * Initializes cursor.
+     */
+    void initCursor();
 
     /**
      * Returns cell located at given IndexPath.
@@ -84,6 +125,10 @@ class Grid {
      */
     int numCols();
 
+    //--------------------------------------------------------------------------
+    // Cell selection.
+    //--------------------------------------------------------------------------
+
     /**
      * Sets selected cell.
      * If index is out of bounds it'll do nothing and return false.
@@ -123,6 +168,39 @@ class Grid {
      * @return Whether selected cell changed or not.
      */
     bool selectRightCell();
+
+    //--------------------------------------------------------------------------
+    // Cursor settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets the cursor to be an arrow.
+     */
+    void setArrowCursor();
+
+    /**
+     * Sets the cursor to be an square.
+     */
+    void setSquareCursor();
+
+    /**
+     * Sets the cursor to be a cross.
+     */
+    void setCrossCursor();
+
+    //--------------------------------------------------------------------------
+    // Callbacks.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Enqueues all callbacks to manage user input.
+     */
+    void enqueueCallbacks();
+
+    /**
+     * Dequeues callbacks to manage user input.
+     */
+    void dequeueCallbacks();
 };
 
 #endif

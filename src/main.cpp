@@ -58,8 +58,10 @@
 #include "./main_menu.h"
 #include "./grid.h"
 #include "./gridmap.h"
+#include "./turnManager.h"
 
 Grid grid;
+MainMenu menu;
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -178,33 +180,10 @@ void setupGraphics(void) {
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
 
-    FMAW::Background bgBricks(0);
-    bgBricks.setScreenBaseBlock(2);
-
+    FMAW::Background(0).setScreenBaseBlock(2);
     FMAW::Background(1).setScreenBaseBlock(3);
     FMAW::Background(2).setScreenBaseBlock(4);
     FMAW::Background(3).setScreenBaseBlock(5);
-
-    // Clear entire bricks' tilemap and gradient's tilemap to zero
-    bgBricks.clearAllTiles();
-
-    // Set tilemap entries for 6 first rows of background 0 (bricks).
-    for (int y = 0; y < 6; y++) {
-        for (int x = 0; x < 32; x++) {
-            int tile_id = x + y * 32;  // Product optimized at compile time!
-
-            // Either odd columns of even rows or even columns of odd rows...
-            // if (( x % 2 == 0 && y % 2 == 1 ) || (x % 2 == 1 && y % 2 == 0 ))
-            if ((x & 1) ^ (y & 1))
-                bgBricks.enableHorizontalFlip(tile_id);
-
-            bgBricks.setTile(tile_id, brick_tile);
-        }
-    }
-    // Did we say 6 first rows? We wanted 6 LAST rows!
-    // bgBricks.setVerticalOffset(112);
-
-    grid.renderBackground();
 }
 
 void update_camera() { }
@@ -221,11 +200,20 @@ void update_graphics() {
 }
 
 int main(void) {
+    Player blue;
+    TurnManager::addPlayer(&blue);
+    Player red;
+    TurnManager::addPlayer(&red);
+
     fatInitDefault();
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
 
-    Warrior warriorA, warriorB;
+    grid.initCursor();
+
+    GridMap::loadDefaultGridMap(grid);
+
+    Warrior warriorA{blue.getID()}, warriorB{red.getID()};
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
     grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
 
@@ -235,64 +223,29 @@ int main(void) {
     };
     FMAW::Timer::enqueue_function(func, 200, true);
 
-
-    auto releaseLeftArrow = []() {
-        grid.selectLeftCell();
-        FMAW::printf("Has soltado la flecha izquierda");
-    };
-    FMAW::Input::onButtonArrowLeftReleased(releaseLeftArrow);
-
-    auto releaseRightArrow = []() {
-        grid.selectRightCell();
-        FMAW::printf("Has soltado la flecha derecha");
-    };
-    FMAW::Input::onButtonArrowRightReleased(releaseRightArrow);
-
-    auto releaseUpArrow = []() {
-        grid.selectTopCell();
-        FMAW::printf("Has soltado la flecha arriba");
-    };
-    FMAW::Input::onButtonArrowUpReleased(releaseUpArrow);
-
-    auto releaseDownArrow = []() {
-        grid.selectBottomCell();
-        FMAW::printf("Has soltado la flecha abajo");
-    };
-    FMAW::Input::onButtonArrowDownReleased(releaseDownArrow);
-
-    IndexPath pick_up_path = {0, 0};
-    auto releaseA = [&pick_up_path]() {
-        FMAW::printf("Se mueve de %d %d a %d %d",
-                     pick_up_path.row,
-                     pick_up_path.col,
-                     grid.getSelectedPath().row,
-                     grid.getSelectedPath().col);
-        grid.moveCharacterFromCellToCell(pick_up_path,
-                                         grid.getSelectedPath(), 500);
-        FMAW::printf("Has soltado la tecla A");
-    };
-    FMAW::Input::onButtonAReleased(releaseA);
-
-    auto releaseB = [&pick_up_path]() {
-        pick_up_path.row = grid.getSelectedPath().row;
-        pick_up_path.col = grid.getSelectedPath().col;
-        FMAW::printf("Se ha marcado la celda %d %d",
-                     pick_up_path.row,
-                     pick_up_path.col);
+    auto releaseB = []() {
+        FMAW::printf("Tocaría cambiar de turno!");
+        TurnManager::finishTurn();
+        menu.adjustCurrentTile();
         FMAW::printf("Has soltado la tecla B");
     };
     FMAW::Input::onButtonBReleased(releaseB);
 
     auto releaseStart = []() {
-        FMAW::swapScreens();
-        MemTrack::TrackListMemoryUsage();
+        if (menu.isInForeground()) {
+            menu.makeBackground();
+            grid.enqueueCallbacks();
+        } else {
+            menu.makeForeground();
+            grid.dequeueCallbacks();
+        }
+        // MemTrack::TrackListMemoryUsage();
     };
     FMAW::Input::onButtonStartReleased(releaseStart);
 
-    GridMap::loadDefaultGridMap(grid);
+    menu.init();
+    grid.enqueueCallbacks();
     grid.renderBackground();
-
-    MainMenu::render();
 
     FMAW::start();
 
