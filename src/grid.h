@@ -2,6 +2,7 @@
 #define GRID_H
 
 #include <vector>
+#include <map>
 
 #include "./cell.h"
 #include "./cursor.h"
@@ -62,6 +63,23 @@ class Grid {
      * ID of the callback triggered when a button is released.
      */
     int aButtonCallbackID;
+
+    /**
+     * Cells rechables by currently selected unit.
+     */
+    std::map<IndexPath, bool> reachableCells;
+
+    /**
+     * Recomputes the cells reachable by currently selected unit.
+     * If no unit is selected all cells are available.
+     */
+    void recomputeReachableCells();
+
+    /**
+     * Returns whether some cell with a character has been picked up or not.
+     * @return Whether some cell with a character has been picked up or not.
+     */
+    bool hasPickedUpCell();
 
   public:
     /**
@@ -187,6 +205,11 @@ class Grid {
      * Sets the cursor to be a cross.
      */
     void setCrossCursor();
+
+    /**
+     * Resets picked up cell so no cell is selected.
+     */
+    void resetPickedUpCell();
 
     //--------------------------------------------------------------------------
     // Callbacks.

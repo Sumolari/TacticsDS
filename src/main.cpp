@@ -225,6 +225,7 @@ int main(void) {
 
     auto releaseB = []() {
         FMAW::printf("Tocaría cambiar de turno!");
+        grid.resetPickedUpCell();
         TurnManager::finishTurn();
         menu.adjustCurrentTile();
         FMAW::printf("Has soltado la tecla B");

@@ -16,6 +16,10 @@ void Unit::init() {}
 
 void Unit::update() {}
 
+int Unit::getMovementCapacity() {
+    return this->movementCapacity;
+}
+
 PlayerID Unit::getOwner() {
     return this->ownerID;
 }

@@ -6,6 +6,8 @@
 #include "./FMAW.h"
 #include "./unit.h"
 
+#include "./constants.h"
+
 typedef struct t_indexPath {
     /**
      * Row pointed by this index path.
@@ -16,6 +18,8 @@ typedef struct t_indexPath {
      */
     int col;
 } IndexPath;
+
+bool operator <(IndexPath const &left, IndexPath const &right);
 
 typedef enum t_cellBackgroundType {
     CellBGNone     = 0,
@@ -106,6 +110,12 @@ class Cell {
      * @return Previous Unit occupying this cell.
      */
     Unit *setCharacter(Unit *newCharacter);
+
+    /**
+     * Cost of moving to this cell.
+     * @return Cost of moving to this cell.
+     */
+    int movementCost();
 
     /**
      * Draws this cell's background.

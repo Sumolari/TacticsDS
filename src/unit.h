@@ -7,8 +7,15 @@
 
 class Unit : public FMAW::Character {
   protected:
-    // ID of player who owns this unit.
+    /**
+     * ID of player who owns this unit.
+     */
     PlayerID ownerID;
+
+    /**
+     * Amount of movement points that this Unit has available.
+     */
+    int movementCapacity;
 
     virtual void init();
   public:
@@ -28,6 +35,12 @@ class Unit : public FMAW::Character {
     Unit(FMAW::Sprite sprite, PlayerID ownerID);
 
     virtual void update();
+
+    /**
+     * Returns the movement capacity of this Unit.
+     * @return Movement capacity of this Unit.
+     */
+    int getMovementCapacity();
 
     /**
      * Returns the ID of the owner of this unit.

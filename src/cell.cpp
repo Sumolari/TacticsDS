@@ -6,6 +6,11 @@
 
 #include "./gfx_brick.h"
 
+bool operator <(IndexPath const &left, IndexPath const &right) {
+    return left.row < right.row || (left.row == right.row
+                                    && left.col < right.col);
+}
+
 Cell::Cell() {
     this->background = FMAW::Background(0);
 }
@@ -41,6 +46,28 @@ Unit *Cell::setCharacter(Unit *newCharacter) {
         newCharacter->setPosition(this->center);
     }
     return prev;
+}
+
+int Cell::movementCost() {
+    switch (this->backgroundType) {
+        case CellBGBase:
+            return COST_CELL_BASE;
+        case CellBGBridge:
+            return COST_CELL_BRIDGE;
+        case CellBGForest:
+            return COST_CELL_FOREST;
+        case CellBGGrass:
+            return COST_CELL_GRASS;
+        case CellBGMountain:
+            return COST_CELL_MOUNTAIN;
+        case CellBGRiver:
+            return COST_CELL_RIVER;
+        case CellBGBlack:
+        case CellBGNone:
+        case CellBGWhite:
+        default:
+            return COST_CELL_INFINITY;
+    }
 }
 
 void Cell::renderBackground() {

@@ -1,6 +1,8 @@
 // Copyright 2015 FMAW
 
 #include <vector>
+#include <queue>
+#include <map>
 
 #include "./turnManager.h"
 #include "./grid.h"
@@ -51,7 +53,8 @@ Grid::Grid():
         }
     }
 
-    this->pickedUpCell = {0, 0};
+    this->pickedUpCell = { -1, -1};
+    this->recomputeReachableCells();
 }
 
 void Grid::initCursor() {
@@ -117,17 +120,28 @@ int Grid::numCols() {
 // Cell selection.
 //------------------------------------------------------------------------------
 
+bool Grid::hasPickedUpCell() {
+    return (this->pickedUpCell.row != -1 && this->pickedUpCell.col != -1);
+}
+
 bool Grid::selectCellAtIndexPath(IndexPath path) {
-    FMAW::printf("Quieres seleccionar la celda %d %d", path.row, path.col);
     if (path.row < this->rows && path.col < this->cols && path.row >= 0 &&
             path.col >= 0 && (path.row != this->selectedPath.row ||
                               path.col != this->selectedPath.col)) {
         this->selectedPath = path;
-        FMAW::printf("Seleccionada celda %d %d", path.row, path.col);
-
         FMAW::Point p = this->cellAtSelectedPath()->getCenter();
-
         this->cursor.setPosition({p.x - 16, p.y - 16});
+
+        if (this->hasPickedUpCell()) {
+            if (this->reachableCells[this->selectedPath]) {
+                this->setArrowCursor();
+            } else {
+                this->setCrossCursor();
+            }
+        } else {
+            this->setSquareCursor();
+        }
+
         return true;
     }
     return false;
@@ -171,6 +185,12 @@ void Grid::setArrowCursor() {
 
 void Grid::setCrossCursor() {
     this->cursor.setCross();
+}
+
+void Grid::resetPickedUpCell() {
+    this->pickedUpCell.row = -1;
+    this->pickedUpCell.col = -1;
+    this->setSquareCursor();
 }
 
 //------------------------------------------------------------------------------
@@ -220,6 +240,7 @@ void Grid::enqueueCallbacks() {
             FMAW::printf("Se ha marcado la celda %d %d",
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
+            this->recomputeReachableCells();
         } else if (this->cellAtSelectedPath()->isOccupied() &&
                    this->cellAtSelectedPath()->getCharacter()->getOwner() !=
                    TurnManager::currentPlayerID()) {
@@ -230,14 +251,16 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
         } else if (this->pickedUpCell.row >= 0 && this->pickedUpCell.col >= 0) {
-            FMAW::printf("Se mueve de %d %d a %d %d",
-                         this->pickedUpCell.row,
-                         this->pickedUpCell.col,
-                         this->getSelectedPath().row,
-                         this->getSelectedPath().col);
-            this->moveCharacterFromCellToCell(this->pickedUpCell,
-                                              this->getSelectedPath(), 500);
-            this->setSquareCursor();
+            if (this->reachableCells[this->getSelectedPath()]) {
+                FMAW::printf("Se mueve de %d %d a %d %d",
+                             this->pickedUpCell.row,
+                             this->pickedUpCell.col,
+                             this->getSelectedPath().row,
+                             this->getSelectedPath().col);
+                this->moveCharacterFromCellToCell(this->pickedUpCell,
+                                                  this->getSelectedPath(), 100);
+                this->setSquareCursor();
+            }
         }
     };
     if (this->aButtonCallbackID == -1) {
@@ -265,5 +288,93 @@ void Grid::dequeueCallbacks() {
     if (this->aButtonCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->aButtonCallbackID);
         this->aButtonCallbackID = -1;
+    }
+}
+
+//------------------------------------------------------------------------------
+// Rechable cells helpers.
+//------------------------------------------------------------------------------
+
+void Grid::recomputeReachableCells() {
+    this->reachableCells.clear();
+
+    if (this->pickedUpCell.row == -1 || this->pickedUpCell.col == -1) {
+        for (int row = 0; row < this->rows; row++) {
+            for (int col = 0; col < this->cols; col++) {
+                this->reachableCells[ {row, col}] = true;
+            }
+        }
+    } else {
+        std::map<IndexPath, int> reachCost;
+
+        Cell *cell = this->cellAtIndexPath(this->pickedUpCell);
+        Unit *unit = cell->getCharacter();
+        int maxMove = unit->getMovementCapacity();
+
+        // First no cell is reachable.
+        for (int row = 0; row < this->rows; row++) {
+            for (int col = 0; col < this->cols; col++) {
+                reachCost[ {row, col}] = COST_CELL_INFINITY;
+                this->reachableCells[ {row, col}] = false;
+            }
+        }
+
+        // Only cell reachable is the first one.
+        reachCost[ this->pickedUpCell] = 0;
+        this->reachableCells[ this->pickedUpCell ] = true;
+
+        // When the cost of a cell changes we explore its neighbours.
+        std::queue<IndexPath> pathsToCheck({ this->pickedUpCell });
+
+        // While we have some cell to check we check it...
+        while (pathsToCheck.size() > 0) {
+            IndexPath path = pathsToCheck.front();  // Cell to check.
+            FMAW::printf("Exploring cell at %d %d", path.row, path.col);
+            pathsToCheck.pop();  // We remove it as we have checked it.
+            // If we go up...
+            if (path.row > 0) {
+                IndexPath u = { path.row - 1, path.col };
+                int c = this->cellAtIndexPath(u)->movementCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[u] && newCost <= maxMove) {
+                    reachCost[u] = newCost;
+                    this->reachableCells[u] = true;
+                    pathsToCheck.push(u);
+                }
+            }
+            // If we go down...
+            if (path.row < this->rows - 1) {
+                IndexPath d = { path.row + 1, path.col };
+                int c = this->cellAtIndexPath(d)->movementCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[d] && newCost <= maxMove) {
+                    reachCost[d] = newCost;
+                    this->reachableCells[d] = true;
+                    pathsToCheck.push(d);
+                }
+            }
+            // If we go left...
+            if (path.col > 0) {
+                IndexPath l = { path.row, path.col - 1 };
+                int c = this->cellAtIndexPath(l)->movementCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[l] && newCost <= maxMove) {
+                    reachCost[l] = newCost;
+                    this->reachableCells[l] = true;
+                    pathsToCheck.push(l);
+                }
+            }
+            // If we go right...
+            if (path.col < this->cols - 1) {
+                IndexPath r = { path.row, path.col + 1 };
+                int c = this->cellAtIndexPath(r)->movementCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[r] && newCost <= maxMove) {
+                    reachCost[r] = newCost;
+                    this->reachableCells[r] = true;
+                    pathsToCheck.push(r);
+                }
+            }
+        }
     }
 }
