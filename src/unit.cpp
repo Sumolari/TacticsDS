@@ -4,6 +4,9 @@
 
 #include "./FMAW.h"
 
+#include "./constants.h"
+#include "./warrior.h"
+
 Unit::Unit(PlayerID ownerID) : Unit(FMAW::Sprite(), ownerID) {}
 
 Unit::Unit(FMAW::Sprite sprite): Unit(sprite, 0) {}
@@ -12,6 +15,15 @@ Unit::Unit(FMAW::Sprite sprite, PlayerID ownerID) :
     Character(sprite),
     ownerID(ownerID) {
     init();
+}
+
+Unit *Unit::UnitWithType(int unitType, PlayerID ownerID) {
+    switch (unitType) {
+        case UNIT_TYPE_WARRIOR:
+            return new Warrior(ownerID);
+        default:
+            return new Unit(ownerID);
+    }
 }
 
 void Unit::init() {}
@@ -54,4 +66,10 @@ int Unit::getMovementCapacity() {
 
 PlayerID Unit::getOwner() {
     return this->ownerID;
+}
+
+PlayerID Unit::setOwner(PlayerID owner) {
+    PlayerID prev = this->ownerID;
+    this->ownerID = owner;
+    return prev;
 }

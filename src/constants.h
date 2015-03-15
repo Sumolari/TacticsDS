@@ -54,4 +54,10 @@
  */
 #define UNIT_TYPE_WARRIOR   1
 
+
+/**
+ * Name of the file that will be used to store saved games.
+ */
+#define DEFAULT_SAVEGAME_FILE "savegame.txt"
+
 #endif

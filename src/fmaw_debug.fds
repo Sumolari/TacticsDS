@@ -34,7 +34,7 @@ void printf(const std::string fmt_str, ...) {
         else
             break;
     }
-    nocashMessage((std::string(formatted.get())).c_str());
+    nocashMessage((std::string(formatted.get()) + "\n").c_str());
 }
 
 std::string byte_to_binary(uint8 x) {

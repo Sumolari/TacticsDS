@@ -233,6 +233,21 @@ void MainMenu::enqueueCallbacks() {
         auto aButtonCallback = [this]() {
             FMAW::printf("Selected option %d",
                          this->currentlySelectedOption);
+
+            switch (this->currentlySelectedOption) {
+                case 0:
+                    this->newGameCallback();
+                    break;
+                case 1:
+                    this->loadGameCallback();
+                    break;
+                case 2:
+                    this->versusCallback();
+                    break;
+                default:
+                    break;
+            }
+
         };
         this->aButtonCallbackID = FMAW::Input::onButtonAReleased(
                                       aButtonCallback);

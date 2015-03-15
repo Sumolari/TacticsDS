@@ -188,6 +188,8 @@ class Character {
      * Displays information about this character.
      */
     virtual void print();
+
+    virtual ~Character();
 };
 
 }

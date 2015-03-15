@@ -89,6 +89,11 @@ class Tile {
 
   public:
     /**
+     * Releases all memory used by sprite tiles.
+     */
+    static void releaseAllSpriteMemory();
+
+    /**
      * Memory address for image data of this tile.
      */
     int imgMemory;
