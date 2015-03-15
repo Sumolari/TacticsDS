@@ -13,6 +13,7 @@
 //------------------------------------------------------------------------------
 
 #include "./warrior.h"
+#include "./knight.h"
 
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
@@ -216,8 +217,8 @@ int main(void) {
         Warrior *warriorC = new Warrior(blue.getID());
         Warrior *warriorD = new Warrior(blue.getID());
         Warrior *warriorE = new Warrior(blue.getID());
-        Warrior *warriorF = new Warrior(blue.getID());
-        Warrior *warriorG = new Warrior(blue.getID());
+        Knight *warriorF = new Knight(blue.getID());
+        Knight *warriorG = new Knight(blue.getID());
         /*
         Warrior *warriorH = new Warrior(blue.getID());
         Warrior *warriorI = new Warrior(blue.getID());

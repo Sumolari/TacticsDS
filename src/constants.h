@@ -53,6 +53,10 @@
  * ID of Warrior unit type.
  */
 #define UNIT_TYPE_WARRIOR   1
+/**
+ * ID of Knight unit type.
+ */
+#define UNIT_TYPE_KNIGHT   2
 
 
 /**

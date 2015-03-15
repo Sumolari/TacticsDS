@@ -6,6 +6,7 @@
 
 #include "./constants.h"
 #include "./warrior.h"
+#include "./knight.h"
 
 Unit::Unit(PlayerID ownerID) : Unit(FMAW::Sprite(), ownerID) {}
 
@@ -21,6 +22,8 @@ Unit *Unit::UnitWithType(int unitType, PlayerID ownerID) {
     switch (unitType) {
         case UNIT_TYPE_WARRIOR:
             return new Warrior(ownerID);
+        case UNIT_TYPE_KNIGHT:
+            return new Knight(ownerID);
         default:
             return new Unit(ownerID);
     }
