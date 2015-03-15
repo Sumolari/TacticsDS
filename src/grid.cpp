@@ -147,10 +147,14 @@ void Grid::playSavedHistory(std::string filename,
 
     if (this->savefile == NULL) {
         this->savefile = nullptr;
+        this->playingSavedFile = false;
         callback(false);
+        return;
     }
 
+    this->clearGridUnits();
     this->playingSavedFile = true;
+    this->cursor.disable();
     FMAW::Tile::releaseAllSpriteMemory();
 
     int rows, cols, aux;
@@ -172,12 +176,6 @@ void Grid::playSavedHistory(std::string filename,
                 static_cast<CellBackgroundType>(aux));
 
             c->renderBackground();
-
-            if (c->isOccupied()) {
-                Unit *u = c->getCharacter();
-                c->setCharacter(nullptr);
-                delete u;
-            }
         }
     }
 
@@ -226,37 +224,45 @@ void Grid::playSavedHistory(std::string filename,
 
     this->resetUnitMovements();
 
-    this->playingSavedFile = false;
-    callback(true);
-
-    /*
-
     int fr, fc, tr, tc;
 
-    auto moveFollowingHistory = [this, &fr, &fc, &tr, &tc, &callback](int ID) {
+    auto moveFollowingHistory = [this, &fr, &fc, &tr, &tc, callback](int ID) {
         FILE *f = this->savefile;
         if (FMAW::IO::fscanf(f, "%d %d %d %d\n", &fr, &fc, &tr, &tc) > 0) {
-            FMAW::printf("\tA movement has been loaded");
             if (fr == -1 || fc == -1  || tr == -1 || tc == -1) {
+                FMAW::printf("\tTurn changed!");
                 this->resetUnitMovements();
             } else {
+                FMAW::printf("\tA movement has been loaded");
                 IndexPath from = {fr, fc}, to = {tr, tc};
-                this->moveCharacterFromCellToCell(from, to, 100);
+                this->moveCharacterFromCellToCell(from, to, 200);
             }
         } else {
             FMAW::printf("\tFINISHED!");
             FMAW::Timer::dequeue_function(ID);
-            FMAW::IO::fclose(this->savefile);
-            this->playingSavedFile = false;
-            this->savefile = nullptr;
-            this->enqueueCallbacks();
-            callback(true);
+            FMAW::printf("\t\tDequeued");
+            auto finish = [this, callback, ID](int finishCallbackID) {
+                FMAW::IO::fclose(this->savefile);
+                FMAW::printf("\t\tFile closed");
+                this->playingSavedFile = false;
+                FMAW::printf("\t\tPlaying state changed");
+                this->savefile = nullptr;
+                FMAW::printf("\t\tsaveFile set to null");
+                this->clearGridUnits();
+                FMAW::Tile::releaseAllSpriteMemory();
+                FMAW::printf("\t\tMemory cleaned");
+                this->initCursor();
+                this->cursor.enable();
+                this->setSquareCursor();
+                FMAW::printf("\t\tCursor re-enabled");
+                callback(true);
+                FMAW::printf("\t\tCallback called");
+            };
+            FMAW::Timer::enqueue_function(finish, 5000, false);
         }
     };
 
-    */
-
-    // FMAW::Timer::enqueue_function(moveFollowingHistory, 110, true);
+    FMAW::Timer::enqueue_function(moveFollowingHistory, 1500, true);
 }
 
 void Grid::clearGridUnits() {

@@ -35,21 +35,14 @@ int Unit::getUnitType() {
 }
 
 void Unit::resetAvailableActions() {
-    FMAW::printf("RESET");
     this->currentAvailableActions = this->maximumAvailableActions;
 }
 
 void Unit::decreaseAvailableActions() {
-    FMAW::printf("BEFORE %d of %d actions available, %d",
-                 this->currentAvailableActions, this->maximumAvailableActions,
-                 this->movementCapacity);
     this->currentAvailableActions--;
     if (this->currentAvailableActions < 0) {
         this->currentAvailableActions = 0;
     }
-    FMAW::printf("AFTER %d of %d actions available, %d",
-                 this->currentAvailableActions, this->maximumAvailableActions,
-                 this->movementCapacity);
 }
 
 bool Unit::hasAvailableActions() {

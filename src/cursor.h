@@ -38,6 +38,16 @@ class Cursor : public FMAW::Character {
     void init();
 
     /**
+     * Shows cursor.
+     */
+    void enable();
+
+    /**
+     * Hides cursor.
+     */
+    void disable();
+
+    /**
      * Sets the cursor to be an arrow.
      */
     void setArrow();

@@ -39,6 +39,14 @@ void Cursor::init() {
     this->setSquare();
 }
 
+void Cursor::enable() {
+    this->sprite.enable();
+}
+
+void Cursor::disable() {
+    this->sprite.disable();
+}
+
 void Cursor::setArrow() {
     this->tile = FMAW::Tile(this->tileArrow, this->tile.ID);
     this->sprite.setTile(this->tile);

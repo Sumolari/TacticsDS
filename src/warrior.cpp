@@ -25,14 +25,11 @@ void Warrior::init() {
     this->movementCapacity = 4;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = 1;
-    this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
                              FMAW::TileAttributes *);
     this->tiles = reinterpret_cast<FMAW::TileAttributes **>(
                       malloc(space_required));
-
-    FMAW::printf("This warrior has owner: %d", this->ownerID);
 
     //--------------------------------------------------------------------------
     // Decide proper tile based on current owner.
@@ -126,6 +123,8 @@ void Warrior::init() {
     this->currentTileID = 0;
 
     this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]));
+
+    // FMAW::printf("Warrior will use tile %d", this->tile->imgMemory);
 
     //--------------------------------------------------------------------------
     // Set up sprite.

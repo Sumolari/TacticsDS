@@ -22,16 +22,16 @@ typedef struct t_indexPath {
 bool operator <(IndexPath const &left, IndexPath const &right);
 
 typedef enum t_cellBackgroundType {
-    CellBGNone     = 0,
-    CellBGWhite    = 1,
-    CellBGBlack    = 2,
+    CellBGNone     = -1,
+    CellBGWhite    = -2,
+    CellBGBlack    = -3,
     // ----------------
-    CellBGBase     = 3,
-    CellBGBridge   = 4,
-    CellBGForest   = 5,
-    CellBGGrass    = 6,
-    CellBGMountain = 7,
-    CellBGRiver    = 8
+    CellBGBase     = 0,
+    CellBGBridge   = 1,
+    CellBGForest   = 2,
+    CellBGGrass    = 3,
+    CellBGMountain = 4,
+    CellBGRiver    = 5
 } CellBackgroundType;
 
 #define CELL_WIDTH  16
