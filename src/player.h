@@ -5,7 +5,7 @@ typedef int PlayerID;
 
 class Player {
 
-  private:
+  protected:
     // ID of this player.
     PlayerID ID;
 
@@ -24,7 +24,7 @@ class Player {
     /**
      * Tells this player that he can start playing.
      */
-    void startTurn();
+    virtual void startTurn();
 
 };
 

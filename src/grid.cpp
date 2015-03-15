@@ -284,6 +284,15 @@ bool Grid::isPlayingSavedFile() {
     return this->playingSavedFile;
 }
 
+bool Grid::isInteractionEnabled() {
+    return (this->upArrowCallbackID == -1 ||
+            this->rightArrowCallbackID == -1 ||
+            this->leftArrowCallbackID == -1  ||
+            this->downArrowCallbackID == -1 ||
+            this->aButtonCallbackID == -1 ||
+            this->bButtonCallbackID == -1);
+}
+
 void Grid::resetUnitMovements() {
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
@@ -317,7 +326,7 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
                                        unsigned int duration) {
     Cell *f = this->cellAtIndexPath(from);
     Cell *t = this->cellAtIndexPath(to);
-    if (!t->isOccupied() && f->isOccupied()) {
+    if (!t->isOccupied() && f->isOccupied() && this->reachableCells[to]) {
         if (this->savefile != nullptr) {
             FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
                               from.row, from.col, to.row, to.col);
@@ -332,6 +341,28 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
         return true;
     }
     return false;
+}
+
+bool Grid::canMoveCharacterFromCellToCell(IndexPath from, IndexPath to) {
+    if (to.row < 0 || to.row >= this->rows ||
+            to.col < 0 || to.col > this->cols) {
+        return false;
+    }
+
+    Cell *f = this->cellAtIndexPath(from);
+    Cell *t = this->cellAtIndexPath(to);
+
+    if (!t->isOccupied() && f->isOccupied()) {
+        Unit *u = f->getCharacter();
+        if (u->getOwner() == TurnManager::currentPlayerID()) {
+            if (this->getSelectedPath().row != from.row ||
+                    this->getSelectedPath().col != from.col) {
+                this->selectCellAtIndexPath(from);
+                this->recomputeReachableCells();
+            }
+            return this->reachableCells[to];
+        }
+    }
 }
 
 void Grid::renderBackground() {

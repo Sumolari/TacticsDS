@@ -56,6 +56,8 @@
 #include "./grid.h"
 #include "./gridmap.h"
 #include "./turnManager.h"
+#include "./player.h"
+#include "./player_ai.h"
 
 Grid grid;
 MainMenu menu;
@@ -163,9 +165,17 @@ void update_graphics() {
 }
 
 int main(void) {
+    auto finishTurnCallback = []() {
+        grid.resetUnitMovements();
+        FMAW::printf("Tocaría cambiar de turno!");
+        grid.resetPickedUpCell();
+        TurnManager::finishTurn();
+        menu.adjustCurrentTile();
+    };
+
     Player blue;
     TurnManager::addPlayer(&blue);
-    Player red;
+    PlayerAI red(&grid, finishTurnCallback);
     TurnManager::addPlayer(&red);
 
     FMAW::init(update_graphics, update_logic);
@@ -211,14 +221,9 @@ int main(void) {
         grid.resetUnitMovements();
     };
 
-    auto releaseB = []() {
-        if (menu.isInForeground() || grid.isPlayingSavedFile()) return;
-
-        grid.resetUnitMovements();
-        FMAW::printf("Tocaría cambiar de turno!");
-        grid.resetPickedUpCell();
-        TurnManager::finishTurn();
-        menu.adjustCurrentTile();
+    auto releaseB = [finishTurnCallback]() {
+        if (menu.isInForeground() || grid.isInteractionEnabled()) return;
+        finishTurnCallback();
         FMAW::printf("Has soltado la tecla B");
     };
     FMAW::Input::onButtonBReleased(releaseB);
