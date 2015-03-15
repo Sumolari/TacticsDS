@@ -9,11 +9,11 @@
 
 namespace GridMap {
 
-void loadDefaultGridMap(Grid &g) {
+void loadDefaultGridMap(Grid *g) {
     loadGridMap("defaultMap", g);
 }
 
-void loadGridMap(const char *mapName, Grid &g) {
+void loadGridMap(const char *mapName, Grid *g) {
     FILE *test = fopen("./defaultMap", "r");
 
     if (test != NULL) {
@@ -29,10 +29,10 @@ void loadGridMap(const char *mapName, Grid &g) {
                 }
 
                 IndexPath path {row, col};
-                g.cellAtIndexPath(path)->setBackgroundType(
+                g->cellAtIndexPath(path)->setBackgroundType(
                     static_cast<CellBackgroundType>(aux));
 
-                g.cellAtIndexPath(path)->renderBackground();
+                g->cellAtIndexPath(path)->renderBackground();
             }
         }
 

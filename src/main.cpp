@@ -205,7 +205,7 @@ int main(void) {
 
     grid.initCursor();
 
-    GridMap::loadDefaultGridMap(grid);
+    GridMap::loadDefaultGridMap(&grid);
 
     Warrior warriorA{blue.getID()}, warriorB{red.getID()};
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
