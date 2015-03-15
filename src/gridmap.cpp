@@ -1,9 +1,14 @@
 // Copyright 2015 FMAW
 
-#include <fat.h>
-#include <nds.h>
+
+// Add method FMAW::fopen();
+// Add method FMAW::fclose();
+// Add method FMAW::fscanf();
+// Add method FMAW::fprintf();
+
 #include <iostream>
 #include <fstream>
+#include "./FMAW.h"
 #include "./grid.h"
 #include "./gridmap.h"
 
@@ -14,18 +19,18 @@ void loadDefaultGridMap(Grid *g) {
 }
 
 void loadGridMap(const char *mapName, Grid *g) {
-    FILE *test = fopen("./defaultMap", "r");
+    FILE *test = FMAW::IO::fopen("./defaultMap", "r");
 
     if (test != NULL) {
         int rows, cols, aux;
 
-        fscanf(test, "%d %d\n", &rows, &cols);
+        FMAW::IO::fscanf(test, "%d %d\n", &rows, &cols);
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (col < cols - 1) {
-                    fscanf(test, "%d ", &aux);
+                    FMAW::IO::fscanf(test, "%d ", &aux);
                 } else {
-                    fscanf(test, "%d\n", &aux);
+                    FMAW::IO::fscanf(test, "%d\n", &aux);
                 }
 
                 IndexPath path {row, col};
@@ -36,7 +41,7 @@ void loadGridMap(const char *mapName, Grid *g) {
             }
         }
 
-        fclose(test);
+        FMAW::IO::fclose(test);
     }
 }
 

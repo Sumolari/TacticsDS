@@ -81,11 +81,23 @@ class Grid {
      */
     bool hasPickedUpCell();
 
+    /**
+     * File where game will be saved.
+     */
+    FILE *savefile;
+
   public:
     /**
      * Creates a new grid.
      */
     Grid();
+
+    /**
+     * Enables saving history so any movement in the grid will be saved.
+     * @param filename File where history will be saved.
+     * @return         Whether file can be used to save history or not.
+     */
+    bool enableSavingHistory(const char *filename);
 
     /**
      * Resets available movements for all units in the grid.
