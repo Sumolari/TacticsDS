@@ -16,6 +16,11 @@ class Player {
     Player();
 
     /**
+     * Creates a new Player, given his ID.
+     */
+    explicit Player(PlayerID);
+
+    /**
      * Returns the ID of this player.
      * @return ID of this player.
      */
@@ -26,6 +31,12 @@ class Player {
      */
     virtual void startTurn();
 
+    /**
+     * Prints information about this player.
+     */
+    virtual void print();
+
+    virtual ~Player() = default;
 };
 
 #endif

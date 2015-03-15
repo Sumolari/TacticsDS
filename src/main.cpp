@@ -61,6 +61,8 @@
 
 Grid grid;
 MainMenu menu;
+Player *blue;
+Player *red;
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -173,10 +175,10 @@ int main(void) {
         menu.adjustCurrentTile();
     };
 
-    Player blue;
-    TurnManager::addPlayer(&blue);
-    PlayerAI red(&grid, finishTurnCallback);
-    TurnManager::addPlayer(&red);
+    blue = new Player();
+    TurnManager::addPlayer(blue);
+    red = new Player();
+    TurnManager::addPlayer(red);
 
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
@@ -185,16 +187,16 @@ int main(void) {
 
     GridMap::loadDefaultGridMap(&grid);
 
-    auto addSomeUnits = [&blue, &red]() {
-        Warrior *warriorA = new Warrior(blue.getID());
-        Warrior *warriorB = new Warrior(red.getID());
+    auto addSomeUnits = []() {
+        Warrior *warriorA = new Warrior(blue->getID());
+        Warrior *warriorB = new Warrior(red->getID());
 
-        Warrior *warriorC = new Warrior(blue.getID());
-        Warrior *warriorD = new Warrior(blue.getID());
-        Warrior *warriorE = new Warrior(blue.getID());
-        Warrior *warriorF = new Warrior(blue.getID());
-        Warrior *warriorG = new Warrior(blue.getID());
-        Warrior *warriorH = new Warrior(blue.getID());
+        Warrior *warriorC = new Warrior(blue->getID());
+        Warrior *warriorD = new Warrior(blue->getID());
+        Warrior *warriorE = new Warrior(blue->getID());
+        Warrior *warriorF = new Warrior(blue->getID());
+        Warrior *warriorG = new Warrior(blue->getID());
+        Warrior *warriorH = new Warrior(blue->getID());
         /*
         Warrior *warriorI = new Warrior(blue.getID());
         Warrior *warriorJ = new Warrior(blue.getID());
@@ -243,7 +245,16 @@ int main(void) {
     };
     FMAW::Input::onButtonStartReleased(releaseStart);
 
-    auto newGameCallback = [addSomeUnits]() {
+    auto newGameCallback = [addSomeUnits, finishTurnCallback]() {
+        TurnManager::reset();
+        delete blue;
+        delete red;
+        blue = new Player();
+        TurnManager::addPlayer(blue);
+        red = new PlayerAI(&grid, finishTurnCallback);
+        red->print();
+        TurnManager::addPlayer(red);
+
         FMAW::printf("Should start a new game!");
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
@@ -268,8 +279,24 @@ int main(void) {
         grid.playSavedHistory(DEFAULT_SAVEGAME_FILE, callback);
     };
 
-    auto versusCallback = []() {
+    auto versusCallback = [addSomeUnits]() {
+        TurnManager::reset();
+        delete blue;
+        delete red;
+        blue = new Player();
+        TurnManager::addPlayer(blue);
+        red = new Player();
+        red->print();
+        TurnManager::addPlayer(red);
+
         FMAW::printf("Should start a new versus game!");
+        grid.clearGridUnits();
+        FMAW::Tile::releaseAllSpriteMemory();
+        grid.initCursor();
+        addSomeUnits();
+        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        menu.makeBackground();
+        grid.enqueueCallbacks();
     };
 
     menu.newGameCallback = newGameCallback;

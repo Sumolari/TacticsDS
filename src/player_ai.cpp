@@ -11,6 +11,18 @@
 
 #include "./FMAW.h"
 
+PlayerAI::PlayerAI(Grid *grid, std::function<void(void)> callback) :
+    grid(grid),
+    onFinishTurnCallback(callback),
+    seed(42) {}
+
+PlayerAI::PlayerAI(Grid *grid, std::function<void(void)> callback,
+                   PlayerID ID) :
+    Player(ID),
+    grid(grid),
+    onFinishTurnCallback(callback),
+    seed(42) {}
+
 void PlayerAI::startTurn() {
     // Prevent user from interacting with grid.
     this->grid->dequeueCallbacks();
@@ -83,4 +95,8 @@ void PlayerAI::startTurn() {
         }
     };
     FMAW::Timer::enqueue_function(moveSomeUnit, 1500, true);
+}
+
+void PlayerAI::print() {
+    FMAW::printf("I'm an AI player with ID=%d", this->ID);
 }

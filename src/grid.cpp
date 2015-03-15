@@ -363,6 +363,8 @@ bool Grid::canMoveCharacterFromCellToCell(IndexPath from, IndexPath to) {
             return this->reachableCells[to];
         }
     }
+
+    return false;
 }
 
 void Grid::renderBackground() {

@@ -31,16 +31,22 @@ class PlayerAI : public Player {
     unsigned long int unitNumber;
 
   public:
-    PlayerAI(Grid *grid, std::function<void(void)> callback) :
-        grid(grid),
-        onFinishTurnCallback(callback),
-        seed(42) {};
+    /**
+     * Creates a new AI player.
+     */
+    explicit PlayerAI(Grid *grid, std::function<void(void)> callback);
 
     /**
-     * Tells this player that he can start playing.
+     * Creates a new AI player given its ID.
      */
+    explicit PlayerAI(Grid *grid, std::function<void(void)> callback,
+                      PlayerID ID);
+
     virtual void startTurn();
 
+    virtual void print();
+
+    virtual ~PlayerAI() = default;
 };
 
 #endif
