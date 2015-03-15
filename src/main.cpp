@@ -14,6 +14,7 @@
 
 #include "./warrior.h"
 #include "./knight.h"
+#include "./sniper.h"
 
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
@@ -214,8 +215,8 @@ int main(void) {
         Warrior *warriorA = new Warrior(blue.getID());
         Warrior *warriorB = new Warrior(red.getID());
 
-        Warrior *warriorC = new Warrior(blue.getID());
-        Warrior *warriorD = new Warrior(blue.getID());
+        Sniper *warriorC = new Sniper(blue.getID());
+        Sniper *warriorD = new Sniper(red.getID());
         Warrior *warriorE = new Warrior(blue.getID());
         Knight *warriorF = new Knight(blue.getID());
         Knight *warriorG = new Knight(blue.getID());

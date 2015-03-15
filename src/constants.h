@@ -57,6 +57,10 @@
  * ID of Knight unit type.
  */
 #define UNIT_TYPE_KNIGHT   2
+/**
+ * ID of Sniper unit type.
+ */
+#define UNIT_TYPE_SNIPER   3
 
 
 /**
