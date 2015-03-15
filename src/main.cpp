@@ -212,7 +212,7 @@ int main(void) {
     };
 
     auto releaseB = []() {
-        if (menu.isInForeground()) return;
+        if (menu.isInForeground() || grid.isPlayingSavedFile()) return;
 
         grid.resetUnitMovements();
         FMAW::printf("Tocaría cambiar de turno!");
@@ -238,11 +238,18 @@ int main(void) {
     };
     FMAW::Input::onButtonStartReleased(releaseStart);
 
-    auto newGameCallback = []() {
+    auto newGameCallback = [addSomeUnits]() {
         FMAW::printf("Should start a new game!");
+        grid.clearGridUnits();
+        FMAW::Tile::releaseAllSpriteMemory();
+        grid.initCursor();
+        addSomeUnits();
+        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        menu.makeBackground();
+        grid.enqueueCallbacks();
     };
 
-    auto loadGameCallback = [&addSomeUnits]() {
+    auto loadGameCallback = [addSomeUnits]() {
         menu.makeBackground();
         FMAW::printf("Should load a previous game!");
         auto callback = [&addSomeUnits](bool success) {
@@ -250,10 +257,6 @@ int main(void) {
             if (success) {
                 addSomeUnits();
                 grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
-                /*
-                FMAW::printf("New tile would have ID %d",
-                             FMAW::Tile::nextSpriteImgMemoryPosition);
-                */
             }
             menu.makeForeground();
         };
