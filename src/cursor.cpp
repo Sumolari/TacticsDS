@@ -44,7 +44,7 @@ void Cursor::enable() {
 }
 
 void Cursor::disable() {
-    this->sprite.disable();
+    this->sprite.clear();
 }
 
 void Cursor::setArrow() {

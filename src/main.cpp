@@ -249,6 +249,7 @@ int main(void) {
             FMAW::printf("Played saved game: %d", success);
             if (success) {
                 addSomeUnits();
+                grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
                 /*
                 FMAW::printf("New tile would have ID %d",
                              FMAW::Tile::nextSpriteImgMemoryPosition);
