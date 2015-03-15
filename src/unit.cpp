@@ -18,6 +18,10 @@ void Unit::init() {}
 
 void Unit::update() {}
 
+int Unit::getUnitType() {
+    return this->unitType;
+}
+
 void Unit::resetAvailableActions() {
     FMAW::printf("RESET");
     this->currentAvailableActions = this->maximumAvailableActions;

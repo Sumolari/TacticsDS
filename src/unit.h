@@ -12,6 +12,10 @@ class Unit : public FMAW::Character {
      */
     PlayerID ownerID;
 
+    /**
+     * Type of this unit.
+     */
+    int unitType;
 
     virtual void init();
   public:
@@ -46,6 +50,12 @@ class Unit : public FMAW::Character {
     Unit(FMAW::Sprite sprite, PlayerID ownerID);
 
     virtual void update();
+
+    /**
+     * Returns the internal type identifier for this kind of Unit.
+     * @return Integer representing the type of this unit.
+     */
+    int getUnitType();
 
     /**
      * Returns the movement capacity of this Unit.

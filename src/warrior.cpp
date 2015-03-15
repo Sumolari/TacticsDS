@@ -2,6 +2,8 @@
 
 #include "./warrior.h"
 
+#include "./constants.h"
+
 #include "./fmaw_tile.h"
 
 #include "./swordmaster_female_1_blue.h"
@@ -19,6 +21,7 @@
 void Warrior::init() {
     this->reset();
 
+    this->unitType = UNIT_TYPE_WARRIOR;
     this->movementCapacity = 4;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = 1;

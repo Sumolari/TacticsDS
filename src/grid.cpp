@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <string>
 
 #include "./turnManager.h"
 #include "./grid.h"
@@ -17,7 +18,8 @@ Grid::Grid():
     upArrowCallbackID(-1),
     leftArrowCallbackID(-1),
     rightArrowCallbackID(-1),
-    aButtonCallbackID(-1) {
+    aButtonCallbackID(-1),
+    savefile(nullptr) {
     this->pickedUpCell = { -1, -1 };
     this->rows = WINDOW_HEIGHT / CELL_HEIGHT;
     this->cols = WINDOW_WIDTH / CELL_WIDTH;
@@ -57,6 +59,74 @@ Grid::Grid():
     this->recomputeReachableCells();
 }
 
+bool Grid::enableSavingHistory(std::string filename) {
+    this->savefile = FMAW::IO::fopen(("./" + filename).c_str(), "w+");
+
+    if (this->savefile == NULL) {
+        this->savefile = nullptr;
+        return false;
+    }
+
+    FMAW::IO::fprintf(this->savefile, "%d %d\n", this->rows, this->cols);
+
+    // Print terrain information.
+
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+
+            FMAW::IO::fprintf(this->savefile, "%d", c->getBackgroundType());
+
+            if (col < this->cols - 1)
+                FMAW::IO::fprintf(this->savefile, " ");
+        }
+        FMAW::IO::fprintf(this->savefile, "\n");
+    }
+
+    // Print unit type information.
+
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+            Unit *u = c->getCharacter();
+
+            if (c->isOccupied()) {
+                FMAW::IO::fprintf(this->savefile, "%d", u->getUnitType());
+            } else {
+                FMAW::IO::fprintf(this->savefile, "%d", UNIT_TYPE_EMPTY);
+            }
+
+            if (col < this->cols - 1) FMAW::IO::fprintf(this->savefile, " ");
+        }
+        FMAW::IO::fprintf(this->savefile, "\n");
+    }
+
+    // Print unit owner information.
+
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+            Unit *u = c->getCharacter();
+
+            if (c->isOccupied()) {
+                FMAW::IO::fprintf(this->savefile, "%d", u->getOwner());
+            } else {
+                FMAW::IO::fprintf(this->savefile, "%d", UNIT_OWNER_NONE);
+            }
+
+            if (col < this->cols - 1) FMAW::IO::fprintf(this->savefile, " ");
+        }
+        FMAW::IO::fprintf(this->savefile, "\n");
+    }
+
+    FMAW::IO::fflush(this->savefile);
+
+    return true;
+}
+
 void Grid::resetUnitMovements() {
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
@@ -91,6 +161,12 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
     Cell *f = this->cellAtIndexPath(from);
     Cell *t = this->cellAtIndexPath(to);
     if (!t->isOccupied() && f->isOccupied()) {
+        if (this->savefile != nullptr) {
+            FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
+                              from.row, from.col, to.row, to.col);
+            FMAW::IO::fflush(this->savefile);
+        }
+
         Unit *c = f->getCharacter();
         t->setCharacter(c);
         c->setPosition(f->getCenter());

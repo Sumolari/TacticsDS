@@ -244,6 +244,9 @@ int main(void) {
     grid.resetUnitMovements();
     grid.enqueueCallbacks();
     grid.renderBackground();
+    if (!grid.enableSavingHistory("savegame.txt")) {
+        FMAW::printf("ERROR when trying to write file");
+    }
 
     FMAW::start();
 

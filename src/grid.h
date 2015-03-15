@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <string>
 
 #include "./cell.h"
 #include "./cursor.h"
@@ -97,7 +98,7 @@ class Grid {
      * @param filename File where history will be saved.
      * @return         Whether file can be used to save history or not.
      */
-    bool enableSavingHistory(const char *filename);
+    bool enableSavingHistory(std::string filename);
 
     /**
      * Resets available movements for all units in the grid.
