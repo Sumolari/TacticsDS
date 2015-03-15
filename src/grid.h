@@ -2,6 +2,7 @@
 #define GRID_H
 
 #include <vector>
+#include <map>
 
 #include "./cell.h"
 #include "./cursor.h"
@@ -63,11 +64,45 @@ class Grid {
      */
     int aButtonCallbackID;
 
+    /**
+     * Cells rechables by currently selected unit.
+     */
+    std::map<IndexPath, bool> reachableCells;
+
+    /**
+     * Recomputes the cells reachable by currently selected unit.
+     * If no unit is selected all cells are available.
+     */
+    void recomputeReachableCells();
+
+    /**
+     * Returns whether some cell with a character has been picked up or not.
+     * @return Whether some cell with a character has been picked up or not.
+     */
+    bool hasPickedUpCell();
+
+    /**
+     * File where game will be saved.
+     */
+    FILE *savefile;
+
   public:
     /**
      * Creates a new grid.
      */
     Grid();
+
+    /**
+     * Enables saving history so any movement in the grid will be saved.
+     * @param filename File where history will be saved.
+     * @return         Whether file can be used to save history or not.
+     */
+    bool enableSavingHistory(const char *filename);
+
+    /**
+     * Resets available movements for all units in the grid.
+     */
+    void resetUnitMovements();
 
     /**
      * Initializes cursor.
@@ -187,6 +222,11 @@ class Grid {
      * Sets the cursor to be a cross.
      */
     void setCrossCursor();
+
+    /**
+     * Resets picked up cell so no cell is selected.
+     */
+    void resetPickedUpCell();
 
     //--------------------------------------------------------------------------
     // Callbacks.

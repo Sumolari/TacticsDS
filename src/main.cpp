@@ -1,10 +1,5 @@
 // Copyright 2015 FMAW
 
-#ifdef NDS
-
-#include <fat.h>
-#include <nds.h>
-
 #include <sstream>
 #include <cstdlib>
 
@@ -205,16 +200,16 @@ int main(void) {
     Player red;
     TurnManager::addPlayer(&red);
 
-    fatInitDefault();
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
 
     grid.initCursor();
 
-    GridMap::loadDefaultGridMap(grid);
+    GridMap::loadDefaultGridMap(&grid);
 
     Warrior warriorA{blue.getID()}, warriorB{red.getID()};
     grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
+    warriorA.print();
     grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
 
     auto func = [&warriorA, &warriorB](int ID) {
@@ -224,7 +219,9 @@ int main(void) {
     FMAW::Timer::enqueue_function(func, 200, true);
 
     auto releaseB = []() {
+        grid.resetUnitMovements();
         FMAW::printf("Tocaría cambiar de turno!");
+        grid.resetPickedUpCell();
         TurnManager::finishTurn();
         menu.adjustCurrentTile();
         FMAW::printf("Has soltado la tecla B");
@@ -244,6 +241,7 @@ int main(void) {
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     menu.init();
+    grid.resetUnitMovements();
     grid.enqueueCallbacks();
     grid.renderBackground();
 
@@ -251,5 +249,3 @@ int main(void) {
 
     return 0;
 }
-
-#endif

@@ -51,6 +51,11 @@ class Warrior : public Unit {
      * Resets position of this Warrior.
      */
     void reset();
+
+    /**
+     * Prints debug information about this warrior.
+     */
+    void print();
 };
 
 #endif

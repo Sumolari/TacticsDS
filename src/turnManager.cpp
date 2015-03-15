@@ -1,9 +1,7 @@
 // Copyright 2015 FMAW
 
 #include "./turnManager.h"
-
 #include <vector>
-
 #include "./FMAW.h"
 
 
@@ -28,12 +26,8 @@ int numPlayers() {
 }
 
 void finishTurn() {
-    FMAW::printf("BEFORE");
     _currentPlayerID++;
-    FMAW::printf("MIDDLE");
     _currentPlayerID %= numPlayers();
-    FMAW::printf("AFTER");
-    FMAW::printf("Before calling startTurn of %d", _currentPlayerID);
     players[_currentPlayerID]->startTurn();
 }
 

@@ -42,9 +42,10 @@ Tile::Tile(TileAttributes attributes) {
         self::nextBackgroundPalMemoryPosition++;
     }
 
-
+    /*
     FMAW::printf("I'm copying tiles of length %d to %d",
                  attributes.tilesLength, this->imgMemory);
+    */
 
     u16 *objram_memory;
     u16 *palram_memory;
@@ -64,8 +65,10 @@ Tile::Tile(TileAttributes attributes) {
             palram_memory = pal2bgramSub(this->palMemory);
         }
 
+        /*
         FMAW::printf("Destination (IMG): %p", objram_memory);
         FMAW::printf("Destination (PAL): %p", palram_memory);
+        */
     }
 
     // Copy to memory.

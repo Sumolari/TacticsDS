@@ -25,6 +25,7 @@
 #include "./fmaw_character.h"
 #include "./fmaw_timer.h"
 #include "./fmaw_input.h"
+#include "./fmaw_io.h"
 
 #include <functional>
 
