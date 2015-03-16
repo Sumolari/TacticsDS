@@ -501,11 +501,25 @@ void Grid::enqueueCallbacks() {
                    TurnManager::currentPlayerID()) {
             // If cell is occupied by a character owned by an enemy we release
             // previously picked up cell and we reset the cursor.
-            this->resetPickedUpCell();
-            this->setSquareCursor();
             FMAW::printf("Hay un enemigo en la celda %d %d",
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
+            if(this->hasPickedUpCell() &&
+				this->attackableCells[this->getSelectedPath()] ){
+					Unit *attacker = this->cellAtIndexPath(this->pickedUpCell)->getCharacter();
+					bool isKill = attacker->attackUnit(u);
+					FMAW::printf("Atacando enemigo en la celda %d %d",
+                         this->pickedUpCell.row,
+                         this->pickedUpCell.col);
+                    
+                    if( isKill ) {
+						FMAW::printf("Enemigo abatido!");
+						c->setCharacter(nullptr);
+					}
+                    else FMAW::printf("El enemigo sigue vivo");
+            }
+            this->setSquareCursor();
+            this->resetPickedUpCell();
         } else if (this->hasPickedUpCell() &&
                    this->reachableCells[this->getSelectedPath()]) {
             // If there is a picked up cell and we can move to selected cell

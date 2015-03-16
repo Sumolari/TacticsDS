@@ -25,10 +25,11 @@ void Knight::init() {
     this->movementCapacity = 6;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = this->maximumAvailableActions;
-    this->maximumHealth = 1;
+    this->maximumHealth = 2;
     this->currentHealth = this->maximumHealth;
     this->minimumAttackRange = 1;
     this->maximumAttackRange = 1;
+    this->attackPower = 5;
     this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(

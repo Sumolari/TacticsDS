@@ -70,11 +70,37 @@ int Unit::getMovementCapacity() {
     return this->movementCapacity;
 }
 
+int Unit::getMaximumHealth() {
+    return this->maximumHealth;
+}
+int Unit::getCurrentHealth() {
+    return this->currentHealth;
+}
+
+void Unit::setCurrentHealth(int h){
+	this->currentHealth = h;
+}
+
 int Unit::getMinimumAttackRange() {
     return this->minimumAttackRange;
 }
 int Unit::getMaximumAttackRange() {
     return this->maximumAttackRange;
+}
+
+int Unit::force(){
+	return this->attackPower;
+}
+
+bool Unit::attackUnit(Unit *u){
+	u->setCurrentHealth(u->getCurrentHealth() - this->force());
+	
+	if( u->getCurrentHealth() <= 0 ){
+		delete( u );
+		return true;
+	}
+	
+	return false;
 }
 
 PlayerID Unit::getOwner() {

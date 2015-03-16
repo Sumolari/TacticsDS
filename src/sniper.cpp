@@ -25,10 +25,11 @@ void Sniper::init() {
     this->movementCapacity = 3;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = this->maximumAvailableActions;
-    this->maximumHealth = 1;
+    this->maximumHealth = 3;
     this->currentHealth = this->maximumHealth;
     this->minimumAttackRange = 2;
     this->maximumAttackRange = 3;
+    this->attackPower = 10;
     this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
