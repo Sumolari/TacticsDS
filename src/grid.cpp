@@ -60,6 +60,7 @@ Grid::Grid():
 
     this->pickedUpCell = { -1, -1};
     this->recomputeReachableCells();
+    this->recomputeAttackableCells();
 }
 
 bool Grid::enableSavingHistory(std::string filename) {
@@ -377,6 +378,13 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
             } else {
                 this->setCrossCursor();
             }
+            Cell *c = this->cellAtSelectedPath();
+            if (this->attackableCells[this->selectedPath] && c->isOccupied() &&
+                c->getCharacter()->getOwner() != TurnManager::currentPlayerID()
+            ){
+				//this->setSwordCursor();
+				this->setCrossCursor();
+			}
         } else {
             Cell *c = this->cellAtSelectedPath();
             if (c->isOccupied() && !c->getCharacter()->hasAvailableActions()) {
@@ -488,6 +496,7 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
             this->recomputeReachableCells();
+            this->recomputeAttackableCells();
         } else if (c->isOccupied() && u->getOwner() !=
                    TurnManager::currentPlayerID()) {
             // If cell is occupied by a character owned by an enemy we release
@@ -509,10 +518,13 @@ void Grid::enqueueCallbacks() {
             this->moveCharacterFromCellToCell(this->pickedUpCell,
                                               this->getSelectedPath(), 100);
             u->decreaseAvailableActions();
-            this->resetPickedUpCell();
             if (!u->hasAvailableActions()) {
                 this->setCrossCursor();
             }
+            else{
+				this->recomputeAttackableCells();
+			}
+            this->resetPickedUpCell();
         }
     };
     if (this->aButtonCallbackID == -1) {
@@ -641,5 +653,54 @@ void Grid::recomputeReachableCells() {
                 }
             }
         }
+    }
+}
+
+void Grid::recomputeAttackableCells() {
+    this->attackableCells.clear();
+
+    if (this->pickedUpCell.row == -1 || this->pickedUpCell.col == -1) {
+        for (int row = 0; row < this->rows; row++) {
+            for (int col = 0; col < this->cols; col++) {
+                this->attackableCells[ {row, col}] = false;
+            }
+        }
+    } else {
+        Cell *cell = this->cellAtIndexPath(this->pickedUpCell);
+        Unit *unit = cell->getCharacter();
+        int minAttack = unit->getMinimumAttackRange();
+        int maxAttack = unit->getMaximumAttackRange();
+
+        // First no cell is attackable.
+        for (int row = 0; row < this->rows; row++) {
+            for (int col = 0; col < this->cols; col++) {
+                this->attackableCells[ {row, col}] = false;
+            }
+        }
+        
+        for (int attRan = minAttack; attRan <= maxAttack; attRan++) {
+            int col = this->pickedUpCell.col - attRan;
+            for (int row = 0; row < attRan; row++, col++) {
+                if( col >= 0 && col < this->cols - 1 ){
+					if( this->pickedUpCell.row >= row ){
+						this->attackableCells[ {this->pickedUpCell.row - row, col}] = true;
+					}
+					if( this->pickedUpCell.row < this->rows - row ){
+						this->attackableCells[ {this->pickedUpCell.row + row, col}] = true;
+					}
+				}
+            }
+            for (int row = attRan; row >= 0; row--, col++) {
+				if( col >= 0 && col < this->cols - 1 ){
+					if( this->pickedUpCell.row >= row ){
+						this->attackableCells[ {this->pickedUpCell.row - row, col}] = true;
+					}
+					if( this->pickedUpCell.row < this->rows - row ){
+						this->attackableCells[ {this->pickedUpCell.row + row, col}] = true;
+					}
+				}
+            }
+        }
+
     }
 }

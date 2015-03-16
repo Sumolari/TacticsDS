@@ -34,6 +34,25 @@ class Unit : public FMAW::Character {
      */
     int currentAvailableActions;
 
+	/**
+	 * Amount of health this Unit currently has.
+	 */
+	 int currentHealth;
+	 
+	/**
+	 * Maximum amount of health this Unit has.
+	 */
+	 int maximumHealth;
+	
+	/**
+	 * Minimum range from which this Unit can attack.
+	 */
+	 int minimumAttackRange;
+	/**
+	 * Maximum range from which this Unit can attack.
+	 */
+	 int maximumAttackRange;
+
     /**
      * Creates a new unit using a new sprite.
      */
@@ -70,6 +89,17 @@ class Unit : public FMAW::Character {
      * @return Movement capacity of this Unit.
      */
     int getMovementCapacity();
+
+    /**
+     * Returns the minimum attack range of this Unit.
+     * @return Minimum attack range of this Unit.
+     */
+    int getMinimumAttackRange();
+    /**
+     * Returns the maximum attack range of this Unit.
+     * @return Maximum attack range of this Unit.
+     */
+    int getMaximumAttackRange();
 
     /**
      * Resets the internal counter of available actions.

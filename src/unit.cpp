@@ -70,6 +70,13 @@ int Unit::getMovementCapacity() {
     return this->movementCapacity;
 }
 
+int Unit::getMinimumAttackRange() {
+    return this->minimumAttackRange;
+}
+int Unit::getMaximumAttackRange() {
+    return this->maximumAttackRange;
+}
+
 PlayerID Unit::getOwner() {
     return this->ownerID;
 }
