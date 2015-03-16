@@ -512,6 +512,8 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
                     
+                    attacker->decreaseAvailableActions();
+                    
                     if( isKill ) {
 						FMAW::printf("Enemigo abatido!");
 						c->setCharacter(nullptr);

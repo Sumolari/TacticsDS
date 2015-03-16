@@ -23,7 +23,7 @@ void Knight::init() {
 
     this->unitType = UNIT_TYPE_KNIGHT;
     this->movementCapacity = 6;
-    this->maximumAvailableActions = 1;
+    this->maximumAvailableActions = 2;
     this->currentAvailableActions = this->maximumAvailableActions;
     this->maximumHealth = 2;
     this->currentHealth = this->maximumHealth;
