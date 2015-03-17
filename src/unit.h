@@ -81,6 +81,8 @@ class Unit : public FMAW::Character {
     static Unit *UnitWithType(int unitType, PlayerID ownerID);
 
     virtual void update();
+    
+    virtual void update_freq();
 
     /**
      * Returns the internal type identifier for this kind of Unit.

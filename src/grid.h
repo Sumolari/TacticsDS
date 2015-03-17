@@ -265,6 +265,11 @@ class Grid {
      * Sets the cursor to be a cross.
      */
     void setCrossCursor();
+    
+    /**
+     * Sets the cursor to be a sword.
+     */
+    void setSwordCursor();
 
     /**
      * Resets picked up cell so no cell is selected.

@@ -20,6 +20,11 @@ class Cursor : public FMAW::Character {
      * TileAttributes of the cross cursor.
      */
     FMAW::TileAttributes tileCross;
+    
+    /**
+     * TileAttributes of the sword cursor.
+     */
+    FMAW::TileAttributes tileSword;
 
     /**
      * Actual tile used by the cross cursor.
@@ -51,6 +56,11 @@ class Cursor : public FMAW::Character {
      * Sets the cursor to be a cross.
      */
     void setCross();
+    
+    /**
+     * Sets the cursor to be a sword.
+     */
+    void setSword();
 
 };
 

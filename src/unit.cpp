@@ -36,6 +36,8 @@ void Unit::init() {}
 
 void Unit::update() {}
 
+void Unit::update_freq() {}
+
 int Unit::getUnitType() {
     return this->unitType;
 }
@@ -99,6 +101,8 @@ bool Unit::attackUnit(Unit *u){
 		delete( u );
 		return true;
 	}
+	
+	u->update_freq();
 	
 	return false;
 }

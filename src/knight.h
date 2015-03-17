@@ -50,6 +50,8 @@ class Knight : public Unit {
     };
 
     virtual void update();
+    
+    virtual void update_freq();
 
     /**
      * Resets position of this Knight.

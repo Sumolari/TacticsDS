@@ -160,6 +160,19 @@ void Knight::update() {
     }
 }
 
+void Knight::update_freq(){
+	FMAW::Timer::dequeue_function(this->updateID);
+	
+	auto _update = [this](int ID) {
+        this->update();
+    };
+    
+    //TODO decent time calculation
+    int t = 200*(this->maximumHealth / this->currentHealth);
+    
+	this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
+}
+
 void Knight::reset() {
     this->x = FMAW::FixedReal(128, 8);
     this->y = FMAW::FixedReal(64, 8);

@@ -382,8 +382,7 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
             if (this->attackableCells[this->selectedPath] && c->isOccupied() &&
                 c->getCharacter()->getOwner() != TurnManager::currentPlayerID()
             ){
-				//this->setSwordCursor();
-				this->setCrossCursor();
+				this->setSwordCursor();
 			}
         } else {
             Cell *c = this->cellAtSelectedPath();
@@ -437,6 +436,10 @@ void Grid::setArrowCursor() {
 
 void Grid::setCrossCursor() {
     this->cursor.setCross();
+}
+
+void Grid::setSwordCursor() {
+    this->cursor.setSword();
 }
 
 void Grid::resetPickedUpCell() {
