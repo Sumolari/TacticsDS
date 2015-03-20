@@ -75,7 +75,7 @@ class Grid {
      * Cells rechables by currently selected unit.
      */
     std::map<IndexPath, bool> reachableCells;
-    
+
     /**
      * Cells attackable by currently selected unit.
      */
@@ -265,7 +265,7 @@ class Grid {
      * Sets the cursor to be a cross.
      */
     void setCrossCursor();
-    
+
     /**
      * Sets the cursor to be a sword.
      */

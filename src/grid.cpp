@@ -373,20 +373,40 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
         this->cursor.setPosition({p.x - 16, p.y - 16});
 
         if (this->hasPickedUpCell()) {
+            Cell *c = this->cellAtSelectedPath();
+
+            // Set cursor based on movement capability.
             if (this->reachableCells[this->selectedPath]) {
-                this->setArrowCursor();
+                if (c->isOccupied()) {
+                    Unit *u = c->getCharacter();
+                    if (u->getOwner() == TurnManager::currentPlayerID()) {
+                        this->setSquareCursor();
+                    } else {
+                        this->setCrossCursor();
+                    }
+                } else {
+                    this->setArrowCursor();
+                }
             } else {
                 this->setCrossCursor();
             }
-            Cell *c = this->cellAtSelectedPath();
-            if (this->attackableCells[this->selectedPath] && c->isOccupied() &&
-                c->getCharacter()->getOwner() != TurnManager::currentPlayerID()
-            ){
-				this->setSwordCursor();
-			}
+
+            // If we can attack that player then we set proper cursor.
+            if (this->attackableCells[this->selectedPath]) {
+                if (c->isOccupied()) {
+                    Unit *u = c->getCharacter();
+                    if (u->getOwner() != TurnManager::currentPlayerID()) {
+                        this->setSwordCursor();
+                    }
+                }
+            }
         } else {
             Cell *c = this->cellAtSelectedPath();
             if (c->isOccupied() && !c->getCharacter()->hasAvailableActions()) {
+                this->setCrossCursor();
+            } else if (c->isOccupied() &&
+                       c->getCharacter()->getOwner() !=
+                       TurnManager::currentPlayerID()) {
                 this->setCrossCursor();
             } else {
                 this->setSquareCursor();
@@ -507,24 +527,33 @@ void Grid::enqueueCallbacks() {
             FMAW::printf("Hay un enemigo en la celda %d %d",
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
-            if(this->hasPickedUpCell() &&
-				this->attackableCells[this->getSelectedPath()] ){
-					Unit *attacker = this->cellAtIndexPath(this->pickedUpCell)->getCharacter();
-					bool isKill = attacker->attackUnit(u);
-					FMAW::printf("Atacando enemigo en la celda %d %d",
-                         this->pickedUpCell.row,
-                         this->pickedUpCell.col);
-                    
-                    attacker->decreaseAvailableActions();
-                    
-                    if( isKill ) {
-						FMAW::printf("Enemigo abatido!");
-						c->setCharacter(nullptr);
-					}
-                    else FMAW::printf("El enemigo sigue vivo");
+            if (this->hasPickedUpCell() &&
+                    this->attackableCells[this->getSelectedPath()]) {
+                Unit *attacker = this->cellAtIndexPath(
+                                     this->pickedUpCell)->getCharacter();
+                bool isKill = attacker->attackUnit(u);
+                FMAW::printf("Atacando enemigo en la celda %d %d",
+                             this->pickedUpCell.row,
+                             this->pickedUpCell.col);
+
+                attacker->decreaseAvailableActions();
+
+                if (isKill) {
+                    FMAW::printf("Enemigo abatido!");
+                    // We save death in history log.
+                    if (this->savefile != nullptr) {
+                        FMAW::IO::fprintf(this->savefile, "%d %d -1 -1\n",
+                                          this->getSelectedPath().row,
+                                          this->getSelectedPath().col);
+                        FMAW::IO::fflush(this->savefile);
+                    }
+                    c->setCharacter(nullptr);
+                } else {
+                    FMAW::printf("El enemigo sigue vivo");
+                }
             }
-            this->setSquareCursor();
             this->resetPickedUpCell();
+            this->setCrossCursor();
         } else if (this->hasPickedUpCell() &&
                    this->reachableCells[this->getSelectedPath()]) {
             // If there is a picked up cell and we can move to selected cell
@@ -539,10 +568,9 @@ void Grid::enqueueCallbacks() {
             u->decreaseAvailableActions();
             if (!u->hasAvailableActions()) {
                 this->setCrossCursor();
+            } else {
+                this->recomputeAttackableCells();
             }
-            else{
-				this->recomputeAttackableCells();
-			}
             this->resetPickedUpCell();
         }
     };
@@ -696,30 +724,39 @@ void Grid::recomputeAttackableCells() {
                 this->attackableCells[ {row, col}] = false;
             }
         }
-        
+
         for (int attRan = minAttack; attRan <= maxAttack; attRan++) {
             int col = this->pickedUpCell.col - attRan;
             for (int row = 0; row < attRan; row++, col++) {
-                if( col >= 0 && col < this->cols - 1 ){
-					if( this->pickedUpCell.row >= row ){
-						this->attackableCells[ {this->pickedUpCell.row - row, col}] = true;
-					}
-					if( this->pickedUpCell.row < this->rows - row ){
-						this->attackableCells[ {this->pickedUpCell.row + row, col}] = true;
-					}
-				}
+                if (col >= 0 && col < this->cols - 1) {
+                    if (this->pickedUpCell.row >= row) {
+                        this->attackableCells[ {
+                            this->pickedUpCell.row - row,
+                            col
+                        }] = true;
+                    }
+                    if (this->pickedUpCell.row < this->rows - row) {
+                        this->attackableCells[ {this->pickedUpCell.row + row,
+                                                col
+                                               }] = true;
+                    }
+                }
             }
             for (int row = attRan; row >= 0; row--, col++) {
-				if( col >= 0 && col < this->cols - 1 ){
-					if( this->pickedUpCell.row >= row ){
-						this->attackableCells[ {this->pickedUpCell.row - row, col}] = true;
-					}
-					if( this->pickedUpCell.row < this->rows - row ){
-						this->attackableCells[ {this->pickedUpCell.row + row, col}] = true;
-					}
-				}
+                if (col >= 0 && col < this->cols - 1) {
+                    if (this->pickedUpCell.row >= row) {
+                        this->attackableCells[ {this->pickedUpCell.row - row,
+                                                col
+                                               }] = true;
+                    }
+                    if (this->pickedUpCell.row < this->rows - row) {
+                        this->attackableCells[ {
+                            this->pickedUpCell.row + row,
+                            col
+                        }] = true;
+                    }
+                }
             }
         }
-
     }
 }
