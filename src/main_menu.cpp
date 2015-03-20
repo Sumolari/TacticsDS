@@ -195,6 +195,7 @@ bool MainMenu::isInForeground() {
 void MainMenu::enqueueCallbacks() {
     if (this->touchCallbackID == -1) {
         auto touchCallback = [this](int x, int y) {
+            if (!this->isInForeground()) return;
             if (FMAW::pointInArea({x, y}, MAIN_MENU_NEW_GAME_AREA)) {
                 this->currentlySelectedOption = MAIN_MENU_OPTION_NEW_GAME;
             } else if (FMAW::pointInArea({x, y}, MAIN_MENU_LOAD_GAME_AREA)) {
@@ -247,7 +248,6 @@ void MainMenu::enqueueCallbacks() {
                 default:
                     break;
             }
-
         };
         this->aButtonCallbackID = FMAW::Input::onButtonAReleased(
                                       aButtonCallback);

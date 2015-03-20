@@ -58,9 +58,13 @@
 #include "./grid.h"
 #include "./gridmap.h"
 #include "./turnManager.h"
+#include "./player.h"
+#include "./player_ai.h"
 
 Grid grid;
 MainMenu menu;
+Player *blue;
+Player *red;
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -74,40 +78,6 @@ FMAW::FixedReal g_camera_y;
  * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
-    FMAW::TileAttributes blank_tile_attributes {
-        gfx_blankTiles,
-        gfx_blankTilesLen,
-        gfx_blankPal,
-        gfx_blankPalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile blank_tile(blank_tile_attributes);
-
-    FMAW::TileAttributes black_tile_attributes {
-        gfx_blackTiles,
-        gfx_blackTilesLen,
-        gfx_blackPal,
-        gfx_blackPalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile black_tile(black_tile_attributes);
-    FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
-
-    FMAW::TileAttributes brick_tile_attributes {
-        gfx_brickTiles,
-        gfx_brickTilesLen,
-        gfx_brickPal,
-        gfx_brickPalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile brick_tile(brick_tile_attributes);
-    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
-
-    //------------------------------------------------------------------------//
-
     FMAW::TileAttributes gfx_Base_attributes {
         gfx_BaseTiles,
         gfx_BaseTilesLen,
@@ -199,10 +169,18 @@ void update_graphics() {
 }
 
 int main(void) {
-    Player blue;
-    TurnManager::addPlayer(&blue);
-    Player red;
-    TurnManager::addPlayer(&red);
+    auto finishTurnCallback = []() {
+        grid.resetUnitMovements();
+        FMAW::printf("Tocaría cambiar de turno!");
+        grid.resetPickedUpCell();
+        TurnManager::finishTurn();
+        menu.adjustCurrentTile();
+    };
+
+    blue = new Player();
+    TurnManager::addPlayer(blue);
+    red = new Player();
+    TurnManager::addPlayer(red);
 
     FMAW::init(update_graphics, update_logic);
     setupGraphics();
@@ -211,17 +189,15 @@ int main(void) {
 
     GridMap::loadDefaultGridMap(&grid);
 
-    auto addSomeUnits = [&blue, &red]() {
-        Warrior *warriorA = new Warrior(blue.getID());
-        Warrior *warriorB = new Warrior(red.getID());
-
-        Sniper *warriorC = new Sniper(blue.getID());
-        Sniper *warriorD = new Sniper(red.getID());
-        Warrior *warriorE = new Warrior(blue.getID());
-        Knight *warriorF = new Knight(blue.getID());
-        Knight *warriorG = new Knight(blue.getID());
+    auto addSomeUnits = []() {
+        Warrior *warriorA = new Warrior(blue->getID());
+        Warrior *warriorB = new Warrior(red->getID());
+        Sniper *warriorC = new Sniper(blue->getID());
+        Sniper *warriorD = new Sniper(red->getID());
+        Warrior *warriorE = new Warrior(blue->getID());
+        Knight *warriorF = new Knight(blue->getID());
+        Knight *warriorG = new Knight(blue->getID());
         /*
-        Warrior *warriorH = new Warrior(blue.getID());
         Warrior *warriorI = new Warrior(blue.getID());
         Warrior *warriorJ = new Warrior(blue.getID());
         Warrior *warriorK = new Warrior(blue.getID());
@@ -237,7 +213,6 @@ int main(void) {
         grid.cellAtIndexPath({0, 4})->setCharacter(warriorF);
         grid.cellAtIndexPath({0, 5})->setCharacter(warriorG);
         /*
-        grid.cellAtIndexPath({1, 0})->setCharacter(warriorH);
         grid.cellAtIndexPath({1, 1})->setCharacter(warriorI);
         grid.cellAtIndexPath({1, 2})->setCharacter(warriorJ);
         grid.cellAtIndexPath({1, 3})->setCharacter(warriorK);
@@ -247,14 +222,9 @@ int main(void) {
         grid.resetUnitMovements();
     };
 
-    auto releaseB = []() {
-        if (menu.isInForeground()) return;
-
-        grid.resetUnitMovements();
-        FMAW::printf("Tocaría cambiar de turno!");
-        grid.resetPickedUpCell();
-        TurnManager::finishTurn();
-        menu.adjustCurrentTile();
+    auto releaseB = [finishTurnCallback]() {
+        if (menu.isInForeground() || grid.isInteractionEnabled()) return;
+        finishTurnCallback();
         FMAW::printf("Has soltado la tecla B");
     };
     FMAW::Input::onButtonBReleased(releaseB);
@@ -274,26 +244,58 @@ int main(void) {
     };
     FMAW::Input::onButtonStartReleased(releaseStart);
 
-    auto newGameCallback = []() {
+    auto newGameCallback = [addSomeUnits, finishTurnCallback]() {
+        TurnManager::reset();
+        delete blue;
+        delete red;
+        blue = new Player();
+        TurnManager::addPlayer(blue);
+        red = new PlayerAI(&grid, finishTurnCallback);
+        red->print();
+        TurnManager::addPlayer(red);
+
         FMAW::printf("Should start a new game!");
+        grid.clearGridUnits();
+        FMAW::Tile::releaseAllSpriteMemory();
+        grid.initCursor();
+        addSomeUnits();
+        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        menu.makeBackground();
+        grid.enqueueCallbacks();
     };
 
-    auto loadGameCallback = [&addSomeUnits]() {
+    auto loadGameCallback = [addSomeUnits]() {
         menu.makeBackground();
         FMAW::printf("Should load a previous game!");
         auto callback = [&addSomeUnits](bool success) {
-            FMAW::Tile::releaseAllSpriteMemory();
             FMAW::printf("Played saved game: %d", success);
-            grid.initCursor();
-            grid.clearGridUnits();
-            addSomeUnits();
+            if (success) {
+                addSomeUnits();
+                grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+            }
             menu.makeForeground();
         };
         grid.playSavedHistory(DEFAULT_SAVEGAME_FILE, callback);
     };
 
-    auto versusCallback = []() {
+    auto versusCallback = [addSomeUnits]() {
+        TurnManager::reset();
+        delete blue;
+        delete red;
+        blue = new Player();
+        TurnManager::addPlayer(blue);
+        red = new Player();
+        red->print();
+        TurnManager::addPlayer(red);
+
         FMAW::printf("Should start a new versus game!");
+        grid.clearGridUnits();
+        FMAW::Tile::releaseAllSpriteMemory();
+        grid.initCursor();
+        addSomeUnits();
+        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        menu.makeBackground();
+        grid.enqueueCallbacks();
     };
 
     menu.newGameCallback = newGameCallback;

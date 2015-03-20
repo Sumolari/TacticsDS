@@ -143,6 +143,12 @@ class Grid {
     bool isPlayingSavedFile();
 
     /**
+     * Returns whether interaction with this grid is enabled or not.
+     * @return Whether interaction with this grid is enabled or not.
+     */
+    bool isInteractionEnabled();
+
+    /**
      * Resets available movements for all units in the grid.
      */
     void resetUnitMovements();
@@ -180,6 +186,15 @@ class Grid {
      */
     bool moveCharacterFromCellToCell(IndexPath from, IndexPath to,
                                      unsigned int duration);
+
+    /**
+     * Returns whether AI should be able to move given character from given cell
+     * to given cell.
+     * @param  from      Original cell of the character.
+     * @param  to        Final cell of the character.
+     * @return           Whether change could be performed or not.
+     */
+    bool canMoveCharacterFromCellToCell(IndexPath from, IndexPath to);
 
     /**
      * Draws the grid and the cells.

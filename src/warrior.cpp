@@ -37,8 +37,6 @@ void Warrior::init() {
     this->tiles = reinterpret_cast<FMAW::TileAttributes **>(
                       malloc(space_required));
 
-    FMAW::printf("This warrior has owner: %d", this->ownerID);
-
     //--------------------------------------------------------------------------
     // Decide proper tile based on current owner.
     //--------------------------------------------------------------------------
@@ -132,6 +130,8 @@ void Warrior::init() {
 
     this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]));
 
+    // FMAW::printf("Warrior will use tile %d", this->tile->imgMemory);
+
     //--------------------------------------------------------------------------
     // Set up sprite.
     //--------------------------------------------------------------------------
@@ -160,17 +160,17 @@ void Warrior::update() {
     }
 }
 
-void Warrior::update_freq(){
-	FMAW::Timer::dequeue_function(this->updateID);
-	
-	auto _update = [this](int ID) {
+void Warrior::update_freq() {
+    FMAW::Timer::dequeue_function(this->updateID);
+
+    auto _update = [this](int ID) {
         this->update();
     };
-    
+
     //TODO decent time calculation
-    int t = 200*(this->maximumHealth / this->currentHealth);
-    
-	this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
+    int t = 200 * (this->maximumHealth / this->currentHealth);
+
+    this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
 }
 
 void Warrior::reset() {

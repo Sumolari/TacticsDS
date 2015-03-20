@@ -148,10 +148,14 @@ void Grid::playSavedHistory(std::string filename,
 
     if (this->savefile == NULL) {
         this->savefile = nullptr;
+        this->playingSavedFile = false;
         callback(false);
+        return;
     }
 
+    this->clearGridUnits();
     this->playingSavedFile = true;
+    this->cursor.disable();
     FMAW::Tile::releaseAllSpriteMemory();
 
     int rows, cols, aux;
@@ -173,12 +177,6 @@ void Grid::playSavedHistory(std::string filename,
                 static_cast<CellBackgroundType>(aux));
 
             c->renderBackground();
-
-            if (c->isOccupied()) {
-                Unit *u = c->getCharacter();
-                c->setCharacter(nullptr);
-                delete u;
-            }
         }
     }
 
@@ -227,37 +225,55 @@ void Grid::playSavedHistory(std::string filename,
 
     this->resetUnitMovements();
 
-    this->playingSavedFile = false;
-    callback(true);
-
-    /*
-
     int fr, fc, tr, tc;
 
-    auto moveFollowingHistory = [this, &fr, &fc, &tr, &tc, &callback](int ID) {
+    auto moveFollowingHistory = [this, &fr, &fc, &tr, &tc, callback](int ID) {
         FILE *f = this->savefile;
         if (FMAW::IO::fscanf(f, "%d %d %d %d\n", &fr, &fc, &tr, &tc) > 0) {
-            FMAW::printf("\tA movement has been loaded");
-            if (fr == -1 || fc == -1  || tr == -1 || tc == -1) {
+            if (fr == -1 && fc == -1 && tr == -1 && tc == -1) {
+                FMAW::printf("\tTurn changed!");
                 this->resetUnitMovements();
             } else {
+                FMAW::printf("\tA movement has been loaded");
                 IndexPath from = {fr, fc}, to = {tr, tc};
-                this->moveCharacterFromCellToCell(from, to, 100);
+
+                if (!this->moveCharacterFromCellToCell(from, to, 200)) {
+                    FMAW::printf("\tA unit has been attacked");
+                    // If movement can't be done then it's an attack.
+                    Unit *a = this->cellAtIndexPath(from)->getCharacter();
+                    Unit *d = this->cellAtIndexPath(to)->getCharacter();
+                    if (a->attackUnit(d)) {
+                        FMAW::printf("\tA unit has been killed");
+                        this->cellAtIndexPath(to)->setCharacter(nullptr);
+                    }
+                }
             }
         } else {
             FMAW::printf("\tFINISHED!");
             FMAW::Timer::dequeue_function(ID);
-            FMAW::IO::fclose(this->savefile);
-            this->playingSavedFile = false;
-            this->savefile = nullptr;
-            this->enqueueCallbacks();
-            callback(true);
+            FMAW::printf("\t\tDequeued");
+            auto finish = [this, callback, ID](int finishCallbackID) {
+                FMAW::IO::fclose(this->savefile);
+                FMAW::printf("\t\tFile closed");
+                this->playingSavedFile = false;
+                FMAW::printf("\t\tPlaying state changed");
+                this->savefile = nullptr;
+                FMAW::printf("\t\tsaveFile set to null");
+                this->clearGridUnits();
+                FMAW::Tile::releaseAllSpriteMemory();
+                FMAW::printf("\t\tMemory cleaned");
+                this->initCursor();
+                this->cursor.enable();
+                this->setSquareCursor();
+                FMAW::printf("\t\tCursor re-enabled");
+                callback(true);
+                FMAW::printf("\t\tCallback called");
+            };
+            FMAW::Timer::enqueue_function(finish, 5000, false);
         }
     };
 
-    */
-
-    // FMAW::Timer::enqueue_function(moveFollowingHistory, 110, true);
+    FMAW::Timer::enqueue_function(moveFollowingHistory, 1500, true);
 }
 
 void Grid::clearGridUnits() {
@@ -277,6 +293,15 @@ void Grid::clearGridUnits() {
 
 bool Grid::isPlayingSavedFile() {
     return this->playingSavedFile;
+}
+
+bool Grid::isInteractionEnabled() {
+    return (this->upArrowCallbackID == -1 ||
+            this->rightArrowCallbackID == -1 ||
+            this->leftArrowCallbackID == -1  ||
+            this->downArrowCallbackID == -1 ||
+            this->aButtonCallbackID == -1 ||
+            this->bButtonCallbackID == -1);
 }
 
 void Grid::resetUnitMovements() {
@@ -312,7 +337,7 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
                                        unsigned int duration) {
     Cell *f = this->cellAtIndexPath(from);
     Cell *t = this->cellAtIndexPath(to);
-    if (!t->isOccupied() && f->isOccupied()) {
+    if (!t->isOccupied() && f->isOccupied() && this->reachableCells[to]) {
         if (this->savefile != nullptr) {
             FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
                               from.row, from.col, to.row, to.col);
@@ -326,6 +351,30 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
         f->setCharacter(nullptr);
         return true;
     }
+    return false;
+}
+
+bool Grid::canMoveCharacterFromCellToCell(IndexPath from, IndexPath to) {
+    if (to.row < 0 || to.row >= this->rows ||
+            to.col < 0 || to.col > this->cols) {
+        return false;
+    }
+
+    Cell *f = this->cellAtIndexPath(from);
+    Cell *t = this->cellAtIndexPath(to);
+
+    if (!t->isOccupied() && f->isOccupied()) {
+        Unit *u = f->getCharacter();
+        if (u->getOwner() == TurnManager::currentPlayerID()) {
+            if (this->getSelectedPath().row != from.row ||
+                    this->getSelectedPath().col != from.col) {
+                this->selectCellAtIndexPath(from);
+                this->recomputeReachableCells();
+            }
+            return this->reachableCells[to];
+        }
+    }
+
     return false;
 }
 
@@ -542,7 +591,9 @@ void Grid::enqueueCallbacks() {
                     FMAW::printf("Enemigo abatido!");
                     // We save death in history log.
                     if (this->savefile != nullptr) {
-                        FMAW::IO::fprintf(this->savefile, "%d %d -1 -1\n",
+                        FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
+                                          this->pickedUpCell.row,
+                                          this->pickedUpCell.col,
                                           this->getSelectedPath().row,
                                           this->getSelectedPath().col);
                         FMAW::IO::fflush(this->savefile);
