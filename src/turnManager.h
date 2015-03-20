@@ -24,6 +24,11 @@ int numPlayers();
 PlayerID currentPlayerID();
 
 /**
+ * Resets manager, removing all players.
+ */
+void reset();
+
+/**
  * Ends turn of current player and starts turn of next one.
  * @return Ends turn of current player and starts turn of next one.
  */

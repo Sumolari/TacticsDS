@@ -25,9 +25,15 @@ int numPlayers() {
     return players.size();
 }
 
+void reset() {
+    _currentPlayerID = 0;
+    players.clear();
+}
+
 void finishTurn() {
     _currentPlayerID++;
     _currentPlayerID %= numPlayers();
+    players[_currentPlayerID]->print();
     players[_currentPlayerID]->startTurn();
 }
 
