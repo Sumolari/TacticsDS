@@ -15,7 +15,6 @@ void init() {
     fatInitDefault();
 }
 
-
 FILE *fopen(const char *filename, const char *mode) {
     return ::fopen(filename, mode);
 }
@@ -38,6 +37,10 @@ int fscanf(FILE *stream, const char *format, ...) {
     int ret = ::vfscanf(stream, format, args);
     va_end(args);
     return ret;
+}
+
+int fflush(FILE *stream) {
+    return ::fflush(stream);
 }
 
 }  // namespace IO

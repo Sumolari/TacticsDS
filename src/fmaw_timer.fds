@@ -35,7 +35,7 @@ namespace Timer {
 /**
  * Maximum amount of ticks that will be counted before reseting counter to 1.
  */
-#define MAX_TICKS 100000
+#define MAX_TICKS 2147483647
 
 /**
  * Macro that given an amount of ticks returns the corresponding, wrapped,

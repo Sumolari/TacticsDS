@@ -90,6 +90,21 @@ class MainMenu {
   public:
 
     /**
+     * Callback called when New Game button is released.
+     */
+    std::function<void(void)> newGameCallback;
+
+    /**
+     * Callback called when Load Game button is released.
+     */
+    std::function<void(void)> loadGameCallback;
+
+    /**
+     * Callback called when Versus button is released.
+     */
+    std::function<void(void)> versusCallback;
+
+    /**
      * Initializes the Main Menu.
      */
     MainMenu();

@@ -12,6 +12,10 @@ class Unit : public FMAW::Character {
      */
     PlayerID ownerID;
 
+    /**
+     * Type of this unit.
+     */
+    int unitType;
 
     virtual void init();
   public:
@@ -33,19 +37,33 @@ class Unit : public FMAW::Character {
     /**
      * Creates a new unit using a new sprite.
      */
-    Unit(PlayerID ownerID);
+    explicit Unit(PlayerID ownerID);
 
     /**
      * Creates a new unit given its sprite.
      */
-    Unit(FMAW::Sprite sprite);
+    explicit Unit(FMAW::Sprite sprite);
 
     /**
      * Creates a new unit given its sprite and owner.
      */
-    Unit(FMAW::Sprite sprite, PlayerID ownerID);
+    explicit Unit(FMAW::Sprite sprite, PlayerID ownerID);
+
+    /**
+     * Factory method to get units knowing their type.
+     * @param  unitType Type of the unit.
+     * @param  ownerID  Owner of the unit.
+     * @return          New unit of given type.
+     */
+    static Unit *UnitWithType(int unitType, PlayerID ownerID);
 
     virtual void update();
+
+    /**
+     * Returns the internal type identifier for this kind of Unit.
+     * @return Integer representing the type of this unit.
+     */
+    int getUnitType();
 
     /**
      * Returns the movement capacity of this Unit.
@@ -74,6 +92,15 @@ class Unit : public FMAW::Character {
      * @return ID of the owner of this unit.
      */
     PlayerID getOwner();
+
+    /**
+     * Sets owner of this unit.
+     * @param owner New owner of this unit.
+     * @return      Previous owner of this unit.
+     */
+    PlayerID setOwner(PlayerID owner);
+
+    virtual ~Unit() = default;
 };
 
 #endif

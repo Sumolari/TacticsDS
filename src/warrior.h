@@ -27,21 +27,25 @@ class Warrior : public Unit {
     // Palette of tile currently displayed.
     int currentTilePalette;
     // Tiles used to animate this Warrior.
-    FMAW::Tile *tiles;
+    FMAW::TileAttributes **tiles;
+    // Tile being used by this warrior.
+    FMAW::Tile *tile;
+    // ID of the update callback.
+    int updateID;
 
     virtual void init();
   public:
     /**
      * Creates a new Warrior using a new sprite.
      */
-    Warrior(PlayerID ownerID): Unit(ownerID) {
+    explicit Warrior(PlayerID ownerID): Unit(ownerID) {
         init();
     };
 
     /**
      * Creates a new Warrior given its sprite.
      */
-    Warrior(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
+    explicit Warrior(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
         init();
     };
 
@@ -56,6 +60,8 @@ class Warrior : public Unit {
      * Prints debug information about this warrior.
      */
     void print();
+
+    virtual ~Warrior();
 };
 
 #endif

@@ -127,6 +127,31 @@ int fprintf(FILE *stream, const char *format, ...);
  */
 int fscanf(FILE *stream, const char *format, ...);
 
+/**
+ * If the given stream was open for writing (or if it was open for updating and
+ * the last i/o operation was an output operation) any unwritten data in its
+ * output buffer is written to the file.
+ *
+ * If stream is a null pointer, all such streams are flushed.
+ *
+ * In all other cases, the behavior depends on the specific library
+ * implementation. In some implementations, flushing a stream open for
+ * reading causes its input buffer to be cleared (but this is not portable
+ * expected behavior).
+ *
+ * The stream remains open after this call.
+ *
+ * When a file is closed, either because of a call to fclose or because the
+ * program terminates, all the buffers associated with it are automatically
+ * flushed.
+ *
+ * @param  stream Pointer to a FILE object that specifies a buffered stream.
+ * @return        A zero value indicates success.
+ *                If an error occurs, EOF is returned and the error indicator
+ *                is set (see ferror).
+ */
+int fflush(FILE *stream);
+
 }
 
 }

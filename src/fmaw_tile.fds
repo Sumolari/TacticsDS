@@ -20,9 +20,14 @@ int Tile::nextSpritePalMemoryPosition = 0;
 int Tile::nextBackgroundPalMemoryPosition = 0;
 int Tile::nextID = 0;
 
+void Tile::releaseAllSpriteMemory() {
+    Tile::nextSpritePalMemoryPosition = 0;
+    Tile::nextSpriteImgMemoryPosition = 0;
+}
+
 /**
-     * Creates a new tile given the ID that will be used to refer to this tile.
-     */
+ * Creates a new tile given the ID that will be used to refer to this tile.
+ */
 Tile::Tile(TileAttributes attributes) {
     if (attributes.type == TypeSprite) {
         this->imgMemory = self::nextSpriteImgMemoryPosition;

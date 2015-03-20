@@ -25,6 +25,8 @@ void init(void (*displayCallback)(), void (*updateCallback)()) {
 
     display = displayCallback;
     update = updateCallback;
+
+    FMAW::Tile::releaseAllSpriteMemory();
 }
 
 void start() {

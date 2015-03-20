@@ -2,7 +2,9 @@
 
 #include "./warrior.h"
 
-#include "./fmaw_tile.h"
+#include "./constants.h"
+
+#include "./FMAW.h"
 
 #include "./swordmaster_female_1_blue.h"
 #include "./swordmaster_female_2_blue.h"
@@ -19,15 +21,15 @@
 void Warrior::init() {
     this->reset();
 
+    this->unitType = UNIT_TYPE_WARRIOR;
     this->movementCapacity = 4;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = 1;
-    this->print();
 
-    this->tiles = reinterpret_cast<FMAW::Tile *>(
-                      malloc(SPRITES_IDLE_ANIMATION * sizeof(FMAW::Tile)));
-
-    FMAW::printf("This warrior has owner: %d", this->ownerID);
+    int space_required = SPRITES_IDLE_ANIMATION * sizeof(
+                             FMAW::TileAttributes *);
+    this->tiles = reinterpret_cast<FMAW::TileAttributes **>(
+                      malloc(space_required));
 
     //--------------------------------------------------------------------------
     // Decide proper tile based on current owner.
@@ -89,59 +91,54 @@ void Warrior::init() {
     // Load tile.
     //--------------------------------------------------------------------------
 
-    FMAW::TileAttributes tile_1_attrib {
+    this->tiles[0] = new FMAW::t_tile_attrib(
         swordmaster_female_1Tiles,
         swordmaster_female_1TilesLen,
         swordmaster_female_1Pal,
         swordmaster_female_1PalLen,
         FMAW::TypeSprite,
-        FMAW::ScreenMain
-    };
-    FMAW::TileAttributes tile_2_attrib {
+        FMAW::ScreenMain);
+    this->tiles[1] = new FMAW::t_tile_attrib(
         swordmaster_female_2Tiles,
         swordmaster_female_2TilesLen,
         swordmaster_female_2Pal,
         swordmaster_female_2PalLen,
         FMAW::TypeSprite,
-        FMAW::ScreenMain
-    };
-    FMAW::TileAttributes tile_3_attrib {
+        FMAW::ScreenMain);
+    this->tiles[2] = new FMAW::t_tile_attrib(
         swordmaster_female_3Tiles,
         swordmaster_female_3TilesLen,
         swordmaster_female_3Pal,
         swordmaster_female_3PalLen,
         FMAW::TypeSprite,
-        FMAW::ScreenMain
-    };
-    FMAW::TileAttributes tile_4_attrib {
+        FMAW::ScreenMain);
+    this->tiles[3] = new FMAW::t_tile_attrib(
         swordmaster_female_4Tiles,
         swordmaster_female_4TilesLen,
         swordmaster_female_4Pal,
         swordmaster_female_4PalLen,
         FMAW::TypeSprite,
-        FMAW::ScreenMain
-    };
-
-    FMAW::Tile tile_1(tile_1_attrib);
-    FMAW::Tile tile_2(tile_2_attrib);
-    FMAW::Tile tile_3(tile_3_attrib);
-    FMAW::Tile tile_4(tile_4_attrib);
-
-    this->tiles[0] = tile_1;
-    this->tiles[1] = tile_2;
-    this->tiles[2] = tile_3;
-    this->tiles[3] = tile_4;
+        FMAW::ScreenMain);
 
     this->currentTileID = 0;
+
+    this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]));
+
+    // FMAW::printf("Warrior will use tile %d", this->tile->imgMemory);
 
     //--------------------------------------------------------------------------
     // Set up sprite.
     //--------------------------------------------------------------------------
 
+    auto _update = [this](int ID) {
+        this->update();
+    };
+    this->updateID = FMAW::Timer::enqueue_function(_update, 200, true);
+
     this->width = WARRIOR_HEIGHT;
     this->height = WARRIOR_HEIGHT;
     this->sprite.setSizeMode(FMAW::square16x16);
-    this->sprite.setTile(this->tiles[this->currentTileID]);
+    this->sprite.setTile(*(this->tiles[this->currentTileID]));
     this->sprite.enable();
 }
 
@@ -149,7 +146,11 @@ void Warrior::update() {
     if (this->hasAvailableActions()) {
         this->currentTileID += 1;
         this->currentTileID %= SPRITES_IDLE_ANIMATION;
-        this->sprite.setTile(this->tiles[this->currentTileID]);
+
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    this->tile->ID);
+
+        this->sprite.setTile(*(this->tile));
     }
 }
 
@@ -162,4 +163,13 @@ void Warrior::print() {
     FMAW::printf("%d of %d actions available, with %d movements",
                  this->currentAvailableActions, this->maximumAvailableActions,
                  this->movementCapacity);
+}
+
+Warrior::~Warrior() {
+    FMAW::Timer::dequeue_function(this->updateID);
+    for (int i = 0; i < SPRITES_IDLE_ANIMATION; i++)  {
+        delete this->tiles[i];
+    }
+    free(this->tiles);
+    delete this->tile;
 }

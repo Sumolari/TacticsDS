@@ -3,9 +3,11 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <string>
 
 #include "./turnManager.h"
 #include "./grid.h"
+#include "./constants.h"
 
 #include "./FMAW.h"
 
@@ -17,7 +19,10 @@ Grid::Grid():
     upArrowCallbackID(-1),
     leftArrowCallbackID(-1),
     rightArrowCallbackID(-1),
-    aButtonCallbackID(-1) {
+    aButtonCallbackID(-1),
+    bButtonCallbackID(-1),
+    savefile(nullptr),
+    playingSavedFile(false) {
     this->pickedUpCell = { -1, -1 };
     this->rows = WINDOW_HEIGHT / CELL_HEIGHT;
     this->cols = WINDOW_WIDTH / CELL_WIDTH;
@@ -57,6 +62,228 @@ Grid::Grid():
     this->recomputeReachableCells();
 }
 
+bool Grid::enableSavingHistory(std::string filename) {
+    if (this->savefile != nullptr) {
+        FMAW::IO::fclose(this->savefile);
+        this->savefile = nullptr;
+    }
+
+    this->savefile = FMAW::IO::fopen(("./" + filename).c_str(), "w+");
+
+    if (this->savefile == NULL) {
+        this->savefile = nullptr;
+        return false;
+    }
+
+    FMAW::IO::fprintf(this->savefile, "%d %d\n", this->rows, this->cols);
+
+    // Print terrain information.
+
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+
+            FMAW::IO::fprintf(this->savefile, "%d", c->getBackgroundType());
+
+            if (col < this->cols - 1)
+                FMAW::IO::fprintf(this->savefile, " ");
+        }
+        FMAW::IO::fprintf(this->savefile, "\n");
+    }
+
+    // Print unit type information.
+
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+            Unit *u = c->getCharacter();
+
+            if (c->isOccupied()) {
+                FMAW::IO::fprintf(this->savefile, "%d", u->getUnitType());
+            } else {
+                FMAW::IO::fprintf(this->savefile, "%d", UNIT_TYPE_EMPTY);
+            }
+
+            if (col < this->cols - 1) FMAW::IO::fprintf(this->savefile, " ");
+        }
+        FMAW::IO::fprintf(this->savefile, "\n");
+    }
+
+    // Print unit owner information.
+
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+            Unit *u = c->getCharacter();
+
+            if (c->isOccupied()) {
+                FMAW::IO::fprintf(this->savefile, "%d", u->getOwner());
+            } else {
+                FMAW::IO::fprintf(this->savefile, "%d", UNIT_OWNER_NONE);
+            }
+
+            if (col < this->cols - 1) FMAW::IO::fprintf(this->savefile, " ");
+        }
+        FMAW::IO::fprintf(this->savefile, "\n");
+    }
+
+    FMAW::IO::fflush(this->savefile);
+
+    return true;
+}
+
+void Grid::playSavedHistory(std::string filename,
+                            std::function<void(bool)> callback) {
+    this->dequeueCallbacks();
+
+    if (this->savefile != nullptr) {
+        FMAW::IO::fclose(this->savefile);
+        this->savefile = nullptr;
+    }
+    this->savefile = FMAW::IO::fopen(("./" + filename).c_str(), "r");
+
+    if (this->savefile == NULL) {
+        this->savefile = nullptr;
+        this->playingSavedFile = false;
+        callback(false);
+        return;
+    }
+
+    this->clearGridUnits();
+    this->playingSavedFile = true;
+    this->cursor.disable();
+    FMAW::Tile::releaseAllSpriteMemory();
+
+    int rows, cols, aux;
+
+    FMAW::IO::fscanf(this->savefile, "%d %d\n", &rows, &cols);
+
+    // Load terrain information.
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            if (col < cols - 1) {
+                FMAW::IO::fscanf(this->savefile, "%d ", &aux);
+            } else {
+                FMAW::IO::fscanf(this->savefile, "%d\n", &aux);
+            }
+
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+            c->setBackgroundType(
+                static_cast<CellBackgroundType>(aux));
+
+            c->renderBackground();
+        }
+    }
+
+    FMAW::printf("Terrain loaded");
+
+    std::map<IndexPath, int> units;
+
+    // Load unit information.
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            IndexPath path {row, col};
+
+            if (col < cols - 1) {
+                FMAW::IO::fscanf(this->savefile, "%d ", &aux);
+            } else {
+                FMAW::IO::fscanf(this->savefile, "%d\n", &aux);
+            }
+
+            if (aux != UNIT_TYPE_EMPTY) units[path] = aux;
+        }
+    }
+
+    FMAW::printf("Units loaded");
+
+    // Load owner information.
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            IndexPath path {row, col};
+            int type = units[path];
+
+            if (col < cols - 1) {
+                FMAW::IO::fscanf(this->savefile, "%d ", &aux);
+            } else {
+                FMAW::IO::fscanf(this->savefile, "%d\n", &aux);
+            }
+
+            if (aux != UNIT_OWNER_NONE) {
+                FMAW::printf("Owner of this unit is %d", aux);
+                Unit *u = Unit::UnitWithType(type, aux);
+                this->cellAtIndexPath(path)->setCharacter(u);
+            }
+        }
+    }
+
+    FMAW::printf("Owners loaded");
+
+    this->resetUnitMovements();
+
+    int fr, fc, tr, tc;
+
+    auto moveFollowingHistory = [this, &fr, &fc, &tr, &tc, callback](int ID) {
+        FILE *f = this->savefile;
+        if (FMAW::IO::fscanf(f, "%d %d %d %d\n", &fr, &fc, &tr, &tc) > 0) {
+            if (fr == -1 || fc == -1  || tr == -1 || tc == -1) {
+                FMAW::printf("\tTurn changed!");
+                this->resetUnitMovements();
+            } else {
+                FMAW::printf("\tA movement has been loaded");
+                IndexPath from = {fr, fc}, to = {tr, tc};
+                this->moveCharacterFromCellToCell(from, to, 200);
+            }
+        } else {
+            FMAW::printf("\tFINISHED!");
+            FMAW::Timer::dequeue_function(ID);
+            FMAW::printf("\t\tDequeued");
+            auto finish = [this, callback, ID](int finishCallbackID) {
+                FMAW::IO::fclose(this->savefile);
+                FMAW::printf("\t\tFile closed");
+                this->playingSavedFile = false;
+                FMAW::printf("\t\tPlaying state changed");
+                this->savefile = nullptr;
+                FMAW::printf("\t\tsaveFile set to null");
+                this->clearGridUnits();
+                FMAW::Tile::releaseAllSpriteMemory();
+                FMAW::printf("\t\tMemory cleaned");
+                this->initCursor();
+                this->cursor.enable();
+                this->setSquareCursor();
+                FMAW::printf("\t\tCursor re-enabled");
+                callback(true);
+                FMAW::printf("\t\tCallback called");
+            };
+            FMAW::Timer::enqueue_function(finish, 5000, false);
+        }
+    };
+
+    FMAW::Timer::enqueue_function(moveFollowingHistory, 1500, true);
+}
+
+void Grid::clearGridUnits() {
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath path {row, col};
+            Cell *c = this->cellAtIndexPath(path);
+
+            if (c->isOccupied()) {
+                Unit *u = c->getCharacter();
+                c->setCharacter(nullptr);
+                delete u;
+            }
+        }
+    }
+}
+
+bool Grid::isPlayingSavedFile() {
+    return this->playingSavedFile;
+}
+
 void Grid::resetUnitMovements() {
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
@@ -91,6 +318,12 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
     Cell *f = this->cellAtIndexPath(from);
     Cell *t = this->cellAtIndexPath(to);
     if (!t->isOccupied() && f->isOccupied()) {
+        if (this->savefile != nullptr) {
+            FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
+                              from.row, from.col, to.row, to.col);
+            FMAW::IO::fflush(this->savefile);
+        }
+
         Unit *c = f->getCharacter();
         t->setCharacter(c);
         c->setPosition(f->getCenter());
@@ -291,6 +524,16 @@ void Grid::enqueueCallbacks() {
     if (this->aButtonCallbackID == -1) {
         this->aButtonCallbackID = FMAW::Input::onButtonAReleased(releaseA);
     }
+
+    auto releaseB = [this]() {
+        if (this->savefile != nullptr) {
+            FMAW::IO::fprintf(this->savefile, "-1 -1 -1 -1\n");
+            FMAW::IO::fflush(this->savefile);
+        }
+    };
+    if (this->bButtonCallbackID == -1) {
+        this->bButtonCallbackID = FMAW::Input::onButtonAReleased(releaseB);
+    }
 }
 
 void Grid::dequeueCallbacks() {
@@ -313,6 +556,10 @@ void Grid::dequeueCallbacks() {
     if (this->aButtonCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->aButtonCallbackID);
         this->aButtonCallbackID = -1;
+    }
+    if (this->bButtonCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->bButtonCallbackID);
+        this->bButtonCallbackID = -1;
     }
 }
 

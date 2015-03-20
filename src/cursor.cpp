@@ -7,40 +7,31 @@
 #include "./gfx_cursor_cross.h"
 
 Cursor::Cursor() :
-    tileSquare(FMAW::Tile(0)),
-    tileArrow(FMAW::Tile(0)),
-    tileCross(FMAW::Tile(0)) {}
-
-void Cursor::init() {
-    FMAW::TileAttributes cursor_square_attributes {
+    tileSquare(
         gfx_cursor_squareTiles,
         gfx_cursor_squareTilesLen,
         gfx_cursor_squarePal,
         gfx_cursor_squarePalLen,
         FMAW::TypeSprite,
-        FMAW::ScreenMain
-    };
-    this->tileSquare = FMAW::Tile(cursor_square_attributes);
-
-    FMAW::TileAttributes cursor_arrow_attributes {
+        FMAW::ScreenMain),
+    tileArrow(
         gfx_cursor_arrowTiles,
         gfx_cursor_arrowTilesLen,
         gfx_cursor_arrowPal,
         gfx_cursor_arrowPalLen,
         FMAW::TypeSprite,
-        FMAW::ScreenMain
-    };
-    this->tileArrow = FMAW::Tile(cursor_arrow_attributes);
-
-    FMAW::TileAttributes cursor_cross_attributes {
+        FMAW::ScreenMain),
+    tileCross(
         gfx_cursor_crossTiles,
         gfx_cursor_crossTilesLen,
         gfx_cursor_crossPal,
         gfx_cursor_crossPalLen,
         FMAW::TypeSprite,
-        FMAW::ScreenMain
-    };
-    this->tileCross = FMAW::Tile(cursor_cross_attributes);
+        FMAW::ScreenMain),
+    tile(FMAW::Tile(0)) {}
+
+void Cursor::init() {
+    this->tile = FMAW::Tile(this->tileSquare);
 
     this->sprite.setSizeMode(FMAW::square16x16);
     this->sprite.enable();
@@ -48,14 +39,25 @@ void Cursor::init() {
     this->setSquare();
 }
 
+void Cursor::enable() {
+    this->sprite.enable();
+}
+
+void Cursor::disable() {
+    this->sprite.clear();
+}
+
 void Cursor::setArrow() {
-    this->sprite.setTile(this->tileArrow);
+    this->tile = FMAW::Tile(this->tileArrow, this->tile.ID);
+    this->sprite.setTile(this->tile);
 }
 
 void Cursor::setSquare() {
-    this->sprite.setTile(this->tileSquare);
+    this->tile = FMAW::Tile(this->tileSquare, this->tile.ID);
+    this->sprite.setTile(this->tile);
 }
 
 void Cursor::setCross() {
-    this->sprite.setTile(this->tileCross);
+    this->tile = FMAW::Tile(this->tileCross, this->tile.ID);
+    this->sprite.setTile(this->tile);
 }

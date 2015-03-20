@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <map>
+#include <string>
+#include <functional>
 
 #include "./cell.h"
 #include "./cursor.h"
@@ -60,9 +62,14 @@ class Grid {
     int rightArrowCallbackID;
 
     /**
-     * ID of the callback triggered when a button is released.
+     * ID of the callback triggered when A button is released.
      */
     int aButtonCallbackID;
+
+    /**
+     * ID of the callback triggered when B button is released.
+     */
+    int bButtonCallbackID;
 
     /**
      * Cells rechables by currently selected unit.
@@ -86,6 +93,11 @@ class Grid {
      */
     FILE *savefile;
 
+    /**
+     * Whether grid is currently playing a saved file or not.
+     */
+    bool playingSavedFile;
+
   public:
     /**
      * Creates a new grid.
@@ -97,7 +109,27 @@ class Grid {
      * @param filename File where history will be saved.
      * @return         Whether file can be used to save history or not.
      */
-    bool enableSavingHistory(const char *filename);
+    bool enableSavingHistory(std::string filename);
+
+    /**
+     * Plays saved history.
+     * @param filename File where history is located.
+     * @param callback Function to be called when history has been played.
+     *                 Argument will be true on success.
+     */
+    void playSavedHistory(std::string filename,
+                          std::function<void(bool)> callback);
+
+    /**
+     * Removes all units from this grid.
+     */
+    void clearGridUnits();
+
+    /**
+     * Returns whether a saved file is being played or not.
+     * @return Whether a saved file is being played or not.
+     */
+    bool isPlayingSavedFile();
 
     /**
      * Resets available movements for all units in the grid.

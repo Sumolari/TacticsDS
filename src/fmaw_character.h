@@ -81,7 +81,7 @@ class Character {
      * Creates a new character given its sprite.
      */
     Character(FMAW::Sprite sprite): sprite(sprite) {
-        FMAW::printf("Character will be forced to use sprite %d", sprite.id);
+        // FMAW::printf("Character will be forced to use sprite %d", sprite.id);
     };
 
     /**
@@ -188,6 +188,8 @@ class Character {
      * Displays information about this character.
      */
     virtual void print();
+
+    virtual ~Character();
 };
 
 }

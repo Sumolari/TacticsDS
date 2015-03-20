@@ -3,6 +3,8 @@
 #include <sstream>
 #include <cstdlib>
 
+#include "./constants.h"
+
 #include "./FMAW.h"  // Import our awesome framework!
 #include "./memtrack.h"
 
@@ -70,40 +72,6 @@ FMAW::FixedReal g_camera_y;
  * Calling this method will require to reinitialize all sprites!
  */
 void setupGraphics(void) {
-    FMAW::TileAttributes blank_tile_attributes {
-        gfx_blankTiles,
-        gfx_blankTilesLen,
-        gfx_blankPal,
-        gfx_blankPalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile blank_tile(blank_tile_attributes);
-
-    FMAW::TileAttributes black_tile_attributes {
-        gfx_blackTiles,
-        gfx_blackTilesLen,
-        gfx_blackPal,
-        gfx_blackPalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile black_tile(black_tile_attributes);
-    FMAW::printf("El fondo negro tiene ID=%d", black_tile.ID);
-
-    FMAW::TileAttributes brick_tile_attributes {
-        gfx_brickTiles,
-        gfx_brickTilesLen,
-        gfx_brickPal,
-        gfx_brickPalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile brick_tile(brick_tile_attributes);
-    FMAW::printf("El fondo de ladrillo tiene ID=%d", brick_tile.ID);
-
-    //------------------------------------------------------------------------//
-
     FMAW::TileAttributes gfx_Base_attributes {
         gfx_BaseTiles,
         gfx_BaseTilesLen,
@@ -207,18 +175,45 @@ int main(void) {
 
     GridMap::loadDefaultGridMap(&grid);
 
-    Warrior warriorA{blue.getID()}, warriorB{red.getID()};
-    grid.cellAtIndexPath({0, 0})->setCharacter(&warriorA);
-    warriorA.print();
-    grid.cellAtIndexPath({4, 2})->setCharacter(&warriorB);
+    auto addSomeUnits = [&blue, &red]() {
+        Warrior *warriorA = new Warrior(blue.getID());
+        Warrior *warriorB = new Warrior(red.getID());
 
-    auto func = [&warriorA, &warriorB](int ID) {
-        warriorA.update();
-        warriorB.update();
+        Warrior *warriorC = new Warrior(blue.getID());
+        Warrior *warriorD = new Warrior(blue.getID());
+        Warrior *warriorE = new Warrior(blue.getID());
+        Warrior *warriorF = new Warrior(blue.getID());
+        Warrior *warriorG = new Warrior(blue.getID());
+        Warrior *warriorH = new Warrior(blue.getID());
+        /*
+        Warrior *warriorI = new Warrior(blue.getID());
+        Warrior *warriorJ = new Warrior(blue.getID());
+        Warrior *warriorK = new Warrior(blue.getID());
+        Warrior *warriorL = new Warrior(blue.getID());
+        */
+
+        grid.cellAtIndexPath({0, 0})->setCharacter(warriorA);
+        grid.cellAtIndexPath({4, 2})->setCharacter(warriorB);
+
+        grid.cellAtIndexPath({0, 1})->setCharacter(warriorC);
+        grid.cellAtIndexPath({0, 2})->setCharacter(warriorD);
+        grid.cellAtIndexPath({0, 3})->setCharacter(warriorE);
+        grid.cellAtIndexPath({0, 4})->setCharacter(warriorF);
+        grid.cellAtIndexPath({0, 5})->setCharacter(warriorG);
+        grid.cellAtIndexPath({1, 0})->setCharacter(warriorH);
+        /*
+        grid.cellAtIndexPath({1, 1})->setCharacter(warriorI);
+        grid.cellAtIndexPath({1, 2})->setCharacter(warriorJ);
+        grid.cellAtIndexPath({1, 3})->setCharacter(warriorK);
+        grid.cellAtIndexPath({1, 4})->setCharacter(warriorL);
+        */
+
+        grid.resetUnitMovements();
     };
-    FMAW::Timer::enqueue_function(func, 200, true);
 
     auto releaseB = []() {
+        if (menu.isInForeground() || grid.isPlayingSavedFile()) return;
+
         grid.resetUnitMovements();
         FMAW::printf("Tocaría cambiar de turno!");
         grid.resetPickedUpCell();
@@ -229,6 +224,9 @@ int main(void) {
     FMAW::Input::onButtonBReleased(releaseB);
 
     auto releaseStart = []() {
+        // Disable interaction is saved game is being played.
+        if (grid.isPlayingSavedFile()) return;
+
         if (menu.isInForeground()) {
             menu.makeBackground();
             grid.enqueueCallbacks();
@@ -240,10 +238,47 @@ int main(void) {
     };
     FMAW::Input::onButtonStartReleased(releaseStart);
 
+    auto newGameCallback = [addSomeUnits]() {
+        FMAW::printf("Should start a new game!");
+        grid.clearGridUnits();
+        FMAW::Tile::releaseAllSpriteMemory();
+        grid.initCursor();
+        addSomeUnits();
+        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        menu.makeBackground();
+        grid.enqueueCallbacks();
+    };
+
+    auto loadGameCallback = [addSomeUnits]() {
+        menu.makeBackground();
+        FMAW::printf("Should load a previous game!");
+        auto callback = [&addSomeUnits](bool success) {
+            FMAW::printf("Played saved game: %d", success);
+            if (success) {
+                addSomeUnits();
+                grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+            }
+            menu.makeForeground();
+        };
+        grid.playSavedHistory(DEFAULT_SAVEGAME_FILE, callback);
+    };
+
+    auto versusCallback = []() {
+        FMAW::printf("Should start a new versus game!");
+    };
+
+    menu.newGameCallback = newGameCallback;
+    menu.loadGameCallback = loadGameCallback;
+    menu.versusCallback = versusCallback;
+
+    addSomeUnits();
+
     menu.init();
-    grid.resetUnitMovements();
     grid.enqueueCallbacks();
     grid.renderBackground();
+    if (!grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE)) {
+        FMAW::printf("ERROR when trying to write file");
+    }
 
     FMAW::start();
 

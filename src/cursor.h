@@ -7,19 +7,24 @@ class Cursor : public FMAW::Character {
 
   private:
     /**
-     * Tile of the squared cursor.
+     * TileAttributes of the squared cursor.
      */
-    FMAW::Tile tileSquare;
+    FMAW::TileAttributes tileSquare;
 
     /**
-     * Tile of the arrow cursor.
+     * TileAttributes of the arrow cursor.
      */
-    FMAW::Tile tileArrow;
+    FMAW::TileAttributes tileArrow;
 
     /**
-     * Tile of the cross cursor.
+     * TileAttributes of the cross cursor.
      */
-    FMAW::Tile tileCross;
+    FMAW::TileAttributes tileCross;
+
+    /**
+     * Actual tile used by the cross cursor.
+     */
+    FMAW::Tile tile;
 
   public:
     /**
@@ -31,6 +36,16 @@ class Cursor : public FMAW::Character {
      * Initializes tiles for the cursor.
      */
     void init();
+
+    /**
+     * Shows cursor.
+     */
+    void enable();
+
+    /**
+     * Hides cursor.
+     */
+    void disable();
 
     /**
      * Sets the cursor to be an arrow.
