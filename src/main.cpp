@@ -13,6 +13,8 @@
 //------------------------------------------------------------------------------
 
 #include "./warrior.h"
+#include "./knight.h"
+#include "./sniper.h"
 
 #include "./gfx_brick.h"
 #include "./gfx_gradient.h"
@@ -190,13 +192,11 @@ int main(void) {
     auto addSomeUnits = []() {
         Warrior *warriorA = new Warrior(blue->getID());
         Warrior *warriorB = new Warrior(red->getID());
-
-        Warrior *warriorC = new Warrior(blue->getID());
-        Warrior *warriorD = new Warrior(blue->getID());
+        Sniper *warriorC = new Sniper(blue->getID());
+        Sniper *warriorD = new Sniper(red->getID());
         Warrior *warriorE = new Warrior(blue->getID());
-        Warrior *warriorF = new Warrior(blue->getID());
-        Warrior *warriorG = new Warrior(blue->getID());
-        Warrior *warriorH = new Warrior(blue->getID());
+        Knight *warriorF = new Knight(blue->getID());
+        Knight *warriorG = new Knight(blue->getID());
         /*
         Warrior *warriorI = new Warrior(blue.getID());
         Warrior *warriorJ = new Warrior(blue.getID());
@@ -212,7 +212,6 @@ int main(void) {
         grid.cellAtIndexPath({0, 3})->setCharacter(warriorE);
         grid.cellAtIndexPath({0, 4})->setCharacter(warriorF);
         grid.cellAtIndexPath({0, 5})->setCharacter(warriorG);
-        grid.cellAtIndexPath({1, 0})->setCharacter(warriorH);
         /*
         grid.cellAtIndexPath({1, 1})->setCharacter(warriorI);
         grid.cellAtIndexPath({1, 2})->setCharacter(warriorJ);

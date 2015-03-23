@@ -34,6 +34,29 @@ class Unit : public FMAW::Character {
      */
     int currentAvailableActions;
 
+	/**
+	 * Maximum amount of health this Unit has.
+	 */
+	int maximumHealth;
+	/**
+	 * Amount of health this Unit currently has.
+	 */
+	int currentHealth;
+	
+	/**
+	 * Minimum range from which this Unit can attack.
+	 */
+	int minimumAttackRange;
+	/**
+	 * Maximum range from which this Unit can attack.
+	 */
+	int maximumAttackRange;
+
+	/**
+	 * Attack power of this Unit.
+	 */
+	int attackPower;
+
     /**
      * Creates a new unit using a new sprite.
      */
@@ -58,6 +81,8 @@ class Unit : public FMAW::Character {
     static Unit *UnitWithType(int unitType, PlayerID ownerID);
 
     virtual void update();
+    
+    virtual void update_freq();
 
     /**
      * Returns the internal type identifier for this kind of Unit.
@@ -70,6 +95,48 @@ class Unit : public FMAW::Character {
      * @return Movement capacity of this Unit.
      */
     int getMovementCapacity();
+
+	/**
+     * Returns the maximum health of this Unit.
+     * @return Maximum health of this Unit.
+     */
+    int getMaximumHealth();
+    /**
+     * Returns the current health of this Unit.
+     * @return Current health of this Unit.
+     */
+    int getCurrentHealth();
+
+    /**
+     * Sets the current health of this Unit to the given value.
+     * @param h  New value for the current health of this Unit.
+     */
+    void setCurrentHealth(int h);
+
+    /**
+     * Returns the minimum attack range of this Unit.
+     * @return Minimum attack range of this Unit.
+     */
+    int getMinimumAttackRange();
+    /**
+     * Returns the maximum attack range of this Unit.
+     * @return Maximum attack range of this Unit.
+     */
+    int getMaximumAttackRange();
+    
+    /**
+     * Returns the attack power of this Unit.
+     * @return Attack power of this Unit.
+     */
+    int force();
+    
+    /**
+     * Returns true if the attacked unit is alive afterwards.
+     * False otherwise.
+     * @param u  The unit to attack.
+     * @return   Attacked unit aliveness.
+     */
+    bool attackUnit(Unit *u);
 
     /**
      * Resets the internal counter of available actions.

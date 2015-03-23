@@ -77,10 +77,21 @@ class Grid {
     std::map<IndexPath, bool> reachableCells;
 
     /**
+     * Cells attackable by currently selected unit.
+     */
+    std::map<IndexPath, bool> attackableCells;
+
+    /**
      * Recomputes the cells reachable by currently selected unit.
      * If no unit is selected all cells are available.
      */
     void recomputeReachableCells();
+
+    /**
+     * Recomputes the cells attackable by currently selected unit.
+     * If no unit is selected no cells are available.
+     */
+    void recomputeAttackableCells();
 
     /**
      * Returns whether some cell with a character has been picked up or not.
@@ -269,6 +280,11 @@ class Grid {
      * Sets the cursor to be a cross.
      */
     void setCrossCursor();
+
+    /**
+     * Sets the cursor to be a sword.
+     */
+    void setSwordCursor();
 
     /**
      * Resets picked up cell so no cell is selected.

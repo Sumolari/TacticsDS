@@ -1,5 +1,5 @@
-#ifndef WARRIOR_H
-#define WARRIOR_H
+#ifndef KNIGHT_H
+#define KNIGHT_H
 
 #include "./FMAW.h"
 #include "./constants.h"
@@ -10,25 +10,25 @@
 //----------//------------------------------------------------------------------
 
 // Framework will handle memory positions! :)
-#define TILES_WARRIOR_1       0  // Warrior tiles (32x32 tile:  0 -> 15)
-#define TILES_WARRIOR_2       1  // Warrior tiles (32x32 tile: 16 -> 31)
-#define TILES_WARRIOR_3       2  // Warrior tiles (32x32 tile: 31 -> 47)
+#define TILES_KNIGHT_1       0  // Knight tiles (32x32 tile:  0 -> 15)
+#define TILES_KNIGHT_2       1  // Knight tiles (32x32 tile: 16 -> 31)
+#define TILES_KNIGHT_3       2  // Knight tiles (32x32 tile: 31 -> 47)
 
 //----------//------------------------------------------------------------------
 //----------// Other attributes
 //----------//------------------------------------------------------------------
 
-#define WARRIOR_HEIGHT        16
+#define KNIGHT_HEIGHT        16
 
-class Warrior : public Unit {
+class Knight : public Unit {
   protected:
     // ID of tile currently displayed.
     int currentTileID;
     // Palette of tile currently displayed.
     int currentTilePalette;
-    // Tiles used to animate this Warrior.
+    // Tiles used to animate this Knight.
     FMAW::TileAttributes **tiles;
-    // Tile being used by this warrior.
+    // Tile being used by this Knight.
     FMAW::Tile *tile;
     // ID of the update callback.
     int updateID;
@@ -36,16 +36,16 @@ class Warrior : public Unit {
     virtual void init();
   public:
     /**
-     * Creates a new Warrior using a new sprite.
+     * Creates a new Knight using a new sprite.
      */
-    explicit Warrior(PlayerID ownerID): Unit(ownerID) {
+    explicit Knight(PlayerID ownerID): Unit(ownerID) {
         init();
     };
 
     /**
-     * Creates a new Warrior given its sprite.
+     * Creates a new Knight given its sprite.
      */
-    explicit Warrior(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
+    explicit Knight(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
         init();
     };
 
@@ -54,16 +54,16 @@ class Warrior : public Unit {
     virtual void update_freq();
 
     /**
-     * Resets position of this Warrior.
+     * Resets position of this Knight.
      */
     void reset();
 
     /**
-     * Prints debug information about this warrior.
+     * Prints debug information about this Knight.
      */
     void print();
 
-    virtual ~Warrior();
+    virtual ~Knight();
 };
 
 #endif

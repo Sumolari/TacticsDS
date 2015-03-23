@@ -5,6 +5,7 @@
 #include "./gfx_cursor_square.h"
 #include "./gfx_cursor_arrow.h"
 #include "./gfx_cursor_cross.h"
+#include "./gfx_cursor_sword.h"
 
 Cursor::Cursor() :
     tileSquare(
@@ -26,6 +27,13 @@ Cursor::Cursor() :
         gfx_cursor_crossTilesLen,
         gfx_cursor_crossPal,
         gfx_cursor_crossPalLen,
+        FMAW::TypeSprite,
+        FMAW::ScreenMain),
+    tileSword(
+        gfx_cursor_swordTiles,
+        gfx_cursor_swordTilesLen,
+        gfx_cursor_swordPal,
+        gfx_cursor_swordPalLen,
         FMAW::TypeSprite,
         FMAW::ScreenMain),
     tile(FMAW::Tile(0)) {}
@@ -59,5 +67,10 @@ void Cursor::setSquare() {
 
 void Cursor::setCross() {
     this->tile = FMAW::Tile(this->tileCross, this->tile.ID);
+    this->sprite.setTile(this->tile);
+}
+
+void Cursor::setSword() {
+    this->tile = FMAW::Tile(this->tileSword, this->tile.ID);
     this->sprite.setTile(this->tile);
 }

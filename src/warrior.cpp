@@ -24,7 +24,13 @@ void Warrior::init() {
     this->unitType = UNIT_TYPE_WARRIOR;
     this->movementCapacity = 4;
     this->maximumAvailableActions = 1;
-    this->currentAvailableActions = 1;
+    this->currentAvailableActions = this->maximumAvailableActions;
+    this->maximumHealth = 10;
+    this->currentHealth = this->maximumHealth;
+    this->minimumAttackRange = 1;
+    this->maximumAttackRange = 1;
+    this->attackPower = 2;
+    this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
                              FMAW::TileAttributes *);
@@ -152,6 +158,19 @@ void Warrior::update() {
 
         this->sprite.setTile(*(this->tile));
     }
+}
+
+void Warrior::update_freq() {
+    FMAW::Timer::dequeue_function(this->updateID);
+
+    auto _update = [this](int ID) {
+        this->update();
+    };
+
+    //TODO decent time calculation
+    int t = 200 * (this->maximumHealth / this->currentHealth);
+
+    this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
 }
 
 void Warrior::reset() {

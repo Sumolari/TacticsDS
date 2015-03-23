@@ -1,5 +1,5 @@
-#ifndef WARRIOR_H
-#define WARRIOR_H
+#ifndef SNIPER_H
+#define SNIPER_H
 
 #include "./FMAW.h"
 #include "./constants.h"
@@ -10,25 +10,25 @@
 //----------//------------------------------------------------------------------
 
 // Framework will handle memory positions! :)
-#define TILES_WARRIOR_1       0  // Warrior tiles (32x32 tile:  0 -> 15)
-#define TILES_WARRIOR_2       1  // Warrior tiles (32x32 tile: 16 -> 31)
-#define TILES_WARRIOR_3       2  // Warrior tiles (32x32 tile: 31 -> 47)
+#define TILES_SNIPER_1       0  // Sniper tiles (32x32 tile:  0 -> 15)
+#define TILES_SNIPER_2       1  // Sniper tiles (32x32 tile: 16 -> 31)
+#define TILES_SNIPER_3       2  // Sniper tiles (32x32 tile: 31 -> 47)
 
 //----------//------------------------------------------------------------------
 //----------// Other attributes
 //----------//------------------------------------------------------------------
 
-#define WARRIOR_HEIGHT        16
+#define SNIPER_HEIGHT        16
 
-class Warrior : public Unit {
+class Sniper : public Unit {
   protected:
     // ID of tile currently displayed.
     int currentTileID;
     // Palette of tile currently displayed.
     int currentTilePalette;
-    // Tiles used to animate this Warrior.
+    // Tiles used to animate this Sniper.
     FMAW::TileAttributes **tiles;
-    // Tile being used by this warrior.
+    // Tile being used by this Sniper.
     FMAW::Tile *tile;
     // ID of the update callback.
     int updateID;
@@ -36,34 +36,34 @@ class Warrior : public Unit {
     virtual void init();
   public:
     /**
-     * Creates a new Warrior using a new sprite.
+     * Creates a new Sniper using a new sprite.
      */
-    explicit Warrior(PlayerID ownerID): Unit(ownerID) {
+    explicit Sniper(PlayerID ownerID): Unit(ownerID) {
         init();
     };
 
     /**
-     * Creates a new Warrior given its sprite.
+     * Creates a new Sniper given its sprite.
      */
-    explicit Warrior(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
+    explicit Sniper(FMAW::Sprite sprite, PlayerID ownerID): Unit(sprite, ownerID) {
         init();
     };
 
     virtual void update();
-    
-    virtual void update_freq();
 
+    virtual void update_freq();
+    
     /**
-     * Resets position of this Warrior.
+     * Resets position of this Sniper.
      */
     void reset();
 
     /**
-     * Prints debug information about this warrior.
+     * Prints debug information about this Sniper.
      */
     void print();
 
-    virtual ~Warrior();
+    virtual ~Sniper();
 };
 
 #endif

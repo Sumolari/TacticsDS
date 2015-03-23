@@ -6,6 +6,8 @@
 
 #include "./constants.h"
 #include "./warrior.h"
+#include "./knight.h"
+#include "./sniper.h"
 
 Unit::Unit(PlayerID ownerID) : Unit(FMAW::Sprite(), ownerID) {}
 
@@ -21,6 +23,10 @@ Unit *Unit::UnitWithType(int unitType, PlayerID ownerID) {
     switch (unitType) {
         case UNIT_TYPE_WARRIOR:
             return new Warrior(ownerID);
+        case UNIT_TYPE_KNIGHT:
+            return new Knight(ownerID);
+        case UNIT_TYPE_SNIPER:
+            return new Sniper(ownerID);
         default:
             return new Unit(ownerID);
     }
@@ -29,6 +35,8 @@ Unit *Unit::UnitWithType(int unitType, PlayerID ownerID) {
 void Unit::init() {}
 
 void Unit::update() {}
+
+void Unit::update_freq() {}
 
 int Unit::getUnitType() {
     return this->unitType;
@@ -55,6 +63,41 @@ bool Unit::hasAvailableActions() {
 
 int Unit::getMovementCapacity() {
     return this->movementCapacity;
+}
+
+int Unit::getMaximumHealth() {
+    return this->maximumHealth;
+}
+int Unit::getCurrentHealth() {
+    return this->currentHealth;
+}
+
+void Unit::setCurrentHealth(int h){
+	this->currentHealth = h;
+}
+
+int Unit::getMinimumAttackRange() {
+    return this->minimumAttackRange;
+}
+int Unit::getMaximumAttackRange() {
+    return this->maximumAttackRange;
+}
+
+int Unit::force(){
+	return this->attackPower;
+}
+
+bool Unit::attackUnit(Unit *u){
+	u->setCurrentHealth(u->getCurrentHealth() - this->force());
+	
+	if( u->getCurrentHealth() <= 0 ){
+		delete( u );
+		return true;
+	}
+	
+	u->update_freq();
+	
+	return false;
 }
 
 PlayerID Unit::getOwner() {
