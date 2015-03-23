@@ -110,6 +110,13 @@ class Grid {
     bool playingSavedFile;
 
   public:
+
+    /**
+     * Callback called when game is over.
+     * Parameter is the winner.
+     */
+    std::function<void(int)> gameOverCallback;
+
     /**
      * Creates a new grid.
      */
@@ -217,6 +224,14 @@ class Grid {
      * @return Amount of columns in this grid.
      */
     int numCols();
+
+    /**
+     * Returns whether there exists at least one character of given user in the
+     * grid or not.
+     * @param  owner ID of the owner.
+     * @return       True if there exists at least one character of given user.
+     */
+    bool existCharacterWithOwner(int owner);
 
     //--------------------------------------------------------------------------
     // Cell selection.

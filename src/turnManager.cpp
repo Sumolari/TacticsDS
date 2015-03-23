@@ -10,6 +10,9 @@ namespace TurnManager {
 // ID of currently playing player.
 PlayerID _currentPlayerID = 0;
 
+// ID of winner player.
+PlayerID _winnerID = -1;
+
 // Players in the game.
 std::vector<Player *> players;
 
@@ -28,6 +31,7 @@ int numPlayers() {
 void reset() {
     _currentPlayerID = 0;
     players.clear();
+    resetWinner();
 }
 
 void finishTurn() {
@@ -39,6 +43,18 @@ void finishTurn() {
 
 bool gameShouldFinish() {
     return false;
+}
+
+PlayerID getWinner() {
+    return _winnerID;
+}
+
+void setWinner(PlayerID winnerID) {
+    _winnerID = winnerID;
+}
+
+void resetWinner() {
+    _winnerID = -1;
 }
 
 }  // namespace TurnManager

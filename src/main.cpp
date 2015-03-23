@@ -304,6 +304,13 @@ int main(void) {
 
     addSomeUnits();
 
+    auto gameOverCallback = [](int winner) {
+        FMAW::printf("Winner is %d!", winner);
+        TurnManager::setWinner(winner);
+        menu.adjustCurrentTile();
+    };
+    grid.gameOverCallback = gameOverCallback;
+
     menu.init();
     grid.enqueueCallbacks();
     grid.renderBackground();

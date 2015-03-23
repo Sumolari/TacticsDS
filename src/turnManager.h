@@ -40,6 +40,23 @@ void finishTurn();
  */
 bool gameShouldFinish();
 
+/**
+ * Returns winner player's ID.
+ * @return Winner player's ID.
+ */
+PlayerID getWinner();
+
+/**
+ * Sets winner player.
+ * @param winnerID New winner's player ID.
+ */
+void setWinner(PlayerID winnerID);
+
+/**
+ * Resets winner player so there is not winner player.
+ */
+void resetWinner();
+
 }; // namespace TurnManager
 
 #endif

@@ -14,6 +14,8 @@
 #include "./gfx_main_menu_new_game.h"
 #include "./gfx_main_menu_load_game.h"
 #include "./gfx_main_menu_versus.h"
+#include "./gfx_winner_blue.h"
+#include "./gfx_winner_red.h"
 
 //------------------------------------------------------------------------------
 // Main Menu options
@@ -108,6 +110,20 @@ MainMenu::MainMenu():
                                     gfx_main_menu_versusPalLen,
                                     FMAW::TypeBackground,
                                     FMAW::ScreenSub)),
+    winner_blue_attributes(FMAW::TileAttributes(
+                               gfx_winner_blueTiles,
+                               gfx_winner_blueTilesLen,
+                               gfx_winner_bluePal,
+                               gfx_winner_bluePalLen,
+                               FMAW::TypeBackground,
+                               FMAW::ScreenSub)),
+    winner_red_attributes(FMAW::TileAttributes(
+                              gfx_winner_redTiles,
+                              gfx_winner_redTilesLen,
+                              gfx_winner_redPal,
+                              gfx_winner_redPalLen,
+                              FMAW::TypeBackground,
+                              FMAW::ScreenSub)),
     current_tile(FMAW::Tile(0)),
     currentlySelectedOption(MAIN_MENU_OPTION_NEW_GAME) {}
 
@@ -143,6 +159,14 @@ void MainMenu::adjustCurrentTile() {
                 this->current_tile = FMAW::Tile(this->main_menu_attributes,
                                                 this->backgroundTileID);
                 break;
+        }
+    } else if (TurnManager::getWinner() != -1) {
+        if (TurnManager::getWinner() == 0) {
+            this->current_tile = FMAW::Tile(this->winner_blue_attributes,
+                                            this->backgroundTileID);
+        } else {
+            this->current_tile = FMAW::Tile(this->winner_red_attributes,
+                                            this->backgroundTileID);
         }
     } else if (TurnManager::currentPlayerID() == 0) {
         this->current_tile = FMAW::Tile(this->logo_attributes_blue,
