@@ -97,6 +97,11 @@ class MainMenu {
      */
     int currentlySelectedOption;
 
+    /**
+     * ID of the effect to be played when interacting with main menu.
+     */
+    int selectSoundID;
+
   public:
 
     /**

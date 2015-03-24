@@ -53,6 +53,11 @@ bool stopEffect(playID reproductionID);
  */
 void setBackgroundMusic(int musicID);
 
+/**
+ * Pasues background music.
+ */
+void stopBackgroundMusic();
+
 }  // namespace Sound
 
 }  // namespace FMAW
