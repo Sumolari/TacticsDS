@@ -229,7 +229,10 @@ int main(void) {
     };
     FMAW::Input::onButtonBReleased(releaseB);
 
-    auto releaseStart = []() {
+    int ambulanceSoundID = FMAW::Sound::registerFX(FMAW::Sound::effectWithSoundID(
+                               SFX_BOOM));
+
+    auto releaseStart = [ambulanceSoundID]() {
         // Disable interaction is saved game is being played.
         if (grid.isPlayingSavedFile()) return;
 
@@ -241,7 +244,10 @@ int main(void) {
             grid.dequeueCallbacks();
         }
         // MemTrack::TrackListMemoryUsage();
+
+        FMAW::Sound::playEffect(ambulanceSoundID);
     };
+
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     auto newGameCallback = [addSomeUnits, finishTurnCallback]() {
