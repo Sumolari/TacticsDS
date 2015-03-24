@@ -31,7 +31,9 @@ typedef enum t_cellBackgroundType {
     CellBGForest   = 2,
     CellBGGrass    = 3,
     CellBGMountain = 4,
-    CellBGRiver    = 5
+    CellBGRiver    = 5,
+    CellBGRiverH   = 6,
+    CellBGBridgeH  = 7,
 } CellBackgroundType;
 
 #define CELL_WIDTH  16

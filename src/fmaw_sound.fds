@@ -1,0 +1,70 @@
+// Copyright 2015 FMAW
+
+#include "./fmaw_sound.h"
+
+#include <nds.h>
+#include <maxmod9.h>
+
+#include <map>
+
+#include "./soundbank_bin.h"
+
+namespace FMAW {
+
+namespace Sound {
+
+std::map<int, mm_sound_effect> specialEffects;
+std::map<int, mm_sfxhand> playingSounds;
+
+FX effectWithSoundID(int ID) {
+    FX effect;
+    effect.id = ID;
+    effect.rate = (static_cast<int>(1.0f * (1 << 10)));
+    effect.handle = 0;
+    effect.volume = 255;
+    effect.panning = 127;
+    return effect;
+}
+
+void init() {
+    mmInitDefaultMem((mm_addr)soundbank_bin);
+}
+
+int registerFX(FX fx) {
+    mmLoadEffect(fx.id);
+
+    mm_sound_effect effect = {
+        { fx.id },
+        fx.rate,
+        fx.handle,
+        fx.volume,
+        fx.panning
+    };
+
+    specialEffects[specialEffects.size()] = effect;
+    return specialEffects.size() - 1;
+}
+
+playID playEffect(int effectID) {
+    mm_sound_effect effect = specialEffects[effectID];
+    mm_sfxhand reproduction =  mmEffectEx(&effect);
+    playingSounds[playingSounds.size()] = reproduction;
+    return playingSounds.size() - 1;
+}
+
+bool stopEffect(playID reproductionID) {
+    if (playingSounds.find(reproductionID) != playingSounds.end()) {
+        mmEffectCancel(playingSounds[reproductionID]);
+        return true;
+    }
+    return false;
+}
+
+void setBackgroundMusic(int musicID) {
+    mmLoad(musicID);
+    mmStart(musicID, MM_PLAY_LOOP);
+}
+
+}  // namespace Sound
+
+}  // namespace FMAW

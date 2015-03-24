@@ -52,6 +52,7 @@ int Cell::movementCost() {
         case CellBGBase:
             return COST_CELL_BASE;
         case CellBGBridge:
+        case CellBGBridgeH:
             return COST_CELL_BRIDGE;
         case CellBGForest:
             return COST_CELL_FOREST;
@@ -60,10 +61,8 @@ int Cell::movementCost() {
         case CellBGMountain:
             return COST_CELL_MOUNTAIN;
         case CellBGRiver:
+        case CellBGRiverH:
             return COST_CELL_RIVER;
-        case CellBGBlack:
-        case CellBGNone:
-        case CellBGWhite:
         default:
             return COST_CELL_INFINITY;
     }
@@ -73,10 +72,12 @@ void Cell::renderBackground() {
     switch (this->backgroundType) {
         case CellBGBase:
         case CellBGBridge:
+        case CellBGBridgeH:
         case CellBGForest:
         case CellBGGrass:
         case CellBGMountain:
         case CellBGRiver:
+        case CellBGRiverH:
             this->background.setScreenBaseBlock(2);
             for (int i = 0; i < this->tiles.size(); ++i) {
                 this->background.setTile(
@@ -87,14 +88,6 @@ void Cell::renderBackground() {
                     FMAW::Tile(this->backgroundType).palMemory);
             }
             break;
-        case CellBGBlack:
-            for (auto tile_id : this->tiles) {
-                this->background.setScreenBaseBlock(2);
-                this->background.setTile(tile_id, FMAW::Tile(1));
-            }
-            break;
-        case CellBGNone:
-        case CellBGWhite:
         default:
             break;
     }

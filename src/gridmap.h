@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "./grid.h"
 #include "./gridmap.h"
 
@@ -19,7 +20,7 @@ void loadDefaultGridMap(Grid *g);
  * @param mapName Name of the map to load.
  * @param g       Grid in which to load the map.
  */
-void loadGridMap(const char *mapName, Grid *g);
+void loadGridMap(std::string mapName, Grid *g);
 
 }
 

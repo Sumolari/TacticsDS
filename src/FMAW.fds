@@ -10,6 +10,7 @@ void (*update)();
 
 void init(void (*displayCallback)(), void (*updateCallback)()) {
     IO::init();
+    Sound::init();
     vramSetBankE(VRAM_E_MAIN_BG);
     vramSetBankF(VRAM_F_MAIN_SPRITE);
 

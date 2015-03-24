@@ -2,6 +2,11 @@
 #define CONSTANTS_H
 
 /**
+ * Import sound constants.
+ */
+#include "./soundbank.h"
+
+/**
  * Maximum amount of teams in a match.
  */
 #define MAX_TEAMS 2

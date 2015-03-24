@@ -26,6 +26,7 @@
 #include "./fmaw_timer.h"
 #include "./fmaw_input.h"
 #include "./fmaw_io.h"
+#include "./fmaw_sound.h"
 
 #include <functional>
 

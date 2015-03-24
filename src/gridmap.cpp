@@ -1,13 +1,9 @@
 // Copyright 2015 FMAW
 
-
-// Add method FMAW::fopen();
-// Add method FMAW::fclose();
-// Add method FMAW::fscanf();
-// Add method FMAW::fprintf();
-
 #include <iostream>
 #include <fstream>
+#include <string>
+
 #include "./FMAW.h"
 #include "./grid.h"
 #include "./gridmap.h"
@@ -18,8 +14,8 @@ void loadDefaultGridMap(Grid *g) {
     loadGridMap("defaultMap", g);
 }
 
-void loadGridMap(const char *mapName, Grid *g) {
-    FILE *test = FMAW::IO::fopen("./defaultMap", "r");
+void loadGridMap(std::string mapName, Grid *g) {
+    FILE *test = FMAW::IO::fopen(("./" + mapName).c_str(), "r");
 
     if (test != NULL) {
         int rows, cols, aux;
