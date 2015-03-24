@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <cstdlib>
+#include <string>
 
 #include "./constants.h"
 
@@ -24,10 +25,12 @@
 
 #include "./gfx_Base.h"
 #include "./gfx_Bridge.h"
+#include "./gfx_BridgeH.h"
 #include "./gfx_Forest.h"
 #include "./gfx_Grass.h"
 #include "./gfx_Mountain.h"
 #include "./gfx_River.h"
+#include "./gfx_RiverH.h"
 
 //------------------------------------------------------------------------------
 // Background tile entries
@@ -65,6 +68,16 @@ Grid grid;
 MainMenu menu;
 Player *blue;
 Player *red;
+
+#define MAPS_COUNT 4
+
+int selectedMap = 0;
+std::string availableMaps[MAPS_COUNT] = {
+    "defaultMap",
+    "riverHood",
+    "mistyMountain",
+    "rivendel"
+};
 
 FMAW::FixedReal g_camera_x;
 FMAW::FixedReal g_camera_y;
@@ -144,6 +157,28 @@ void setupGraphics(void) {
     FMAW::Tile River_tile(gfx_River_attributes);
     FMAW::printf("El fondo River tiene ID=%d", River_tile.ID);
 
+    FMAW::TileAttributes gfx_RiverH_attributes {
+        gfx_RiverHTiles,
+        gfx_RiverHTilesLen,
+        gfx_RiverHPal,
+        gfx_RiverHPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile RiverH_tile(gfx_RiverH_attributes);
+    FMAW::printf("El fondo RiverH tiene ID=%d", RiverH_tile.ID);
+
+    FMAW::TileAttributes gfx_BridgeH_attributes {
+        gfx_BridgeHTiles,
+        gfx_BridgeHTilesLen,
+        gfx_BridgeHPal,
+        gfx_BridgeHPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile BridgeH_tile(gfx_BridgeH_attributes);
+    FMAW::printf("El fondo BridgeH tiene ID=%d", BridgeH_tile.ID);
+
     //------------------------------------------------------------------------//
 
     // Set backdrop color.
@@ -222,6 +257,36 @@ int main(void) {
         grid.resetUnitMovements();
     };
 
+    auto loadSelectedMap = [addSomeUnits]() {
+        grid.clearGridUnits();
+        FMAW::Tile::releaseAllSpriteMemory();
+        GridMap::loadGridMap(availableMaps[selectedMap], &grid);
+        FMAW::printf("Loading map with ID=%d", selectedMap);
+        // addSomeUnits();
+        grid.initCursor();
+        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        grid.renderBackground();
+        grid.renderCharacters();
+    };
+
+    auto leftArrowCallback = [loadSelectedMap]() {
+        if (menu.isInForeground()) {
+            selectedMap += MAPS_COUNT - 1;
+            selectedMap %= MAPS_COUNT;
+            loadSelectedMap();
+        }
+    };
+    FMAW::Input::onButtonArrowLeftReleased(leftArrowCallback);
+
+    auto rightArrowCallback = [loadSelectedMap]() {
+        if (menu.isInForeground()) {
+            selectedMap += MAPS_COUNT + 1;
+            selectedMap %= MAPS_COUNT;
+            loadSelectedMap();
+        }
+    };
+    FMAW::Input::onButtonArrowRightReleased(rightArrowCallback);
+
     auto releaseB = [finishTurnCallback]() {
         if (menu.isInForeground() || grid.isInteractionEnabled()) return;
         finishTurnCallback();
@@ -229,10 +294,7 @@ int main(void) {
     };
     FMAW::Input::onButtonBReleased(releaseB);
 
-    int ambulanceSoundID = FMAW::Sound::registerFX(FMAW::Sound::effectWithSoundID(
-                               SFX_BOOM));
-
-    auto releaseStart = [ambulanceSoundID]() {
+    auto releaseStart = []() {
         // Disable interaction is saved game is being played.
         if (grid.isPlayingSavedFile()) return;
 
@@ -244,8 +306,6 @@ int main(void) {
             grid.dequeueCallbacks();
         }
         // MemTrack::TrackListMemoryUsage();
-
-        FMAW::Sound::playEffect(ambulanceSoundID);
     };
 
     FMAW::Input::onButtonStartReleased(releaseStart);
