@@ -185,6 +185,17 @@ class Grid {
     IndexPath getSelectedPath();
 
     /**
+     * Moves the attacking character in given cell to attacked 
+     * character at given cell and returns, simulating an attack.
+     * @param  attackerPos      Original cell of the attacking character.
+     * @param  victimPos        Final cell of the attacked character.
+     * @param  duration         Duration of the animation.
+     * @return                  Whether change could be performed or not.
+     */
+    bool attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
+                                     unsigned int duration);
+    
+    /**
      * Moves the character in given cell to given cell.
      * @param  from      Original cell of the character.
      * @param  to        Final cell of the character.

@@ -333,6 +333,45 @@ IndexPath Grid::getSelectedPath() {
     return this->selectedPath;
 }
 
+bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
+                                       unsigned int duration) {
+    Cell *a = this->cellAtIndexPath(attackerPos);
+    Cell *v = this->cellAtIndexPath(victimPos);
+    if (v->isOccupied() && a->isOccupied() && this->attackableCells[victimPos]) {
+         
+        Unit *attacker = a->getCharacter();
+        Unit *victim = v->getCharacter();
+		
+		bool isKill = attacker->attackUnit(victim);
+		
+		std::function<void(bool)> backToPosVict = [victim, v, duration, isKill](bool b){
+			if(b && !isKill) victim->animateToPosition(v->getCenter(), duration);
+		};
+
+		std::function<void(bool)> hurtRight = [victim, v, duration, isKill, backToPosVict](bool b){
+			FMAW::Point pvr = { v->getCenter().x+5, v->getCenter().y };
+			if(b && !isKill) victim->animateToPosition(pvr, duration, backToPosVict);
+		};
+
+        std::function<void(bool)> hurtLeft = [victim, v, duration, isKill, hurtRight](bool b){
+			FMAW::Point pvl = { v->getCenter().x-5, v->getCenter().y };
+			if(b && !isKill) victim->animateToPosition(pvl, duration, hurtRight);
+		};
+        
+        std::function<void(bool)> backToPosAtt = [attacker, a, duration, hurtLeft](bool b){
+			if(b){
+				hurtLeft(b);
+				attacker->animateToPosition(a->getCenter(), duration);
+			}
+		};
+		
+        attacker->animateToPosition(v->getCenter(), duration, backToPosAtt);
+        
+        return isKill;
+    }
+    return false;
+}
+
 bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
                                        unsigned int duration) {
     Cell *f = this->cellAtIndexPath(from);
@@ -594,11 +633,15 @@ void Grid::enqueueCallbacks() {
                     this->attackableCells[this->getSelectedPath()]) {
                 Unit *attacker = this->cellAtIndexPath(
                                      this->pickedUpCell)->getCharacter();
-                bool isKill = attacker->attackUnit(u);
+                
                 FMAW::printf("Atacando enemigo en la celda %d %d",
                              this->pickedUpCell.row,
                              this->pickedUpCell.col);
-
+				
+				bool isKill = this->attackCharacterAtCell(this->pickedUpCell,
+								          			       this->getSelectedPath(),
+											               50);
+				
                 attacker->decreaseAvailableActions();
 
                 if (isKill) {
