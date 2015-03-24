@@ -73,6 +73,16 @@ class MainMenu {
     FMAW::TileAttributes main_menu_versus_attributes;
 
     /**
+     * Tile for main menu when blue player wins.
+     */
+    FMAW::TileAttributes winner_blue_attributes;
+
+    /**
+     * Tile for main menu when red player wins.
+     */
+    FMAW::TileAttributes winner_red_attributes;
+
+    /**
      * ID of tile used to draw menu's background.
      */
     int backgroundTileID;

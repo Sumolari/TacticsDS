@@ -405,6 +405,20 @@ int Grid::numCols() {
     return this->cols;
 }
 
+bool Grid::existCharacterWithOwner(int owner) {
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath p{row, col};
+            Cell *c = this->cellAtIndexPath(p);
+            Unit *u = c->getCharacter();
+            if (c->isOccupied() && u->getOwner() == owner) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 //------------------------------------------------------------------------------
 // Cell selection.
 //------------------------------------------------------------------------------
@@ -598,7 +612,11 @@ void Grid::enqueueCallbacks() {
                                           this->getSelectedPath().col);
                         FMAW::IO::fflush(this->savefile);
                     }
+                    int enemyID = u->getOwner();
                     c->setCharacter(nullptr);
+                    if (!this->existCharacterWithOwner(enemyID)) {
+                        this->gameOverCallback(TurnManager::currentPlayerID());
+                    }
                 } else {
                     FMAW::printf("El enemigo sigue vivo");
                 }

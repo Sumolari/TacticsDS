@@ -4,8 +4,6 @@
 
 #include <vector>
 
-#include "./gfx_brick.h"
-
 bool operator <(IndexPath const &left, IndexPath const &right) {
     return left.row < right.row || (left.row == right.row
                                     && left.col < right.col);
