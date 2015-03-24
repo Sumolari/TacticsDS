@@ -343,6 +343,7 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
         Unit *victim = v->getCharacter();
 		
 		bool isKill = attacker->attackUnit(victim);
+		attacker->decreaseAvailableActions();
 		this->cursor.disable();
 		
 		std::function<void(bool)> reenableCursor = [this](bool b){
@@ -636,8 +637,6 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.col);
             if (this->hasPickedUpCell() &&
                     this->attackableCells[this->getSelectedPath()]) {
-                Unit *attacker = this->cellAtIndexPath(
-                                     this->pickedUpCell)->getCharacter();
                 
                 FMAW::printf("Atacando enemigo en la celda %d %d",
                              this->pickedUpCell.row,
@@ -646,8 +645,6 @@ void Grid::enqueueCallbacks() {
 				bool isKill = this->attackCharacterAtCell(this->pickedUpCell,
 								          			       this->getSelectedPath(),
 											               50);
-				
-                attacker->decreaseAvailableActions();
 
                 if (isKill) {
                     FMAW::printf("Enemigo abatido!");
