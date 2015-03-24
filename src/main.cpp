@@ -269,19 +269,24 @@ int main(void) {
         grid.renderCharacters();
     };
 
-    auto leftArrowCallback = [loadSelectedMap]() {
+    int selectSoundID = FMAW::Sound::registerFX(
+                            FMAW::Sound::effectWithSoundID(SFX_SELECT));
+
+    auto leftArrowCallback = [loadSelectedMap, selectSoundID]() {
         if (menu.isInForeground()) {
             selectedMap += MAPS_COUNT - 1;
             selectedMap %= MAPS_COUNT;
+            FMAW::Sound::playEffect(selectSoundID);
             loadSelectedMap();
         }
     };
     FMAW::Input::onButtonArrowLeftReleased(leftArrowCallback);
 
-    auto rightArrowCallback = [loadSelectedMap]() {
+    auto rightArrowCallback = [loadSelectedMap, selectSoundID]() {
         if (menu.isInForeground()) {
             selectedMap += MAPS_COUNT + 1;
             selectedMap %= MAPS_COUNT;
+            FMAW::Sound::playEffect(selectSoundID);
             loadSelectedMap();
         }
     };
@@ -294,9 +299,12 @@ int main(void) {
     };
     FMAW::Input::onButtonBReleased(releaseB);
 
-    auto releaseStart = []() {
+    auto releaseStart = [selectSoundID]() {
         // Disable interaction is saved game is being played.
         if (grid.isPlayingSavedFile()) return;
+
+        FMAW::Sound::stopBackgroundMusic();
+        FMAW::Sound::playEffect(selectSoundID);
 
         if (menu.isInForeground()) {
             menu.makeBackground();
@@ -311,6 +319,7 @@ int main(void) {
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     auto newGameCallback = [addSomeUnits, finishTurnCallback]() {
+        FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
         delete red;
@@ -331,6 +340,7 @@ int main(void) {
     };
 
     auto loadGameCallback = [addSomeUnits]() {
+        FMAW::Sound::setBackgroundMusic(MOD_BSO);
         menu.makeBackground();
         FMAW::printf("Should load a previous game!");
         auto callback = [&addSomeUnits](bool success) {
@@ -345,6 +355,7 @@ int main(void) {
     };
 
     auto versusCallback = [addSomeUnits]() {
+        FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
         delete red;
@@ -368,12 +379,15 @@ int main(void) {
     menu.loadGameCallback = loadGameCallback;
     menu.versusCallback = versusCallback;
 
-    addSomeUnits();
+    int victorySoundID = FMAW::Sound::registerFX(
+                             FMAW::Sound::effectWithSoundID(SFX_WIN));
 
-    auto gameOverCallback = [](int winner) {
+    auto gameOverCallback = [victorySoundID](int winner) {
         FMAW::printf("Winner is %d!", winner);
         TurnManager::setWinner(winner);
         menu.adjustCurrentTile();
+        FMAW::Sound::stopBackgroundMusic();
+        FMAW::Sound::playEffect(victorySoundID);
     };
     grid.gameOverCallback = gameOverCallback;
 
@@ -384,7 +398,7 @@ int main(void) {
         FMAW::printf("ERROR when trying to write file");
     }
 
-    FMAW::Sound::setBackgroundMusic(MOD_FLATOUTLIES);
+    releaseStart();
 
     FMAW::start();
 

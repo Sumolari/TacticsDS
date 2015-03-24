@@ -2,6 +2,7 @@
 
 #include "./main_menu.h"
 
+#include "./constants.h"
 #include "./turnManager.h"
 
 //------------------------------------------------------------------------------
@@ -125,7 +126,10 @@ MainMenu::MainMenu():
                               FMAW::TypeBackground,
                               FMAW::ScreenSub)),
     current_tile(FMAW::Tile(0)),
-    currentlySelectedOption(MAIN_MENU_OPTION_NEW_GAME) {}
+    currentlySelectedOption(MAIN_MENU_OPTION_NEW_GAME) {
+    this->selectSoundID = FMAW::Sound::registerFX(
+                              FMAW::Sound::effectWithSoundID(SFX_SELECT));
+}
 
 void MainMenu::init() {
     this->backgroundTileID = FMAW::Tile(logo_attributes_blue).ID;
@@ -228,6 +232,7 @@ void MainMenu::enqueueCallbacks() {
                 this->currentlySelectedOption = MAIN_MENU_OPTION_VERSUS_GAME;
             }
             this->adjustCurrentTile();
+            FMAW::Sound::playEffect(this->selectSoundID);
         };
         this->touchCallbackID = FMAW::Input::onTouchReleased(touchCallback);
     }
@@ -240,6 +245,7 @@ void MainMenu::enqueueCallbacks() {
             this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
             this->menuChangedBackgroundTile = true;
             this->adjustCurrentTile();
+            FMAW::Sound::playEffect(this->selectSoundID);
         };
         this->upArrowCallbackID = FMAW::Input::onButtonArrowUpReleased(
                                       upArrowCallback);
@@ -250,6 +256,7 @@ void MainMenu::enqueueCallbacks() {
             this->currentlySelectedOption %= MAIN_MENU_NUM_OPTIONS;
             this->menuChangedBackgroundTile = true;
             this->adjustCurrentTile();
+            FMAW::Sound::playEffect(this->selectSoundID);
         };
         this->downArrowCallbackID = FMAW::Input::onButtonArrowDownReleased(
                                         downArrowCallback);
@@ -261,12 +268,15 @@ void MainMenu::enqueueCallbacks() {
 
             switch (this->currentlySelectedOption) {
                 case 0:
+                    FMAW::Sound::playEffect(this->selectSoundID);
                     this->newGameCallback();
                     break;
                 case 1:
+                    FMAW::Sound::playEffect(this->selectSoundID);
                     this->loadGameCallback();
                     break;
                 case 2:
+                    FMAW::Sound::playEffect(this->selectSoundID);
                     this->versusCallback();
                     break;
                 default:
