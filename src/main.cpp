@@ -318,6 +318,8 @@ int main(void) {
         FMAW::printf("ERROR when trying to write file");
     }
 
+    FMAW::Sound::setBackgroundMusic(MOD_FLATOUTLIES);
+
     FMAW::start();
 
     return 0;

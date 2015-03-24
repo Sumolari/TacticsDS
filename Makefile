@@ -17,6 +17,7 @@ include $(DEVKITARM)/ds_rules
 # DOXY is the command to generate documentation
 # DOCDIR is the path where documentation will be stored
 # DOXYFILE is the file with settings for documentation the generator
+# MUSIC is the path where audio files are stored
 #-------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
 BUILD		:=	build
@@ -25,6 +26,7 @@ INCLUDES	:=	include build
 DOXY        :=  doxygen
 DOCDIR      :=  doc
 DOXYFILE    :=  $(DOCDIR)/Doxyfile
+MUSIC       :=  maxmod_data
 
 #-------------------------------------------------------------------------------
 # options for code generation
@@ -48,7 +50,7 @@ LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #-------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #-------------------------------------------------------------------------------
-LIBS	:= -lfat -lnds9
+LIBS	:= -lfat -lmm9 -lnds9
 
 
 #-------------------------------------------------------------------------------
@@ -72,8 +74,9 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
-BINFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.bin)))
+BINFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.bin))) soundbank.bin
 PNGFILES    :=  $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.png)))
+export AUDIOFILES	:=	$(foreach dir,$(notdir $(wildcard $(MUSIC)/*.*)),$(CURDIR)/$(MUSIC)/$(dir))
 
 #-------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -101,7 +104,7 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 .PHONY: $(BUILD) clean doc
 
 #-------------------------------------------------------------------------------
-$(BUILD):
+$(BUILD): $(AUDIOFILES)
 	@[ -d $@ ] || mkdir -p $@
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
@@ -122,6 +125,15 @@ test:
 	./$(TARGET).test
 
 #-------------------------------------------------------------------------------
+
+soound:
+	#@mmutil $^ -d -osoundbank.bin -hsoundbank.h
+	#@mv soundbank.bin $(BUILD)/
+	#@mv soundbank.h $(BUILD)/
+	#echo $(bin2o)
+	#bin2s $(BUILD)/soundbank.bin | arm-none-eabi-as -o$(BUILD)/soundbank_bin.o
+	#$(bin2o) $(BUILD)/soundbank.bin
+
 else
 
 DEPENDS	:=	$(OFILES:.o=.d)
@@ -131,6 +143,13 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #-------------------------------------------------------------------------------
 $(OUTPUT).nds	: 	$(OUTPUT).elf
 $(OUTPUT).elf	:	$(OFILES)
+
+#-------------------------------------------------------------------------------
+# rule to build soundbank from music files
+#-------------------------------------------------------------------------------
+soundbank.bin : $(AUDIOFILES)
+#-------------------------------------------------------------------------------
+	@mmutil $^ -d -osoundbank.bin -hsoundbank.h
 
 #-------------------------------------------------------------------------------
 # GRIT rule for converting the PNG files
@@ -145,12 +164,19 @@ $(OUTPUT).elf	:	$(OFILES)
 	@echo $(notdir $<)
 	$(bin2o)
 
+#-------------------------------------------------------------------------------
+# This rule links in binary data with the .bin extension
+#-------------------------------------------------------------------------------
+%.bin.o	:	%.bin
+#-------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
 
 -include $(DEPENDS)
 
 #-------------------------------------------------------------------------------
 endif
 #-------------------------------------------------------------------------------
-
 
 endif
