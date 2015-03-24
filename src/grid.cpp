@@ -343,9 +343,14 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
         Unit *victim = v->getCharacter();
 		
 		bool isKill = attacker->attackUnit(victim);
+		this->cursor.disable();
 		
-		std::function<void(bool)> backToPosVict = [victim, v, duration, isKill](bool b){
-			if(b && !isKill) victim->animateToPosition(v->getCenter(), duration);
+		std::function<void(bool)> reenableCursor = [this](bool b){
+			this->cursor.init();
+		};
+		
+		std::function<void(bool)> backToPosVict = [victim, v, duration, isKill, reenableCursor](bool b){
+			if(b && !isKill) victim->animateToPosition(v->getCenter(), duration, reenableCursor);
 		};
 
 		std::function<void(bool)> hurtRight = [victim, v, duration, isKill, backToPosVict](bool b){
