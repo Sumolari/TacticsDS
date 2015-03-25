@@ -515,7 +515,7 @@ int main(void) {
         FMAW::printf("Time: %d", timesReported++);
         MemTrack::TrackListMemoryUsage();
     };
-    FMAW::Timer::enqueue_function(reportUsage, 1000, true);
+    // FMAW::Timer::enqueue_function(reportUsage, 1000, true);
 
     FMAW::Input::onButtonStartReleased(releaseStart);
 
