@@ -99,11 +99,6 @@ class Grid {
     void recomputeAttackableCells();
 
     /**
-     * Recomputes the cells visible by current player's unit.
-     */
-    void recomputeVisibleCells();
-
-    /**
      * Returns whether some cell with a character has been picked up or not.
      * @return Whether some cell with a character has been picked up or not.
      */
@@ -355,6 +350,11 @@ class Grid {
      * Dequeues callbacks to manage user input.
      */
     void dequeueCallbacks();
+
+    /**
+     * Recomputes the cells visible by current player's unit.
+     */
+    void recomputeVisibleCells();
 };
 
 #endif

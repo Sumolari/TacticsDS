@@ -423,6 +423,7 @@ int main(void) {
         FMAW::printf("Tocaría cambiar de turno!");
         grid.resetPickedUpCell();
         TurnManager::finishTurn();
+        grid.recomputeVisibleCells();
         menu.adjustCurrentTile();
     };
 
