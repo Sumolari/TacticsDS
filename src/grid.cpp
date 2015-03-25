@@ -61,6 +61,13 @@ Grid::Grid():
     this->pickedUpCell = { -1, -1};
     this->recomputeReachableCells();
     this->recomputeAttackableCells();
+
+    this->selectSoundID = FMAW::Sound::registerFX(
+                              FMAW::Sound::effectWithSoundID(SFX_SELECT));
+    this->forbiddenSoundID = FMAW::Sound::registerFX(
+                                 FMAW::Sound::effectWithSoundID(SFX_FORBIDDEN));
+    this->hitSoundID = FMAW::Sound::registerFX(
+                           FMAW::Sound::effectWithSoundID(SFX_HIT));
 }
 
 bool Grid::enableSavingHistory(std::string filename) {
@@ -242,6 +249,7 @@ void Grid::playSavedHistory(std::string filename,
                     // If movement can't be done then it's an attack.
                     Unit *a = this->cellAtIndexPath(from)->getCharacter();
                     Unit *d = this->cellAtIndexPath(to)->getCharacter();
+                    FMAW::Sound::playEffect(this->hitSoundID);
                     if (a->attackUnit(d)) {
                         FMAW::printf("\tA unit has been killed");
                         this->cellAtIndexPath(to)->setCharacter(nullptr);
@@ -412,6 +420,7 @@ bool Grid::existCharacterWithOwner(int owner) {
             Cell *c = this->cellAtIndexPath(p);
             Unit *u = c->getCharacter();
             if (c->isOccupied() && u->getOwner() == owner) {
+                FMAW::printf("Enemy at %d %d", row, col);
                 return true;
             }
         }
@@ -444,14 +453,17 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
                     Unit *u = c->getCharacter();
                     if (u->getOwner() == TurnManager::currentPlayerID()) {
                         this->setSquareCursor();
+                        FMAW::Sound::playEffect(this->selectSoundID);
                     } else {
                         this->setCrossCursor();
                     }
                 } else {
                     this->setArrowCursor();
+                    FMAW::Sound::playEffect(this->selectSoundID);
                 }
             } else {
                 this->setCrossCursor();
+                FMAW::Sound::playEffect(this->forbiddenSoundID);
             }
 
             // If we can attack that player then we set proper cursor.
@@ -460,6 +472,7 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
                     Unit *u = c->getCharacter();
                     if (u->getOwner() != TurnManager::currentPlayerID()) {
                         this->setSwordCursor();
+                        FMAW::Sound::playEffect(this->selectSoundID);
                     }
                 }
             }
@@ -471,8 +484,10 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
                        c->getCharacter()->getOwner() !=
                        TurnManager::currentPlayerID()) {
                 this->setCrossCursor();
+                FMAW::Sound::playEffect(this->forbiddenSoundID);
             } else {
                 this->setSquareCursor();
+                FMAW::Sound::playEffect(this->selectSoundID);
             }
         }
 
@@ -577,6 +592,7 @@ void Grid::enqueueCallbacks() {
             // it has available actions then we pick up it.
             this->pickedUpCell.row = this->getSelectedPath().row;
             this->pickedUpCell.col = this->getSelectedPath().col;
+            FMAW::Sound::playEffect(this->selectSoundID);
             this->setArrowCursor();
             FMAW::printf("Se ha marcado la celda %d %d",
                          this->pickedUpCell.row,
@@ -595,6 +611,7 @@ void Grid::enqueueCallbacks() {
                 Unit *attacker = this->cellAtIndexPath(
                                      this->pickedUpCell)->getCharacter();
                 bool isKill = attacker->attackUnit(u);
+                FMAW::Sound::playEffect(this->hitSoundID);
                 FMAW::printf("Atacando enemigo en la celda %d %d",
                              this->pickedUpCell.row,
                              this->pickedUpCell.col);
@@ -620,6 +637,8 @@ void Grid::enqueueCallbacks() {
                 } else {
                     FMAW::printf("El enemigo sigue vivo");
                 }
+            } else {
+                FMAW::Sound::playEffect(this->forbiddenSoundID);
             }
             this->resetPickedUpCell();
             this->setCrossCursor();
@@ -632,6 +651,7 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.col,
                          this->getSelectedPath().row,
                          this->getSelectedPath().col);
+            FMAW::Sound::playEffect(this->selectSoundID);
             this->moveCharacterFromCellToCell(this->pickedUpCell,
                                               this->getSelectedPath(), 100);
             u->decreaseAvailableActions();

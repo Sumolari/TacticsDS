@@ -109,6 +109,21 @@ class Grid {
      */
     bool playingSavedFile;
 
+    /**
+     * ID of sound to be played when a cell is selected.
+     */
+    int selectSoundID;
+
+    /**
+     * ID of sound to be played when a non-interactible cell is selected.
+     */
+    int forbiddenSoundID;
+
+    /**
+     * ID of sound to be played when an attack is performed.
+     */
+    int hitSoundID;
+
   public:
 
     /**
