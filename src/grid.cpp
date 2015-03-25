@@ -355,34 +355,41 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
         this->cursor.disable();
 
         std::function<void(bool)> reenableCursor = [this](bool b) {
-            this->cursor.init();
+            this->cursor.enable();
         };
 
-        std::function<void(bool)> backToPosVict = [victim, v, duration, isKill,
-        reenableCursor](bool b) {
-            if (b && !isKill) victim->animateToPosition(v->getCenter(),
-                        duration, reenableCursor);
+        std::function<void(bool)> backToPosVict = [this, victim, v, duration,
+        isKill, reenableCursor](bool b) {
+            if (b && !isKill) {
+                victim->animateToPosition(v->getCenter(), duration,
+                                          reenableCursor);
+            }
         };
 
         std::function<void(bool)> hurtRight = [victim, v, duration, isKill,
         backToPosVict](bool b) {
             FMAW::Point pvr = { v->getCenter().x + 5, v->getCenter().y };
-            if (b && !isKill) victim->animateToPosition(pvr, duration,
-                        backToPosVict);
+            if (b && !isKill) {
+                victim->animateToPosition(pvr, duration, backToPosVict);
+            }
         };
 
         std::function<void(bool)> hurtLeft = [victim, v, duration, isKill,
         hurtRight](bool b) {
             FMAW::Point pvl = { v->getCenter().x - 5, v->getCenter().y };
-            if (b && !isKill) victim->animateToPosition(pvl, duration,
-                        hurtRight);
+            if (b && !isKill) {
+                victim->animateToPosition(pvl, duration, hurtRight);
+            }
         };
 
         std::function<void(bool)> backToPosAtt = [attacker, a, duration,
         hurtLeft, reenableCursor, isKill](bool b) {
             if (b) {
-                if (!isKill) hurtLeft(b);
-                else reenableCursor(b);
+                if (!isKill) {
+                    hurtLeft(b);
+                } else {
+                    reenableCursor(b);
+                }
 
                 attacker->animateToPosition(a->getCenter(), duration);
             }
@@ -662,7 +669,6 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.col);
             if (this->hasPickedUpCell() &&
                     this->attackableCells[this->getSelectedPath()]) {
-
                 FMAW::Sound::playEffect(this->hitSoundID);
                 FMAW::printf("Atacando enemigo en la celda %d %d",
                              this->pickedUpCell.row,
