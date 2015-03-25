@@ -50,19 +50,40 @@ Unit *Cell::setCharacter(Unit *newCharacter) {
 int Cell::movementCost() {
     switch (this->backgroundType) {
         case CellBGBase:
-            return COST_CELL_BASE;
+            return COST_MOVE_CELL_BASE;
         case CellBGBridge:
         case CellBGBridgeH:
-            return COST_CELL_BRIDGE;
+            return COST_MOVE_CELL_BRIDGE;
         case CellBGForest:
-            return COST_CELL_FOREST;
+            return COST_MOVE_CELL_FOREST;
         case CellBGGrass:
-            return COST_CELL_GRASS;
+            return COST_MOVE_CELL_GRASS;
         case CellBGMountain:
-            return COST_CELL_MOUNTAIN;
+            return COST_MOVE_CELL_MOUNTAIN;
         case CellBGRiver:
         case CellBGRiverH:
-            return COST_CELL_RIVER;
+            return COST_MOVE_CELL_RIVER;
+        default:
+            return COST_CELL_INFINITY;
+    }
+}
+
+int Cell::sightCost() {
+    switch (this->backgroundType) {
+        case CellBGBase:
+            return COST_SEE_CELL_BASE;
+        case CellBGBridge:
+        case CellBGBridgeH:
+            return COST_SEE_CELL_BRIDGE;
+        case CellBGForest:
+            return COST_SEE_CELL_FOREST;
+        case CellBGGrass:
+            return COST_SEE_CELL_GRASS;
+        case CellBGMountain:
+            return COST_SEE_CELL_MOUNTAIN;
+        case CellBGRiver:
+        case CellBGRiverH:
+            return COST_SEE_CELL_RIVER;
         default:
             return COST_CELL_INFINITY;
     }
@@ -86,6 +107,33 @@ void Cell::renderBackground() {
                 this->background.setPalette(
                     this->tiles[i],
                     FMAW::Tile(this->backgroundType).palMemory);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Cell::renderFoggyBackground() {
+    switch (this->backgroundType) {
+        case CellBGBase:
+        case CellBGBridge:
+        case CellBGBridgeH:
+        case CellBGForest:
+        case CellBGGrass:
+        case CellBGMountain:
+        case CellBGRiver:
+        case CellBGRiverH:
+            this->background.setScreenBaseBlock(2);
+            for (int i = 0; i < this->tiles.size(); ++i) {
+                this->background.setTile(
+                    this->tiles[i],
+                    FMAW::Tile(this->backgroundType +
+                               NUM_BACKGROUNDS).imgMemory + i);
+                this->background.setPalette(
+                    this->tiles[i],
+                    FMAW::Tile(this->backgroundType +
+                               NUM_BACKGROUNDS).palMemory);
             }
             break;
         default:

@@ -13,16 +13,25 @@
 namespace FMAW {
 
 std::map<int, int> Tile::IDtoImgMemoryPosition {};
-int Tile::nextSpriteImgMemoryPosition = 0;
-int Tile::nextBackgroundImgMemoryPosition = 0;
 std::map<int, int> Tile::IDtoPalMemoryPosition {};
-int Tile::nextSpritePalMemoryPosition = 0;
-int Tile::nextBackgroundPalMemoryPosition = 0;
+
+int Tile::nextSpriteImgMemoryPositionMain = 0;
+int Tile::nextBackgroundImgMemoryPositionMain = 0;
+int Tile::nextSpritePalMemoryPositionMain = 0;
+int Tile::nextBackgroundPalMemoryPositionMain = 0;
+
+int Tile::nextSpriteImgMemoryPositionSub = 0;
+int Tile::nextBackgroundImgMemoryPositionSub = 0;
+int Tile::nextSpritePalMemoryPositionSub = 0;
+int Tile::nextBackgroundPalMemoryPositionSub = 0;
+
 int Tile::nextID = 0;
 
 void Tile::releaseAllSpriteMemory() {
-    Tile::nextSpritePalMemoryPosition = 0;
-    Tile::nextSpriteImgMemoryPosition = 0;
+    Tile::nextSpritePalMemoryPositionMain = 0;
+    Tile::nextSpriteImgMemoryPositionMain = 0;
+    Tile::nextSpritePalMemoryPositionSub = 0;
+    Tile::nextSpriteImgMemoryPositionSub = 0;
 }
 
 /**
@@ -30,21 +39,41 @@ void Tile::releaseAllSpriteMemory() {
  */
 Tile::Tile(TileAttributes attributes) {
     if (attributes.type == TypeSprite) {
-        this->imgMemory = self::nextSpriteImgMemoryPosition;
-        this->palMemory = self::nextSpritePalMemoryPosition;
-        // Move pointer so next tile will be stored properly.
-        // This is equivalent to: attributes.tilesLength / 32
-        self::nextSpriteImgMemoryPosition += attributes.tilesLength >> 5;
-        // TODO: Update this to handle multiple size palettes.
-        self::nextSpritePalMemoryPosition++;
+        if (attributes.screen == ScreenSub) {
+            this->imgMemory = self::nextSpriteImgMemoryPositionSub;
+            this->palMemory = self::nextSpritePalMemoryPositionSub;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextSpriteImgMemoryPositionSub +=
+                attributes.tilesLength >> 5;
+            self::nextSpritePalMemoryPositionSub++;
+        } else {
+            this->imgMemory = self::nextSpriteImgMemoryPositionMain;
+            this->palMemory = self::nextSpritePalMemoryPositionMain;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextSpriteImgMemoryPositionMain +=
+                attributes.tilesLength >> 5;
+            self::nextSpritePalMemoryPositionMain++;
+        }
     } else {
-        this->imgMemory = self::nextBackgroundImgMemoryPosition;
-        this->palMemory = self::nextBackgroundPalMemoryPosition;
-        // Move pointer so next tile will be stored properly.
-        // This is equivalent to: attributes.tilesLength / 32
-        self::nextBackgroundImgMemoryPosition += attributes.tilesLength >> 5;
-        // TODO: Update this to handle multiple size palettes.
-        self::nextBackgroundPalMemoryPosition++;
+        if (attributes.screen == ScreenSub) {
+            this->imgMemory = self::nextBackgroundImgMemoryPositionSub;
+            this->palMemory = self::nextBackgroundPalMemoryPositionSub;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextBackgroundImgMemoryPositionSub +=
+                attributes.tilesLength >> 5;
+            self::nextBackgroundPalMemoryPositionSub++;
+        } else {
+            this->imgMemory = self::nextBackgroundImgMemoryPositionMain;
+            this->palMemory = self::nextBackgroundPalMemoryPositionMain;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextBackgroundImgMemoryPositionMain +=
+                attributes.tilesLength >> 5;
+            self::nextBackgroundPalMemoryPositionMain++;
+        }
     }
 
     /*

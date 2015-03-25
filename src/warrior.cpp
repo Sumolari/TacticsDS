@@ -23,6 +23,7 @@ void Warrior::init() {
 
     this->unitType = UNIT_TYPE_WARRIOR;
     this->movementCapacity = 4;
+    this->sightDistance = 6;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = this->maximumAvailableActions;
     this->maximumHealth = 10;
@@ -167,7 +168,7 @@ void Warrior::update_freq() {
         this->update();
     };
 
-    //TODO decent time calculation
+    // TODO(victor) decent time calculation
     int t = 200 * (this->maximumHealth / this->currentHealth);
 
     this->updateID = FMAW::Timer::enqueue_function(_update, t, true);

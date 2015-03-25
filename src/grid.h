@@ -82,6 +82,11 @@ class Grid {
     std::map<IndexPath, bool> attackableCells;
 
     /**
+     * Cells visible by currently playing player.
+     */
+    std::map<IndexPath, bool> visibleCells;
+
+    /**
      * Recomputes the cells reachable by currently selected unit.
      * If no unit is selected all cells are available.
      */
@@ -92,6 +97,11 @@ class Grid {
      * If no unit is selected no cells are available.
      */
     void recomputeAttackableCells();
+
+    /**
+     * Recomputes the cells visible by current player's unit.
+     */
+    void recomputeVisibleCells();
 
     /**
      * Returns whether some cell with a character has been picked up or not.
@@ -200,7 +210,7 @@ class Grid {
     IndexPath getSelectedPath();
 
     /**
-     * Moves the attacking character in given cell to attacked 
+     * Moves the attacking character in given cell to attacked
      * character at given cell and returns, simulating an attack.
      * @param  attackerPos      Original cell of the attacking character.
      * @param  victimPos        Final cell of the attacked character.
@@ -208,8 +218,8 @@ class Grid {
      * @return                  Whether change could be performed or not.
      */
     bool attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
-                                     unsigned int duration);
-    
+                               unsigned int duration);
+
     /**
      * Moves the character in given cell to given cell.
      * @param  from      Original cell of the character.

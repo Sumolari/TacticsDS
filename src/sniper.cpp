@@ -23,6 +23,7 @@ void Sniper::init() {
 
     this->unitType = UNIT_TYPE_SNIPER;
     this->movementCapacity = 3;
+    this->sightDistance = 9;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = this->maximumAvailableActions;
     this->maximumHealth = 3;
@@ -44,56 +45,56 @@ void Sniper::init() {
     //--------------------------------------------------------------------------
 
     auto sniper_female_1Tiles = (this->ownerID == 0) ?
-                                     sniper_female_1_blueTiles :
-                                     sniper_female_1_redTiles;
+                                sniper_female_1_blueTiles :
+                                sniper_female_1_redTiles;
     auto sniper_female_1TilesLen = (this->ownerID == 0) ?
-                                        sniper_female_1_blueTilesLen :
-                                        sniper_female_1_redTilesLen;
+                                   sniper_female_1_blueTilesLen :
+                                   sniper_female_1_redTilesLen;
     auto sniper_female_1Pal = (this->ownerID == 0) ?
-                                   sniper_female_1_bluePal :
-                                   sniper_female_1_redPal;
+                              sniper_female_1_bluePal :
+                              sniper_female_1_redPal;
     auto sniper_female_1PalLen = (this->ownerID == 0) ?
-                                      sniper_female_1_bluePalLen :
-                                      sniper_female_1_redPalLen;
+                                 sniper_female_1_bluePalLen :
+                                 sniper_female_1_redPalLen;
 
     auto sniper_female_2Tiles = (this->ownerID == 0) ?
-                                     sniper_female_2_blueTiles :
-                                     sniper_female_2_redTiles;
+                                sniper_female_2_blueTiles :
+                                sniper_female_2_redTiles;
     auto sniper_female_2TilesLen = (this->ownerID == 0) ?
-                                        sniper_female_2_blueTilesLen :
-                                        sniper_female_2_redTilesLen;
+                                   sniper_female_2_blueTilesLen :
+                                   sniper_female_2_redTilesLen;
     auto sniper_female_2Pal = (this->ownerID == 0) ?
-                                   sniper_female_2_bluePal :
-                                   sniper_female_2_redPal;
+                              sniper_female_2_bluePal :
+                              sniper_female_2_redPal;
     auto sniper_female_2PalLen = (this->ownerID == 0) ?
-                                      sniper_female_2_bluePalLen :
-                                      sniper_female_2_redPalLen;
+                                 sniper_female_2_bluePalLen :
+                                 sniper_female_2_redPalLen;
 
     auto sniper_female_3Tiles = (this->ownerID == 0) ?
-                                     sniper_female_3_blueTiles :
-                                     sniper_female_3_redTiles;
+                                sniper_female_3_blueTiles :
+                                sniper_female_3_redTiles;
     auto sniper_female_3TilesLen = (this->ownerID == 0) ?
-                                        sniper_female_3_blueTilesLen :
-                                        sniper_female_3_redTilesLen;
+                                   sniper_female_3_blueTilesLen :
+                                   sniper_female_3_redTilesLen;
     auto sniper_female_3Pal = (this->ownerID == 0) ?
-                                   sniper_female_3_bluePal :
-                                   sniper_female_3_redPal;
+                              sniper_female_3_bluePal :
+                              sniper_female_3_redPal;
     auto sniper_female_3PalLen = (this->ownerID == 0) ?
-                                      sniper_female_3_bluePalLen :
-                                      sniper_female_3_redPalLen;
+                                 sniper_female_3_bluePalLen :
+                                 sniper_female_3_redPalLen;
 
     auto sniper_female_4Tiles = (this->ownerID == 0) ?
-                                     sniper_female_4_blueTiles :
-                                     sniper_female_4_redTiles;
+                                sniper_female_4_blueTiles :
+                                sniper_female_4_redTiles;
     auto sniper_female_4TilesLen = (this->ownerID == 0) ?
-                                        sniper_female_4_blueTilesLen :
-                                        sniper_female_4_redTilesLen;
+                                   sniper_female_4_blueTilesLen :
+                                   sniper_female_4_redTilesLen;
     auto sniper_female_4Pal = (this->ownerID == 0) ?
-                                   sniper_female_4_bluePal :
-                                   sniper_female_4_redPal;
+                              sniper_female_4_bluePal :
+                              sniper_female_4_redPal;
     auto sniper_female_4PalLen = (this->ownerID == 0) ?
-                                      sniper_female_4_bluePalLen :
-                                      sniper_female_4_redPalLen;
+                                 sniper_female_4_bluePalLen :
+                                 sniper_female_4_redPalLen;
 
     //--------------------------------------------------------------------------
     // Load tile.
@@ -160,17 +161,17 @@ void Sniper::update() {
     }
 }
 
-void Sniper::update_freq(){
-	FMAW::Timer::dequeue_function(this->updateID);
-	
-	auto _update = [this](int ID) {
+void Sniper::update_freq() {
+    FMAW::Timer::dequeue_function(this->updateID);
+
+    auto _update = [this](int ID) {
         this->update();
     };
-    
-    //TODO decent time calculation
-    int t = 200*(this->maximumHealth / this->currentHealth);
-    
-	this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
+
+    // TODO(victor) decent time calculation
+    int t = 200 * (this->maximumHealth / this->currentHealth);
+
+    this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
 }
 
 void Sniper::reset() {
