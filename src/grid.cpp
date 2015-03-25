@@ -291,12 +291,11 @@ void Grid::clearGridUnits() {
             Cell *c = this->cellAtIndexPath(path);
 
             if (c->isOccupied()) {
-                Unit *u = c->getCharacter();
-                c->setCharacter(nullptr);
-                delete u;
+                delete c->setCharacter(nullptr);
             }
         }
     }
+    this->recomputeVisibleCells();
 }
 
 bool Grid::isPlayingSavedFile() {
