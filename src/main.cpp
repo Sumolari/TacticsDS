@@ -67,6 +67,8 @@ MainMenu menu;
 Player *blue;
 Player *red;
 
+int timesReported;
+
 #define MAPS_COUNT 4
 
 int selectedMap = 0;
@@ -454,10 +456,10 @@ int main(void) {
     auto loadSelectedMap = [addSomeUnits]() {
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
-        GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         FMAW::printf("Loading map with ID=%d", selectedMap);
+        GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         // addSomeUnits();
-        grid.initCursor();
+        grid.resetCursor();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         grid.renderBackground();
         grid.renderCharacters();
@@ -510,6 +512,12 @@ int main(void) {
         // MemTrack::TrackListMemoryUsage();
     };
 
+    auto reportUsage = [](int ID) {
+        FMAW::printf("Time: %d", timesReported++);
+        MemTrack::TrackListMemoryUsage();
+    };
+    FMAW::Timer::enqueue_function(reportUsage, 1000, true);
+
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     auto newGameCallback = [addSomeUnits, finishTurnCallback]() {
@@ -526,7 +534,7 @@ int main(void) {
         FMAW::printf("Should start a new game!");
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
-        grid.initCursor();
+        grid.resetCursor();
         addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         menu.makeBackground();
@@ -562,7 +570,7 @@ int main(void) {
         FMAW::printf("Should start a new versus game!");
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
-        grid.initCursor();
+        grid.resetCursor();
         addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         menu.makeBackground();

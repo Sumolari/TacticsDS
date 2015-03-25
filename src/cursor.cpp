@@ -41,10 +41,8 @@ Cursor::Cursor() :
 void Cursor::init() {
     this->tile = FMAW::Tile(this->tileSquare);
 
-    this->sprite.setSizeMode(FMAW::square16x16);
-    this->sprite.enable();
-
     this->setSquare();
+    this->enable();
 }
 
 void Cursor::enable() {

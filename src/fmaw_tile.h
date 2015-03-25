@@ -2,7 +2,9 @@
 #define FMAW_TILE_H
 
 #include <map>
+#include <vector>
 #include <string>
+
 #include "./fmaw_macros.h"
 #include "./fmaw_debug.h"
 
@@ -101,6 +103,11 @@ class Tile {
      * engine.
      */
     static int nextBackgroundPalMemoryPositionSub;
+
+    /**
+     * List of IDs given to Sprite Tiles.
+     */
+    static std::vector<int> IDofSpriteTiles;
 
     /**
      * First ID available for tiles of any type.

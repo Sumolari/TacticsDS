@@ -290,19 +290,23 @@ void MainMenu::enqueueCallbacks() {
 
 void MainMenu::dequeueCallbacks() {
     if (this->touchCallbackID != -1)  {
-        FMAW::Input::unregisterCallback(this->touchCallbackID);
-        this->touchCallbackID = -1;
+        if (FMAW::Input::unregisterCallback(this->touchCallbackID)) {
+            this->touchCallbackID = -1;
+        }
     }
     if (this->upArrowCallbackID != -1)  {
-        FMAW::Input::unregisterCallback(this->upArrowCallbackID);
-        this->upArrowCallbackID = -1;
+        if (FMAW::Input::unregisterCallback(this->upArrowCallbackID)) {
+            this->upArrowCallbackID = -1;
+        }
     }
     if (this->downArrowCallbackID != -1)  {
-        FMAW::Input::unregisterCallback(this->downArrowCallbackID);
-        this->downArrowCallbackID = -1;
+        if (FMAW::Input::unregisterCallback(this->downArrowCallbackID)) {
+            this->downArrowCallbackID = -1;
+        }
     }
     if (this->aButtonCallbackID != -1)  {
-        FMAW::Input::unregisterCallback(this->aButtonCallbackID);
-        this->aButtonCallbackID = -1;
+        if (FMAW::Input::unregisterCallback(this->aButtonCallbackID)) {
+            this->aButtonCallbackID = -1;
+        }
     }
 }

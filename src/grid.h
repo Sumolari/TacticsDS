@@ -337,6 +337,12 @@ class Grid {
      */
     void resetPickedUpCell();
 
+    /**
+     * Reenables the cursor.
+     * Must be previously initialized.
+     */
+    void resetCursor();
+
     //--------------------------------------------------------------------------
     // Callbacks.
     //--------------------------------------------------------------------------

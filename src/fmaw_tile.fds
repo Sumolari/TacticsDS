@@ -4,6 +4,8 @@
 
 #include <map>
 #include <string>
+#include <vector>
+
 #include "./fmaw_sprite.h"
 
 //------------------------------------------------------------------------------
@@ -14,20 +16,27 @@ namespace FMAW {
 
 std::map<int, int> Tile::IDtoImgMemoryPosition {};
 std::map<int, int> Tile::IDtoPalMemoryPosition {};
+std::vector<int>   Tile::IDofSpriteTiles       {};
 
-int Tile::nextSpriteImgMemoryPositionMain = 0;
+int Tile::nextSpriteImgMemoryPositionMain     = 0;
 int Tile::nextBackgroundImgMemoryPositionMain = 0;
-int Tile::nextSpritePalMemoryPositionMain = 0;
+int Tile::nextSpritePalMemoryPositionMain     = 0;
 int Tile::nextBackgroundPalMemoryPositionMain = 0;
 
-int Tile::nextSpriteImgMemoryPositionSub = 0;
-int Tile::nextBackgroundImgMemoryPositionSub = 0;
-int Tile::nextSpritePalMemoryPositionSub = 0;
-int Tile::nextBackgroundPalMemoryPositionSub = 0;
+int Tile::nextSpriteImgMemoryPositionSub      = 0;
+int Tile::nextBackgroundImgMemoryPositionSub  = 0;
+int Tile::nextSpritePalMemoryPositionSub      = 0;
+int Tile::nextBackgroundPalMemoryPositionSub  = 0;
 
 int Tile::nextID = 0;
 
 void Tile::releaseAllSpriteMemory() {
+    for (int ID : IDofSpriteTiles) {
+        IDtoImgMemoryPosition.erase(ID);
+        IDtoPalMemoryPosition.erase(ID);
+    }
+    IDofSpriteTiles.clear();
+
     Tile::nextSpritePalMemoryPositionMain = 0;
     Tile::nextSpriteImgMemoryPositionMain = 0;
     Tile::nextSpritePalMemoryPositionSub = 0;
@@ -120,6 +129,11 @@ Tile::Tile(TileAttributes attributes) {
     // Store memory address of this tile.
     self::IDtoImgMemoryPosition[ID] = this->imgMemory;
     self::IDtoPalMemoryPosition[ID] = this->palMemory;
+
+    if (attributes.type == TypeSprite) {
+        self::IDofSpriteTiles.push_back(this->ID);
+    }
+
     // This ID has been used!
     self::nextID++;
 }

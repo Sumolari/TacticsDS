@@ -328,6 +328,11 @@ void Grid::initCursor() {
     this->setSquareCursor();
 }
 
+void Grid::resetCursor() {
+    this->cursor.enable();
+    this->setSquareCursor();
+}
+
 Cell *Grid::cellAtIndexPath(IndexPath ip) {
     return &this->cells[ ip.row * this->cols + ip.col ];
 }
