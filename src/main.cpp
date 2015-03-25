@@ -17,12 +17,6 @@
 #include "./knight.h"
 #include "./sniper.h"
 
-#include "./gfx_brick.h"
-#include "./gfx_gradient.h"
-
-#include "./gfx_black.h"
-#include "./gfx_blank.h"
-
 #include "./gfx_Base.h"
 #include "./gfx_Bridge.h"
 #include "./gfx_BridgeH.h"
@@ -52,23 +46,8 @@
 #include "./gfx_RiverH_Fog.h"
 
 //------------------------------------------------------------------------------
-// Background tile entries
-//------------------------------------------------------------------------------
-
-#define TILE_EMPTY     0  // Tile 0 = empty
-#define TILE_BRICK     1  // Tile 1 = brick
-#define TILE_GRADIENT  2  // Tile 2 = gradient
-
-//------------------------------------------------------------------------------
 // Background...
 //------------------------------------------------------------------------------
-
-//----------//------------------------------------------------------------------
-//----------// Palette entries
-//----------//------------------------------------------------------------------
-
-#define PAL_BRICKS     0  // Brick palette (entry 0->15).
-#define PAL_GRADIENT   1  // Gradient palette (entry 16->31).
 
 #define BACKDROP_COLOR RGB8(190, 255, 255)
 
