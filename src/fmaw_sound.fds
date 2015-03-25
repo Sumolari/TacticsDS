@@ -14,7 +14,6 @@ namespace FMAW {
 namespace Sound {
 
 std::map<int, mm_sound_effect> specialEffects;
-std::map<int, mm_sfxhand> playingSounds;
 bool inited = false;
 
 FX effectWithSoundID(int ID) {
@@ -56,15 +55,10 @@ int registerFX(FX fx) {
 playID playEffect(int effectID) {
     mm_sound_effect effect = specialEffects[effectID];
     mm_sfxhand reproduction =  mmEffectEx(&effect);
-    playingSounds[playingSounds.size()] = reproduction;
-    return playingSounds.size() - 1;
+    return -1;
 }
 
 bool stopEffect(playID reproductionID) {
-    if (playingSounds.find(reproductionID) != playingSounds.end()) {
-        mmEffectCancel(playingSounds[reproductionID]);
-        return true;
-    }
     return false;
 }
 
