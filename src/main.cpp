@@ -435,9 +435,8 @@ int main(void) {
         Warrior *warriorL = new Warrior(blue.getID());
         */
 
-        grid.cellAtIndexPath({0, 0})->setCharacter(warriorA);
+        grid.cellAtIndexPath({1, 1})->setCharacter(warriorA);
         grid.cellAtIndexPath({10, 2})->setCharacter(warriorB);
-
         grid.cellAtIndexPath({0, 1})->setCharacter(warriorC);
         grid.cellAtIndexPath({0, 2})->setCharacter(warriorD);
         grid.cellAtIndexPath({0, 3})->setCharacter(warriorE);
@@ -459,7 +458,7 @@ int main(void) {
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         // addSomeUnits();
-        grid.resetCursor();
+        grid.initCursor();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         grid.renderBackground();
         grid.renderCharacters();
@@ -534,7 +533,7 @@ int main(void) {
         FMAW::printf("Should start a new game!");
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
-        grid.resetCursor();
+        grid.initCursor();
         addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         menu.makeBackground();
@@ -570,7 +569,7 @@ int main(void) {
         FMAW::printf("Should start a new versus game!");
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
-        grid.resetCursor();
+        grid.initCursor();
         addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         menu.makeBackground();

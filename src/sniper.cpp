@@ -154,8 +154,10 @@ void Sniper::update() {
         this->currentTileID += 1;
         this->currentTileID %= SPRITES_IDLE_ANIMATION;
 
-        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
-                                    this->tile->ID);
+        int id = this->tile->ID;
+        delete this->tile;
+
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]), id);
 
         this->sprite.setTile(*(this->tile));
     }

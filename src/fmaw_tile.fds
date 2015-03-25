@@ -41,6 +41,8 @@ void Tile::releaseAllSpriteMemory() {
     Tile::nextSpriteImgMemoryPositionMain = 0;
     Tile::nextSpritePalMemoryPositionSub = 0;
     Tile::nextSpriteImgMemoryPositionSub = 0;
+
+    Sprite::clearAllSprites();
 }
 
 /**

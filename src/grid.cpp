@@ -470,7 +470,16 @@ void Grid::renderCharacters() {
         for (int col = 0; col < this->cols; col++) {
             IndexPath p{row, col};
             if (this->visibleCells[p]) {
-                this->cellAtIndexPath(p)->renderCharacter();
+                if (this->cellAtIndexPath(p)->isOccupied()) {
+                    this->cellAtIndexPath(p)->getCharacter()->sprite.enable();
+                    this->cellAtIndexPath(p)->renderCharacter();
+                }
+            } else {
+                if (this->cellAtIndexPath(p)->isOccupied()) {
+                    Unit *u = this->cellAtIndexPath(p)->getCharacter();
+                    u->sprite.disable();
+                    this->cellAtIndexPath(p)->renderCharacter();
+                }
             }
         }
     }
