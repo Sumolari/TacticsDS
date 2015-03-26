@@ -462,8 +462,6 @@ int main(void) {
         
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         grid.recomputeVisibleCells();
-        grid.renderBackground();
-        grid.renderCharacters();
     };
 
     int selectSoundID = FMAW::Sound::registerFX(

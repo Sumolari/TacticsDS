@@ -146,7 +146,7 @@ void Knight::init() {
     this->height = KNIGHT_HEIGHT;
     this->sprite.setSizeMode(FMAW::square16x16);
     this->sprite.setTile(*(this->tiles[this->currentTileID]));
-    this->sprite.enable();
+    //this->sprite.enable();
 }
 
 void Knight::update() {
