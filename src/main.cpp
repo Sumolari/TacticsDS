@@ -457,6 +457,7 @@ int main(void) {
         FMAW::Tile::releaseAllSpriteMemory();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
+        grid.fogOfWarMode = allVisible;
         // addSomeUnits();
         grid.initCursor();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
@@ -533,6 +534,7 @@ int main(void) {
         FMAW::printf("Should start a new game!");
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
+        grid.fogOfWarMode = fixedPlayerOne;
         grid.initCursor();
         addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
@@ -569,6 +571,7 @@ int main(void) {
         FMAW::printf("Should start a new versus game!");
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
+        grid.fogOfWarMode = enabled;
         grid.initCursor();
         addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);

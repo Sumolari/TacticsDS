@@ -27,6 +27,8 @@ void PlayerAI::startTurn() {
     // Prevent user from interacting with grid.
     this->grid->dequeueCallbacks();
 
+    IndexPath previousPositionOfCursor = this->grid->getSelectedPath();
+
     // Here we will store the units of this AI player and the path where they
     // are located.
     std::vector<Unit *> units;
@@ -52,7 +54,7 @@ void PlayerAI::startTurn() {
 
     // We will call the following callback once each 1.5s.
     this->unitNumber = 0;
-    auto moveSomeUnit = [this, units, paths](int ID) {
+    auto moveSomeUnit = [this, units, paths, previousPositionOfCursor](int ID) {
         if (this->unitNumber < units.size()) {
             //------------------------------------------------------------------
             // Actual AI script.
@@ -87,6 +89,7 @@ void PlayerAI::startTurn() {
             // End of AI script.
             //------------------------------------------------------------------
             this->unitNumber++;
+            this->grid->selectCellAtIndexPath(previousPositionOfCursor);
         } else {
             FMAW::printf("\tI've finished!");
             this->grid->enqueueCallbacks();

@@ -22,7 +22,8 @@ Grid::Grid():
     aButtonCallbackID(-1),
     bButtonCallbackID(-1),
     savefile(nullptr),
-    playingSavedFile(false) {
+    playingSavedFile(false),
+    fogOfWarMode(allVisible) {
     this->pickedUpCell = { -1, -1 };
     this->rows = WINDOW_HEIGHT / CELL_HEIGHT;
     this->cols = WINDOW_WIDTH / CELL_WIDTH;
@@ -146,6 +147,7 @@ bool Grid::enableSavingHistory(std::string filename) {
 void Grid::playSavedHistory(std::string filename,
                             std::function<void(bool)> callback) {
     this->dequeueCallbacks();
+    this->fogOfWarMode = allVisible;
 
     if (this->savefile != nullptr) {
         FMAW::IO::fclose(this->savefile);
@@ -934,6 +936,36 @@ void Grid::recomputeAttackableCells() {
 
 void Grid::recomputeVisibleCells() {
     this->visibleCells.clear();
+    PlayerID playerID;
+
+    switch (fogOfWarMode) {
+        case fixedPlayerOne:
+            playerID = 0;
+            break;
+        case fixedPlayerTwo:
+            playerID = 1;
+            break;
+        case allVisible:
+            // All cells are visible.
+            for (int row = 0; row < this->rows; row++) {
+                for (int col = 0; col < this->cols; col++) {
+                    this->visibleCells[ {row, col}] = true;
+                }
+            }
+            return;
+        case noneVisible:
+            // No cell is visible.
+            for (int row = 0; row < this->rows; row++) {
+                for (int col = 0; col < this->cols; col++) {
+                    this->visibleCells[ {row, col}] = false;
+                }
+            }
+            return;
+        case enabled:
+        default:
+            playerID = TurnManager::currentPlayerID();
+            break;
+    }
 
     std::vector<IndexPath> units{};
 
@@ -942,8 +974,7 @@ void Grid::recomputeVisibleCells() {
             IndexPath p{row, col};
             Cell *c = this->cellAtIndexPath(p);
             Unit *u = c->getCharacter();
-            if (c->isOccupied() &&
-                    u->getOwner() == TurnManager::currentPlayerID()) {
+            if (c->isOccupied() && u->getOwner() == playerID) {
                 units.push_back(p);
             }
         }

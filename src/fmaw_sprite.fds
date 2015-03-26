@@ -511,6 +511,7 @@ SpritePriority Sprite::getPriority() {
 
 void Sprite::clear() {
     sprites[this->id].attr0 = ATTR0_DISABLED;
+    this->disable();
     sprites[this->id].attr1 = 0;
     sprites[this->id].attr2 = 0;
 }
