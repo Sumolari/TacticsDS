@@ -48,13 +48,13 @@ playID playEffect(int effectID);
 bool stopEffect(playID reproductionID);
 
 /**
- * Starts playin given background music.
+ * Starts playing given background music.
  * @param musicID Music to be played in background.
  */
 void setBackgroundMusic(int musicID);
 
 /**
- * Pasues background music.
+ * Pauses background music.
  */
 void stopBackgroundMusic();
 

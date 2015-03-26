@@ -9,6 +9,14 @@
 #include "./cell.h"
 #include "./cursor.h"
 
+typedef enum {
+    fixedPlayerOne,
+    fixedPlayerTwo,
+    allVisible,
+    noneVisible,
+    enabled
+} FogOfWarMode;
+
 class Grid {
   private:
     /**
@@ -130,6 +138,11 @@ class Grid {
     int hitSoundID;
 
   public:
+
+    /**
+     * Mode of Fog of War.
+     */
+    FogOfWarMode fogOfWarMode;
 
     /**
      * Callback called when game is over.

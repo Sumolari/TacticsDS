@@ -22,7 +22,8 @@ Grid::Grid():
     aButtonCallbackID(-1),
     bButtonCallbackID(-1),
     savefile(nullptr),
-    playingSavedFile(false) {
+    playingSavedFile(false),
+    fogOfWarMode(allVisible) {
     this->pickedUpCell = { -1, -1 };
     this->rows = WINDOW_HEIGHT / CELL_HEIGHT;
     this->cols = WINDOW_WIDTH / CELL_WIDTH;
@@ -143,15 +144,14 @@ bool Grid::enableSavingHistory(std::string filename) {
     return true;
 }
 
-void Grid::playSavedHistory(std::string filename,
-                            std::function<void(bool)> callback) {
+void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
     this->dequeueCallbacks();
 
     if (this->savefile != nullptr) {
         FMAW::IO::fclose(this->savefile);
         this->savefile = nullptr;
     }
-    this->savefile = FMAW::IO::fopen(("./" + filename).c_str(), "r");
+    this->savefile = FMAW::IO::fopen(("./" + f).c_str(), "r");
 
     if (this->savefile == NULL) {
         this->savefile = nullptr;
@@ -161,9 +161,12 @@ void Grid::playSavedHistory(std::string filename,
     }
 
     this->clearGridUnits();
-    this->playingSavedFile = true;
-    this->cursor.disable();
     FMAW::Tile::releaseAllSpriteMemory();
+    this->fogOfWarMode = allVisible;
+    this->recomputeVisibleCells();
+    this->playingSavedFile = true;
+    this->cursor.init();
+    this->cursor.disable();
 
     int rows, cols, aux;
 
@@ -231,29 +234,38 @@ void Grid::playSavedHistory(std::string filename,
     FMAW::printf("Owners loaded");
 
     this->resetUnitMovements();
+    this->renderBackground();
+    this->renderCharacters();
+    this->resetUnitMovements();
 
     int fr, fc, tr, tc;
 
     auto moveFollowingHistory = [this, &fr, &fc, &tr, &tc, callback](int ID) {
         FILE *f = this->savefile;
         if (FMAW::IO::fscanf(f, "%d %d %d %d\n", &fr, &fc, &tr, &tc) > 0) {
+            FMAW::printf("\tRead: %d %d %d %d", fr, fc, tr, tc);
             if (fr == -1 && fc == -1 && tr == -1 && tc == -1) {
                 FMAW::printf("\tTurn changed!");
                 this->resetUnitMovements();
             } else {
-                FMAW::printf("\tA movement has been loaded");
                 IndexPath from = {fr, fc}, to = {tr, tc};
 
-                if (!this->moveCharacterFromCellToCell(from, to, 200)) {
-                    FMAW::printf("\tA unit has been attacked");
+                Cell *fromC = this->cellAtIndexPath(from);
+                Cell *toC   = this->cellAtIndexPath(to);
+
+                if (toC->isOccupied()) {
                     // If movement can't be done then it's an attack.
-                    Unit *a = this->cellAtIndexPath(from)->getCharacter();
-                    Unit *d = this->cellAtIndexPath(to)->getCharacter();
                     FMAW::Sound::playEffect(this->hitSoundID);
-                    if (a->attackUnit(d)) {
+
+                    if (this->attackCharacterAtCell(from, to, 50)) {
                         FMAW::printf("\tA unit has been killed");
-                        this->cellAtIndexPath(to)->setCharacter(nullptr);
+                        toC->setCharacter(nullptr);
+                    } else {
+                        FMAW::printf("\tA unit has been attacked");
                     }
+                } else {
+                    this->moveCharacterFromCellToCell(from, to, 200);
+                    FMAW::printf("\tA movement has been loaded");
                 }
             }
         } else {
@@ -281,7 +293,7 @@ void Grid::playSavedHistory(std::string filename,
         }
     };
 
-    FMAW::Timer::enqueue_function(moveFollowingHistory, 1500, true);
+    FMAW::Timer::enqueue_function(moveFollowingHistory, 2500, true);
 }
 
 void Grid::clearGridUnits() {
@@ -498,6 +510,7 @@ int Grid::numCols() {
 }
 
 bool Grid::existCharacterWithOwner(int owner) {
+    FMAW::printf("Looking for characters of player %d", owner);
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
             IndexPath p{row, col};
@@ -699,6 +712,7 @@ void Grid::enqueueCallbacks() {
                              this->pickedUpCell.row,
                              this->pickedUpCell.col);
 
+                int enemyID = u->getOwner();
                 bool isKill = this->attackCharacterAtCell(this->pickedUpCell,
                               this->getSelectedPath(),
                               50);
@@ -714,7 +728,6 @@ void Grid::enqueueCallbacks() {
                                           this->getSelectedPath().col);
                         FMAW::IO::fflush(this->savefile);
                     }
-                    int enemyID = u->getOwner();
                     c->setCharacter(nullptr);
                     if (!this->existCharacterWithOwner(enemyID)) {
                         this->gameOverCallback(TurnManager::currentPlayerID());
@@ -759,7 +772,7 @@ void Grid::enqueueCallbacks() {
         }
     };
     if (this->bButtonCallbackID == -1) {
-        this->bButtonCallbackID = FMAW::Input::onButtonAReleased(releaseB);
+        this->bButtonCallbackID = FMAW::Input::onButtonBReleased(releaseB);
     }
 }
 
@@ -937,6 +950,36 @@ void Grid::recomputeAttackableCells() {
 
 void Grid::recomputeVisibleCells() {
     this->visibleCells.clear();
+    PlayerID playerID;
+
+    switch (fogOfWarMode) {
+        case fixedPlayerOne:
+            playerID = 0;
+            break;
+        case fixedPlayerTwo:
+            playerID = 1;
+            break;
+        case allVisible:
+            // All cells are visible.
+            for (int row = 0; row < this->rows; row++) {
+                for (int col = 0; col < this->cols; col++) {
+                    this->visibleCells[ {row, col}] = true;
+                }
+            }
+            return;
+        case noneVisible:
+            // No cell is visible.
+            for (int row = 0; row < this->rows; row++) {
+                for (int col = 0; col < this->cols; col++) {
+                    this->visibleCells[ {row, col}] = false;
+                }
+            }
+            return;
+        case enabled:
+        default:
+            playerID = TurnManager::currentPlayerID();
+            break;
+    }
 
     std::vector<IndexPath> units{};
 
@@ -945,8 +988,7 @@ void Grid::recomputeVisibleCells() {
             IndexPath p{row, col};
             Cell *c = this->cellAtIndexPath(p);
             Unit *u = c->getCharacter();
-            if (c->isOccupied() &&
-                    u->getOwner() == TurnManager::currentPlayerID()) {
+            if (c->isOccupied() && u->getOwner() == playerID) {
                 units.push_back(p);
             }
         }
@@ -963,6 +1005,10 @@ void Grid::recomputeVisibleCells() {
         Cell *cell = this->cellAtIndexPath(p);
         Unit *unit = cell->getCharacter();
         int maxSight = unit->getSightDistance();
+
+        if (cell->getBackgroundType() == CellBGMountain) {
+            maxSight += 5;
+        }
 
         std::map<IndexPath, int> reachCost;
 

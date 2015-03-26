@@ -26,16 +26,6 @@
 #include "./gfx_River.h"
 #include "./gfx_RiverH.h"
 
-#include "./Castle_1_1.h"
-#include "./Castle_1_2.h"
-#include "./Castle_1_3.h"
-#include "./Castle_2_1.h"
-#include "./Castle_2_2.h"
-#include "./Castle_2_3.h"
-#include "./Castle_3_1.h"
-#include "./Castle_3_2.h"
-#include "./Castle_3_3.h"
-
 #include "./gfx_Base_Fog.h"
 #include "./gfx_Bridge_Fog.h"
 #include "./gfx_BridgeH_Fog.h"
@@ -180,109 +170,6 @@ void setupGraphics(void) {
     FMAW::printf("El fondo BridgeH tiene ID=%d", BridgeH_tile.ID);
 
     //------------------------------------------------------------------------//
-    // SPACE RESERVED FOR MORE MAP TILES
-    //------------------------------------------------------------------------//
-
-    FMAW::TileAttributes Castle_1_1_attributes {
-        Castle_1_1Tiles,
-        Castle_1_1TilesLen,
-        Castle_1_1Pal,
-        Castle_1_1PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_1_1_tile(Castle_1_1_attributes);
-    FMAW::printf("El fondo Castle_1_1 tiene ID=%d", Castle_1_1_tile.ID);
-
-    FMAW::TileAttributes Castle_1_2_attributes {
-        Castle_1_2Tiles,
-        Castle_1_2TilesLen,
-        Castle_1_2Pal,
-        Castle_1_2PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_1_2_tile(Castle_1_2_attributes);
-    FMAW::printf("El fondo Castle_1_2 tiene ID=%d", Castle_1_2_tile.ID);
-
-    FMAW::TileAttributes Castle_1_3_attributes {
-        Castle_1_3Tiles,
-        Castle_1_3TilesLen,
-        Castle_1_3Pal,
-        Castle_1_3PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_1_3_tile(Castle_1_3_attributes);
-    FMAW::printf("El fondo Castle_1_3 tiene ID=%d", Castle_1_3_tile.ID);
-
-    FMAW::TileAttributes Castle_2_1_attributes {
-        Castle_2_1Tiles,
-        Castle_2_1TilesLen,
-        Castle_2_1Pal,
-        Castle_2_1PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_2_1_tile(Castle_2_1_attributes);
-    FMAW::printf("El fondo Castle_1_1 tiene ID=%d", Castle_2_1_tile.ID);
-
-    FMAW::TileAttributes Castle_2_2_attributes {
-        Castle_2_2Tiles,
-        Castle_2_2TilesLen,
-        Castle_2_2Pal,
-        Castle_2_2PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_2_2_tile(Castle_2_2_attributes);
-    FMAW::printf("El fondo Castle_2_2 tiene ID=%d", Castle_2_2_tile.ID);
-
-    FMAW::TileAttributes Castle_2_3_attributes {
-        Castle_2_3Tiles,
-        Castle_2_3TilesLen,
-        Castle_2_3Pal,
-        Castle_2_3PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_2_3_tile(Castle_2_3_attributes);
-    FMAW::printf("El fondo Castle_2_3 tiene ID=%d", Castle_2_3_tile.ID);
-
-    FMAW::TileAttributes Castle_3_1_attributes {
-        Castle_3_1Tiles,
-        Castle_3_1TilesLen,
-        Castle_3_1Pal,
-        Castle_3_1PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_3_1_tile(Castle_3_1_attributes);
-    FMAW::printf("El fondo Castle_1_1 tiene ID=%d", Castle_3_1_tile.ID);
-
-    FMAW::TileAttributes Castle_3_2_attributes {
-        Castle_3_2Tiles,
-        Castle_3_2TilesLen,
-        Castle_3_2Pal,
-        Castle_3_2PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_3_2_tile(Castle_3_2_attributes);
-    FMAW::printf("El fondo Castle_3_2 tiene ID=%d", Castle_3_2_tile.ID);
-
-    FMAW::TileAttributes Castle_3_3_attributes {
-        Castle_3_3Tiles,
-        Castle_3_3TilesLen,
-        Castle_3_3Pal,
-        Castle_3_3PalLen,
-        FMAW::TypeBackground,
-        FMAW::ScreenMain
-    };
-    FMAW::Tile Castle_3_3_tile(Castle_3_3_attributes);
-    FMAW::printf("El fondo Castle_3_3 tiene ID=%d", Castle_3_3_tile.ID);
-
-    //------------------------------------------------------------------------//
     // SPACE RESERVED FOR FOG OF WAR TILES
     //------------------------------------------------------------------------//
 
@@ -417,7 +304,7 @@ int main(void) {
     setupGraphics();
 
     grid.initCursor();
-	grid.disableCursor();
+    grid.disableCursor();
     GridMap::loadDefaultGridMap(&grid);
 
     auto addSomeUnits = []() {
@@ -455,11 +342,13 @@ int main(void) {
     auto loadSelectedMap = []() {
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
-		grid.initCursor();
-		grid.disableCursor();
+        grid.initCursor();
+        grid.disableCursor();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
-        
+        grid.fogOfWarMode = allVisible;
+        // addSomeUnits();
+        grid.initCursor();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         grid.recomputeVisibleCells();
     };
@@ -532,6 +421,7 @@ int main(void) {
 
         FMAW::printf("Should start a new game!");
         loadSelectedMap();
+        grid.fogOfWarMode = fixedPlayerOne;
         grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
@@ -563,8 +453,9 @@ int main(void) {
         red->print();
         TurnManager::addPlayer(red);
 
-        FMAW::printf("Should start a new versus game!");        
+        FMAW::printf("Should start a new versus game!");
         loadSelectedMap();
+        grid.fogOfWarMode = enabled;
         grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
