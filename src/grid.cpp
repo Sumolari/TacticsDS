@@ -1003,6 +1003,10 @@ void Grid::recomputeVisibleCells() {
         Unit *unit = cell->getCharacter();
         int maxSight = unit->getSightDistance();
 
+        if (cell->getBackgroundType() == CellBGMountain) {
+            maxSight += 5;
+        }
+
         std::map<IndexPath, int> reachCost;
 
         // First no cell is visible.
