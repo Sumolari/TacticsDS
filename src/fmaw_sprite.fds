@@ -15,13 +15,6 @@ namespace FMAW {
 // Common sprite helpers.
 //------------------------------------------------------------------------------
 
-void clearAllSprites() {
-    for (sprite_id id = 0; id < TOTAL_SPRITES; id++) {
-        Sprite sprite(id);
-        sprite.clear();
-    }
-}
-
 uint16 bytesForSpriteSizeMode(SpriteSizeMode mode) {
     switch (mode) {
         case square8x8:
@@ -54,6 +47,14 @@ uint16 bytesForSpriteSizeMode(SpriteSizeMode mode) {
 //------------------------------------------------------------------------------
 
 sprite_id Sprite::nextEmptySprite = 0;
+
+void Sprite::clearAllSprites() {
+    for (sprite_id id = 0; id < TOTAL_SPRITES; id++) {
+        Sprite sprite(id);
+        sprite.clear();
+    }
+    Sprite::nextEmptySprite = 0;
+}
 
 //----------//------------------------------------------------------------------
 //----------// Position.
@@ -515,8 +516,10 @@ void Sprite::clear() {
 }
 
 void Sprite::disable() {
-    uint16 disableMask = 0xFEFF;
-    sprites[this->id].attr0 &= disableMask;
+    uint16 disableAndMask = 0xFEFF;
+    uint16 disableOrMask  = 0x0200;
+    sprites[this->id].attr0 &= disableAndMask;
+    sprites[this->id].attr0 |= disableOrMask;
 }
 
 void Sprite::enable() {

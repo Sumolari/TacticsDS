@@ -291,12 +291,11 @@ void Grid::clearGridUnits() {
             Cell *c = this->cellAtIndexPath(path);
 
             if (c->isOccupied()) {
-                Unit *u = c->getCharacter();
-                c->setCharacter(nullptr);
-                delete u;
+                delete c->setCharacter(nullptr);
             }
         }
     }
+    this->recomputeVisibleCells();
 }
 
 bool Grid::isPlayingSavedFile() {
@@ -326,6 +325,11 @@ void Grid::resetUnitMovements() {
 
 void Grid::initCursor() {
     this->cursor.init();
+    this->setSquareCursor();
+}
+
+void Grid::resetCursor() {
+    this->cursor.enable();
     this->setSquareCursor();
 }
 
@@ -418,6 +422,7 @@ bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
         c->setPosition(f->getCenter());
         c->animateToPosition(t->getCenter(), duration);
         f->setCharacter(nullptr);
+        this->recomputeVisibleCells();
         return true;
     }
     return false;
@@ -451,7 +456,11 @@ void Grid::renderBackground() {
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
             IndexPath p{row, col};
-            this->cellAtIndexPath(p)->renderBackground();
+            if (this->visibleCells[p]) {
+                this->cellAtIndexPath(p)->renderBackground();
+            } else {
+                this->cellAtIndexPath(p)->renderFoggyBackground();
+            }
         }
     }
 }
@@ -460,7 +469,18 @@ void Grid::renderCharacters() {
     for (int row = 0; row < this->rows; row++) {
         for (int col = 0; col < this->cols; col++) {
             IndexPath p{row, col};
-            this->cellAtIndexPath(p)->renderCharacter();
+            if (this->visibleCells[p]) {
+                if (this->cellAtIndexPath(p)->isOccupied()) {
+                    this->cellAtIndexPath(p)->getCharacter()->sprite.enable();
+                    this->cellAtIndexPath(p)->renderCharacter();
+                }
+            } else {
+                if (this->cellAtIndexPath(p)->isOccupied()) {
+                    Unit *u = this->cellAtIndexPath(p)->getCharacter();
+                    u->sprite.disable();
+                    this->cellAtIndexPath(p)->renderCharacter();
+                }
+            }
         }
     }
     this->cursor.render();
@@ -612,6 +632,8 @@ void Grid::resetPickedUpCell() {
 //------------------------------------------------------------------------------
 
 void Grid::enqueueCallbacks() {
+    this->recomputeVisibleCells();
+
     auto releaseLeftArrow = [this]() {
         this->selectLeftCell();
     };
@@ -908,4 +930,103 @@ void Grid::recomputeAttackableCells() {
             }
         }
     }
+}
+
+void Grid::recomputeVisibleCells() {
+    this->visibleCells.clear();
+
+    std::vector<IndexPath> units{};
+
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            IndexPath p{row, col};
+            Cell *c = this->cellAtIndexPath(p);
+            Unit *u = c->getCharacter();
+            if (c->isOccupied() &&
+                    u->getOwner() == TurnManager::currentPlayerID()) {
+                units.push_back(p);
+            }
+        }
+    }
+
+    // First no cell is visible.
+    for (int row = 0; row < this->rows; row++) {
+        for (int col = 0; col < this->cols; col++) {
+            this->visibleCells[ {row, col}] = false;
+        }
+    }
+
+    for (IndexPath p : units) {
+        Cell *cell = this->cellAtIndexPath(p);
+        Unit *unit = cell->getCharacter();
+        int maxSight = unit->getSightDistance();
+
+        std::map<IndexPath, int> reachCost;
+
+        // First no cell is visible.
+        for (int row = 0; row < this->rows; row++) {
+            for (int col = 0; col < this->cols; col++) {
+                reachCost[ {row, col}] = COST_CELL_INFINITY;
+            }
+        }
+
+        // Only cell reachable is the first one.
+        reachCost[p] = 0;
+        this->visibleCells[p] = true;
+
+        // When the cost of a cell changes we explore its neighbours.
+        std::queue<IndexPath> pathsToCheck({ p });
+
+        // While we have some cell to check we check it...
+        while (pathsToCheck.size() > 0) {
+            IndexPath path = pathsToCheck.front();  // Cell to check.
+            pathsToCheck.pop();  // We remove it as we have checked it.
+            // If we go up...
+            if (path.row > 0) {
+                IndexPath u = { path.row - 1, path.col };
+                int c = this->cellAtIndexPath(u)->sightCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[u] && newCost <= maxSight) {
+                    reachCost[u] = newCost;
+                    this->visibleCells[u] = true;
+                    pathsToCheck.push(u);
+                }
+            }
+            // If we go down...
+            if (path.row < this->rows - 1) {
+                IndexPath d = { path.row + 1, path.col };
+                int c = this->cellAtIndexPath(d)->sightCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[d] && newCost <= maxSight) {
+                    reachCost[d] = newCost;
+                    this->visibleCells[d] = true;
+                    pathsToCheck.push(d);
+                }
+            }
+            // If we go left...
+            if (path.col > 0) {
+                IndexPath l = { path.row, path.col - 1 };
+                int c = this->cellAtIndexPath(l)->sightCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[l] && newCost <= maxSight) {
+                    reachCost[l] = newCost;
+                    this->visibleCells[l] = true;
+                    pathsToCheck.push(l);
+                }
+            }
+            // If we go right...
+            if (path.col < this->cols - 1) {
+                IndexPath r = { path.row, path.col + 1 };
+                int c = this->cellAtIndexPath(r)->sightCost();
+                int newCost = reachCost[path] + c;
+                if (newCost < reachCost[r] && newCost <= maxSight) {
+                    reachCost[r] = newCost;
+                    this->visibleCells[r] = true;
+                    pathsToCheck.push(r);
+                }
+            }
+        }
+    }
+
+    this->renderBackground();
 }

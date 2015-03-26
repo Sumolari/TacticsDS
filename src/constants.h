@@ -23,27 +23,52 @@
 /**
  * Cost of entering a base cell.
  */
-#define COST_CELL_BASE      1
+#define COST_MOVE_CELL_BASE      1
 /**
  * Cost of entering a bridge cell.
  */
-#define COST_CELL_BRIDGE    1
+#define COST_MOVE_CELL_BRIDGE    1
 /**
  * Cost of entering a forest cell.
  */
-#define COST_CELL_FOREST    2
+#define COST_MOVE_CELL_FOREST    2
 /**
  * Cost of entering a grass cell.
  */
-#define COST_CELL_GRASS     1
+#define COST_MOVE_CELL_GRASS     1
 /**
  * Cost of entering a mountain cell.
  */
-#define COST_CELL_MOUNTAIN  3
+#define COST_MOVE_CELL_MOUNTAIN  3
 /**
  * Cost of entering a river cell.
  */
-#define COST_CELL_RIVER     COST_CELL_INFINITY
+#define COST_MOVE_CELL_RIVER     COST_CELL_INFINITY
+
+/**
+ * Cost of entering a base cell.
+ */
+#define COST_SEE_CELL_BASE      1
+/**
+ * Cost of entering a bridge cell.
+ */
+#define COST_SEE_CELL_BRIDGE    1
+/**
+ * Cost of entering a forest cell.
+ */
+#define COST_SEE_CELL_FOREST    2
+/**
+ * Cost of entering a grass cell.
+ */
+#define COST_SEE_CELL_GRASS     1
+/**
+ * Cost of entering a mountain cell.
+ */
+#define COST_SEE_CELL_MOUNTAIN  3
+/**
+ * Cost of entering a river cell.
+ */
+#define COST_SEE_CELL_RIVER     1
 
 /**
  * ID of none owner.

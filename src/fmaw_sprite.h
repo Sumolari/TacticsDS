@@ -65,11 +65,6 @@ typedef enum t_spritePriority {
 //------------------------------------------------------------------------------
 
 /**
- * Clears all sprites in memory.
- */
-void clearAllSprites();
-
-/**
  * Returns the amount of bytes in memory required to store a tile with given
  * size.
  *
@@ -83,7 +78,7 @@ uint16 bytesForSpriteSizeMode(SpriteSizeMode mode);
 //------------------------------------------------------------------------------
 
 class Sprite {
-public:
+  public:
     // ID of this sprite.
     sprite_id id;
     // Next empty sprite.
@@ -101,6 +96,11 @@ public:
      * created otherwise results are not defined.
      */
     Sprite(sprite_id id) : id(id) {};
+
+    /**
+    * Clears all sprites in memory.
+    */
+    static void clearAllSprites();
 
     //--------------------------------------------------------------------------
     // Position.

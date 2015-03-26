@@ -17,12 +17,6 @@
 #include "./knight.h"
 #include "./sniper.h"
 
-#include "./gfx_brick.h"
-#include "./gfx_gradient.h"
-
-#include "./gfx_black.h"
-#include "./gfx_blank.h"
-
 #include "./gfx_Base.h"
 #include "./gfx_Bridge.h"
 #include "./gfx_BridgeH.h"
@@ -32,24 +26,28 @@
 #include "./gfx_River.h"
 #include "./gfx_RiverH.h"
 
-//------------------------------------------------------------------------------
-// Background tile entries
-//------------------------------------------------------------------------------
+#include "./Castle_1_1.h"
+#include "./Castle_1_2.h"
+#include "./Castle_1_3.h"
+#include "./Castle_2_1.h"
+#include "./Castle_2_2.h"
+#include "./Castle_2_3.h"
+#include "./Castle_3_1.h"
+#include "./Castle_3_2.h"
+#include "./Castle_3_3.h"
 
-#define TILE_EMPTY     0  // Tile 0 = empty
-#define TILE_BRICK     1  // Tile 1 = brick
-#define TILE_GRADIENT  2  // Tile 2 = gradient
+#include "./gfx_Base_Fog.h"
+#include "./gfx_Bridge_Fog.h"
+#include "./gfx_BridgeH_Fog.h"
+#include "./gfx_Forest_Fog.h"
+#include "./gfx_Grass_Fog.h"
+#include "./gfx_Mountain_Fog.h"
+#include "./gfx_River_Fog.h"
+#include "./gfx_RiverH_Fog.h"
 
 //------------------------------------------------------------------------------
 // Background...
 //------------------------------------------------------------------------------
-
-//----------//------------------------------------------------------------------
-//----------// Palette entries
-//----------//------------------------------------------------------------------
-
-#define PAL_BRICKS     0  // Brick palette (entry 0->15).
-#define PAL_GRADIENT   1  // Gradient palette (entry 16->31).
 
 #define BACKDROP_COLOR RGB8(190, 255, 255)
 
@@ -68,6 +66,8 @@ Grid grid;
 MainMenu menu;
 Player *blue;
 Player *red;
+
+int timesReported;
 
 #define MAPS_COUNT 4
 
@@ -180,6 +180,201 @@ void setupGraphics(void) {
     FMAW::printf("El fondo BridgeH tiene ID=%d", BridgeH_tile.ID);
 
     //------------------------------------------------------------------------//
+    // SPACE RESERVED FOR MORE MAP TILES
+    //------------------------------------------------------------------------//
+
+    FMAW::TileAttributes Castle_1_1_attributes {
+        Castle_1_1Tiles,
+        Castle_1_1TilesLen,
+        Castle_1_1Pal,
+        Castle_1_1PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_1_1_tile(Castle_1_1_attributes);
+    FMAW::printf("El fondo Castle_1_1 tiene ID=%d", Castle_1_1_tile.ID);
+
+    FMAW::TileAttributes Castle_1_2_attributes {
+        Castle_1_2Tiles,
+        Castle_1_2TilesLen,
+        Castle_1_2Pal,
+        Castle_1_2PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_1_2_tile(Castle_1_2_attributes);
+    FMAW::printf("El fondo Castle_1_2 tiene ID=%d", Castle_1_2_tile.ID);
+
+    FMAW::TileAttributes Castle_1_3_attributes {
+        Castle_1_3Tiles,
+        Castle_1_3TilesLen,
+        Castle_1_3Pal,
+        Castle_1_3PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_1_3_tile(Castle_1_3_attributes);
+    FMAW::printf("El fondo Castle_1_3 tiene ID=%d", Castle_1_3_tile.ID);
+
+    FMAW::TileAttributes Castle_2_1_attributes {
+        Castle_2_1Tiles,
+        Castle_2_1TilesLen,
+        Castle_2_1Pal,
+        Castle_2_1PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_2_1_tile(Castle_2_1_attributes);
+    FMAW::printf("El fondo Castle_1_1 tiene ID=%d", Castle_2_1_tile.ID);
+
+    FMAW::TileAttributes Castle_2_2_attributes {
+        Castle_2_2Tiles,
+        Castle_2_2TilesLen,
+        Castle_2_2Pal,
+        Castle_2_2PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_2_2_tile(Castle_2_2_attributes);
+    FMAW::printf("El fondo Castle_2_2 tiene ID=%d", Castle_2_2_tile.ID);
+
+    FMAW::TileAttributes Castle_2_3_attributes {
+        Castle_2_3Tiles,
+        Castle_2_3TilesLen,
+        Castle_2_3Pal,
+        Castle_2_3PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_2_3_tile(Castle_2_3_attributes);
+    FMAW::printf("El fondo Castle_2_3 tiene ID=%d", Castle_2_3_tile.ID);
+
+    FMAW::TileAttributes Castle_3_1_attributes {
+        Castle_3_1Tiles,
+        Castle_3_1TilesLen,
+        Castle_3_1Pal,
+        Castle_3_1PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_3_1_tile(Castle_3_1_attributes);
+    FMAW::printf("El fondo Castle_1_1 tiene ID=%d", Castle_3_1_tile.ID);
+
+    FMAW::TileAttributes Castle_3_2_attributes {
+        Castle_3_2Tiles,
+        Castle_3_2TilesLen,
+        Castle_3_2Pal,
+        Castle_3_2PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_3_2_tile(Castle_3_2_attributes);
+    FMAW::printf("El fondo Castle_3_2 tiene ID=%d", Castle_3_2_tile.ID);
+
+    FMAW::TileAttributes Castle_3_3_attributes {
+        Castle_3_3Tiles,
+        Castle_3_3TilesLen,
+        Castle_3_3Pal,
+        Castle_3_3PalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_3_3_tile(Castle_3_3_attributes);
+    FMAW::printf("El fondo Castle_3_3 tiene ID=%d", Castle_3_3_tile.ID);
+
+    //------------------------------------------------------------------------//
+    // SPACE RESERVED FOR FOG OF WAR TILES
+    //------------------------------------------------------------------------//
+
+    FMAW::TileAttributes gfx_Base_Fog_attributes {
+        gfx_Base_FogTiles,
+        gfx_Base_FogTilesLen,
+        gfx_Base_FogPal,
+        gfx_Base_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile base_Fog_tile(gfx_Base_Fog_attributes);
+    FMAW::printf("El fondo Base_Fog tiene ID=%d", base_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_Bridge_Fog_attributes {
+        gfx_Bridge_FogTiles,
+        gfx_Bridge_FogTilesLen,
+        gfx_Bridge_FogPal,
+        gfx_Bridge_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Bridge_Fog_tile(gfx_Bridge_Fog_attributes);
+    FMAW::printf("El fondo Bridge_Fog tiene ID=%d", Bridge_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_Forest_Fog_attributes {
+        gfx_Forest_FogTiles,
+        gfx_Forest_FogTilesLen,
+        gfx_Forest_FogPal,
+        gfx_Forest_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Forest_Fog_tile(gfx_Forest_Fog_attributes);
+    FMAW::printf("El fondo Forest_Fog tiene ID=%d", Forest_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_Grass_Fog_attributes {
+        gfx_Grass_FogTiles,
+        gfx_Grass_FogTilesLen,
+        gfx_Grass_FogPal,
+        gfx_Grass_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Grass_Fog_tile(gfx_Grass_Fog_attributes);
+    FMAW::printf("El fondo Grass_Fog tiene ID=%d", Grass_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_Mountain_Fog_attributes {
+        gfx_Mountain_FogTiles,
+        gfx_Mountain_FogTilesLen,
+        gfx_Mountain_FogPal,
+        gfx_Mountain_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Mountain_Fog_tile(gfx_Mountain_Fog_attributes);
+    FMAW::printf("El fondo Mountain_Fog tiene ID=%d", Mountain_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_River_Fog_attributes {
+        gfx_River_FogTiles,
+        gfx_River_FogTilesLen,
+        gfx_River_FogPal,
+        gfx_River_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile River_Fog_tile(gfx_River_Fog_attributes);
+    FMAW::printf("El fondo River_Fog tiene ID=%d", River_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_RiverH_Fog_attributes {
+        gfx_RiverH_FogTiles,
+        gfx_RiverH_FogTilesLen,
+        gfx_RiverH_FogPal,
+        gfx_RiverH_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile RiverH_Fog_tile(gfx_RiverH_Fog_attributes);
+    FMAW::printf("El fondo RiverH_Fog tiene ID=%d", RiverH_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_BridgeH_Fog_attributes {
+        gfx_BridgeH_FogTiles,
+        gfx_BridgeH_FogTilesLen,
+        gfx_BridgeH_FogPal,
+        gfx_BridgeH_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile BridgeH_Fog_tile(gfx_BridgeH_Fog_attributes);
+    FMAW::printf("El fondo BridgeH_Fog tiene ID=%d", BridgeH_Fog_tile.ID);
+
+    //------------------------------------------------------------------------//
 
     // Set backdrop color.
     FMAW::setBackgroundColor(BACKDROP_COLOR);
@@ -209,6 +404,7 @@ int main(void) {
         FMAW::printf("Tocaría cambiar de turno!");
         grid.resetPickedUpCell();
         TurnManager::finishTurn();
+        grid.recomputeVisibleCells();
         menu.adjustCurrentTile();
     };
 
@@ -239,9 +435,8 @@ int main(void) {
         Warrior *warriorL = new Warrior(blue.getID());
         */
 
-        grid.cellAtIndexPath({0, 0})->setCharacter(warriorA);
-        grid.cellAtIndexPath({4, 2})->setCharacter(warriorB);
-
+        grid.cellAtIndexPath({1, 1})->setCharacter(warriorA);
+        grid.cellAtIndexPath({10, 2})->setCharacter(warriorB);
         grid.cellAtIndexPath({0, 1})->setCharacter(warriorC);
         grid.cellAtIndexPath({0, 2})->setCharacter(warriorD);
         grid.cellAtIndexPath({0, 3})->setCharacter(warriorE);
@@ -260,8 +455,8 @@ int main(void) {
     auto loadSelectedMap = [addSomeUnits]() {
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
-        GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         FMAW::printf("Loading map with ID=%d", selectedMap);
+        GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         // addSomeUnits();
         grid.initCursor();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
@@ -315,6 +510,12 @@ int main(void) {
         }
         // MemTrack::TrackListMemoryUsage();
     };
+
+    auto reportUsage = [](int ID) {
+        FMAW::printf("Time: %d", timesReported++);
+        MemTrack::TrackListMemoryUsage();
+    };
+    // FMAW::Timer::enqueue_function(reportUsage, 1000, true);
 
     FMAW::Input::onButtonStartReleased(releaseStart);
 

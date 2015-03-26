@@ -23,6 +23,7 @@ void Knight::init() {
 
     this->unitType = UNIT_TYPE_KNIGHT;
     this->movementCapacity = 6;
+    this->sightDistance = 8;
     this->maximumAvailableActions = 2;
     this->currentAvailableActions = this->maximumAvailableActions;
     this->maximumHealth = 2;
@@ -44,56 +45,56 @@ void Knight::init() {
     //--------------------------------------------------------------------------
 
     auto free_knight_1Tiles = (this->ownerID == 0) ?
-                                     free_knight_1_blueTiles :
-                                     free_knight_1_redTiles;
+                              free_knight_1_blueTiles :
+                              free_knight_1_redTiles;
     auto free_knight_1TilesLen = (this->ownerID == 0) ?
-                                        free_knight_1_blueTilesLen :
-                                        free_knight_1_redTilesLen;
+                                 free_knight_1_blueTilesLen :
+                                 free_knight_1_redTilesLen;
     auto free_knight_1Pal = (this->ownerID == 0) ?
-                                   free_knight_1_bluePal :
-                                   free_knight_1_redPal;
+                            free_knight_1_bluePal :
+                            free_knight_1_redPal;
     auto free_knight_1PalLen = (this->ownerID == 0) ?
-                                      free_knight_1_bluePalLen :
-                                      free_knight_1_redPalLen;
+                               free_knight_1_bluePalLen :
+                               free_knight_1_redPalLen;
 
     auto free_knight_2Tiles = (this->ownerID == 0) ?
-                                     free_knight_2_blueTiles :
-                                     free_knight_2_redTiles;
+                              free_knight_2_blueTiles :
+                              free_knight_2_redTiles;
     auto free_knight_2TilesLen = (this->ownerID == 0) ?
-                                        free_knight_2_blueTilesLen :
-                                        free_knight_2_redTilesLen;
+                                 free_knight_2_blueTilesLen :
+                                 free_knight_2_redTilesLen;
     auto free_knight_2Pal = (this->ownerID == 0) ?
-                                   free_knight_2_bluePal :
-                                   free_knight_2_redPal;
+                            free_knight_2_bluePal :
+                            free_knight_2_redPal;
     auto free_knight_2PalLen = (this->ownerID == 0) ?
-                                      free_knight_2_bluePalLen :
-                                      free_knight_2_redPalLen;
+                               free_knight_2_bluePalLen :
+                               free_knight_2_redPalLen;
 
     auto free_knight_3Tiles = (this->ownerID == 0) ?
-                                     free_knight_3_blueTiles :
-                                     free_knight_3_redTiles;
+                              free_knight_3_blueTiles :
+                              free_knight_3_redTiles;
     auto free_knight_3TilesLen = (this->ownerID == 0) ?
-                                        free_knight_3_blueTilesLen :
-                                        free_knight_3_redTilesLen;
+                                 free_knight_3_blueTilesLen :
+                                 free_knight_3_redTilesLen;
     auto free_knight_3Pal = (this->ownerID == 0) ?
-                                   free_knight_3_bluePal :
-                                   free_knight_3_redPal;
+                            free_knight_3_bluePal :
+                            free_knight_3_redPal;
     auto free_knight_3PalLen = (this->ownerID == 0) ?
-                                      free_knight_3_bluePalLen :
-                                      free_knight_3_redPalLen;
+                               free_knight_3_bluePalLen :
+                               free_knight_3_redPalLen;
 
     auto free_knight_4Tiles = (this->ownerID == 0) ?
-                                     free_knight_4_blueTiles :
-                                     free_knight_4_redTiles;
+                              free_knight_4_blueTiles :
+                              free_knight_4_redTiles;
     auto free_knight_4TilesLen = (this->ownerID == 0) ?
-                                        free_knight_4_blueTilesLen :
-                                        free_knight_4_redTilesLen;
+                                 free_knight_4_blueTilesLen :
+                                 free_knight_4_redTilesLen;
     auto free_knight_4Pal = (this->ownerID == 0) ?
-                                   free_knight_4_bluePal :
-                                   free_knight_4_redPal;
+                            free_knight_4_bluePal :
+                            free_knight_4_redPal;
     auto free_knight_4PalLen = (this->ownerID == 0) ?
-                                      free_knight_4_bluePalLen :
-                                      free_knight_4_redPalLen;
+                               free_knight_4_bluePalLen :
+                               free_knight_4_redPalLen;
 
     //--------------------------------------------------------------------------
     // Load tile.
@@ -153,24 +154,26 @@ void Knight::update() {
         this->currentTileID += 1;
         this->currentTileID %= SPRITES_IDLE_ANIMATION;
 
-        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
-                                    this->tile->ID);
+        int id = this->tile->ID;
+        delete this->tile;
+
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]), id);
 
         this->sprite.setTile(*(this->tile));
     }
 }
 
-void Knight::update_freq(){
-	FMAW::Timer::dequeue_function(this->updateID);
-	
-	auto _update = [this](int ID) {
+void Knight::update_freq() {
+    FMAW::Timer::dequeue_function(this->updateID);
+
+    auto _update = [this](int ID) {
         this->update();
     };
-    
-    //TODO decent time calculation
-    int t = 200*(this->maximumHealth / this->currentHealth);
-    
-	this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
+
+    // TODO(victor) decent time calculation
+    int t = 200 * (this->maximumHealth / this->currentHealth);
+
+    this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
 }
 
 void Knight::reset() {

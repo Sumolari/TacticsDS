@@ -25,6 +25,11 @@ class Unit : public FMAW::Character {
     int movementCapacity;
 
     /**
+     * Distance this unit can see.
+     */
+    int sightDistance;
+
+    /**
      * Maximum amount of available actions this Unit has.
      */
     int maximumAvailableActions;
@@ -34,28 +39,28 @@ class Unit : public FMAW::Character {
      */
     int currentAvailableActions;
 
-	/**
-	 * Maximum amount of health this Unit has.
-	 */
-	int maximumHealth;
-	/**
-	 * Amount of health this Unit currently has.
-	 */
-	int currentHealth;
-	
-	/**
-	 * Minimum range from which this Unit can attack.
-	 */
-	int minimumAttackRange;
-	/**
-	 * Maximum range from which this Unit can attack.
-	 */
-	int maximumAttackRange;
+    /**
+     * Maximum amount of health this Unit has.
+     */
+    int maximumHealth;
+    /**
+     * Amount of health this Unit currently has.
+     */
+    int currentHealth;
 
-	/**
-	 * Attack power of this Unit.
-	 */
-	int attackPower;
+    /**
+     * Minimum range from which this Unit can attack.
+     */
+    int minimumAttackRange;
+    /**
+     * Maximum range from which this Unit can attack.
+     */
+    int maximumAttackRange;
+
+    /**
+     * Attack power of this Unit.
+     */
+    int attackPower;
 
     /**
      * Creates a new unit using a new sprite.
@@ -81,7 +86,7 @@ class Unit : public FMAW::Character {
     static Unit *UnitWithType(int unitType, PlayerID ownerID);
 
     virtual void update();
-    
+
     virtual void update_freq();
 
     /**
@@ -96,7 +101,13 @@ class Unit : public FMAW::Character {
      */
     int getMovementCapacity();
 
-	/**
+    /**
+     * Returns the distance this unit can see.
+     * @return Distance this unit can see.
+     */
+    int getSightDistance();
+
+    /**
      * Returns the maximum health of this Unit.
      * @return Maximum health of this Unit.
      */
@@ -123,13 +134,13 @@ class Unit : public FMAW::Character {
      * @return Maximum attack range of this Unit.
      */
     int getMaximumAttackRange();
-    
+
     /**
      * Returns the attack power of this Unit.
      * @return Attack power of this Unit.
      */
     int force();
-    
+
     /**
      * Returns true if the attacked unit is alive afterwards.
      * False otherwise.

@@ -50,7 +50,7 @@ class Warrior : public Unit {
     };
 
     virtual void update();
-    
+
     virtual void update_freq();
 
     /**
