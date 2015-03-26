@@ -25,6 +25,7 @@
 #include "./gfx_Mountain.h"
 #include "./gfx_River.h"
 #include "./gfx_RiverH.h"
+#include "./gfx_castle.h"
 
 #include "./gfx_Base_Fog.h"
 #include "./gfx_Bridge_Fog.h"
@@ -34,6 +35,7 @@
 #include "./gfx_Mountain_Fog.h"
 #include "./gfx_River_Fog.h"
 #include "./gfx_RiverH_Fog.h"
+#include "./gfx_castle_fog.h"
 
 //------------------------------------------------------------------------------
 // Background...
@@ -169,6 +171,19 @@ void setupGraphics(void) {
     FMAW::Tile BridgeH_tile(gfx_BridgeH_attributes);
     FMAW::printf("El fondo BridgeH tiene ID=%d", BridgeH_tile.ID);
 
+    /*
+    FMAW::TileAttributes gfx_Castle_attributes {
+        gfx_castleTiles,
+        gfx_castleTilesLen,
+        gfx_castlePal,
+        gfx_castlePalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_tile(gfx_Castle_attributes);
+    FMAW::printf("El fondo Castle tiene ID=%d", Castle_tile.ID);
+    */
+
     //------------------------------------------------------------------------//
     // SPACE RESERVED FOR FOG OF WAR TILES
     //------------------------------------------------------------------------//
@@ -260,6 +275,19 @@ void setupGraphics(void) {
     };
     FMAW::Tile BridgeH_Fog_tile(gfx_BridgeH_Fog_attributes);
     FMAW::printf("El fondo BridgeH_Fog tiene ID=%d", BridgeH_Fog_tile.ID);
+
+    /*
+    FMAW::TileAttributes gfx_Castle_Fog_attributes {
+        gfx_castle_fogTiles,
+        gfx_castle_fogTilesLen,
+        gfx_castle_fogPal,
+        gfx_castle_fogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_Fog_tile(gfx_Castle_Fog_attributes);
+    FMAW::printf("El fondo Castle_Fog tiene ID=%d", Castle_Fog_tile.ID);
+    */
 
     //------------------------------------------------------------------------//
 

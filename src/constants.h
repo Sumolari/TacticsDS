@@ -41,6 +41,10 @@
  */
 #define COST_MOVE_CELL_MOUNTAIN  3
 /**
+* Cost of entering a castle cell.
+*/
+#define COST_MOVE_CELL_CASTLE    1
+/**
  * Cost of entering a river cell.
  */
 #define COST_MOVE_CELL_RIVER     COST_CELL_INFINITY
@@ -65,6 +69,10 @@
  * Cost of entering a mountain cell.
  */
 #define COST_SEE_CELL_MOUNTAIN  3
+/**
+ * Cost of entering a castle cell.
+ */
+#define COST_SEE_CELL_CASTLE    1
 /**
  * Cost of entering a river cell.
  */
