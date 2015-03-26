@@ -184,6 +184,16 @@ class Grid {
      * Initializes cursor.
      */
     void initCursor();
+    
+    /**
+     * Disables cursor.
+     */
+    void disableCursor();
+    
+    /**
+     * Enables cursor.
+     */
+    void enableCursor();
 
     /**
      * Returns cell located at given IndexPath.

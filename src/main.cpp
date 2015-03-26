@@ -417,7 +417,7 @@ int main(void) {
     setupGraphics();
 
     grid.initCursor();
-
+	grid.disableCursor();
     GridMap::loadDefaultGridMap(&grid);
 
     auto addSomeUnits = []() {
@@ -456,10 +456,12 @@ int main(void) {
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
 		grid.initCursor();
+		grid.disableCursor();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        grid.recomputeVisibleCells();
         grid.renderBackground();
         grid.renderCharacters();
     };
@@ -532,6 +534,7 @@ int main(void) {
 
         FMAW::printf("Should start a new game!");
         loadSelectedMap();
+        grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
     };
@@ -564,6 +567,7 @@ int main(void) {
 
         FMAW::printf("Should start a new versus game!");        
         loadSelectedMap();
+        grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
     };

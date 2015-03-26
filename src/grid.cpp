@@ -328,9 +328,12 @@ void Grid::initCursor() {
     this->setSquareCursor();
 }
 
-void Grid::resetCursor() {
+void Grid::disableCursor() {
+    this->cursor.disable();
+}
+
+void Grid::enableCursor() {
     this->cursor.enable();
-    this->setSquareCursor();
 }
 
 Cell *Grid::cellAtIndexPath(IndexPath ip) {
