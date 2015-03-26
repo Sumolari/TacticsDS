@@ -23,6 +23,7 @@ void Warrior::init() {
 
     this->unitType = UNIT_TYPE_WARRIOR;
     this->movementCapacity = 4;
+    this->sightDistance = 6;
     this->maximumAvailableActions = 1;
     this->currentAvailableActions = this->maximumAvailableActions;
     this->maximumHealth = 10;
@@ -30,7 +31,6 @@ void Warrior::init() {
     this->minimumAttackRange = 1;
     this->maximumAttackRange = 1;
     this->attackPower = 2;
-    this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
                              FMAW::TileAttributes *);
@@ -153,8 +153,10 @@ void Warrior::update() {
         this->currentTileID += 1;
         this->currentTileID %= SPRITES_IDLE_ANIMATION;
 
-        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
-                                    this->tile->ID);
+        int id = this->tile->ID;
+        delete this->tile;
+
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]), id);
 
         this->sprite.setTile(*(this->tile));
     }
@@ -167,7 +169,7 @@ void Warrior::update_freq() {
         this->update();
     };
 
-    //TODO decent time calculation
+    // TODO(victor) decent time calculation
     int t = 200 * (this->maximumHealth / this->currentHealth);
 
     this->updateID = FMAW::Timer::enqueue_function(_update, t, true);
@@ -179,6 +181,7 @@ void Warrior::reset() {
 }
 
 void Warrior::print() {
+    Unit::print();
     FMAW::printf("%d of %d actions available, with %d movements",
                  this->currentAvailableActions, this->maximumAvailableActions,
                  this->movementCapacity);

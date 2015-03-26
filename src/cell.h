@@ -21,6 +21,8 @@ typedef struct t_indexPath {
 
 bool operator <(IndexPath const &left, IndexPath const &right);
 
+#define NUM_BACKGROUNDS 17
+
 typedef enum t_cellBackgroundType {
     CellBGNone     = -1,
     CellBGWhite    = -2,
@@ -120,9 +122,20 @@ class Cell {
     int movementCost();
 
     /**
+     * Cost of seeing through this cell.
+     * @return Cost of seeing through this cell.
+     */
+    int sightCost();
+
+    /**
      * Draws this cell's background.
      */
     void renderBackground();
+
+    /**
+     * Draw this cell's background, foggy.
+     */
+    void renderFoggyBackground();
 
     /**
      * Draws this cell's character.

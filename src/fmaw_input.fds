@@ -406,6 +406,10 @@ bool unregisterCallback(int id) {
             registered_functions.end()) {
         registered_functions.erase(id);
         return true;
+    } else if (registered_touch_functions.find(id) !=
+               registered_touch_functions.end()) {
+        registered_touch_functions.erase(id);
+        return true;
     }
     return false;
 }

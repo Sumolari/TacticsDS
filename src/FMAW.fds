@@ -17,7 +17,7 @@ void init(void (*displayCallback)(), void (*updateCallback)()) {
     vramSetBankC(VRAM_C_SUB_BG_0x06200000);
 
     Timer::init();
-    clearAllSprites();
+    Sprite::clearAllSprites();
 
     videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE |
                  DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D_LAYOUT);

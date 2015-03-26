@@ -2,7 +2,9 @@
 #define FMAW_TILE_H
 
 #include <map>
+#include <vector>
 #include <string>
+
 #include "./fmaw_macros.h"
 #include "./fmaw_debug.h"
 
@@ -61,26 +63,51 @@ class Tile {
      */
     static std::map<int, int> IDtoImgMemoryPosition;
     /**
-     * First memory position available for sprite tiles images.
+     * First memory position available for sprite tiles images in Main engine.
      */
-    static int nextSpriteImgMemoryPosition;
+    static int nextSpriteImgMemoryPositionMain;
     /**
-     * First memory position available for background tiles images.
+     * First memory position available for background tiles images in Main
+     * engine.
      */
-    static int nextBackgroundImgMemoryPosition;
+    static int nextBackgroundImgMemoryPositionMain;
+    /**
+     * First memory position available for sprite tiles images in Sub engine.
+     */
+    static int nextSpriteImgMemoryPositionSub;
+    /**
+     * First memory position available for background tiles images in Sub
+     * engine.
+     */
+    static int nextBackgroundImgMemoryPositionSub;
 
     /**
      * Tile's ID -> tile's palette memory position mapping.
      */
     static std::map<int, int> IDtoPalMemoryPosition;
     /**
-     * First memory position available for sprite tiles palette.
+     * First memory position available for sprite tiles palette in Main engine.
      */
-    static int nextSpritePalMemoryPosition;
+    static int nextSpritePalMemoryPositionMain;
     /**
-     * First memory position available for background tiles palette.
+     * First memory position available for background tiles palette in Main
+     * engine.
      */
-    static int nextBackgroundPalMemoryPosition;
+    static int nextBackgroundPalMemoryPositionMain;
+    /**
+     * First memory position available for sprite tiles palette in Sub engine.
+     */
+    static int nextSpritePalMemoryPositionSub;
+    /**
+     * First memory position available for background tiles palette in Sub
+     * engine.
+     */
+    static int nextBackgroundPalMemoryPositionSub;
+
+    /**
+     * List of IDs given to Sprite Tiles.
+     */
+    static std::vector<int> IDofSpriteTiles;
 
     /**
      * First ID available for tiles of any type.
