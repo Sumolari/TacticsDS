@@ -417,7 +417,7 @@ int main(void) {
     setupGraphics();
 
     grid.initCursor();
-
+	grid.disableCursor();
     GridMap::loadDefaultGridMap(&grid);
 
     auto addSomeUnits = []() {
@@ -452,16 +452,16 @@ int main(void) {
         grid.resetUnitMovements();
     };
 
-    auto loadSelectedMap = [addSomeUnits]() {
+    auto loadSelectedMap = []() {
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
+		grid.initCursor();
+		grid.disableCursor();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
-        // addSomeUnits();
-        grid.initCursor();
+        
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
-        grid.renderBackground();
-        grid.renderCharacters();
+        grid.recomputeVisibleCells();
     };
 
     int selectSoundID = FMAW::Sound::registerFX(
@@ -519,7 +519,7 @@ int main(void) {
 
     FMAW::Input::onButtonStartReleased(releaseStart);
 
-    auto newGameCallback = [addSomeUnits, finishTurnCallback]() {
+    auto newGameCallback = [loadSelectedMap, finishTurnCallback]() {
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
@@ -531,23 +531,20 @@ int main(void) {
         TurnManager::addPlayer(red);
 
         FMAW::printf("Should start a new game!");
-        grid.clearGridUnits();
-        FMAW::Tile::releaseAllSpriteMemory();
-        grid.initCursor();
-        addSomeUnits();
-        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        loadSelectedMap();
+        grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
     };
 
-    auto loadGameCallback = [addSomeUnits]() {
+    auto loadGameCallback = [loadSelectedMap]() {
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         menu.makeBackground();
         FMAW::printf("Should load a previous game!");
-        auto callback = [&addSomeUnits](bool success) {
+        auto callback = [&loadSelectedMap](bool success) {
             FMAW::printf("Played saved game: %d", success);
             if (success) {
-                addSomeUnits();
+                loadSelectedMap();
                 grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
             }
             menu.makeForeground();
@@ -555,7 +552,7 @@ int main(void) {
         grid.playSavedHistory(DEFAULT_SAVEGAME_FILE, callback);
     };
 
-    auto versusCallback = [addSomeUnits]() {
+    auto versusCallback = [loadSelectedMap]() {
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
@@ -566,12 +563,9 @@ int main(void) {
         red->print();
         TurnManager::addPlayer(red);
 
-        FMAW::printf("Should start a new versus game!");
-        grid.clearGridUnits();
-        FMAW::Tile::releaseAllSpriteMemory();
-        grid.initCursor();
-        addSomeUnits();
-        grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
+        FMAW::printf("Should start a new versus game!");        
+        loadSelectedMap();
+        grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
     };

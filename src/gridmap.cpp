@@ -7,6 +7,7 @@
 #include "./FMAW.h"
 #include "./grid.h"
 #include "./gridmap.h"
+#include "./unit.h"
 
 namespace GridMap {
 
@@ -36,6 +37,17 @@ void loadGridMap(std::string mapName, Grid *g) {
                 g->cellAtIndexPath(path)->renderBackground();
             }
         }
+
+		FMAW::IO::fscanf(test, "\n");
+		
+		int owner, unitType, posx, posy;
+		
+		while (fscanf(test, "%d %d (%d, %d)", &owner, &unitType, &posx, &posy) != EOF) {
+			Unit *u = Unit::UnitWithType(unitType, owner-1);
+			g->cellAtIndexPath({posx-1, posy-1})->setCharacter(u);
+		}
+		
+		g->resetUnitMovements();
 
         FMAW::IO::fclose(test);
     }
