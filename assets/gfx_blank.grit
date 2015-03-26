@@ -1,9 +1,0 @@
-# The -pn{n} rule specifies the number of entries in the palette.
-# 3 colors:
--pn1
-
-# The -gB{n} rule specifies the output graphic format.
-# 4-bit (16 color palette)
--gB4
-
--gT0xFF0000
