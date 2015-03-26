@@ -24,3 +24,8 @@ Puedes descargarte [nuestro informe final en PDF](http://sumolari.github.io/Tact
 # Agradecimientos
 
 * A [Mu-An](http://muan.co), por hacer esta estupenda plantilla Open Source.
+* A [Bernardine Miessner y cía](http://myfreeringtones.org/), por su extensa colección de archivos *.wav*.
+* A [Stephen Lavelle](http://www.bfxr.net/), por su magnífico generador de efectos de sonido.
+* A [Bjarne Stroustrup](http://www.stroustrup.com/), por C++.
+* A [Mukunda (eKid) Johnson](http://ekid.nintendev.com/bouncy/), por su tutorial *How to Make a Bouncing Ball Game*.
+* A todos los desarrolladores de [libNDS](http://libnds.devkitpro.org/). Sin su trabajo este proyecto no habría sido posible.
