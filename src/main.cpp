@@ -348,7 +348,6 @@ int main(void) {
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         grid.fogOfWarMode = allVisible;
         // addSomeUnits();
-        grid.initCursor();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         grid.recomputeVisibleCells();
     };
