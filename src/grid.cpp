@@ -877,14 +877,14 @@ void Grid::recomputeAttackableCells() {
         for (int attRan = minAttack; attRan <= maxAttack; attRan++) {
             int col = this->pickedUpCell.col - attRan;
             for (int row = 0; row < attRan; row++, col++) {
-                if (col >= 0 && col < this->cols - 1) {
-                    if (this->pickedUpCell.row >= row) {
+                if (col >= 0 && col < this->cols) {
+                    if (this->pickedUpCell.row - row >= 0) {
                         this->attackableCells[ {
                             this->pickedUpCell.row - row,
                             col
                         }] = true;
                     }
-                    if (this->pickedUpCell.row < this->rows - row) {
+                    if (this->pickedUpCell.row + row < this->rows) {
                         this->attackableCells[ {this->pickedUpCell.row + row,
                                                 col
                                                }] = true;
@@ -892,13 +892,13 @@ void Grid::recomputeAttackableCells() {
                 }
             }
             for (int row = attRan; row >= 0; row--, col++) {
-                if (col >= 0 && col < this->cols - 1) {
-                    if (this->pickedUpCell.row >= row) {
+                if (col >= 0 && col < this->cols) {
+                    if (this->pickedUpCell.row - row >= 0) {
                         this->attackableCells[ {this->pickedUpCell.row - row,
                                                 col
                                                }] = true;
                     }
-                    if (this->pickedUpCell.row < this->rows - row) {
+                    if (this->pickedUpCell.row + row < this->rows) {
                         this->attackableCells[ {
                             this->pickedUpCell.row + row,
                             col

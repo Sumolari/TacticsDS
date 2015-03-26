@@ -43,7 +43,7 @@ void loadGridMap(std::string mapName, Grid *g) {
 		int owner, unitType, posx, posy;
 		
 		while (fscanf(test, "%d %d (%d, %d)", &owner, &unitType, &posx, &posy) != EOF) {
-			Unit *u = Unit::UnitWithType(unitType, owner);
+			Unit *u = Unit::UnitWithType(unitType, owner-1);
 			g->cellAtIndexPath({posx-1, posy-1})->setCharacter(u);
 		}
 		
