@@ -23,7 +23,7 @@ void Warrior::init() {
 
     this->unitType = UNIT_TYPE_WARRIOR;
     this->movementCapacity = 6;
-    this->sightDistance = 6;
+    this->sightDistance = 5;
     this->maximumAvailableActions = 3;
     this->currentAvailableActions = this->maximumAvailableActions;
     this->maximumHealth = 9;
