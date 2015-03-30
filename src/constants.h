@@ -46,27 +46,27 @@
 #define COST_MOVE_CELL_RIVER     COST_CELL_INFINITY
 
 /**
- * Cost of entering a base cell.
+ * Cost of seeing a base cell.
  */
 #define COST_SEE_CELL_BASE      1
 /**
- * Cost of entering a bridge cell.
+ * Cost of seeing a bridge cell.
  */
 #define COST_SEE_CELL_BRIDGE    1
 /**
- * Cost of entering a forest cell.
+ * Cost of seeing a forest cell.
  */
-#define COST_SEE_CELL_FOREST    2
+#define COST_SEE_CELL_FOREST    4
 /**
- * Cost of entering a grass cell.
+ * Cost of seeing a grass cell.
  */
 #define COST_SEE_CELL_GRASS     1
 /**
- * Cost of entering a mountain cell.
+ * Cost of seeing a mountain cell.
  */
 #define COST_SEE_CELL_MOUNTAIN  3
 /**
- * Cost of entering a river cell.
+ * Cost of seeing a river cell.
  */
 #define COST_SEE_CELL_RIVER     1
 
