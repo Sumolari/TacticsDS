@@ -565,7 +565,8 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
             }
 
             // If we can attack that player then we set proper cursor.
-            if (this->attackableCells[this->selectedPath]) {
+            if (this->attackableCells[this->selectedPath] && 
+				this->visibleCells[this->selectedPath]) {
                 if (c->isOccupied()) {
                     Unit *u = c->getCharacter();
                     if (u->getOwner() != TurnManager::currentPlayerID()) {
@@ -700,7 +701,8 @@ void Grid::enqueueCallbacks() {
             this->recomputeReachableCells();
             this->recomputeAttackableCells();
         } else if (c->isOccupied() && u->getOwner() !=
-                   TurnManager::currentPlayerID()) {
+                   TurnManager::currentPlayerID() && 
+                   visibleCells[this->getSelectedPath()]) {
             // If cell is occupied by a character owned by an enemy we release
             // previously picked up cell and we reset the cursor.
             FMAW::printf("Hay un enemigo en la celda %d %d",
