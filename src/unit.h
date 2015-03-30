@@ -161,9 +161,15 @@ class Unit : public FMAW::Character {
 
     /**
      * Returns whether this Unit has at least one available action or not.
-     * @return Whether this Unit has at least oen available action or not.
+     * @return Whether this Unit has at least one available action or not.
      */
     bool hasAvailableActions();
+
+    /**
+     * Returns whether this Unit has all of its available actions or not.
+     * @return Whether this Unit has all of its available actions or not.
+     */
+    bool hasMaximumAvailableActions();
 
     /**
      * Returns the ID of the owner of this unit.

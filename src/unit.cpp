@@ -61,6 +61,14 @@ bool Unit::hasAvailableActions() {
     return this->currentAvailableActions > 0;
 }
 
+bool Unit::hasMaximumAvailableActions() {
+    /*
+    FMAW::printf("This unit has %d actions available",
+                 this->currentAvailableActions);
+    */
+    return this->currentAvailableActions == this->maximumAvailableActions;
+}
+
 int Unit::getMovementCapacity() {
     return this->movementCapacity;
 }

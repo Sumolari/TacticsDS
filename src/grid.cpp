@@ -370,6 +370,7 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
         Unit *victim = v->getCharacter();
 
         bool isKill = attacker->attackUnit(victim);
+        if( attacker->hasMaximumAvailableActions() ) attacker->decreaseAvailableActions();
         attacker->decreaseAvailableActions();
         this->cursor.disable();
 
@@ -822,6 +823,7 @@ void Grid::recomputeReachableCells() {
         Cell *cell = this->cellAtIndexPath(this->pickedUpCell);
         Unit *unit = cell->getCharacter();
         int maxMove = unit->getMovementCapacity();
+		if( !unit->hasMaximumAvailableActions() ) maxMove /= unit->maximumAvailableActions;
 
         // First no cell is reachable.
         for (int row = 0; row < this->rows; row++) {

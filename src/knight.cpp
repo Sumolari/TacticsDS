@@ -22,15 +22,15 @@ void Knight::init() {
     this->reset();
 
     this->unitType = UNIT_TYPE_KNIGHT;
-    this->movementCapacity = 6;
+    this->movementCapacity = 8;
     this->sightDistance = 8;
     this->maximumAvailableActions = 2;
     this->currentAvailableActions = this->maximumAvailableActions;
-    this->maximumHealth = 2;
+    this->maximumHealth = 5;
     this->currentHealth = this->maximumHealth;
     this->minimumAttackRange = 1;
     this->maximumAttackRange = 1;
-    this->attackPower = 5;
+    this->attackPower = 4;
     this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
