@@ -71,7 +71,7 @@ Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiend
 
 Con la version por defecto de **DeSmuMe** nos sale un error, esto es debido a que no inicializa un sistema de ficheros por defecto. Entonces debemos pasar la opcion `--cflash-path` con un directorio donde queremos que se inicializa el sistema de ficheros y efectivamente con `desmume --cflash-path=. filesystem.nds` podemos observar que salen elementos de la carpeta de trabajo del proyecto.
 
-> ![Captura del programa libfat en el emulador DeSmuMe usando cflash](../../../../p3media/fat_cflash.png)
+> ![Captura del programa libfat en el emulador DeSmuMe usando cflash](../../../../p3Media/fat_cflash.png)
 >
 > Captura del programa libfat en el emulador DeSmuMe usando cflash.
 
