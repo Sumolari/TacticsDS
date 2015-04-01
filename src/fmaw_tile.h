@@ -150,6 +150,12 @@ class Tile {
      */
     Tile(int ID);
 
+    /**
+     * Returns a new tile given the attributes defining the tile but reusing
+     * the palette of given tile.
+     */
+    Tile(TileAttributes attributes, Tile palette);
+
 };
 
 }

@@ -63,6 +63,8 @@ int Cell::movementCost() {
         case CellBGRiver:
         case CellBGRiverH:
             return COST_MOVE_CELL_RIVER;
+        case CellBGCastle:
+            return COST_MOVE_CELL_CASTLE;
         default:
             return COST_CELL_INFINITY;
     }
@@ -84,6 +86,8 @@ int Cell::sightCost() {
         case CellBGRiver:
         case CellBGRiverH:
             return COST_SEE_CELL_RIVER;
+        case CellBGCastle:
+            return COST_SEE_CELL_CASTLE;
         default:
             return COST_CELL_INFINITY;
     }
@@ -99,6 +103,7 @@ void Cell::renderBackground() {
         case CellBGMountain:
         case CellBGRiver:
         case CellBGRiverH:
+        case CellBGCastle:
             this->background.setScreenBaseBlock(2);
             for (int i = 0; i < this->tiles.size(); ++i) {
                 this->background.setTile(
@@ -124,6 +129,7 @@ void Cell::renderFoggyBackground() {
         case CellBGMountain:
         case CellBGRiver:
         case CellBGRiverH:
+        case CellBGCastle:
             this->background.setScreenBaseBlock(2);
             for (int i = 0; i < this->tiles.size(); ++i) {
                 this->background.setTile(

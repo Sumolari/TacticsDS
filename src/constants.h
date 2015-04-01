@@ -44,31 +44,39 @@
  * Cost of entering a river cell.
  */
 #define COST_MOVE_CELL_RIVER     COST_CELL_INFINITY
+/**
+ * Cost of entering a castle cell.
+ */
+#define COST_MOVE_CELL_CASTLE    0
 
 /**
- * Cost of entering a base cell.
+ * Cost of seeing through a base cell.
  */
 #define COST_SEE_CELL_BASE      1
 /**
- * Cost of entering a bridge cell.
+ * Cost of seeing through a bridge cell.
  */
 #define COST_SEE_CELL_BRIDGE    1
 /**
- * Cost of entering a forest cell.
+ * Cost of seeing through a forest cell.
  */
 #define COST_SEE_CELL_FOREST    2
 /**
- * Cost of entering a grass cell.
+ * Cost of seeing through a grass cell.
  */
 #define COST_SEE_CELL_GRASS     1
 /**
- * Cost of entering a mountain cell.
+ * Cost of seeing through a mountain cell.
  */
 #define COST_SEE_CELL_MOUNTAIN  3
 /**
- * Cost of entering a river cell.
+ * Cost of seeing through a river cell.
  */
 #define COST_SEE_CELL_RIVER     1
+/**
+ * Cost of seeing through a castle cell.
+ */
+#define COST_SEE_CELL_CASTLE   1
 
 /**
  * ID of none owner.
