@@ -276,7 +276,6 @@ void setupGraphics(void) {
 void update_camera() { }
 
 void update_logic() {
-    FMAW::Input::check();
     FMAW::Timer::check();
     update_camera();
 }
