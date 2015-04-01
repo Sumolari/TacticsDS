@@ -2,7 +2,9 @@
 #define FMAW_TILE_H
 
 #include <map>
+#include <vector>
 #include <string>
+
 #include "./fmaw_macros.h"
 #include "./fmaw_debug.h"
 
@@ -13,13 +15,41 @@ typedef enum t_tile_type {
     TypeSprite
 } TileType;
 
+typedef enum t_tile_screen {
+    ScreenMain,
+    ScreenSub
+} TileScreen;
+
 typedef struct t_tile_attrib {
     const unsigned int *tilesArray;
     const int tilesLength;
     const unsigned short *paletteArray;
     const int paletteLength;
     const TileType type;
+    const TileScreen screen;
+    t_tile_attrib(const unsigned int *tilesArray,
+                  const int tilesLength,
+                  const unsigned short *paletteArray,
+                  const int paletteLength,
+                  const TileType type,
+                  const TileScreen screen) :
+        tilesArray(tilesArray),
+        tilesLength(tilesLength),
+        paletteArray(paletteArray),
+        paletteLength(paletteLength),
+        type(type),
+        screen(screen) {}
 } TileAttributes;
+
+/**
+ * Width in pixels of a tile.
+ */
+#define TILE_WIDTH  8
+
+/**
+ * Height in pixels of a tile.
+ */
+#define TILE_HEIGHT 8
 
 //------------------------------------------------------------------------------
 // Tile class.
@@ -27,39 +57,69 @@ typedef struct t_tile_attrib {
 
 class Tile {
     typedef Tile self;
-private:
+  private:
     /**
      * Tile's ID -> tile's image memory position mapping.
      */
     static std::map<int, int> IDtoImgMemoryPosition;
     /**
-     * First memory position available for sprite tiles images.
+     * First memory position available for sprite tiles images in Main engine.
      */
-    static int nextSpriteImgMemoryPosition;
+    static int nextSpriteImgMemoryPositionMain;
     /**
-     * First memory position available for background tiles images.
+     * First memory position available for background tiles images in Main
+     * engine.
      */
-    static int nextBackgroundImgMemoryPosition;
+    static int nextBackgroundImgMemoryPositionMain;
+    /**
+     * First memory position available for sprite tiles images in Sub engine.
+     */
+    static int nextSpriteImgMemoryPositionSub;
+    /**
+     * First memory position available for background tiles images in Sub
+     * engine.
+     */
+    static int nextBackgroundImgMemoryPositionSub;
 
     /**
      * Tile's ID -> tile's palette memory position mapping.
      */
     static std::map<int, int> IDtoPalMemoryPosition;
     /**
-     * First memory position available for sprite tiles palette.
+     * First memory position available for sprite tiles palette in Main engine.
      */
-    static int nextSpritePalMemoryPosition;
+    static int nextSpritePalMemoryPositionMain;
     /**
-     * First memory position available for background tiles palette.
+     * First memory position available for background tiles palette in Main
+     * engine.
      */
-    static int nextBackgroundPalMemoryPosition;
+    static int nextBackgroundPalMemoryPositionMain;
+    /**
+     * First memory position available for sprite tiles palette in Sub engine.
+     */
+    static int nextSpritePalMemoryPositionSub;
+    /**
+     * First memory position available for background tiles palette in Sub
+     * engine.
+     */
+    static int nextBackgroundPalMemoryPositionSub;
+
+    /**
+     * List of IDs given to Sprite Tiles.
+     */
+    static std::vector<int> IDofSpriteTiles;
 
     /**
      * First ID available for tiles of any type.
      */
     static int nextID;
 
-public:
+  public:
+    /**
+     * Releases all memory used by sprite tiles.
+     */
+    static void releaseAllSpriteMemory();
+
     /**
      * Memory address for image data of this tile.
      */
@@ -76,73 +136,19 @@ public:
     int ID;
 
     /**
-     * Creates a new tile given the ID that will be used to refer to this tile.
+     * Creates a new tile given the attributes defining the tile.
      */
-    Tile(TileAttributes attributes) {
+    Tile(TileAttributes attributes);
 
-        if (attributes.type == TypeSprite) {
-            this->imgMemory = self::nextSpriteImgMemoryPosition;
-            this->palMemory = self::nextSpritePalMemoryPosition;
-            // Move pointer so next tile will be stored properly.
-            // This is equivalent to: attributes.tilesLength / 32
-            self::nextSpriteImgMemoryPosition += attributes.tilesLength >> 5;
-            // TODO: Update this to handle multiple size palettes.
-            self::nextSpritePalMemoryPosition++;
-        } else {
-            this->imgMemory = self::nextBackgroundImgMemoryPosition;
-            this->palMemory = self::nextBackgroundPalMemoryPosition;
-            // Move pointer so next tile will be stored properly.
-            // This is equivalent to: attributes.tilesLength / 32
-            self::nextBackgroundImgMemoryPosition += attributes.tilesLength >> 5;
-            // TODO: Update this to handle multiple size palettes.
-            self::nextBackgroundPalMemoryPosition++;
-        }
-
-
-        FMAW::printf("I'm copying tiles of length %d to %d",
-                     attributes.tilesLength, this->imgMemory);
-
-        if (attributes.type == TypeSprite) {
-            // Copy to memory.
-            dmaCopyHalfWords(3,
-                             attributes.tilesArray,
-                             tile2objram(this->imgMemory),
-                             attributes.tilesLength);
-
-            dmaCopyHalfWords(3,
-                             attributes.paletteArray,
-                             pal2objram(this->palMemory),
-                             attributes.paletteLength);
-        } else {
-            // Copy to memory.
-            dmaCopyHalfWords(3,
-                             attributes.tilesArray,
-                             tile2bgram(this->imgMemory),
-                             attributes.tilesLength);
-
-            dmaCopyHalfWords(3,
-                             attributes.paletteArray,
-                             pal2bgram(this->palMemory),
-                             attributes.paletteLength);
-        }
-
-        this->ID = this->nextID;
-
-        // Store memory address of this tile.
-        self::IDtoImgMemoryPosition[ID] = this->imgMemory;
-        self::IDtoPalMemoryPosition[ID] = this->palMemory;
-        // This ID has been used!
-        self::nextID++;
-    };
+    /**
+     * Replaces tile with given ID with given attributes.
+     */
+    Tile(TileAttributes attributes, int ID);
 
     /**
      * Returns tile associated with given ID.
      */
-    Tile(int ID) {
-        this->ID = ID;
-        this->imgMemory = self::IDtoImgMemoryPosition[ID];
-        this->palMemory = self::IDtoPalMemoryPosition[ID];
-    }
+    Tile(int ID);
 
 };
 

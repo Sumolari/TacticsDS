@@ -1,0 +1,48 @@
+// Copyright 2015 FMAW
+
+#include "./fmaw_io.h"
+
+#include <fat.h>
+#include <nds.h>
+
+#include <stdarg.h>
+
+namespace FMAW {
+
+namespace IO {
+
+void init() {
+    fatInitDefault();
+}
+
+FILE *fopen(const char *filename, const char *mode) {
+    return ::fopen(filename, mode);
+}
+
+int fclose(FILE *stream) {
+    return ::fclose(stream);
+}
+
+int fprintf(FILE *stream, const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    int ret = ::vfprintf(stream, format, args);
+    va_end(args);
+    return ret;
+}
+
+int fscanf(FILE *stream, const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    int ret = ::vfscanf(stream, format, args);
+    va_end(args);
+    return ret;
+}
+
+int fflush(FILE *stream) {
+    return ::fflush(stream);
+}
+
+}  // namespace IO
+
+}  // namespace FMAW

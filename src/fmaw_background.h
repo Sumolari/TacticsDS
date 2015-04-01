@@ -4,11 +4,9 @@
 #include "./fmaw_types.h"
 #include "./fmaw_tile.h"
 
-#include <nds.h>
-
 namespace FMAW {
 
-#define TOTAL_BACKGROUNDS 4  // Total amount of backgrounds available.
+#define TOTAL_BACKGROUNDS 8  // Total amount of backgrounds available..
 
 // Type defining the different priorities of backgrounds.
 typedef enum t_backgroundPriority {
@@ -32,13 +30,18 @@ typedef uint8 background_id;
 // Type that defines the ID of a background tile.
 typedef uint16 background_tile_id;
 
+typedef enum t_alphaBlendingMode {
+    babmDisable,
+    babmAlphaBlending,
+    babmFadeImageBright,
+    babmFadeImageDark
+} BackgroundAlphaBlendingMode;
+
 void setBackgroundColor(unsigned int color);
 
 class Background {
 
-private:
-    // Tiles register array.
-    u16 *tiles;
+  private:
     // Register holding this background data.
     vu16 *reg;
     // Register holding this background's vertical offset.
@@ -49,32 +52,11 @@ private:
     /**
      * Sets internal register attrbute to proper address based on ID.
      */
-    void selectRegister() {
-        switch (this->id) {
-            case 0:
-                this->reg = &REG_BG0CNT;
-                this->vOffset = &REG_BG0VOFS;
-                this->hOffset = &REG_BG0HOFS;
-                break;
-            case 1:
-                this->reg = &REG_BG1CNT;
-                this->vOffset = &REG_BG1VOFS;
-                this->hOffset = &REG_BG1HOFS;
-                break;
-            case 2:
-                this->reg = &REG_BG2CNT;
-                this->vOffset = &REG_BG2VOFS;
-                this->hOffset = &REG_BG2HOFS;
-                break;
-            case 3:
-                this->reg = &REG_BG3CNT;
-                this->vOffset = &REG_BG3VOFS;
-                this->hOffset = &REG_BG3HOFS;
-                break;
-        }
-    }
+    void selectRegister();
 
-public:
+  public:
+    // Tiles register array.
+    u16 *tiles;
     // ID of this background.
     background_id id;
     // Next empty background.
@@ -83,21 +65,13 @@ public:
     /**
      * Default constructor takes a valid ID automatically.
      */
-    Background() : id(nextEmptyBackground++) {
-        this->clear();
-        this->selectRegister();
-        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(0);
-    };
+    Background();
 
     /**
      * Constructor for Background with given ID. Background should have been
      * previously created otherwise results are not defined.
      */
-    Background(background_id id) : id(id) {
-        this->selectRegister();
-        this->tiles = reinterpret_cast<u16 *>BG_MAP_RAM(
-                          this->getScreenBaseBlock());
-    };
+    Background(background_id id);
 
     //--------------------------------------------------------------------------
     // Position.
@@ -177,8 +151,6 @@ public:
      * @return This background's horizontal offset.
      */
     uint8 getHorizontalOffset();
-
-
 
     //--------------------------------------------------------------------------
     // Tile & palette settings.
@@ -369,6 +341,58 @@ public:
      * @return This background's priority.
      */
     BackgroundPriority getPriority();
+
+    //--------------------------------------------------------------------------
+    // Alpha settings.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets this background as source background for alpha blending.
+     * If this background was destination background for alpha blending it
+     * won't be anymore.
+     */
+    void useAsAlphaBlendingSrc();
+
+    /**
+     * Sets this background as destination background for alpha blending.
+     * If this background was source background for alpha blending it won't be
+     * anymore.
+     */
+    void useAsAlphaBlendingDst();
+
+    /**
+     * Use backdrop as source for alpha blending.
+     * If backdrop was used as destination for alpha blending it won't be
+     * anymore.
+     */
+    static void useBackdropAsAlphaSrc();
+
+    /**
+     * Use backdrop as source for alpha blending.
+     * If backdrop was used as destination for alpha blending it won't be
+     * anymore.
+     */
+    static void useBackdropAsAlphaDst();
+
+    /**
+     * Sets alpha blending mode for all backgrounds.
+     * @param mode New alpha blending mode.
+     */
+    static void setAlphaBlendingMode(BackgroundAlphaBlendingMode mode);
+
+    /**
+     * Sets value for alpha blending coefficient A.
+     * @param  coeff Value, unsigned from 0 to 16.
+     * @return       Whether new value could be set or not.
+     */
+    static bool setAlphaBlendingCoefficientOne(uint8 coeff);
+
+    /**
+     * Sets value for alpha blending coefficient B.
+     * @param  coeff Value, unsigned from 0 to 16.
+     * @return       Whether new value could be set or not.
+     */
+    static bool setAlphaBlendingCoefficientTwo(uint8 coeff);
 
     //--------------------------------------------------------------------------
     // Other settings.

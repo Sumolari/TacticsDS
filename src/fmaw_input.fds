@@ -1,0 +1,419 @@
+// Copyright 2015 FMAW
+
+#include "./fmaw_input.h"
+#include "./fmaw_debug.h"
+
+#include <nds.h>
+#include <map>
+
+namespace FMAW {
+
+namespace Input {
+
+typedef enum {
+    OnPressed,
+    OnReleased,
+    WhilePressed
+} InputMode;
+
+typedef struct t_callback {
+    /**
+     * ID of this callback.
+     */
+    int ID;
+    /**
+     * Button that will trigger this callback.
+     */
+    ButtonType button;
+    /**
+     * Whether this callback should be called when button is pressed, released,
+     * while it is pressed, etc.
+     */
+    InputMode  mode;
+    /**
+     * Function to be called.
+     */
+    std::function<void(void)> function;
+} Callback;
+
+// Here we will store registered functions.
+std::map<int, Callback> registered_functions {};
+
+typedef struct t_callback_touch {
+    /**
+     * ID of this callback.
+     */
+    int ID;
+    /**
+     * Whether this callback should be called when button is pressed, released,
+     * while it is pressed, etc.
+     */
+    InputMode  mode;
+    /**
+     * Function to be called.
+     */
+    std::function<void(int, int)> function;
+} CallbackTouch;
+
+// Here we will store registered functions.
+std::map<int, CallbackTouch> registered_touch_functions {};
+
+// Here we store buttons currently pressed.
+std::map<ButtonType, bool> currentlyPressedButtons {};
+
+// Here we store position of last touch.
+touchPosition lastTouch = { 0, 0, 0, 0, 0, 0 };
+
+// Next ID that can be used.
+int next_registered_function_id = 0;
+
+int onButtonPressed(ButtonType button, std::function<void(void)> callback) {
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        OnPressed,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+int whileButtonPressed(ButtonType button, std::function<void(void)> callback) {
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        WhilePressed,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+int onButtonReleased(ButtonType button, std::function<void(void)> callback) {
+    registered_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        button,
+        OnReleased,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+//------------------------------------------------------------------------------
+// Handling Button A.
+//------------------------------------------------------------------------------
+
+int onButtonAPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonA, callback);
+}
+
+int whileButtonAPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonA, callback);
+}
+
+int onButtonAReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonA, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button B.
+//------------------------------------------------------------------------------
+
+int onButtonBPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonB, callback);
+}
+
+int whileButtonBPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonB, callback);
+}
+
+int onButtonBReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonB, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button L.
+//------------------------------------------------------------------------------
+
+int onButtonLPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonL, callback);
+}
+
+int whileButtonLPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonL, callback);
+}
+
+int onButtonLReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonL, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button R.
+//------------------------------------------------------------------------------
+
+int onButtonRPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonR, callback);
+}
+
+int whileButtonRPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonR, callback);
+}
+
+int onButtonRReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonR, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Select.
+//------------------------------------------------------------------------------
+
+int onButtonSelectPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonSelect, callback);
+}
+
+int whileButtonSelectPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonSelect, callback);
+}
+
+int onButtonSelectReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonSelect, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Start.
+//------------------------------------------------------------------------------
+
+int onButtonStartPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonStart, callback);
+}
+
+int whileButtonStartPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonStart, callback);
+}
+
+int onButtonStartReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonStart, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Up.
+//------------------------------------------------------------------------------
+
+int onButtonArrowUpPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonArrowUp, callback);
+}
+
+int whileButtonArrowUpPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonArrowUp, callback);
+}
+
+int onButtonArrowUpReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonArrowUp, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Down.
+//------------------------------------------------------------------------------
+
+int onButtonArrowDownPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonArrowDown, callback);
+}
+
+int whileButtonArrowDownPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonArrowDown, callback);
+}
+
+int onButtonArrowDownReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonArrowDown, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Left.
+//------------------------------------------------------------------------------
+
+int onButtonArrowLeftPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonArrowLeft, callback);
+}
+
+int whileButtonArrowLeftPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonArrowLeft, callback);
+}
+
+int onButtonArrowLeftReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonArrowLeft, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Button Arrow Right.
+//------------------------------------------------------------------------------
+
+int onButtonArrowRightPressed(std::function<void(void)> callback) {
+    return onButtonPressed(ButtonArrowRight, callback);
+}
+
+int whileButtonArrowRightPressed(std::function<void(void)> callback) {
+    return whileButtonPressed(ButtonArrowRight, callback);
+}
+
+int onButtonArrowRightReleased(std::function<void(void)> callback) {
+    return onButtonReleased(ButtonArrowRight, callback);
+}
+
+//------------------------------------------------------------------------------
+// Handling Touch & Mouse.
+//------------------------------------------------------------------------------
+
+int onTouchPressed(std::function<void(int, int)> callback) {
+    registered_touch_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        OnPressed,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+int onTouchMoved(std::function<void(int, int)> callback) {
+    registered_touch_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        WhilePressed,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+int onTouchReleased(std::function<void(int, int)> callback) {
+    registered_touch_functions[next_registered_function_id] = {
+        next_registered_function_id,
+        OnReleased,
+        callback
+    };
+    return next_registered_function_id++;
+}
+
+//------------------------------------------------------------------------------
+// Callback handling.
+//------------------------------------------------------------------------------
+
+void callCallback(ButtonType button, InputMode mode) {
+    auto rf = registered_functions;
+    for (auto it = rf.begin(); it != rf.end(); it++) {
+        Callback callback = it->second;
+        if (callback.button == button && callback.mode == mode) {
+            callback.function();
+        }
+    }
+}
+
+void callCallbacksOnPressed(ButtonType button) {
+    callCallback(button, OnPressed);
+}
+
+void callCallbacksWhilePressed(ButtonType button) {
+    callCallback(button, WhilePressed);
+}
+
+void callCallbacksOnReleased(ButtonType button) {
+    callCallback(button, OnReleased);
+}
+
+void check() {
+    scanKeys();
+    int keysh = keysHeld();
+    int ndsKeys[BUTTONS_COUNT] = {KEY_A,
+                                  KEY_B,
+                                  KEY_SELECT,
+                                  KEY_START,
+                                  KEY_L,
+                                  KEY_R,
+                                  KEY_UP,
+                                  KEY_DOWN,
+                                  KEY_LEFT,
+                                  KEY_RIGHT
+                                 };
+    ButtonType frameworkTypes[BUTTONS_COUNT] = BUTTONS;
+
+    // For each button that we handle...
+    for (int i = 0; i < BUTTONS_COUNT; i++) {
+        // If button is pressed...
+        if (keysh & ndsKeys[i]) {
+            // If it wasn't pressed before...
+            if (!currentlyPressedButtons[ frameworkTypes[i] ]) {
+                // We set it as pressed.
+                currentlyPressedButtons[ frameworkTypes[i] ] = true;
+                // We call proper callbacks.
+                callCallbacksOnPressed(frameworkTypes[i]);
+            }
+            // We call proper callbacks.
+            callCallbacksWhilePressed(frameworkTypes[i]);
+        } else if (currentlyPressedButtons[ frameworkTypes[i] ]) {
+            // If button was pressed before but it is not longer pressed...
+            // We set it as not pressed.
+            currentlyPressedButtons[ frameworkTypes[i] ] = false;
+            // We call proper callback.
+            callCallbacksOnReleased(frameworkTypes[i]);
+        }
+    }
+
+    touchPosition newTouch;
+    touchRead(&newTouch);
+
+    if (lastTouch.rawx != newTouch.rawx ||
+            lastTouch.rawy != newTouch.rawy ||
+            lastTouch.px != newTouch.px ||
+            lastTouch.py != newTouch.py ||
+            lastTouch.z1 != newTouch.z1 ||
+            lastTouch.z2 != newTouch.z2) {
+        if (lastTouch.rawx == lastTouch.rawy &&
+                lastTouch.rawy == lastTouch.px &&
+                lastTouch.px == lastTouch.py &&
+                lastTouch.py == 0) {
+            // OnPressed!
+            auto rtf = registered_touch_functions;
+            for (auto it = rtf.begin(); it != rtf.end(); it++) {
+                CallbackTouch callback = it->second;
+                if (callback.mode == OnPressed) {
+                    callback.function(newTouch.px, newTouch.py);
+                }
+            }
+            lastTouch = newTouch;
+        } else if (newTouch.rawx == newTouch.rawy &&
+                   newTouch.rawy == newTouch.px &&
+                   newTouch.px == newTouch.py &&
+                   newTouch.py == 0) {
+            // OnReleased
+            auto rtf = registered_touch_functions;
+            for (auto it = rtf.begin(); it != rtf.end(); it++) {
+                CallbackTouch callback = it->second;
+                if (callback.mode == OnReleased) {
+                    callback.function(lastTouch.px, lastTouch.py);
+                }
+            }
+            lastTouch = newTouch;
+        } else  {
+            // WhilePressed!
+            auto rtf = registered_touch_functions;
+            for (auto it = rtf.begin(); it != rtf.end(); it++) {
+                CallbackTouch callback = it->second;
+                if (callback.mode == WhilePressed) {
+                    callback.function(newTouch.px, newTouch.py);
+                }
+            }
+            lastTouch = newTouch;
+        }
+    }
+}
+
+bool unregisterCallback(int id) {
+    if (registered_functions.find(id) !=
+            registered_functions.end()) {
+        registered_functions.erase(id);
+        return true;
+    } else if (registered_touch_functions.find(id) !=
+               registered_touch_functions.end()) {
+        registered_touch_functions.erase(id);
+        return true;
+    }
+    return false;
+}
+
+}  // namespace Input
+
+}  // namespace FMAW
