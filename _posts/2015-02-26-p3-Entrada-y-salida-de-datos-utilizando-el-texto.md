@@ -69,12 +69,12 @@ Con el último ejemplo observamos que tenemos dos cajas en pantalla y dependiend
 >
 > Captura del programa libfat en el emulador DeSmuMe.
 
-Con la version por defecto de **DeSmuMe** nos sale un error, esto es debido a que no inicializa un sistema de ficheros por defecto. Pero, tenemos a nuestra disposición la version `desmume-glade` que efectivamente sí que carga bien el programa de ejemplo.
+Con la version por defecto de **DeSmuMe** nos sale un error, esto es debido a que no inicializa un sistema de ficheros por defecto. Entonces debemos pasar la opcion `--cflash-path` con un directorio donde queremos que se inicializa el sistema de ficheros y efectivamente con `desmume --cflash-path=. filesystem.nds` podemos observar que salen elementos de la carpeta de trabajo del proyecto.
 
-> ![Captura del programa libfat en el emulador DeSmuMe-glade.
-](../../../../p3Media/fat_glade.png)
+> ![Captura del programa libfat en el emulador DeSmuMe usando cflash](../../../../p3media/fat_cflash.png)
 >
-> Captura del programa libfat en el emulador DeSmuMe-glade.
+> Captura del programa libfat en el emulador DeSmuMe usando cflash.
+
 
 ####NO$GBA
 
