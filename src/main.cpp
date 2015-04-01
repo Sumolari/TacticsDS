@@ -329,6 +329,7 @@ int main(void) {
 
     grid.initCursor();
     grid.disableCursor();
+    Unit::registerPalettes();
     GridMap::loadGridMap(availableMaps[selectedMap], &grid);
 
     auto addSomeUnits = []() {
@@ -368,6 +369,7 @@ int main(void) {
         FMAW::Tile::releaseAllSpriteMemory();
         grid.initCursor();
         grid.disableCursor();
+        Unit::registerPalettes();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         grid.fogOfWarMode = allVisible;

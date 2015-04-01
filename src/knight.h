@@ -21,6 +21,10 @@
 #define KNIGHT_HEIGHT        16
 
 class Knight : public Unit {
+  private:
+    // Palettes used to draw this Warrior.
+    static FMAW::Tile paletteBlue;
+    static FMAW::Tile paletteRed;
   protected:
     // ID of tile currently displayed.
     int currentTileID;
@@ -36,6 +40,11 @@ class Knight : public Unit {
     virtual void init();
   public:
     /**
+     * Registers pelettes for this unit.
+     */
+    static void registerPalettes();
+
+    /**
      * Creates a new Knight using a new sprite.
      */
     explicit Knight(PlayerID ownerID): Unit(ownerID) {
@@ -50,7 +59,7 @@ class Knight : public Unit {
     };
 
     virtual void update();
-    
+
     virtual void update_freq();
 
     /**

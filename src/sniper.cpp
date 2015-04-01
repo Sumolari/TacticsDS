@@ -18,6 +18,26 @@
 
 #define SPRITES_IDLE_ANIMATION 4
 
+FMAW::Tile Sniper::paletteBlue = FMAW::Tile(0);
+FMAW::Tile Sniper::paletteRed  = FMAW::Tile(0);
+
+void Sniper::registerPalettes() {
+    paletteBlue = FMAW::Tile(FMAW::t_tile_attrib(
+                                 sniper_female_1_blueTiles,
+                                 sniper_female_1_blueTilesLen,
+                                 sniper_female_1_bluePal,
+                                 sniper_female_1_bluePalLen,
+                                 FMAW::TypeSprite,
+                                 FMAW::ScreenMain));
+    paletteRed = FMAW::Tile(FMAW::t_tile_attrib(
+                                sniper_female_1_redTiles,
+                                sniper_female_1_redTilesLen,
+                                sniper_female_1_redPal,
+                                sniper_female_1_redPalLen,
+                                FMAW::TypeSprite,
+                                FMAW::ScreenMain));
+}
+
 void Sniper::init() {
     this->reset();
 
@@ -131,7 +151,14 @@ void Sniper::init() {
 
     this->currentTileID = 0;
 
-    this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]));
+    if (this->ownerID == 0) {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteBlue);
+    } else {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteRed);
+    }
+
 
     //--------------------------------------------------------------------------
     // Set up sprite.

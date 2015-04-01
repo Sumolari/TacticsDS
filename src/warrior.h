@@ -21,6 +21,10 @@
 #define WARRIOR_HEIGHT        16
 
 class Warrior : public Unit {
+  private:
+    // Palettes used to draw this Warrior.
+    static FMAW::Tile paletteBlue;
+    static FMAW::Tile paletteRed;
   protected:
     // ID of tile currently displayed.
     int currentTileID;
@@ -35,6 +39,11 @@ class Warrior : public Unit {
 
     virtual void init();
   public:
+    /**
+     * Registers pelettes for this unit.
+     */
+    static void registerPalettes();
+
     /**
      * Creates a new Warrior using a new sprite.
      */
