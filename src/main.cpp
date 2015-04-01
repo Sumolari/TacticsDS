@@ -56,6 +56,7 @@ Grid grid;
 MainMenu menu;
 Player *blue;
 Player *red;
+bool gameStarted;
 
 int timesReported;
 
@@ -286,6 +287,8 @@ void update_graphics() {
 }
 
 int main(void) {
+    gameStarted = true; // Hack so we can change menu.
+
     auto finishTurnCallback = []() {
         grid.resetUnitMovements();
         FMAW::printf("Tocaría cambiar de turno!");
@@ -384,7 +387,7 @@ int main(void) {
 
     auto releaseStart = [selectSoundID]() {
         // Disable interaction is saved game is being played.
-        if (grid.isPlayingSavedFile()) return;
+        if (grid.isPlayingSavedFile() || !gameStarted) return;
 
         FMAW::Sound::stopBackgroundMusic();
         FMAW::Sound::playEffect(selectSoundID);
@@ -408,6 +411,7 @@ int main(void) {
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     auto newGameCallback = [loadSelectedMap, finishTurnCallback]() {
+        gameStarted = true;
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
@@ -427,6 +431,7 @@ int main(void) {
     };
 
     auto loadGameCallback = [loadSelectedMap]() {
+        gameStarted = false;
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         menu.makeBackground();
         FMAW::printf("Should load a previous game!");
@@ -442,6 +447,7 @@ int main(void) {
     };
 
     auto versusCallback = [loadSelectedMap]() {
+        gameStarted = true;
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
@@ -484,6 +490,8 @@ int main(void) {
     }
 
     releaseStart();
+
+    gameStarted = false;
 
     FMAW::start();
 
