@@ -1,0 +1,154 @@
+// Copyright 2015 Lluís Ulzurrun de Asanza Sàez
+
+#include <vector>
+#include <functional>
+
+#include "./fmaw_character.h"
+
+#include "./FMAW.h"
+
+#define ANIMATION_STEP_TIME 5
+
+namespace FMAW {
+
+void Character::init() {}
+
+void Character::setXPosition(FixedReal x) {
+    this->x = x;
+}
+
+void Character::setYPosition(FixedReal y) {
+    this->y = y;
+}
+
+void Character::setPosition(FixedReal x, FixedReal y) {
+    this->x = x;
+    this->y = y;
+}
+
+void Character::setPosition(Point position) {
+    this->x = FixedReal(position.x, 8);
+    this->y = FixedReal(position.y, 8);
+}
+
+FixedReal Character::getXPosition() {
+    return this->x;
+}
+
+FixedReal Character::getYPosition() {
+    return this->y;
+}
+
+animation_id Character::animateToPosition(Point position,
+        unsigned int duration) {
+    return this->animateToPosition(position, duration, NULL);
+}
+
+animation_id Character::animateToPosition(Point position, unsigned int duration,
+        std::function<void(bool)> callback) {
+    return this->animateToPosition(position, duration, ATLinear, callback);
+}
+
+animation_id Character::animateToPosition(Point position, unsigned int duration,
+        AnimationType type,
+        std::function<void(bool)> callback) {
+    animation_id id = this->animations.size();
+
+    std::function<void(int)> func = [this, id](int callback_id) {
+        this->animations[id].remainingDuration -= ANIMATION_STEP_TIME;
+
+        if (this->animations[id].remainingDuration <= 0) {
+            // Set final position.
+            this->setPosition(this->animations[id].finalPosition);
+            // Dequeue enqueued function.
+            Timer::dequeue_function(callback_id);
+            // Call completion callback.
+            if (this->animations[id].callback != NULL)
+                this->animations[id].callback(true);
+        } else {
+            Point finalPosition = this->animations[id].finalPosition;
+            Point initialPosition = this->animations[id].initialPosition;
+            // Set position computed on the fly.
+            int deltaX = finalPosition.x - initialPosition.x;
+            int deltaY = finalPosition.y - initialPosition.y;
+
+            int deltaDuration = this->animations[id].duration -
+                                this->animations[id].remainingDuration;
+
+            FixedReal deltaTimePercent = FixedReal(deltaDuration, 8);
+            FixedReal dtd = FixedReal(static_cast<int>
+                                      (this->animations[id].duration),
+                                      8);
+
+            deltaTimePercent = deltaTimePercent / dtd;
+
+            this->setXPosition(deltaTimePercent * deltaX + initialPosition.x);
+            this->setYPosition(deltaTimePercent * deltaY + initialPosition.y);
+        }
+    };
+
+    int callback_id = Timer::enqueue_function(func, ANIMATION_STEP_TIME, true);
+
+    Animation animation = {
+        id,
+        callback_id,
+        this->getPosition(),
+        position,
+        duration,
+        duration,
+        type,
+        callback
+    };
+
+    this->animations[id] = animation;
+
+    return id;
+}
+
+bool Character::cancelAnimation(animation_id id) {
+    if (this->animations.find(id) != this->animations.end()) {
+        Timer::dequeue_function(this->animations[id].callback_id);
+        if (this->animations[id].callback != NULL)
+            this->animations[id].callback(false);
+        this->animations.erase(id);
+        return true;
+    }
+    return false;
+}
+
+Point Character::getPosition() {
+    Point p {this->x, this->y};
+    return p;
+}
+
+void Character::update() {}
+
+void Character::render() {
+    this->render(FixedReal(8), FixedReal(8));
+}
+
+void Character::render(FixedReal camera_x, FixedReal camera_y) {
+    FixedReal x, y;
+    x = (this->x - FixedReal(this->width, 8)) - camera_x;
+    y = (this->y - FixedReal(this->height, 8)) - camera_y;
+
+    if (x <= FixedReal(-16, 8) || y <= FixedReal(-16, 8) ||
+            x >= FixedReal(256, 8) || y >= FixedReal(192, 8)) {
+        this->sprite.disable();
+        return;
+    }
+
+    this->sprite.setPosition(x, y);
+}
+
+void Character::print() {
+    FMAW::printf("Character using sprite:");
+    this->sprite.print();
+}
+
+Character::~Character() {
+    this->sprite.disable();
+    this->sprite.clear();
+}
+
+}  // namespace FMAW

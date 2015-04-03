@@ -1,0 +1,10 @@
+build/
+*.nds
+*.elf
+doc/html/
+doc/latex/
+*.sublime-workspace
+*.test
+*.exe
+_assets_
+*.dSYM/

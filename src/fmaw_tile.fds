@@ -1,0 +1,258 @@
+// Copyright 2015 Lluís Ulzurrun de Asanza Sàez
+
+#include "./fmaw_tile.h"
+
+#include <map>
+#include <string>
+#include <vector>
+
+#include "./fmaw_sprite.h"
+
+//------------------------------------------------------------------------------
+// Tile class.
+//------------------------------------------------------------------------------
+
+namespace FMAW {
+
+std::map<int, int> Tile::IDtoImgMemoryPosition {};
+std::map<int, int> Tile::IDtoPalMemoryPosition {};
+std::vector<int>   Tile::IDofSpriteTiles       {};
+
+int Tile::nextSpriteImgMemoryPositionMain     = 0;
+int Tile::nextBackgroundImgMemoryPositionMain = 0;
+int Tile::nextSpritePalMemoryPositionMain     = 0;
+int Tile::nextBackgroundPalMemoryPositionMain = 0;
+
+int Tile::nextSpriteImgMemoryPositionSub      = 0;
+int Tile::nextBackgroundImgMemoryPositionSub  = 0;
+int Tile::nextSpritePalMemoryPositionSub      = 0;
+int Tile::nextBackgroundPalMemoryPositionSub  = 0;
+
+int Tile::nextID = 0;
+
+void Tile::releaseAllSpriteMemory() {
+    for (int ID : IDofSpriteTiles) {
+        IDtoImgMemoryPosition.erase(ID);
+        IDtoPalMemoryPosition.erase(ID);
+    }
+    IDofSpriteTiles.clear();
+
+    Tile::nextSpritePalMemoryPositionMain = 0;
+    Tile::nextSpriteImgMemoryPositionMain = 0;
+    Tile::nextSpritePalMemoryPositionSub = 0;
+    Tile::nextSpriteImgMemoryPositionSub = 0;
+
+    Sprite::clearAllSprites();
+}
+
+Tile::Tile(TileAttributes attributes) {
+    if (attributes.type == TypeSprite) {
+        if (attributes.screen == ScreenSub) {
+            this->imgMemory = self::nextSpriteImgMemoryPositionSub;
+            this->palMemory = self::nextSpritePalMemoryPositionSub;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextSpriteImgMemoryPositionSub +=
+                attributes.tilesLength >> 5;
+            self::nextSpritePalMemoryPositionSub++;
+        } else {
+            this->imgMemory = self::nextSpriteImgMemoryPositionMain;
+            this->palMemory = self::nextSpritePalMemoryPositionMain;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextSpriteImgMemoryPositionMain +=
+                attributes.tilesLength >> 5;
+            self::nextSpritePalMemoryPositionMain++;
+        }
+    } else {
+        if (attributes.screen == ScreenSub) {
+            this->imgMemory = self::nextBackgroundImgMemoryPositionSub;
+            this->palMemory = self::nextBackgroundPalMemoryPositionSub;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextBackgroundImgMemoryPositionSub +=
+                attributes.tilesLength >> 5;
+            self::nextBackgroundPalMemoryPositionSub++;
+        } else {
+            this->imgMemory = self::nextBackgroundImgMemoryPositionMain;
+            this->palMemory = self::nextBackgroundPalMemoryPositionMain;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextBackgroundImgMemoryPositionMain +=
+                attributes.tilesLength >> 5;
+            self::nextBackgroundPalMemoryPositionMain++;
+        }
+    }
+
+    /*
+    FMAW::printf("I'm copying tiles of length %d to %d",
+                 attributes.tilesLength, this->imgMemory);
+    */
+
+    u16 *objram_memory;
+    u16 *palram_memory;
+
+    if (attributes.type == TypeSprite) {
+        objram_memory = tile2objram(this->imgMemory);
+        palram_memory = pal2objram(this->palMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2objramSub(this->imgMemory);
+            palram_memory = pal2objramSub(this->palMemory);
+        }
+    } else {
+        objram_memory = tile2bgram(this->imgMemory);
+        palram_memory = pal2bgram(this->palMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2bgramSub(this->imgMemory);
+            palram_memory = pal2bgramSub(this->palMemory);
+        }
+
+        /*
+        FMAW::printf("Destination (IMG): %p", objram_memory);
+        FMAW::printf("Destination (PAL): %p", palram_memory);
+        */
+    }
+
+    // Copy to memory.
+    dmaCopyHalfWords(3,
+                     attributes.tilesArray,
+                     objram_memory,
+                     attributes.tilesLength);
+    dmaCopyHalfWords(3,
+                     attributes.paletteArray,
+                     palram_memory,
+                     attributes.paletteLength);
+
+    this->ID = this->nextID;
+
+    // Store memory address of this tile.
+    self::IDtoImgMemoryPosition[ID] = this->imgMemory;
+    self::IDtoPalMemoryPosition[ID] = this->palMemory;
+
+    if (attributes.type == TypeSprite) {
+        self::IDofSpriteTiles.push_back(this->ID);
+    }
+
+    // This ID has been used!
+    self::nextID++;
+}
+
+Tile::Tile(TileAttributes attributes, int ID) {
+    this->ID = ID;
+    this->imgMemory = self::IDtoImgMemoryPosition[ID];
+    this->palMemory = self::IDtoPalMemoryPosition[ID];
+
+    u16 *objram_memory;
+    u16 *palram_memory;
+
+    if (attributes.type == TypeSprite) {
+        objram_memory = tile2objram(this->imgMemory);
+        palram_memory = pal2objram(this->palMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2objramSub(this->imgMemory);
+            palram_memory = pal2objramSub(this->palMemory);
+        }
+    } else {
+        objram_memory = tile2bgram(this->imgMemory);
+        palram_memory = pal2bgram(this->palMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2bgramSub(this->imgMemory);
+            palram_memory = pal2bgramSub(this->palMemory);
+        }
+    }
+
+    // Copy to memory.
+    dmaCopyHalfWords(3,
+                     attributes.tilesArray,
+                     objram_memory,
+                     attributes.tilesLength);
+    dmaCopyHalfWords(3,
+                     attributes.paletteArray,
+                     palram_memory,
+                     attributes.paletteLength);
+}
+
+Tile::Tile(int ID) {
+    this->ID = ID;
+    this->imgMemory = self::IDtoImgMemoryPosition[ID];
+    this->palMemory = self::IDtoPalMemoryPosition[ID];
+}
+
+Tile::Tile(TileAttributes attributes, Tile palette) {
+
+    if (attributes.type == TypeSprite) {
+        if (attributes.screen == ScreenSub) {
+            this->imgMemory = self::nextSpriteImgMemoryPositionSub;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextSpriteImgMemoryPositionSub +=
+                attributes.tilesLength >> 5;
+        } else {
+            this->imgMemory = self::nextSpriteImgMemoryPositionMain;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextSpriteImgMemoryPositionMain +=
+                attributes.tilesLength >> 5;
+        }
+    } else {
+        if (attributes.screen == ScreenSub) {
+            this->imgMemory = self::nextBackgroundImgMemoryPositionSub;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextBackgroundImgMemoryPositionSub +=
+                attributes.tilesLength >> 5;
+        } else {
+            this->imgMemory = self::nextBackgroundImgMemoryPositionMain;
+            // Move pointer so next tile will be stored properly.
+            // This is equivalent to: attributes.tilesLength / 32
+            self::nextBackgroundImgMemoryPositionMain +=
+                attributes.tilesLength >> 5;
+        }
+    }
+
+    /*
+    FMAW::printf("I'm copying tiles of length %d to %d",
+                 attributes.tilesLength, this->imgMemory);
+    */
+
+    u16 *objram_memory;
+
+    if (attributes.type == TypeSprite) {
+        objram_memory = tile2objram(this->imgMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2objramSub(this->imgMemory);
+        }
+    } else {
+        objram_memory = tile2bgram(this->imgMemory);
+        if (attributes.screen == ScreenSub) {
+            objram_memory = tile2bgramSub(this->imgMemory);
+        }
+
+        /*
+        FMAW::printf("Destination (IMG): %p", objram_memory);
+        FMAW::printf("Destination (PAL): %p", palram_memory);
+        */
+    }
+
+    // Copy to memory.
+    dmaCopyHalfWords(3,
+                     attributes.tilesArray,
+                     objram_memory,
+                     attributes.tilesLength);
+
+    this->ID = this->nextID;
+    this->palMemory = self::IDtoPalMemoryPosition[palette.ID];
+
+    // Store memory address of this tile.
+    self::IDtoImgMemoryPosition[ID] = this->imgMemory;
+    self::IDtoPalMemoryPosition[ID] = this->palMemory;
+
+    if (attributes.type == TypeSprite) {
+        self::IDofSpriteTiles.push_back(this->ID);
+    }
+
+    // This ID has been used!
+    self::nextID++;
+}
+
+}  // namespace FMAW
