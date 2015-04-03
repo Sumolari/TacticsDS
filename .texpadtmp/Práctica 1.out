@@ -1,8 +1,0 @@
-\BOOKMARK [1][-]{section.1}{Preparaci\363n del entorno}{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{Instalaci\363n de dependencias}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{Instalaci\363n de las herramientas de desarrollo}{section.1}% 3
-\BOOKMARK [1][-]{section.2}{Ejecuci\363n}{}% 4
-\BOOKMARK [2][-]{subsection.2.1}{Compilaci\363n de los proyectos de prueba}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.2}{Emulaci\363n de los proyectos de prueba}{section.2}% 6
-\BOOKMARK [2][-]{subsection.2.3}{Ejecuci\363n de los proyectos de prueba sobre hardware real}{section.2}% 7
-\BOOKMARK [1][-]{section.3}{Automatizaci\363n de la instalaci\363n del entorno de desarrollo}{}% 8

@@ -1,8 +1,0 @@
-\contentsline {section}{\numberline {1}Preparaci\IeC {\'o}n del entorno}{2}{section.1}
-\contentsline {subsection}{\numberline {1.1}Instalaci\IeC {\'o}n de dependencias}{2}{subsection.1.1}
-\contentsline {subsection}{\numberline {1.2}Instalaci\IeC {\'o}n de las herramientas de desarrollo}{2}{subsection.1.2}
-\contentsline {section}{\numberline {2}Ejecuci\IeC {\'o}n}{4}{section.2}
-\contentsline {subsection}{\numberline {2.1}Compilaci\IeC {\'o}n de los proyectos de prueba}{4}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Emulaci\IeC {\'o}n de los proyectos de prueba}{4}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Ejecuci\IeC {\'o}n de los proyectos de prueba sobre hardware real}{5}{subsection.2.3}
-\contentsline {section}{\numberline {3}Automatizaci\IeC {\'o}n de la instalaci\IeC {\'o}n del entorno de desarrollo}{5}{section.3}
