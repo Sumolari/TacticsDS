@@ -56,7 +56,7 @@
 /**
  * Cost of seeing a forest cell.
  */
-#define COST_SEE_CELL_FOREST    4
+#define COST_SEE_CELL_FOREST    5
 /**
  * Cost of seeing a grass cell.
  */
@@ -64,7 +64,7 @@
 /**
  * Cost of seeing a mountain cell.
  */
-#define COST_SEE_CELL_MOUNTAIN  3
+#define COST_SEE_CELL_MOUNTAIN  4
 /**
  * Cost of seeing a river cell.
  */

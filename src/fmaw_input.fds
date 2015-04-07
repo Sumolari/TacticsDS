@@ -1,6 +1,7 @@
 // Copyright 2015 FMAW
 
 #include "./fmaw_input.h"
+#include "./fmaw_timer.h"
 #include "./fmaw_debug.h"
 
 #include <nds.h>
@@ -314,7 +315,11 @@ void callCallbacksOnReleased(ButtonType button) {
     callCallback(button, OnReleased);
 }
 
-void check() {
+void init() {
+    Timer::enqueue_function(FMAW::Input::check, 5, true);
+}
+
+void check(int checkCallbackID) {
     scanKeys();
     int keysh = keysHeld();
     int ndsKeys[BUTTONS_COUNT] = {KEY_A,

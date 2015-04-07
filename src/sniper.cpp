@@ -23,13 +23,13 @@ void Sniper::init() {
 
     this->unitType = UNIT_TYPE_SNIPER;
     this->movementCapacity = 4;
-    this->sightDistance = 8;
+    this->sightDistance = 6;
     this->maximumAvailableActions = 2;
     this->currentAvailableActions = this->maximumAvailableActions;
     this->maximumHealth = 4;
     this->currentHealth = this->maximumHealth;
-    this->minimumAttackRange = 3;
-    this->maximumAttackRange = 5;
+    this->minimumAttackRange = 2;
+    this->maximumAttackRange = 4;
     this->attackPower = 5;
     this->print();
 

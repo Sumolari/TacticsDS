@@ -22,7 +22,7 @@ void Knight::init() {
     this->reset();
 
     this->unitType = UNIT_TYPE_KNIGHT;
-    this->movementCapacity = 8;
+    this->movementCapacity = 7;
     this->sightDistance = 6;
     this->maximumAvailableActions = 2;
     this->currentAvailableActions = this->maximumAvailableActions;
