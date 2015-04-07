@@ -369,7 +369,7 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
         Unit *attacker = a->getCharacter();
         Unit *victim = v->getCharacter();
 
-        bool isKill = attacker->attackUnit(victim);
+        bool isKill = attacker->attackUnit(victim, v->terrainDefense());
         if (attacker->hasMaximumAvailableActions())
             attacker->decreaseAvailableActions();
         attacker->decreaseAvailableActions();

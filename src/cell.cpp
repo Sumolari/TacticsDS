@@ -89,6 +89,27 @@ int Cell::sightCost() {
     }
 }
 
+int Cell::terrainDefense() {
+    switch (this->backgroundType) {
+        case CellBGBase:
+            return DEFENSE_CELL_BASE;
+        case CellBGBridge:
+        case CellBGBridgeH:
+            return DEFENSE_CELL_BRIDGE;
+        case CellBGForest:
+            return DEFENSE_CELL_FOREST;
+        case CellBGGrass:
+            return DEFENSE_CELL_GRASS;
+        case CellBGMountain:
+            return DEFENSE_CELL_MOUNTAIN;
+        case CellBGRiver:
+        case CellBGRiverH:
+            return DEFENSE_CELL_RIVER;
+        default:
+            return DEFAULT_DEFENSE;
+    }
+}
+
 void Cell::renderBackground() {
     switch (this->backgroundType) {
         case CellBGBase:
