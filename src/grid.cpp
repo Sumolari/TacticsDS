@@ -253,6 +253,10 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
                 Cell *fromC = this->cellAtIndexPath(from);
                 Cell *toC   = this->cellAtIndexPath(to);
 
+                this->selectCellAtIndexPath(from);
+                this->recomputeReachableCells();
+                this->recomputeAttackableCells();
+
                 if (toC->isOccupied()) {
                     // If movement can't be done then it's an attack.
                     FMAW::Sound::playEffect(this->hitSoundID);
@@ -264,8 +268,8 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
                         FMAW::printf("\tA unit has been attacked");
                     }
                 } else {
-                    this->moveCharacterFromCellToCell(from, to, 200);
-                    FMAW::printf("\tA movement has been loaded");
+                    bool mov = this->moveCharacterFromCellToCell(from, to, 200);
+                    FMAW::printf("\tA movement has been loaded: %d", mov);
                 }
             }
         } else {
