@@ -99,8 +99,9 @@ int Unit::force() {
     return this->attackPower;
 }
 
-bool Unit::attackUnit(Unit *u) {
-    u->setCurrentHealth(u->getCurrentHealth() - this->force());
+bool Unit::attackUnit(Unit *u, int terrain_defense) {
+    if( terrain_defense <= this->force() )
+        u->setCurrentHealth(u->getCurrentHealth() - this->force() + terrain_defense);
 
     if (u->getCurrentHealth() <= 0) {
         delete(u);

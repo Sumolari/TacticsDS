@@ -127,6 +127,12 @@ class Cell {
      */
     int sightCost();
 
+	/**
+     * Defense of the terrain at this cell.
+     * @return Defense of the terrain at this cell.
+     */
+    int terrainDefense();
+
     /**
      * Draws this cell's background.
      */

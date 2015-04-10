@@ -144,10 +144,11 @@ class Unit : public FMAW::Character {
     /**
      * Returns true if the attacked unit is alive afterwards.
      * False otherwise.
-     * @param u  The unit to attack.
-     * @return   Attacked unit aliveness.
+     * @param u                The unit to attack.
+     * @param terrain_defense  The defense of the terrain where the unit to attack is standing.
+     * @return                 Attacked unit aliveness.
      */
-    bool attackUnit(Unit *u);
+    bool attackUnit(Unit *u, int terrain_defense);
 
     /**
      * Resets the internal counter of available actions.

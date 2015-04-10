@@ -71,6 +71,35 @@
 #define COST_SEE_CELL_RIVER     1
 
 /**
+ * Default defense value.
+ */
+#define DEFAULT_DEFENSE        0
+/**
+ * Defense given by a base cell.
+ */
+#define DEFENSE_CELL_BASE      DEFAULT_DEFENSE
+/**
+ * Defense given by a bridge cell.
+ */
+#define DEFENSE_CELL_BRIDGE    DEFAULT_DEFENSE
+/**
+ * Defense given by a forest cell.
+ */
+#define DEFENSE_CELL_FOREST    1
+/**
+ * Defense given by a grass cell.
+ */
+#define DEFENSE_CELL_GRASS     DEFAULT_DEFENSE
+/**
+ * Defense given by a mountain cell.
+ */
+#define DEFENSE_CELL_MOUNTAIN  2
+/**
+ * Defense given by a river cell.
+ */
+#define DEFENSE_CELL_RIVER     DEFAULT_DEFENSE
+
+/**
  * ID of none owner.
  */
 #define UNIT_OWNER_NONE     -1
