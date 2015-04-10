@@ -22,15 +22,15 @@ void Warrior::init() {
     this->reset();
 
     this->unitType = UNIT_TYPE_WARRIOR;
-    this->movementCapacity = 4;
-    this->sightDistance = 6;
-    this->maximumAvailableActions = 1;
+    this->movementCapacity = 6;
+    this->sightDistance = 5;
+    this->maximumAvailableActions = 3;
     this->currentAvailableActions = this->maximumAvailableActions;
-    this->maximumHealth = 10;
+    this->maximumHealth = 9;
     this->currentHealth = this->maximumHealth;
     this->minimumAttackRange = 1;
     this->maximumAttackRange = 1;
-    this->attackPower = 2;
+    this->attackPower = 3;
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
                              FMAW::TileAttributes *);

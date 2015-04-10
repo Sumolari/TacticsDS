@@ -16,7 +16,7 @@ void loadDefaultGridMap(Grid *g) {
 }
 
 void loadGridMap(std::string mapName, Grid *g) {
-    FILE *test = FMAW::IO::fopen(("./" + mapName).c_str(), "r");
+    FILE *test = FMAW::IO::fopen(("./maps/" + mapName).c_str(), "r");
 
     if (test != NULL) {
         int rows, cols, aux;

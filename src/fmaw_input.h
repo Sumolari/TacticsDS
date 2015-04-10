@@ -301,9 +301,16 @@ int onTouchReleased(std::function<void(int, int)> callback);
 //------------------------------------------------------------------------------
 
 /**
- * Checks if any button has been pressed and calls proper method.
+ * Initializes input API.
  */
-void check();
+void init();
+
+/**
+ * Checks if any button has been pressed and calls proper method.
+ * @param checkCallbackID ID of the registered callback, to make this method
+ *                        compatible with timing API.
+ */
+void check(int checkCallbackID = -1);
 
 /**
  * Unregisters callback with given identifier so it won't be called again.
