@@ -25,7 +25,7 @@
 #include "./gfx_Mountain.h"
 #include "./gfx_River.h"
 #include "./gfx_RiverH.h"
-#include "./gfx_castle.h"
+#include "./gfx_Castle.h"
 
 #include "./gfx_Base_Fog.h"
 #include "./gfx_Bridge_Fog.h"
@@ -35,7 +35,7 @@
 #include "./gfx_Mountain_Fog.h"
 #include "./gfx_River_Fog.h"
 #include "./gfx_RiverH_Fog.h"
-#include "./gfx_castle_fog.h"
+#include "./gfx_Castle_Fog.h"
 
 //------------------------------------------------------------------------------
 // Background...
@@ -158,7 +158,7 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile RiverH_tile(gfx_RiverH_attributes);
+    FMAW::Tile RiverH_tile(gfx_RiverH_attributes, River_tile);
     FMAW::printf("El fondo RiverH tiene ID=%d", RiverH_tile.ID);
 
     FMAW::TileAttributes gfx_BridgeH_attributes {
@@ -169,21 +169,19 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile BridgeH_tile(gfx_BridgeH_attributes);
+    FMAW::Tile BridgeH_tile(gfx_BridgeH_attributes, Bridge_tile);
     FMAW::printf("El fondo BridgeH tiene ID=%d", BridgeH_tile.ID);
 
-    /*
     FMAW::TileAttributes gfx_Castle_attributes {
-        gfx_castleTiles,
-        gfx_castleTilesLen,
-        gfx_castlePal,
-        gfx_castlePalLen,
+        gfx_CastleTiles,
+        gfx_CastleTilesLen,
+        gfx_CastlePal,
+        gfx_CastlePalLen,
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
     FMAW::Tile Castle_tile(gfx_Castle_attributes);
     FMAW::printf("El fondo Castle tiene ID=%d", Castle_tile.ID);
-    */
 
     //------------------------------------------------------------------------//
     // SPACE RESERVED FOR FOG OF WAR TILES
@@ -263,7 +261,7 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile RiverH_Fog_tile(gfx_RiverH_Fog_attributes);
+    FMAW::Tile RiverH_Fog_tile(gfx_RiverH_Fog_attributes, River_Fog_tile);
     FMAW::printf("El fondo RiverH_Fog tiene ID=%d", RiverH_Fog_tile.ID);
 
     FMAW::TileAttributes gfx_BridgeH_Fog_attributes {
@@ -274,21 +272,19 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile BridgeH_Fog_tile(gfx_BridgeH_Fog_attributes);
+    FMAW::Tile BridgeH_Fog_tile(gfx_BridgeH_Fog_attributes, Bridge_Fog_tile);
     FMAW::printf("El fondo BridgeH_Fog tiene ID=%d", BridgeH_Fog_tile.ID);
 
-    /*
     FMAW::TileAttributes gfx_Castle_Fog_attributes {
-        gfx_castle_fogTiles,
-        gfx_castle_fogTilesLen,
-        gfx_castle_fogPal,
-        gfx_castle_fogPalLen,
+        gfx_Castle_FogTiles,
+        gfx_Castle_FogTilesLen,
+        gfx_Castle_FogPal,
+        gfx_Castle_FogPalLen,
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
     FMAW::Tile Castle_Fog_tile(gfx_Castle_Fog_attributes);
     FMAW::printf("El fondo Castle_Fog tiene ID=%d", Castle_Fog_tile.ID);
-    */
 
     //------------------------------------------------------------------------//
 
@@ -304,6 +300,7 @@ void setupGraphics(void) {
 void update_camera() { }
 
 void update_logic() {
+    FMAW::Input::check();
     FMAW::Timer::check();
     update_camera();
 }
@@ -335,7 +332,8 @@ int main(void) {
 
     grid.initCursor();
     grid.disableCursor();
-    GridMap::loadDefaultGridMap(&grid);
+    Unit::registerPalettes();
+    GridMap::loadGridMap(availableMaps[selectedMap], &grid);
 
     auto addSomeUnits = []() {
         Warrior *warriorA = new Warrior(blue->getID());
@@ -374,12 +372,15 @@ int main(void) {
         FMAW::Tile::releaseAllSpriteMemory();
         grid.initCursor();
         grid.disableCursor();
+        Unit::registerPalettes();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
         grid.fogOfWarMode = allVisible;
         // addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
         grid.recomputeVisibleCells();
+        //refresh menu
+        menu.adjustCurrentTile();
     };
 
     int selectSoundID = FMAW::Sound::registerFX(

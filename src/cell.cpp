@@ -58,13 +58,13 @@ int Cell::movementCost() {
             return COST_MOVE_CELL_FOREST;
         case CellBGGrass:
             return COST_MOVE_CELL_GRASS;
-        case CellBGCastle:
-            return COST_MOVE_CELL_CASTLE;
         case CellBGMountain:
             return COST_MOVE_CELL_MOUNTAIN;
         case CellBGRiver:
         case CellBGRiverH:
             return COST_MOVE_CELL_RIVER;
+        case CellBGCastle:
+            return COST_MOVE_CELL_CASTLE;
         default:
             return COST_CELL_INFINITY;
     }
@@ -81,13 +81,13 @@ int Cell::sightCost() {
             return COST_SEE_CELL_FOREST;
         case CellBGGrass:
             return COST_SEE_CELL_GRASS;
-        case CellBGCastle:
-            return COST_SEE_CELL_CASTLE;
         case CellBGMountain:
             return COST_SEE_CELL_MOUNTAIN;
         case CellBGRiver:
         case CellBGRiverH:
             return COST_SEE_CELL_RIVER;
+        case CellBGCastle:
+            return COST_SEE_CELL_CASTLE;
         default:
             return COST_CELL_INFINITY;
     }
@@ -151,10 +151,6 @@ void Cell::renderFoggyBackground() {
         case CellBGRiver:
         case CellBGRiverH:
         case CellBGCastle:
-            if (this->backgroundType == CellBGCastle) {
-                FMAW::printf("CASTILLO FOGGY: %d\n",
-                             this->backgroundType + NUM_BACKGROUNDS);
-            }
             this->background.setScreenBaseBlock(2);
             for (int i = 0; i < this->tiles.size(); ++i) {
                 this->background.setTile(

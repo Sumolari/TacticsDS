@@ -21,6 +21,10 @@
 #define SNIPER_HEIGHT        16
 
 class Sniper : public Unit {
+  private:
+    // Palettes used to draw this Warrior.
+    static FMAW::Tile paletteBlue;
+    static FMAW::Tile paletteRed;
   protected:
     // ID of tile currently displayed.
     int currentTileID;
@@ -35,6 +39,11 @@ class Sniper : public Unit {
 
     virtual void init();
   public:
+    /**
+     * Registers pelettes for this unit.
+     */
+    static void registerPalettes();
+
     /**
      * Creates a new Sniper using a new sprite.
      */
@@ -52,7 +61,7 @@ class Sniper : public Unit {
     virtual void update();
 
     virtual void update_freq();
-    
+
     /**
      * Resets position of this Sniper.
      */

@@ -18,6 +18,26 @@
 
 #define SPRITES_IDLE_ANIMATION 4
 
+FMAW::Tile Warrior::paletteBlue = FMAW::Tile(0);
+FMAW::Tile Warrior::paletteRed  = FMAW::Tile(0);
+
+void Warrior::registerPalettes() {
+    paletteBlue = FMAW::Tile(FMAW::t_tile_attrib(
+                                 swordmaster_female_1_blueTiles,
+                                 swordmaster_female_1_blueTilesLen,
+                                 swordmaster_female_1_bluePal,
+                                 swordmaster_female_1_bluePalLen,
+                                 FMAW::TypeSprite,
+                                 FMAW::ScreenMain));
+    paletteRed = FMAW::Tile(FMAW::t_tile_attrib(
+                                swordmaster_female_1_redTiles,
+                                swordmaster_female_1_redTilesLen,
+                                swordmaster_female_1_redPal,
+                                swordmaster_female_1_redPalLen,
+                                FMAW::TypeSprite,
+                                FMAW::ScreenMain));
+}
+
 void Warrior::init() {
     this->reset();
 
@@ -128,7 +148,14 @@ void Warrior::init() {
 
     this->currentTileID = 0;
 
-    this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]));
+    if (this->ownerID == 0) {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteBlue);
+    } else {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteRed);
+    }
+
 
     // FMAW::printf("Warrior will use tile %d", this->tile->imgMemory);
 

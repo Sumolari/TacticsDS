@@ -21,7 +21,7 @@ typedef struct t_indexPath {
 
 bool operator <(IndexPath const &left, IndexPath const &right);
 
-#define NUM_BACKGROUNDS 8
+#define NUM_BACKGROUNDS 9
 
 typedef enum t_cellBackgroundType {
     CellBGNone     = -1,

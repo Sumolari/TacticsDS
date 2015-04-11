@@ -85,6 +85,11 @@ class Unit : public FMAW::Character {
      */
     static Unit *UnitWithType(int unitType, PlayerID ownerID);
 
+    /**
+     * Registers palettes for all units.
+     */
+    static void registerPalettes();
+
     virtual void update();
 
     virtual void update_freq();

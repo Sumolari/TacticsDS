@@ -32,6 +32,12 @@ Unit *Unit::UnitWithType(int unitType, PlayerID ownerID) {
     }
 }
 
+void Unit::registerPalettes() {
+    Warrior::registerPalettes();
+    Sniper::registerPalettes();
+    Knight::registerPalettes();
+}
+
 void Unit::init() {}
 
 void Unit::update() {}
