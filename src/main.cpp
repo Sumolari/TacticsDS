@@ -417,7 +417,7 @@ int main(void) {
         // Disable interaction is saved game is being played.
         if (grid.isPlayingSavedFile() || !gameStarted) return;
 
-        FMAW::Sound::stopBackgroundMusic();
+        FMAW::Sound::toggleBackgroundMusic();
         FMAW::Sound::playEffect(selectSoundID);
 
         if (menu.isInForeground()) {
@@ -516,6 +516,8 @@ int main(void) {
     if (!grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE)) {
         FMAW::printf("ERROR when trying to write file");
     }
+
+    FMAW::Sound::pauseBackgroundMusic();
 
     releaseStart();
 

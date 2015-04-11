@@ -15,6 +15,7 @@ namespace Sound {
 
 std::map<int, mm_sound_effect> specialEffects;
 bool inited = false;
+bool backgroundPlaying = false;
 
 FX effectWithSoundID(int ID) {
     FX effect;
@@ -65,10 +66,30 @@ bool stopEffect(playID reproductionID) {
 void setBackgroundMusic(int musicID) {
     mmLoad(musicID);
     mmStart(musicID, MM_PLAY_LOOP);
+    backgroundPlaying = true;
 }
 
 void stopBackgroundMusic() {
+    backgroundPlaying = false;
     mmStop();
+}
+
+void pauseBackgroundMusic() {
+    backgroundPlaying = false;
+    mmPause();
+}
+
+void resumeBackgroundMusic() {
+    backgroundPlaying = true;
+    mmResume();
+}
+
+void toggleBackgroundMusic() {
+    if (backgroundPlaying) {
+        pauseBackgroundMusic();
+    } else {
+        resumeBackgroundMusic();
+    }
 }
 
 }  // namespace Sound
