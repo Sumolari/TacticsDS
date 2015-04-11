@@ -21,6 +21,7 @@ Grid::Grid():
     rightArrowCallbackID(-1),
     aButtonCallbackID(-1),
     bButtonCallbackID(-1),
+    touchCallbackID(-1),
     savefile(nullptr),
     playingSavedFile(false),
     fogOfWarMode(allVisible) {
@@ -778,6 +779,13 @@ void Grid::enqueueCallbacks() {
     if (this->bButtonCallbackID == -1) {
         this->bButtonCallbackID = FMAW::Input::onButtonBReleased(releaseB);
     }
+
+    auto touchCallback = [this](int x, int y) {
+        this->selectCellAtIndexPath({y / CELL_HEIGHT, x / CELL_WIDTH});
+    };
+    if (this->touchCallbackID == -1) {
+        this->touchCallbackID = FMAW::Input::onTouchReleased(touchCallback);
+    }
 }
 
 void Grid::dequeueCallbacks() {
@@ -804,6 +812,10 @@ void Grid::dequeueCallbacks() {
     if (this->bButtonCallbackID != -1) {
         FMAW::Input::unregisterCallback(this->bButtonCallbackID);
         this->bButtonCallbackID = -1;
+    }
+    if (this->touchCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->touchCallbackID);
+        this->touchCallbackID = -1;
     }
 }
 

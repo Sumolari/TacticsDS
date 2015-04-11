@@ -80,6 +80,11 @@ class Grid {
     int bButtonCallbackID;
 
     /**
+     * ID of the callback triggered when stylus is released.
+     */
+    int touchCallbackID;
+
+    /**
      * Cells rechables by currently selected unit.
      */
     std::map<IndexPath, bool> reachableCells;
@@ -197,12 +202,12 @@ class Grid {
      * Initializes cursor.
      */
     void initCursor();
-    
+
     /**
      * Disables cursor.
      */
     void disableCursor();
-    
+
     /**
      * Enables cursor.
      */
