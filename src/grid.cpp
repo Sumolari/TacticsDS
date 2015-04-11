@@ -254,6 +254,14 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
                 Cell *fromC = this->cellAtIndexPath(from);
                 Cell *toC   = this->cellAtIndexPath(to);
 
+                // We select the cell and pick it up.
+                this->selectCellAtIndexPath(from);
+                this->pickedUpCell.row = from.row;
+                this->pickedUpCell.col = from.col;
+                // We recompute access matrices so helper methods will work.
+                this->recomputeReachableCells();
+                this->recomputeAttackableCells();
+
                 if (toC->isOccupied()) {
                     // If movement can't be done then it's an attack.
                     FMAW::Sound::playEffect(this->hitSoundID);
@@ -265,8 +273,8 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
                         FMAW::printf("\tA unit has been attacked");
                     }
                 } else {
-                    this->moveCharacterFromCellToCell(from, to, 200);
-                    FMAW::printf("\tA movement has been loaded");
+                    bool mov = this->moveCharacterFromCellToCell(from, to, 200);
+                    FMAW::printf("\tA movement has been loaded: %d", mov);
                 }
             }
         } else {
@@ -421,6 +429,7 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
 
         return isKill;
     }
+    FMAW::printf("Can't attack non-attackable cell");
     return false;
 }
 
@@ -722,17 +731,18 @@ void Grid::enqueueCallbacks() {
                               this->getSelectedPath(),
                               50);
 
+                // We save attack in history log.
+                if (this->savefile != nullptr) {
+                    FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
+                                      this->pickedUpCell.row,
+                                      this->pickedUpCell.col,
+                                      this->getSelectedPath().row,
+                                      this->getSelectedPath().col);
+                    FMAW::IO::fflush(this->savefile);
+                }
+
                 if (isKill) {
                     FMAW::printf("Enemigo abatido!");
-                    // We save death in history log.
-                    if (this->savefile != nullptr) {
-                        FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
-                                          this->pickedUpCell.row,
-                                          this->pickedUpCell.col,
-                                          this->getSelectedPath().row,
-                                          this->getSelectedPath().col);
-                        FMAW::IO::fflush(this->savefile);
-                    }
                     c->setCharacter(nullptr);
                     if (!this->existCharacterWithOwner(enemyID)) {
                         this->gameOverCallback(TurnManager::currentPlayerID());
