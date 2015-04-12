@@ -369,6 +369,8 @@ IndexPath Grid::getSelectedPath() {
     return this->selectedPath;
 }
 
+
+
 bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
                                  unsigned int duration) {
     Cell *a = this->cellAtIndexPath(attackerPos);
@@ -832,6 +834,11 @@ void Grid::dequeueCallbacks() {
 //------------------------------------------------------------------------------
 // Rechable cells helpers.
 //------------------------------------------------------------------------------
+
+void Grid::setPickedUpCell( int row, int col ) {
+    pickedUpCell.row = row;
+    pickedUpCell.col = col;
+}
 
 void Grid::recomputeReachableCells() {
     this->reachableCells.clear();

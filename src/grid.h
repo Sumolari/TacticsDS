@@ -100,18 +100,6 @@ class Grid {
     std::map<IndexPath, bool> visibleCells;
 
     /**
-     * Recomputes the cells reachable by currently selected unit.
-     * If no unit is selected all cells are available.
-     */
-    void recomputeReachableCells();
-
-    /**
-     * Recomputes the cells attackable by currently selected unit.
-     * If no unit is selected no cells are available.
-     */
-    void recomputeAttackableCells();
-
-    /**
      * Returns whether some cell with a character has been picked up or not.
      * @return Whether some cell with a character has been picked up or not.
      */
@@ -389,6 +377,22 @@ class Grid {
      * Recomputes the cells visible by current player's unit.
      */
     void recomputeVisibleCells();
+
+    /**
+    * Selects the new picked up cell
+    */
+    void setPickedUpCell( int row, int col );
+    /**
+     * Recomputes the cells reachable by currently selected unit.
+     * If no unit is selected all cells are available.
+     */
+    void recomputeReachableCells();
+
+    /**
+     * Recomputes the cells attackable by currently selected unit.
+     * If no unit is selected no cells are available.
+     */
+    void recomputeAttackableCells();
 };
 
 #endif
