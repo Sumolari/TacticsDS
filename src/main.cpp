@@ -415,7 +415,8 @@ int main(void) {
 
     auto releaseStart = [selectSoundID]() {
         // Disable interaction is saved game is being played.
-        if (grid.isPlayingSavedFile() || !gameStarted) return;
+        if (grid.isPlayingSavedFile() || !gameStarted
+                || TurnManager::AIPlaying()) return;
 
         FMAW::Sound::toggleBackgroundMusic();
         FMAW::Sound::playEffect(selectSoundID);
