@@ -134,4 +134,14 @@
  */
 #define DEFAULT_SAVEGAME_FILE "savegame.txt"
 
+/**
+ * Duration of an attack.
+ */
+#define ATTACK_DURATION   50
+
+/**
+ * Duration of a movement.
+ */
+#define MOVEMENT_DURATION 200
+
 #endif

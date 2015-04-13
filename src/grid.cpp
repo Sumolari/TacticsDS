@@ -262,13 +262,14 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
                     // If movement can't be done then it's an attack.
                     FMAW::Sound::playEffect(this->hitSoundID);
 
-                    if (this->attackCharacterAtCell(from, to, 50)) {
+                    if (this->attackCharacterAtCell(from, to, ATTACK_DURATION)) {
                         FMAW::printf("\tA unit has been killed");
                     } else {
                         FMAW::printf("\tA unit has been attacked");
                     }
                 } else {
-                    bool mov = this->moveCharacterFromCellToCell(from, to, 200);
+                    bool mov = this->moveCharacterFromCellToCell(from, to,
+                               MOVEMENT_DURATION);
                     FMAW::printf("\tA movement has been loaded: %d", mov);
                 }
             }
@@ -434,6 +435,20 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
     return false;
 }
 
+bool Grid::pickedUpUnitCanAttackCharacterAtCell(IndexPath vPos) {
+    if (this->pickedUpCell.row == -1 || this->pickedUpCell.col == -1) {
+        return false;
+    }
+    Cell *a = this->cellAtIndexPath(this->pickedUpCell);
+    Cell *v = this->cellAtIndexPath(vPos);
+    // Only attack visible cells from occupied cells.
+    if (a->isOccupied() && this->visibleCells[vPos]) {
+        return v->isOccupied() && this->attackableCells[vPos];
+    } else {
+        return false;
+    }
+}
+
 bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
                                        unsigned int duration) {
     Cell *f = this->cellAtIndexPath(from);
@@ -468,16 +483,18 @@ bool Grid::canMoveCharacterFromCellToCell(IndexPath from, IndexPath to) {
     if (!t->isOccupied() && f->isOccupied()) {
         Unit *u = f->getCharacter();
         if (u->getOwner() == TurnManager::currentPlayerID()) {
-            if (this->getSelectedPath().row != from.row ||
-                    this->getSelectedPath().col != from.col) {
-                this->selectCellAtIndexPath(from);
-                this->recomputeReachableCells();
+            if (!(this->pickedUpCell == from)) {
+                this->setPickedUpCell(from);
             }
             return this->reachableCells[to];
         }
     }
 
     return false;
+}
+
+bool Grid::canSeeCharacterAtCell(IndexPath cell) {
+    return this->visibleCells[cell];
 }
 
 void Grid::renderBackground() {
@@ -734,7 +751,7 @@ void Grid::enqueueCallbacks() {
                 int enemyID = u->getOwner();
                 bool isKill = this->attackCharacterAtCell(this->pickedUpCell,
                               this->getSelectedPath(),
-                              50);
+                              ATTACK_DURATION);
 
                 // We save attack in history log.
                 if (this->savefile != nullptr) {
@@ -770,7 +787,8 @@ void Grid::enqueueCallbacks() {
                          this->getSelectedPath().col);
             FMAW::Sound::playEffect(this->selectSoundID);
             this->moveCharacterFromCellToCell(this->pickedUpCell,
-                                              this->getSelectedPath(), 100);
+                                              this->getSelectedPath(),
+                                              MOVEMENT_DURATION);
             u->decreaseAvailableActions();
             if (!u->hasAvailableActions()) {
                 this->setCrossCursor();

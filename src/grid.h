@@ -242,10 +242,17 @@ class Grid {
      * @param  attackerPos      Original cell of the attacking character.
      * @param  victimPos        Final cell of the attacked character.
      * @param  duration         Duration of the animation.
-     * @return                  Whether change could be performed or not.
+     * @return                  Whether attacked character will "die" or not.
      */
     bool attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
                                unsigned int duration);
+
+    /**
+     * Returns whether the attack is possible or not.
+     * @param  victimPos        Final cell of the attacked character.
+     * @return                  Whether attack could be performed or not.
+     */
+    bool pickedUpUnitCanAttackCharacterAtCell(IndexPath victimPos);
 
     /**
      * Moves the character in given cell to given cell.
@@ -265,6 +272,14 @@ class Grid {
      * @return           Whether change could be performed or not.
      */
     bool canMoveCharacterFromCellToCell(IndexPath from, IndexPath to);
+
+    /**
+     * Returns whether current player can see the character located at given
+     * index path.
+     * @param  cell      Cell to check
+     * @return           Whether character at given cell is visible or not.
+     */
+    bool canSeeCharacterAtCell(IndexPath cell);
 
     /**
      * Draws the grid and the cells.
