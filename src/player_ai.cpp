@@ -41,8 +41,8 @@ void releaseUnitAtCell(IndexPath attackCoordinate,
 bool custFind(std::vector<IndexPath> &pathsToCheck, IndexPath check) {
 
     for (uint i = 0; i < pathsToCheck.size(); i++) {
-        FMAW::printf("pathsToCheck row:%d, col:%d", pathsToCheck[i].row,
-                     pathsToCheck[i].col);
+        //FMAW::printf("pathsToCheck row:%d, col:%d", pathsToCheck[i].row,
+        //             pathsToCheck[i].col);
         if (pathsToCheck[i].row == check.row && pathsToCheck[i].col == check.col)
             return true;
     }
@@ -59,11 +59,6 @@ IndexPath PlayerAI::getAttackCoordinate(int minDistance, int maxDistance,
     int rightLimit = std::min(this->grid->numCols(), origin.col + maxDistance);
     int upLimit = std::max(0, origin.row - maxDistance);
     int downLimit = std::min(this->grid->numRows(), origin.row + maxDistance);
-
-    int leftInnerLimit = std::max(0, origin.col - minDistance);
-    int rightInnerLimit = std::min(this->grid->numCols(), origin.col + minDistance);
-    int upInnerLimit = std::max(0, origin.row - minDistance);
-    int downInnerLimit = std::min(this->grid->numRows(), origin.row + minDistance);
 
     //FMAW::printf("upLimit %d downLimit %d leftlimit %d, rightLimit %d",
     //  upLimit, downLimit, leftLimit, rightLimit );
@@ -87,13 +82,12 @@ IndexPath PlayerAI::getClosestPath(IndexPath origin,
                                    std::vector<IndexPath> &takenPaths) {
     IndexPath minPath;
     int minDistance = 9999;
-
+    FMAW::printf("\tOrigin in row:%d, col:%d", origin.row, origin.col);
     FMAW::printf("Ejecuto getClosestPath");
     for (uint i = 0; i < enemies.size(); i++) {
         for (int row = 0; row < this->grid->numRows(); row++) {
             for (int col = 0; col < this->grid->numCols(); col++) {
                 IndexPath check = { row, col };
-                //FMAW::printf("\tCurrently in row:%d, col:%d", check.row, check.col);
                 if (this->grid->canMoveCharacterFromCellToCell(origin, check) &&
                         !custFind(takenPaths, check)) {
                     int distance = abs(enemies[i].row - row) + abs(enemies[i].col - col);
@@ -109,7 +103,6 @@ IndexPath PlayerAI::getClosestPath(IndexPath origin,
 
     takenPaths.push_back(minPath);
 
-    FMAW::printf("Print the takenPaths vector in getClosestPath");
     return minPath;
 }
 
@@ -147,7 +140,8 @@ void PlayerAI::startTurn() {
         }
     }
 
-    std::vector<IndexPath> attackPositions;
+    std::vector<bool> IAattacked = {false, false, false};
+
 
     for (uint i = 0; i < IAunits.size(); i++) {
         this->grid->setPickedUpCell(IApaths[i]);
@@ -159,14 +153,13 @@ void PlayerAI::startTurn() {
                                          currentUnit->getMaximumAttackRange(),
                                          IApaths[i], playerPaths, currentUnit);
 
-        attackPositions.push_back(attackCoordinate);
-
         if (attackCoordinate.row != -1) {
             FMAW::printf("Estoy en la celda row:%d, col:%d", IApaths[i].row,
                          IApaths[i].col);
             FMAW::printf("TENGO QUE ATACAR A CELDA row:%d, col:%d", attackCoordinate.row,
                          attackCoordinate.col);
             while (IAunits[i]->hasAvailableActions()) {
+                IAattacked[i] = true;
                 FMAW::printf("ATACO");
                 if (this->grid->attackCharacterAtCell(IApaths[i], attackCoordinate, 50)) {
                     releaseUnitAtCell(attackCoordinate, playerPaths, playerUnits);
@@ -179,79 +172,44 @@ void PlayerAI::startTurn() {
         FMAW::printf("--------------------------------");
     }
 
+    std::vector<IndexPath> takenPaths;
 
-    //for( uint i = 0; i < IAunits.size(); i++){
-    //FMAW::printf("--------------------------------");
-    //if( attackPositions[i].row != -1){
-    //  FMAW::printf("Estoy en la celda row:%d, col:%d", IApaths[i].row, IApaths[i].col);
-    //  FMAW::printf("TENGO QUE ATACAR A CELDA row:%d, col:%d", attackPositions[i].row, attackPositions[i].col);
-    //  while( IAunits[i]->hasAvailableActions()) {
-    //    FMAW::printf("ATACO");
-    //    this->grid->attackCharacterAtCell(IApaths[i], attackPositions[i], 50);
-    //  }
-    //  //FMAW::printf("Estoy en la celda row:%d, col:%d", IApaths[i].row, IApaths[i].col);
-    //  //FMAW::printf("TENGO QUE ATACAR A CELDA row:%d, col:%d", attackCoordinate.row, attackCoordinate.col);
-    //  //while( currentUnit->hasAvailableActions()) {
-    //  //  FMAW::printf("ATACO");
-    //  //  this->grid->attackCharacterAtCell(IApaths[i], attackCoordinate, 50);
-    //  //}
-    //
-    //  //IAunits.erase( IAunits.begin()+i );
-    //  //IApaths.erase( IApaths.begin()+i );
-    //  //i--;
-    //} else {
-    //  FMAW::printf("NO ATACO");
-    //}
-    //  FMAW::printf("--------------------------------");
-    //}
+    // Loop to check possible movements.
+    for( uint i = 0; i < IAunits.size(); i++){
+      IndexPath path = IApaths[ i ];
+      this->grid->setPickedUpCell( {path.row, path.col} );
+      this->grid->recomputeReachableCells();
+      FMAW::printf("Possible movements %d", i);
+      chosenPaths.push_back( getClosestPath( path, playerPaths, takenPaths) );
+    }
 
+    this->unitNumber = 0;
+    auto moveSomeUnit = [this, IAunits, IApaths, chosenPaths, IAattacked, previousPositionOfCursor](int ID) {
+      if (this->unitNumber < IAunits.size()) {
+          //------------------------------------------------------------------
+          // Actual AI script.
+          //------------------------------------------------------------------
+          IndexPath path = IApaths[this->unitNumber];
 
+          IndexPath chosen = chosenPaths[this->unitNumber];
 
-
-    //// Just to scare the other player.
-    //FMAW::printf("Turn of AI player %d, GET REKT SON", this->ID);
-    //FMAW::printf("\tI've %d units", IAunits.size());
-    //
-    ////std::vector<std::pair<Unit *, std::vector<IndexPath>>> availableMovementsUnits;
-    //std::vector<IndexPath> takenPaths;
-    //// Loop to check possible movements.
-    //
-    //for( uint i = 0; i < IAunits.size(); i++){
-    //
-    //  IndexPath path = IApaths[ i ];
-    //  this->grid->setPickedUpCell( path.row, path.col );
-    //  this->grid->recomputeReachableCells();
-    //  this->grid->recomputeAttackableCells();
-    //  FMAW::printf("Possible movements %d", i);
-    //  chosenPaths.push_back( getClosestPath( path, playerPaths, takenPaths) );
-    //}
-    //
-    //this->unitNumber = 0;
-    //auto moveSomeUnit = [this, IAunits, IApaths, chosenPaths, previousPositionOfCursor](int ID) {
-    //  if (this->unitNumber < IAunits.size()) {
-    //      //------------------------------------------------------------------
-    //      // Actual AI script.
-    //      //------------------------------------------------------------------
-    //      IndexPath path = IApaths[this->unitNumber];
-    //      Unit *unit = IAunits[this->unitNumber];
-    //
-    //      IndexPath chosen = chosenPaths[this->unitNumber];
-    //
-    //      FMAW::printf("Checking selected path row:%d col:%d", chosen.row, chosen.col);
-    //      this->grid->moveCharacterFromCellToCell(path, chosen, 200);
-    //      //------------------------------------------------------------------
-    //      // End of AI script.
-    //      //------------------------------------------------------------------
-    //      this->unitNumber++;
-    //      this->grid->selectCellAtIndexPath(previousPositionOfCursor);
-    //  } else {
-    //      FMAW::printf("\tI've finished!");
-    //      this->grid->enqueueCallbacks();
-    //      FMAW::Timer::dequeue_function(ID);
-    //      this->onFinishTurnCallback();
-    //  }
-    //};
-    //FMAW::Timer::enqueue_function(moveSomeUnit, 1500, true);
+          if( !IAattacked[unitNumber] ){
+            FMAW::printf("Intentando mover a {%d,%d}", chosen.row, chosen.col);
+            this->grid->moveCharacterFromCellToCell(path, chosen, 200);
+          }
+          //------------------------------------------------------------------
+          // End of AI script.
+          //------------------------------------------------------------------
+          this->unitNumber++;
+          this->grid->selectCellAtIndexPath(previousPositionOfCursor);
+      } else {
+          FMAW::printf("\tI've finished!");
+          this->grid->enqueueCallbacks();
+          FMAW::Timer::dequeue_function(ID);
+          this->onFinishTurnCallback();
+      }
+    };
+    FMAW::Timer::enqueue_function(moveSomeUnit, 1500, true);
 
     // We will call the following callback once each 1.5s.
     //this->unitNumber = 0;
@@ -299,11 +257,11 @@ void PlayerAI::startTurn() {
     //    }
     //};
     //FMAW::Timer::enqueue_function(moveSomeUnit, 1500, true);
-    FMAW::printf("\tI've finished!");
-
-    this->grid->enqueueCallbacks();
-    FMAW::Timer::dequeue_function(ID);
-    this->onFinishTurnCallback();
+    //FMAW::printf("\tI've finished!");
+//
+    //this->grid->enqueueCallbacks();
+    //FMAW::Timer::dequeue_function(ID);
+    //this->onFinishTurnCallback();
 }
 
 void PlayerAI::print() {
