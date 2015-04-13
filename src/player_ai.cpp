@@ -34,12 +34,23 @@ void PlayerAI::startTurn() {
 
     IndexPath previousPositionOfCursor = this->grid->getSelectedPath();
 
+    bool recompute = true;
+    std::map<IndexPath, int> distanceToNearestEnemyUnit;
+
+    // Helper function to compute best cell to move.
+    auto nearestEnemy = [&distanceToNearestEnemyUnit](IndexPath i, IndexPath j)
+    -> bool {
+        return distanceToNearestEnemyUnit[i] < distanceToNearestEnemyUnit[j];
+    };
+
     // Now we have to make some decisions...
     // We will call the following callback once each 1.5s.
     this->unitNumber = 0;
-    auto moveSomeUnit = [this, previousPositionOfCursor](int ID) {
-        // Here we will store the units of this AI player and the path where they
-        // are located.
+    auto moveSomeUnit = [this, previousPositionOfCursor, &recompute,
+    &distanceToNearestEnemyUnit, nearestEnemy](int ID) {
+        FMAW::printf("Computing AI data...");
+        // Here we will store the units of this AI player and the path where
+        // they are located.
         std::vector<Unit *> IAunits;
         std::vector<IndexPath> IApaths;
         std::vector<Unit *> playerUnits;
@@ -64,11 +75,10 @@ void PlayerAI::startTurn() {
             }
         }
 
+        FMAW::printf("\tReady units");
+
         std::map<IndexPath, std::vector<IndexPath>> IAUnitCanAttack;
         std::map<IndexPath, std::vector<IndexPath>> PlayerUnitCanBeAttackedBy;
-
-        std::map<IndexPath, std::vector<IndexPath>> IAUnitsPossibleMovements;
-        std::map<IndexPath, int> distanceToNearestEnemyUnit;
 
         // Compute which units can attack which ones.
         for (IndexPath p : IApaths) {
@@ -84,47 +94,36 @@ void PlayerAI::startTurn() {
             }
         }
 
-        // Compute where can be moved IA units.
-        for (IndexPath p : IApaths) {
-            for (int row = 0; row < this->grid->numRows(); row++) {
-                for (int col = 0; col < this->grid->numCols(); col++)  {
-                    IndexPath t = { row, col };
-                    if (grid->canMoveCharacterFromCellToCell(p, t)) {
-                        IAUnitsPossibleMovements[p].push_back(t);
-                    }
-                }
-            }
-        }
+        FMAW::printf("\tReady attacks");
 
-        // Compute distance to nearest visible enemy.
-        for (int row = 0; row < this->grid->numRows(); row++) {
-            for (int col = 0; col < this->grid->numCols(); col++) {
-                IndexPath f = { row, col };
-                Cell *from = grid->cellAtIndexPath(f);
-                distanceToNearestEnemyUnit[f] = COST_CELL_INFINITY;
-                for (int t_row = 0; t_row < this->grid->numRows(); t_row++) {
-                    for (int t_col = 0; t_col < this->grid->numCols(); t_col++) {
-                        IndexPath t = { t_row, t_col };
-                        Cell *to = this->grid->cellAtIndexPath(t);
-                        int distance = abs(t.row - f.row) + abs(t.col - f.col);
-                        if (to->isOccupied()) {
-                            Unit *u = to->getCharacter();
-                            if (this->grid->canSeeCharacterAtCell(t) &&
-                                    u->getOwner() != this->ID) {
-                                distanceToNearestEnemyUnit[f] = distance;
+        if (recompute) {
+            // Compute distance to nearest visible enemy.
+            for (int row = 0; row < this->grid->numRows(); row++) {
+                for (int col = 0; col < this->grid->numCols(); col++) {
+                    IndexPath f = { row, col };
+                    Cell *from = grid->cellAtIndexPath(f);
+                    distanceToNearestEnemyUnit[f] = COST_CELL_INFINITY;
+                    for (int tr = 0; tr < this->grid->numRows(); tr++) {
+                        for (int tc = 0; tc < this->grid->numCols(); tc++) {
+                            IndexPath t = { tr, tc };
+                            Cell *to = this->grid->cellAtIndexPath(t);
+                            int distance = abs(t.row - f.row) +
+                                           abs(t.col - f.col);
+                            if (to->isOccupied()) {
+                                Unit *u = to->getCharacter();
+                                if (this->grid->canSeeCharacterAtCell(t) &&
+                                        u->getOwner() != this->ID) {
+                                    distanceToNearestEnemyUnit[f] = distance;
+                                }
                             }
                         }
                     }
                 }
             }
+            recompute = false;
         }
 
-        // Helper function to compute best cell to move.
-        auto nearestEnemy = [&distanceToNearestEnemyUnit](
-                                IndexPath i, IndexPath j
-        ) -> bool {
-            return distanceToNearestEnemyUnit[i] < distanceToNearestEnemyUnit[j];
-        };
+        FMAW::printf("\tReady distances");
 
         bool canDoSomething = false;
         for (Unit *u : IAunits) {
@@ -185,8 +184,11 @@ void PlayerAI::startTurn() {
                     if (this->grid->pickedUpUnitCanAttackCharacterAtCell(tg)) {
                         FMAW::printf("\tWill attack unit at %d %d",
                                      tg.row, tg.col);
-                        this->grid->attackCharacterAtCell(path, tg,
-                                                          ATTACK_DURATION);
+                        bool kill = this->grid->attackCharacterAtCell(
+                                        path, tg, ATTACK_DURATION);
+                        if (kill) {
+                            recompute = true;
+                        }
                         actionDone = true;
                         break;
                     } else {
