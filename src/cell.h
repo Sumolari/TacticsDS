@@ -20,6 +20,7 @@ typedef struct t_indexPath {
 } IndexPath;
 
 bool operator <(IndexPath const &left, IndexPath const &right);
+bool operator ==(IndexPath const &left, IndexPath const &right);
 
 #define NUM_BACKGROUNDS 9
 
@@ -128,7 +129,7 @@ class Cell {
      */
     int sightCost();
 
-	/**
+    /**
      * Defense of the terrain at this cell.
      * @return Defense of the terrain at this cell.
      */
