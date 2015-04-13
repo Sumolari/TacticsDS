@@ -256,11 +256,7 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
 
                 // We select the cell and pick it up.
                 this->selectCellAtIndexPath(from);
-                this->pickedUpCell.row = from.row;
-                this->pickedUpCell.col = from.col;
-                // We recompute access matrices so helper methods will work.
-                this->recomputeReachableCells();
-                this->recomputeAttackableCells();
+                this->setPickedUpCell(this->getSelectedPath());
 
                 if (toC->isOccupied()) {
                     // If movement can't be done then it's an attack.
@@ -268,7 +264,6 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
 
                     if (this->attackCharacterAtCell(from, to, 50)) {
                         FMAW::printf("\tA unit has been killed");
-                        toC->setCharacter(nullptr);
                     } else {
                         FMAW::printf("\tA unit has been attacked");
                     }
@@ -381,6 +376,10 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
         Unit *victim = v->getCharacter();
 
         bool isKill = attacker->attackUnit(victim, v->terrainDefense());
+        if (isKill) {
+            v->setCharacter(nullptr);
+        }
+
         if (attacker->hasMaximumAvailableActions())
             attacker->decreaseAvailableActions();
         attacker->decreaseAvailableActions();
@@ -608,6 +607,14 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
     return false;
 }
 
+void Grid::setPickedUpCell(IndexPath path) {
+    this->pickedUpCell.row = path.row;
+    this->pickedUpCell.col = path.col;
+    this->recomputeVisibleCells();
+    this->recomputeReachableCells();
+    this->recomputeAttackableCells();
+}
+
 bool Grid::selectBottomCell() {
     return this->selectCellAtIndexPath({this->selectedPath.row + 1,
                                         this->selectedPath.col
@@ -653,8 +660,7 @@ void Grid::setSwordCursor() {
 }
 
 void Grid::resetPickedUpCell() {
-    this->pickedUpCell.row = -1;
-    this->pickedUpCell.col = -1;
+    this->setPickedUpCell({ -1, -1});
     this->setSquareCursor();
 }
 
@@ -704,15 +710,12 @@ void Grid::enqueueCallbacks() {
                 u->getOwner() == TurnManager::currentPlayerID()) {
             // If cell is occupied by a character owned by current player and
             // it has available actions then we pick up it.
-            this->pickedUpCell.row = this->getSelectedPath().row;
-            this->pickedUpCell.col = this->getSelectedPath().col;
+            this->setPickedUpCell(this->getSelectedPath());
             FMAW::Sound::playEffect(this->selectSoundID);
             this->setArrowCursor();
             FMAW::printf("Se ha marcado la celda %d %d",
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
-            this->recomputeReachableCells();
-            this->recomputeAttackableCells();
         } else if (c->isOccupied() && u->getOwner() !=
                    TurnManager::currentPlayerID() &&
                    visibleCells[this->getSelectedPath()]) {
@@ -745,7 +748,6 @@ void Grid::enqueueCallbacks() {
 
                 if (isKill) {
                     FMAW::printf("Enemigo abatido!");
-                    c->setCharacter(nullptr);
                     if (!this->existCharacterWithOwner(enemyID)) {
                         this->gameOverCallback(TurnManager::currentPlayerID());
                     }
@@ -831,14 +833,14 @@ void Grid::dequeueCallbacks() {
     }
 }
 
+void Grid::setFogOfWarMode(FogOfWarMode fogOfWarMode) {
+    this->fogOfWarMode = fogOfWarMode;
+    this->recomputeReachableCells();
+}
+
 //------------------------------------------------------------------------------
 // Rechable cells helpers.
 //------------------------------------------------------------------------------
-
-void Grid::setPickedUpCell( int row, int col ) {
-    pickedUpCell.row = row;
-    pickedUpCell.col = col;
-}
 
 void Grid::recomputeReachableCells() {
     this->reachableCells.clear();
@@ -881,8 +883,9 @@ void Grid::recomputeReachableCells() {
             if (path.row > 0) {
                 IndexPath u = { path.row - 1, path.col };
                 int c = this->cellAtIndexPath(u)->movementCost();
-                if( this->cellAtIndexPath(u)->isOccupied() &&
-                    this->cellAtIndexPath(u)->getCharacter()->getOwner() != TurnManager::currentPlayerID() )
+                if (this->cellAtIndexPath(u)->isOccupied() &&
+                        this->cellAtIndexPath(u)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
                     c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[u] && newCost <= maxMove) {
@@ -895,8 +898,9 @@ void Grid::recomputeReachableCells() {
             if (path.row < this->rows - 1) {
                 IndexPath d = { path.row + 1, path.col };
                 int c = this->cellAtIndexPath(d)->movementCost();
-                if( this->cellAtIndexPath(d)->isOccupied() &&
-                    this->cellAtIndexPath(d)->getCharacter()->getOwner() != TurnManager::currentPlayerID() )
+                if (this->cellAtIndexPath(d)->isOccupied() &&
+                        this->cellAtIndexPath(d)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
                     c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[d] && newCost <= maxMove) {
@@ -909,8 +913,9 @@ void Grid::recomputeReachableCells() {
             if (path.col > 0) {
                 IndexPath l = { path.row, path.col - 1 };
                 int c = this->cellAtIndexPath(l)->movementCost();
-                if( this->cellAtIndexPath(l)->isOccupied() &&
-                    this->cellAtIndexPath(l)->getCharacter()->getOwner() != TurnManager::currentPlayerID() )
+                if (this->cellAtIndexPath(l)->isOccupied() &&
+                        this->cellAtIndexPath(l)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
                     c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[l] && newCost <= maxMove) {
@@ -923,8 +928,9 @@ void Grid::recomputeReachableCells() {
             if (path.col < this->cols - 1) {
                 IndexPath r = { path.row, path.col + 1 };
                 int c = this->cellAtIndexPath(r)->movementCost();
-                if( this->cellAtIndexPath(r)->isOccupied() &&
-                    this->cellAtIndexPath(r)->getCharacter()->getOwner() != TurnManager::currentPlayerID() )
+                if (this->cellAtIndexPath(r)->isOccupied() &&
+                        this->cellAtIndexPath(r)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
                     c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[r] && newCost <= maxMove) {

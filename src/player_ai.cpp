@@ -145,10 +145,8 @@ void PlayerAI::startTurn() {
 
     std::vector<IndexPath> attackPositions;
 
-    for( uint i = 0; i < IAunits.size(); i++){
-      this->grid->setPickedUpCell( IApaths[i].row, IApaths[i].col );
-      this->grid->recomputeReachableCells();
-      this->grid->recomputeAttackableCells();
+    for (uint i = 0; i < IAunits.size(); i++) {
+        this->grid->setPickedUpCell(IApaths[i]);
 
       Unit *currentUnit = IAunits[i];
 
