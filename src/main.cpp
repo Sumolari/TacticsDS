@@ -335,38 +335,6 @@ int main(void) {
     Unit::registerPalettes();
     GridMap::loadGridMap(availableMaps[selectedMap], &grid);
 
-    auto addSomeUnits = []() {
-        Warrior *warriorA = new Warrior(blue->getID());
-        Warrior *warriorB = new Warrior(red->getID());
-        Sniper *warriorC = new Sniper(blue->getID());
-        Sniper *warriorD = new Sniper(red->getID());
-        Warrior *warriorE = new Warrior(blue->getID());
-        Knight *warriorF = new Knight(blue->getID());
-        Knight *warriorG = new Knight(blue->getID());
-        /*
-        Warrior *warriorI = new Warrior(blue.getID());
-        Warrior *warriorJ = new Warrior(blue.getID());
-        Warrior *warriorK = new Warrior(blue.getID());
-        Warrior *warriorL = new Warrior(blue.getID());
-        */
-
-        grid.cellAtIndexPath({1, 1})->setCharacter(warriorA);
-        grid.cellAtIndexPath({10, 2})->setCharacter(warriorB);
-        grid.cellAtIndexPath({0, 1})->setCharacter(warriorC);
-        grid.cellAtIndexPath({0, 2})->setCharacter(warriorD);
-        grid.cellAtIndexPath({0, 3})->setCharacter(warriorE);
-        grid.cellAtIndexPath({0, 4})->setCharacter(warriorF);
-        grid.cellAtIndexPath({0, 5})->setCharacter(warriorG);
-        /*
-        grid.cellAtIndexPath({1, 1})->setCharacter(warriorI);
-        grid.cellAtIndexPath({1, 2})->setCharacter(warriorJ);
-        grid.cellAtIndexPath({1, 3})->setCharacter(warriorK);
-        grid.cellAtIndexPath({1, 4})->setCharacter(warriorL);
-        */
-
-        grid.resetUnitMovements();
-    };
-
     auto loadSelectedMap = []() {
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
