@@ -42,11 +42,6 @@ class PlayerAI : public Player {
     explicit PlayerAI(Grid *grid, std::function<void(void)> callback,
                       PlayerID ID);
 
-    virtual IndexPath getAttackCoordinate( int minDistance, int maxDistance, IndexPath origin,
-        std::vector<IndexPath> playerPaths, Unit *currentunit);
-
-    virtual IndexPath getClosestPath ( IndexPath origin, std::vector<IndexPath> enemies,
-                                std::vector<IndexPath>& takenPaths);
     virtual void startTurn();
 
     virtual void print();
