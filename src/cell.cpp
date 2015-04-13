@@ -9,6 +9,10 @@ bool operator <(IndexPath const &left, IndexPath const &right) {
                                     && left.col < right.col);
 }
 
+bool operator ==(IndexPath const &left, IndexPath const &right) {
+    return left.row == right.row && left.col == right.col;
+}
+
 Cell::Cell() {
     this->background = FMAW::Background(0);
 }
