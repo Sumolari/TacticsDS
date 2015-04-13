@@ -318,7 +318,6 @@ int main(void) {
         FMAW::printf("Tocaría cambiar de turno!");
         grid.resetPickedUpCell();
         TurnManager::finishTurn();
-        grid.recomputeVisibleCells();
         menu.adjustCurrentTile();
     };
 
@@ -375,10 +374,9 @@ int main(void) {
         Unit::registerPalettes();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
-        grid.fogOfWarMode = allVisible;
+        grid.setFogOfWarMode(allVisible);
         // addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
-        grid.recomputeVisibleCells();
         //refresh menu
         menu.adjustCurrentTile();
     };
@@ -452,7 +450,7 @@ int main(void) {
 
         FMAW::printf("Should start a new game!");
         loadSelectedMap();
-        grid.fogOfWarMode = fixedPlayerOne;
+        grid.setFogOfWarMode(fixedPlayerOne);
         grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
@@ -488,7 +486,7 @@ int main(void) {
 
         FMAW::printf("Should start a new versus game!");
         loadSelectedMap();
-        grid.fogOfWarMode = enabled;
+        grid.setFogOfWarMode(enabled);
         grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();

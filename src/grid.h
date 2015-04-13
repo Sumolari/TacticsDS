@@ -130,13 +130,29 @@ class Grid {
      */
     int hitSoundID;
 
-  public:
+    /**
+     * Recomputes the cells visible by current player's unit.
+     */
+    void recomputeVisibleCells();
+
+    /**
+     * Recomputes the cells reachable by currently selected unit.
+     * If no unit is selected all cells are available.
+     */
+    void recomputeReachableCells();
+
+    /**
+     * Recomputes the cells attackable by currently selected unit.
+     * If no unit is selected no cells are available.
+     */
+    void recomputeAttackableCells();
 
     /**
      * Mode of Fog of War.
      */
     FogOfWarMode fogOfWarMode;
 
+  public:
     /**
      * Callback called when game is over.
      * Parameter is the winner.
@@ -293,6 +309,12 @@ class Grid {
     bool selectCellAtIndexPath(IndexPath path);
 
     /**
+     * Selects the new picked up cell.
+     * @param path Path of the new selected cell.
+     */
+    void setPickedUpCell(IndexPath path);
+
+    /**
      * Selects cell at bottom of previous cell.
      * If new index is out of bounds it'll do nothing and return false.
      * If no previous cell was selected will return false and do nothing.
@@ -360,6 +382,17 @@ class Grid {
     void resetCursor();
 
     //--------------------------------------------------------------------------
+    // Fog of war.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets fog of war mode.
+     * Recomputes visible cells.
+     * @param fogOfWarMode New fog of war mode.
+     */
+    void setFogOfWarMode(FogOfWarMode fogOfWarMode);
+
+    //--------------------------------------------------------------------------
     // Callbacks.
     //--------------------------------------------------------------------------
 
@@ -372,27 +405,6 @@ class Grid {
      * Dequeues callbacks to manage user input.
      */
     void dequeueCallbacks();
-
-    /**
-     * Recomputes the cells visible by current player's unit.
-     */
-    void recomputeVisibleCells();
-
-    /**
-    * Selects the new picked up cell
-    */
-    void setPickedUpCell( int row, int col );
-    /**
-     * Recomputes the cells reachable by currently selected unit.
-     * If no unit is selected all cells are available.
-     */
-    void recomputeReachableCells();
-
-    /**
-     * Recomputes the cells attackable by currently selected unit.
-     * If no unit is selected no cells are available.
-     */
-    void recomputeAttackableCells();
 };
 
 #endif
