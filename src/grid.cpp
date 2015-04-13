@@ -260,8 +260,6 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
 
                 if (toC->isOccupied()) {
                     // If movement can't be done then it's an attack.
-                    FMAW::Sound::playEffect(this->hitSoundID);
-
                     if (this->attackCharacterAtCell(from, to, ATTACK_DURATION)) {
                         FMAW::printf("\tA unit has been killed");
                     } else {
@@ -375,6 +373,7 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
             this->attackableCells[victimPos]) {
         Unit *attacker = a->getCharacter();
         Unit *victim = v->getCharacter();
+        FMAW::Sound::playEffect(this->hitSoundID);
 
         bool isKill = attacker->attackUnit(victim, v->terrainDefense());
         if (isKill) {
@@ -743,7 +742,6 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.col);
             if (this->hasPickedUpCell() &&
                     this->attackableCells[this->getSelectedPath()]) {
-                FMAW::Sound::playEffect(this->hitSoundID);
                 FMAW::printf("Atacando enemigo en la celda %d %d",
                              this->pickedUpCell.row,
                              this->pickedUpCell.col);
