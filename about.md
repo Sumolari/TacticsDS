@@ -29,3 +29,8 @@ Puedes descargarte [nuestro informe final en PDF](http://sumolari.github.io/Tact
 * A [Bjarne Stroustrup](http://www.stroustrup.com/), por C++.
 * A [Mukunda (eKid) Johnson](http://ekid.nintendev.com/bouncy/), por su tutorial *How to Make a Bouncing Ball Game*.
 * A todos los desarrolladores de [libNDS](http://libnds.devkitpro.org/). Sin su trabajo este proyecto no habría sido posible.
+* A [Stephen Lavelle](http://www.bfxr.net/) por su generador de efectos de sonido online.
+* A [Stephen Odgen](http://www.flashkit.com/soundfx/Interfaces/Clicks/ambient_-agent_vi-8701/index.php) por sus efectos de sonido.
+* A Curtis Bartley por [Memtrack](http://www.almostinfinite.com/memtrack.html).
+* A Phil Nash y todos los que han contribuido a la librería [Catch](https://github.com/philsquared/Catch).
+* A Christopher (Eltoshen), Jeff (Ellis), Nick (Zerxer) y toda la comunidad  de [Fire Emblem Planet](http://www.feplanet.net/sprites-archive).
