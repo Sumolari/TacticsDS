@@ -25,75 +25,79 @@ PlayerAI::PlayerAI(Grid *grid, std::function<void(void)> callback,
     onFinishTurnCallback(callback),
     seed(42) {}
 
-void releaseUnitAtCell( IndexPath attackCoordinate, std::vector<IndexPath>& playerPaths,
-  std::vector<Unit *>& playerUnits ){
-  for( uint i = 0; i < playerPaths.size(); i++){
-    if (playerPaths[i].row == attackCoordinate.row &&
-      playerPaths[i].col == attackCoordinate.col ) {
-      playerPaths.erase( playerPaths.begin() + i);
-      playerUnits.erase( playerUnits.begin() + i);
-      break;
+void releaseUnitAtCell(IndexPath attackCoordinate,
+                       std::vector<IndexPath> &playerPaths,
+                       std::vector<Unit *> &playerUnits) {
+    for (uint i = 0; i < playerPaths.size(); i++) {
+        if (playerPaths[i].row == attackCoordinate.row &&
+                playerPaths[i].col == attackCoordinate.col) {
+            playerPaths.erase(playerPaths.begin() + i);
+            playerUnits.erase(playerUnits.begin() + i);
+            break;
+        }
     }
-  }
 }
 
-bool custFind( std::vector<IndexPath>& pathsToCheck, IndexPath check ){
+bool custFind(std::vector<IndexPath> &pathsToCheck, IndexPath check) {
 
-    for( uint i = 0; i < pathsToCheck.size(); i++){
-      FMAW::printf("pathsToCheck row:%d, col:%d", pathsToCheck[i].row, pathsToCheck[i].col);
-      if (pathsToCheck[i].row == check.row && pathsToCheck[i].col == check.col )
-        return true;
+    for (uint i = 0; i < pathsToCheck.size(); i++) {
+        FMAW::printf("pathsToCheck row:%d, col:%d", pathsToCheck[i].row,
+                     pathsToCheck[i].col);
+        if (pathsToCheck[i].row == check.row && pathsToCheck[i].col == check.col)
+            return true;
     }
     return false;
 }
 
-IndexPath PlayerAI::getAttackCoordinate( int minDistance, int maxDistance, IndexPath origin,
-  std::vector<IndexPath> playerPaths, Unit *currentUnit){
+IndexPath PlayerAI::getAttackCoordinate(int minDistance, int maxDistance,
+                                        IndexPath origin,
+                                        std::vector<IndexPath> playerPaths, Unit *currentUnit) {
 
-  //FMAW::printf("ORIGIN ROW %d, COL %d",  origin.row, origin.col);
-  //FMAW::printf("MINDISTANCE %d, MAXDISTANCE %d", minDistance, maxDistance );
-  int leftLimit = std::max( 0, origin.col - maxDistance );
-  int rightLimit = std::min( this->grid->numCols(), origin.col + maxDistance );
-  int upLimit = std::max( 0, origin.row - maxDistance );
-  int downLimit = std::min( this->grid->numRows(), origin.row + maxDistance );
+    //FMAW::printf("ORIGIN ROW %d, COL %d",  origin.row, origin.col);
+    //FMAW::printf("MINDISTANCE %d, MAXDISTANCE %d", minDistance, maxDistance );
+    int leftLimit = std::max(0, origin.col - maxDistance);
+    int rightLimit = std::min(this->grid->numCols(), origin.col + maxDistance);
+    int upLimit = std::max(0, origin.row - maxDistance);
+    int downLimit = std::min(this->grid->numRows(), origin.row + maxDistance);
 
-  int leftInnerLimit = std::max( 0, origin.col - minDistance );
-  int rightInnerLimit = std::min( this->grid->numCols(), origin.col + minDistance );
-  int upInnerLimit = std::max( 0, origin.row - minDistance );
-  int downInnerLimit = std::min( this->grid->numRows(), origin.row + minDistance );
+    int leftInnerLimit = std::max(0, origin.col - minDistance);
+    int rightInnerLimit = std::min(this->grid->numCols(), origin.col + minDistance);
+    int upInnerLimit = std::max(0, origin.row - minDistance);
+    int downInnerLimit = std::min(this->grid->numRows(), origin.row + minDistance);
 
-  //FMAW::printf("upLimit %d downLimit %d leftlimit %d, rightLimit %d",
-  //  upLimit, downLimit, leftLimit, rightLimit );
+    //FMAW::printf("upLimit %d downLimit %d leftlimit %d, rightLimit %d",
+    //  upLimit, downLimit, leftLimit, rightLimit );
 
-  for( int i = upLimit; i <= downLimit; i++ ){
-    for( int j = leftLimit; j <= rightLimit; j++){
+    for (int i = upLimit; i <= downLimit; i++) {
+        for (int j = leftLimit; j <= rightLimit; j++) {
 
-      int distance = abs(i - origin.row) + abs(j - origin.col);
-      if( distance >= minDistance && distance <= maxDistance && custFind( playerPaths, {i, j})) {
-        return {i, j};
-      }
+            int distance = abs(i - origin.row) + abs(j - origin.col);
+            if (distance >= minDistance && distance <= maxDistance && custFind(playerPaths, {i, j})) {
+                return {i, j};
+            }
+        }
     }
-  }
 
-  FMAW::printf("RETORNO -1");
-  return {-1, -1};
+    FMAW::printf("RETORNO -1");
+    return { -1, -1};
 }
 
-IndexPath PlayerAI::getClosestPath ( IndexPath origin, std::vector<IndexPath> enemies,
-                                std::vector<IndexPath>& takenPaths){
+IndexPath PlayerAI::getClosestPath(IndexPath origin,
+                                   std::vector<IndexPath> enemies,
+                                   std::vector<IndexPath> &takenPaths) {
     IndexPath minPath;
     int minDistance = 9999;
 
     FMAW::printf("Ejecuto getClosestPath");
-    for( uint i = 0; i < enemies.size(); i++){
+    for (uint i = 0; i < enemies.size(); i++) {
         for (int row = 0; row < this->grid->numRows(); row++) {
             for (int col = 0; col < this->grid->numCols(); col++) {
                 IndexPath check = { row, col };
                 //FMAW::printf("\tCurrently in row:%d, col:%d", check.row, check.col);
-                if(this->grid->canMoveCharacterFromCellToCell(origin, check) &&
-                    !custFind( takenPaths, check )){
+                if (this->grid->canMoveCharacterFromCellToCell(origin, check) &&
+                        !custFind(takenPaths, check)) {
                     int distance = abs(enemies[i].row - row) + abs(enemies[i].col - col);
-                    if( distance < minDistance){
+                    if (distance < minDistance) {
                         FMAW::printf("Selecciono nuevo path row:%d, col:%d", check.row, check.col);
                         minDistance = distance;
                         minPath = check;
@@ -103,7 +107,7 @@ IndexPath PlayerAI::getClosestPath ( IndexPath origin, std::vector<IndexPath> en
         }
     }
 
-    takenPaths.push_back( minPath );
+    takenPaths.push_back(minPath);
 
     FMAW::printf("Print the takenPaths vector in getClosestPath");
     return minPath;
@@ -148,27 +152,31 @@ void PlayerAI::startTurn() {
     for (uint i = 0; i < IAunits.size(); i++) {
         this->grid->setPickedUpCell(IApaths[i]);
 
-      Unit *currentUnit = IAunits[i];
+        Unit *currentUnit = IAunits[i];
 
-      IndexPath attackCoordinate = getAttackCoordinate( currentUnit->getMinimumAttackRange(),
-        currentUnit->getMaximumAttackRange(), IApaths[i], playerPaths, currentUnit);
+        IndexPath attackCoordinate = getAttackCoordinate(
+                                         currentUnit->getMinimumAttackRange(),
+                                         currentUnit->getMaximumAttackRange(),
+                                         IApaths[i], playerPaths, currentUnit);
 
-      attackPositions.push_back( attackCoordinate );
+        attackPositions.push_back(attackCoordinate);
 
-      if( attackCoordinate.row != -1){
-        FMAW::printf("Estoy en la celda row:%d, col:%d", IApaths[i].row, IApaths[i].col);
-        FMAW::printf("TENGO QUE ATACAR A CELDA row:%d, col:%d", attackCoordinate.row, attackCoordinate.col);
-        while( IAunits[i]->hasAvailableActions()) {
-          FMAW::printf("ATACO");
-          if ( this->grid->attackCharacterAtCell(IApaths[i], attackCoordinate, 50) ) {
-            releaseUnitAtCell( attackCoordinate, playerPaths, playerUnits );
-            break;
-          }
+        if (attackCoordinate.row != -1) {
+            FMAW::printf("Estoy en la celda row:%d, col:%d", IApaths[i].row,
+                         IApaths[i].col);
+            FMAW::printf("TENGO QUE ATACAR A CELDA row:%d, col:%d", attackCoordinate.row,
+                         attackCoordinate.col);
+            while (IAunits[i]->hasAvailableActions()) {
+                FMAW::printf("ATACO");
+                if (this->grid->attackCharacterAtCell(IApaths[i], attackCoordinate, 50)) {
+                    releaseUnitAtCell(attackCoordinate, playerPaths, playerUnits);
+                    break;
+                }
+            }
+        } else {
+            FMAW::printf("NO ATACO");
         }
-      } else {
-        FMAW::printf("NO ATACO");
-      }
-      FMAW::printf("--------------------------------");
+        FMAW::printf("--------------------------------");
     }
 
 
@@ -187,7 +195,7 @@ void PlayerAI::startTurn() {
     //  //  FMAW::printf("ATACO");
     //  //  this->grid->attackCharacterAtCell(IApaths[i], attackCoordinate, 50);
     //  //}
-//
+    //
     //  //IAunits.erase( IAunits.begin()+i );
     //  //IApaths.erase( IApaths.begin()+i );
     //  //i--;
@@ -203,13 +211,13 @@ void PlayerAI::startTurn() {
     //// Just to scare the other player.
     //FMAW::printf("Turn of AI player %d, GET REKT SON", this->ID);
     //FMAW::printf("\tI've %d units", IAunits.size());
-//
+    //
     ////std::vector<std::pair<Unit *, std::vector<IndexPath>>> availableMovementsUnits;
     //std::vector<IndexPath> takenPaths;
     //// Loop to check possible movements.
-//
+    //
     //for( uint i = 0; i < IAunits.size(); i++){
-//
+    //
     //  IndexPath path = IApaths[ i ];
     //  this->grid->setPickedUpCell( path.row, path.col );
     //  this->grid->recomputeReachableCells();
@@ -217,7 +225,7 @@ void PlayerAI::startTurn() {
     //  FMAW::printf("Possible movements %d", i);
     //  chosenPaths.push_back( getClosestPath( path, playerPaths, takenPaths) );
     //}
-//
+    //
     //this->unitNumber = 0;
     //auto moveSomeUnit = [this, IAunits, IApaths, chosenPaths, previousPositionOfCursor](int ID) {
     //  if (this->unitNumber < IAunits.size()) {
@@ -226,9 +234,9 @@ void PlayerAI::startTurn() {
     //      //------------------------------------------------------------------
     //      IndexPath path = IApaths[this->unitNumber];
     //      Unit *unit = IAunits[this->unitNumber];
-//
+    //
     //      IndexPath chosen = chosenPaths[this->unitNumber];
-//
+    //
     //      FMAW::printf("Checking selected path row:%d col:%d", chosen.row, chosen.col);
     //      this->grid->moveCharacterFromCellToCell(path, chosen, 200);
     //      //------------------------------------------------------------------
@@ -254,29 +262,29 @@ void PlayerAI::startTurn() {
     //        //------------------------------------------------------------------
     //        IndexPath path = paths[this->unitNumber];
     //        Unit *unit = units[this->unitNumber];
-//
+    //
     //        int row = path.row;
     //        int col = path.col;
-//
+    //
     //        FMAW::printf("Choosing action for unit %d at %d %d",
     //                     this->unitNumber, row, col);
-//
+    //
     //        std::vector<IndexPath> availableMovements;
-//
+    //
     //        IndexPath up = { row - 1, col };
     //        IndexPath down = { row + 1, col };
     //        IndexPath left = { row, col - 1 };
     //        IndexPath right = { row, col + 1 };
-//
+    //
     //        std::vector<IndexPath> candidates({up, down, left, right});
-//
+    //
     //        for (auto it = candidates.begin(); it != candidates.end(); it++)
     //            if (this->grid->canMoveCharacterFromCellToCell(path, *it))
     //                availableMovements.push_back(*it);
-//
+    //
     //        int movement = rand_r(&(this->seed)) % availableMovements.size();
     //        IndexPath chosen = availableMovements[movement];
-//
+    //
     //        this->grid->moveCharacterFromCellToCell(path, chosen, 200);
     //        //------------------------------------------------------------------
     //        // End of AI script.
