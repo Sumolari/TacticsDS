@@ -163,6 +163,7 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
 
     this->clearGridUnits();
     FMAW::Tile::releaseAllSpriteMemory();
+    Unit::registerPalettes();
     this->fogOfWarMode = allVisible;
     this->recomputeVisibleCells();
     this->playingSavedFile = true;
