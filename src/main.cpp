@@ -62,14 +62,16 @@ bool gameStarted;
 
 int timesReported;
 
-#define MAPS_COUNT 4
+#define MAPS_COUNT 6
 
 int selectedMap = 0;
 std::string availableMaps[MAPS_COUNT] = {
     "defaultMap",
     "riverHood",
     "mistyMountain",
-    "rivendel"
+    "rivendel",
+    "theFort",
+    "troubleAhead"
 };
 
 FMAW::FixedReal g_camera_x;

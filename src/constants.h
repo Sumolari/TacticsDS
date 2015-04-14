@@ -68,7 +68,7 @@
 /**
  * Cost of seeing through a mountain cell.
  */
-#define COST_SEE_CELL_MOUNTAIN  4
+#define COST_SEE_CELL_MOUNTAIN  3
 /**
  * Cost of seeing through a castle cell.
  */
@@ -101,6 +101,10 @@
  * Defense given by a mountain cell.
  */
 #define DEFENSE_CELL_MOUNTAIN  2
+/**
+ * Defense given by a castle cell.
+ */
+#define DEFENSE_CELL_CASTLE    2
 /**
  * Defense given by a river cell.
  */
