@@ -384,10 +384,13 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
         if (attacker->hasMaximumAvailableActions())
             attacker->decreaseAvailableActions();
         attacker->decreaseAvailableActions();
+
         this->cursor.disable();
 
         std::function<void(bool)> reenableCursor = [this](bool b) {
-            this->cursor.enable();
+            if (!this->playingSavedFile) {
+                this->cursor.enable();
+            }
         };
 
         std::function<void(bool)> backToPosVict = [this, victim, v, duration,
