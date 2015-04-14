@@ -1,6 +1,4 @@
-[![Build Status](https://magnum-ci.com/status/ec748ea24dd8096d90e6b94241cf6151.png)](https://magnum-ci.com/public/4c98e728354f98f9761b/builds)
-
-
+[![Build Status](https://travis-ci.org/Sumolari/TacticsDS.svg?branch=master)](https://travis-ci.org/Sumolari/TacticsDS)
 
 `Tactics DS` is an example game developed using `FMAW Framework` which is included in this repository. This project is the result of our work for different subjects on video game design and architecture.
 

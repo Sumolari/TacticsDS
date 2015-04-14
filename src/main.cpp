@@ -316,8 +316,8 @@ int main(void) {
     auto finishTurnCallback = []() {
         grid.resetUnitMovements();
         FMAW::printf("Tocaría cambiar de turno!");
-        grid.resetPickedUpCell();
         TurnManager::finishTurn();
+        grid.resetPickedUpCell();
         menu.adjustCurrentTile();
     };
 
