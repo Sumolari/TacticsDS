@@ -8,6 +8,8 @@
 
 Files prefixed `fmaw_` are part of the framework.
 
+Documentation can be generated using Doxygen with `make doc`.
+
 ## Tactics DS
 
 `Tactics DS` is just a demo of the capabilities of `FMAW Framework`. It's inspired on Fire Emblem saga and features single and multiplayer modes. It's not meant to be a commercial product in any way but an academic example of `FMAW Framework usage`.
