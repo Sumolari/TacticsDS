@@ -20,8 +20,9 @@ typedef struct t_indexPath {
 } IndexPath;
 
 bool operator <(IndexPath const &left, IndexPath const &right);
+bool operator ==(IndexPath const &left, IndexPath const &right);
 
-#define NUM_BACKGROUNDS 8
+#define NUM_BACKGROUNDS 9
 
 typedef enum t_cellBackgroundType {
     CellBGNone     = -1,
@@ -36,6 +37,7 @@ typedef enum t_cellBackgroundType {
     CellBGRiver    = 5,
     CellBGRiverH   = 6,
     CellBGBridgeH  = 7,
+    CellBGCastle   = 8
 } CellBackgroundType;
 
 #define CELL_WIDTH  16
@@ -126,6 +128,12 @@ class Cell {
      * @return Cost of seeing through this cell.
      */
     int sightCost();
+
+    /**
+     * Defense of the terrain at this cell.
+     * @return Defense of the terrain at this cell.
+     */
+    int terrainDefense();
 
     /**
      * Draws this cell's background.

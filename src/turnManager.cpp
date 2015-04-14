@@ -3,7 +3,7 @@
 #include "./turnManager.h"
 #include <vector>
 #include "./FMAW.h"
-
+#include "./player_ai.h"
 
 namespace TurnManager {
 
@@ -55,6 +55,10 @@ void setWinner(PlayerID winnerID) {
 
 void resetWinner() {
     _winnerID = -1;
+}
+
+bool AIPlaying() {
+    return (dynamic_cast<PlayerAI *>(players[_currentPlayerID]) != NULL);
 }
 
 }  // namespace TurnManager

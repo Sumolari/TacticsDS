@@ -54,9 +54,24 @@ bool stopEffect(playID reproductionID);
 void setBackgroundMusic(int musicID);
 
 /**
- * Pauses background music.
+ * Stops background music.
  */
 void stopBackgroundMusic();
+
+/**
+ * Pauses background music.
+ */
+void pauseBackgroundMusic();
+
+/**
+ * Resumes background music.
+ */
+void resumeBackgroundMusic();
+
+/**
+ * Toggles background music on or off.
+ */
+void toggleBackgroundMusic();
 
 }  // namespace Sound
 

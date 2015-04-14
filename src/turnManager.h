@@ -57,6 +57,12 @@ void setWinner(PlayerID winnerID);
  */
 void resetWinner();
 
+/**
+ * Returns wether player currently playing is an AI or not.
+ * @return True if playing currently playing is an AI, false otherwise.
+ */
+bool AIPlaying();
+
 }; // namespace TurnManager
 
 #endif

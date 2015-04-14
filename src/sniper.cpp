@@ -18,19 +18,39 @@
 
 #define SPRITES_IDLE_ANIMATION 4
 
+FMAW::Tile Sniper::paletteBlue = FMAW::Tile(0);
+FMAW::Tile Sniper::paletteRed  = FMAW::Tile(0);
+
+void Sniper::registerPalettes() {
+    paletteBlue = FMAW::Tile(FMAW::t_tile_attrib(
+                                 sniper_female_1_blueTiles,
+                                 sniper_female_1_blueTilesLen,
+                                 sniper_female_1_bluePal,
+                                 sniper_female_1_bluePalLen,
+                                 FMAW::TypeSprite,
+                                 FMAW::ScreenMain));
+    paletteRed = FMAW::Tile(FMAW::t_tile_attrib(
+                                sniper_female_1_redTiles,
+                                sniper_female_1_redTilesLen,
+                                sniper_female_1_redPal,
+                                sniper_female_1_redPalLen,
+                                FMAW::TypeSprite,
+                                FMAW::ScreenMain));
+}
+
 void Sniper::init() {
     this->reset();
 
     this->unitType = UNIT_TYPE_SNIPER;
-    this->movementCapacity = 3;
-    this->sightDistance = 9;
-    this->maximumAvailableActions = 1;
+    this->movementCapacity = 4;
+    this->sightDistance = 6;
+    this->maximumAvailableActions = 2;
     this->currentAvailableActions = this->maximumAvailableActions;
-    this->maximumHealth = 3;
+    this->maximumHealth = 4;
     this->currentHealth = this->maximumHealth;
     this->minimumAttackRange = 2;
-    this->maximumAttackRange = 3;
-    this->attackPower = 10;
+    this->maximumAttackRange = 4;
+    this->attackPower = 5;
     this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
@@ -131,7 +151,14 @@ void Sniper::init() {
 
     this->currentTileID = 0;
 
-    this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]));
+    if (this->ownerID == 0) {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteBlue);
+    } else {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteRed);
+    }
+
 
     //--------------------------------------------------------------------------
     // Set up sprite.

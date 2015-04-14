@@ -5,3 +5,5 @@
 # The -gB{n} rule specifies the output graphic format.
 # 4-bit (16 color palette)
 -gB4
+
+-gT0xd46cbd

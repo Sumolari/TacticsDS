@@ -25,6 +25,7 @@
 #include "./gfx_Mountain.h"
 #include "./gfx_River.h"
 #include "./gfx_RiverH.h"
+#include "./gfx_Castle.h"
 
 #include "./gfx_Base_Fog.h"
 #include "./gfx_Bridge_Fog.h"
@@ -34,6 +35,7 @@
 #include "./gfx_Mountain_Fog.h"
 #include "./gfx_River_Fog.h"
 #include "./gfx_RiverH_Fog.h"
+#include "./gfx_Castle_Fog.h"
 
 //------------------------------------------------------------------------------
 // Background...
@@ -56,17 +58,20 @@ Grid grid;
 MainMenu menu;
 Player *blue;
 Player *red;
+bool gameStarted;
 
 int timesReported;
 
-#define MAPS_COUNT 4
+#define MAPS_COUNT 6
 
 int selectedMap = 0;
 std::string availableMaps[MAPS_COUNT] = {
     "defaultMap",
     "riverHood",
     "mistyMountain",
-    "rivendel"
+    "rivendel",
+    "theFort",
+    "troubleAhead"
 };
 
 FMAW::FixedReal g_camera_x;
@@ -155,7 +160,7 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile RiverH_tile(gfx_RiverH_attributes);
+    FMAW::Tile RiverH_tile(gfx_RiverH_attributes, River_tile);
     FMAW::printf("El fondo RiverH tiene ID=%d", RiverH_tile.ID);
 
     FMAW::TileAttributes gfx_BridgeH_attributes {
@@ -166,8 +171,19 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile BridgeH_tile(gfx_BridgeH_attributes);
+    FMAW::Tile BridgeH_tile(gfx_BridgeH_attributes, Bridge_tile);
     FMAW::printf("El fondo BridgeH tiene ID=%d", BridgeH_tile.ID);
+
+    FMAW::TileAttributes gfx_Castle_attributes {
+        gfx_CastleTiles,
+        gfx_CastleTilesLen,
+        gfx_CastlePal,
+        gfx_CastlePalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_tile(gfx_Castle_attributes);
+    FMAW::printf("El fondo Castle tiene ID=%d", Castle_tile.ID);
 
     //------------------------------------------------------------------------//
     // SPACE RESERVED FOR FOG OF WAR TILES
@@ -247,7 +263,7 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile RiverH_Fog_tile(gfx_RiverH_Fog_attributes);
+    FMAW::Tile RiverH_Fog_tile(gfx_RiverH_Fog_attributes, River_Fog_tile);
     FMAW::printf("El fondo RiverH_Fog tiene ID=%d", RiverH_Fog_tile.ID);
 
     FMAW::TileAttributes gfx_BridgeH_Fog_attributes {
@@ -258,8 +274,19 @@ void setupGraphics(void) {
         FMAW::TypeBackground,
         FMAW::ScreenMain
     };
-    FMAW::Tile BridgeH_Fog_tile(gfx_BridgeH_Fog_attributes);
+    FMAW::Tile BridgeH_Fog_tile(gfx_BridgeH_Fog_attributes, Bridge_Fog_tile);
     FMAW::printf("El fondo BridgeH_Fog tiene ID=%d", BridgeH_Fog_tile.ID);
+
+    FMAW::TileAttributes gfx_Castle_Fog_attributes {
+        gfx_Castle_FogTiles,
+        gfx_Castle_FogTilesLen,
+        gfx_Castle_FogPal,
+        gfx_Castle_FogPalLen,
+        FMAW::TypeBackground,
+        FMAW::ScreenMain
+    };
+    FMAW::Tile Castle_Fog_tile(gfx_Castle_Fog_attributes);
+    FMAW::printf("El fondo Castle_Fog tiene ID=%d", Castle_Fog_tile.ID);
 
     //------------------------------------------------------------------------//
 
@@ -286,12 +313,13 @@ void update_graphics() {
 }
 
 int main(void) {
+    gameStarted = true; // Hack so we can change menu.
+
     auto finishTurnCallback = []() {
         grid.resetUnitMovements();
         FMAW::printf("Tocaría cambiar de turno!");
-        grid.resetPickedUpCell();
         TurnManager::finishTurn();
-        grid.recomputeVisibleCells();
+        grid.resetPickedUpCell();
         menu.adjustCurrentTile();
     };
 
@@ -305,51 +333,22 @@ int main(void) {
 
     grid.initCursor();
     grid.disableCursor();
-    GridMap::loadDefaultGridMap(&grid);
-
-    auto addSomeUnits = []() {
-        Warrior *warriorA = new Warrior(blue->getID());
-        Warrior *warriorB = new Warrior(red->getID());
-        Sniper *warriorC = new Sniper(blue->getID());
-        Sniper *warriorD = new Sniper(red->getID());
-        Warrior *warriorE = new Warrior(blue->getID());
-        Knight *warriorF = new Knight(blue->getID());
-        Knight *warriorG = new Knight(blue->getID());
-        /*
-        Warrior *warriorI = new Warrior(blue.getID());
-        Warrior *warriorJ = new Warrior(blue.getID());
-        Warrior *warriorK = new Warrior(blue.getID());
-        Warrior *warriorL = new Warrior(blue.getID());
-        */
-
-        grid.cellAtIndexPath({1, 1})->setCharacter(warriorA);
-        grid.cellAtIndexPath({10, 2})->setCharacter(warriorB);
-        grid.cellAtIndexPath({0, 1})->setCharacter(warriorC);
-        grid.cellAtIndexPath({0, 2})->setCharacter(warriorD);
-        grid.cellAtIndexPath({0, 3})->setCharacter(warriorE);
-        grid.cellAtIndexPath({0, 4})->setCharacter(warriorF);
-        grid.cellAtIndexPath({0, 5})->setCharacter(warriorG);
-        /*
-        grid.cellAtIndexPath({1, 1})->setCharacter(warriorI);
-        grid.cellAtIndexPath({1, 2})->setCharacter(warriorJ);
-        grid.cellAtIndexPath({1, 3})->setCharacter(warriorK);
-        grid.cellAtIndexPath({1, 4})->setCharacter(warriorL);
-        */
-
-        grid.resetUnitMovements();
-    };
+    Unit::registerPalettes();
+    GridMap::loadGridMap(availableMaps[selectedMap], &grid);
 
     auto loadSelectedMap = []() {
         grid.clearGridUnits();
         FMAW::Tile::releaseAllSpriteMemory();
         grid.initCursor();
         grid.disableCursor();
+        Unit::registerPalettes();
         FMAW::printf("Loading map with ID=%d", selectedMap);
         GridMap::loadGridMap(availableMaps[selectedMap], &grid);
-        grid.fogOfWarMode = allVisible;
+        grid.setFogOfWarMode(allVisible);
         // addSomeUnits();
         grid.enableSavingHistory(DEFAULT_SAVEGAME_FILE);
-        grid.recomputeVisibleCells();
+        //refresh menu
+        menu.adjustCurrentTile();
     };
 
     int selectSoundID = FMAW::Sound::registerFX(
@@ -384,9 +383,10 @@ int main(void) {
 
     auto releaseStart = [selectSoundID]() {
         // Disable interaction is saved game is being played.
-        if (grid.isPlayingSavedFile()) return;
+        if (grid.isPlayingSavedFile() || !gameStarted
+                || TurnManager::AIPlaying()) return;
 
-        FMAW::Sound::stopBackgroundMusic();
+        FMAW::Sound::toggleBackgroundMusic();
         FMAW::Sound::playEffect(selectSoundID);
 
         if (menu.isInForeground()) {
@@ -408,6 +408,7 @@ int main(void) {
     FMAW::Input::onButtonStartReleased(releaseStart);
 
     auto newGameCallback = [loadSelectedMap, finishTurnCallback]() {
+        gameStarted = true;
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
@@ -420,13 +421,14 @@ int main(void) {
 
         FMAW::printf("Should start a new game!");
         loadSelectedMap();
-        grid.fogOfWarMode = fixedPlayerOne;
+        grid.setFogOfWarMode(fixedPlayerOne);
         grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
     };
 
     auto loadGameCallback = [loadSelectedMap]() {
+        gameStarted = false;
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         menu.makeBackground();
         FMAW::printf("Should load a previous game!");
@@ -442,6 +444,7 @@ int main(void) {
     };
 
     auto versusCallback = [loadSelectedMap]() {
+        gameStarted = true;
         FMAW::Sound::setBackgroundMusic(MOD_BSO);
         TurnManager::reset();
         delete blue;
@@ -454,7 +457,7 @@ int main(void) {
 
         FMAW::printf("Should start a new versus game!");
         loadSelectedMap();
-        grid.fogOfWarMode = enabled;
+        grid.setFogOfWarMode(enabled);
         grid.enableCursor();
         menu.makeBackground();
         grid.enqueueCallbacks();
@@ -483,7 +486,11 @@ int main(void) {
         FMAW::printf("ERROR when trying to write file");
     }
 
+    FMAW::Sound::pauseBackgroundMusic();
+
     releaseStart();
+
+    gameStarted = false;
 
     FMAW::start();
 

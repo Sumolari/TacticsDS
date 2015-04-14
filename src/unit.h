@@ -85,6 +85,11 @@ class Unit : public FMAW::Character {
      */
     static Unit *UnitWithType(int unitType, PlayerID ownerID);
 
+    /**
+     * Registers palettes for all units.
+     */
+    static void registerPalettes();
+
     virtual void update();
 
     virtual void update_freq();
@@ -144,10 +149,11 @@ class Unit : public FMAW::Character {
     /**
      * Returns true if the attacked unit is alive afterwards.
      * False otherwise.
-     * @param u  The unit to attack.
-     * @return   Attacked unit aliveness.
+     * @param u                The unit to attack.
+     * @param terrain_defense  The defense of the terrain where the unit to attack is standing.
+     * @return                 Attacked unit aliveness.
      */
-    bool attackUnit(Unit *u);
+    bool attackUnit(Unit *u, int terrain_defense);
 
     /**
      * Resets the internal counter of available actions.
@@ -161,9 +167,15 @@ class Unit : public FMAW::Character {
 
     /**
      * Returns whether this Unit has at least one available action or not.
-     * @return Whether this Unit has at least oen available action or not.
+     * @return Whether this Unit has at least one available action or not.
      */
     bool hasAvailableActions();
+
+    /**
+     * Returns whether this Unit has all of its available actions or not.
+     * @return Whether this Unit has all of its available actions or not.
+     */
+    bool hasMaximumAvailableActions();
 
     /**
      * Returns the ID of the owner of this unit.

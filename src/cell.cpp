@@ -9,6 +9,10 @@ bool operator <(IndexPath const &left, IndexPath const &right) {
                                     && left.col < right.col);
 }
 
+bool operator ==(IndexPath const &left, IndexPath const &right) {
+    return left.row == right.row && left.col == right.col;
+}
+
 Cell::Cell() {
     this->background = FMAW::Background(0);
 }
@@ -63,6 +67,8 @@ int Cell::movementCost() {
         case CellBGRiver:
         case CellBGRiverH:
             return COST_MOVE_CELL_RIVER;
+        case CellBGCastle:
+            return COST_MOVE_CELL_CASTLE;
         default:
             return COST_CELL_INFINITY;
     }
@@ -84,8 +90,31 @@ int Cell::sightCost() {
         case CellBGRiver:
         case CellBGRiverH:
             return COST_SEE_CELL_RIVER;
+        case CellBGCastle:
+            return COST_SEE_CELL_CASTLE;
         default:
             return COST_CELL_INFINITY;
+    }
+}
+
+int Cell::terrainDefense() {
+    switch (this->backgroundType) {
+        case CellBGBase:
+            return DEFENSE_CELL_BASE;
+        case CellBGBridge:
+        case CellBGBridgeH:
+            return DEFENSE_CELL_BRIDGE;
+        case CellBGForest:
+            return DEFENSE_CELL_FOREST;
+        case CellBGGrass:
+            return DEFENSE_CELL_GRASS;
+        case CellBGMountain:
+            return DEFENSE_CELL_MOUNTAIN;
+        case CellBGRiver:
+        case CellBGRiverH:
+            return DEFENSE_CELL_RIVER;
+        default:
+            return DEFAULT_DEFENSE;
     }
 }
 
@@ -99,6 +128,7 @@ void Cell::renderBackground() {
         case CellBGMountain:
         case CellBGRiver:
         case CellBGRiverH:
+        case CellBGCastle:
             this->background.setScreenBaseBlock(2);
             for (int i = 0; i < this->tiles.size(); ++i) {
                 this->background.setTile(
@@ -124,6 +154,7 @@ void Cell::renderFoggyBackground() {
         case CellBGMountain:
         case CellBGRiver:
         case CellBGRiverH:
+        case CellBGCastle:
             this->background.setScreenBaseBlock(2);
             for (int i = 0; i < this->tiles.size(); ++i) {
                 this->background.setTile(

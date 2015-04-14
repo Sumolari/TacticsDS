@@ -4,63 +4,146 @@
 
 #include <cstdlib>
 #include <vector>
+#include <map>
+#include <algorithm>
 
+#include "./constants.h"
 #include "./unit.h"
 #include "./cell.h"
 #include "./turnManager.h"
 
 #include "./FMAW.h"
 
+#include <algorithm>
+
 PlayerAI::PlayerAI(Grid *grid, std::function<void(void)> callback) :
     grid(grid),
     onFinishTurnCallback(callback),
     seed(42) {}
 
-PlayerAI::PlayerAI(Grid *grid, std::function<void(void)> callback,
-                   PlayerID ID) :
+PlayerAI::PlayerAI(Grid *grid, std::function<void(void)> call, PlayerID ID) :
     Player(ID),
     grid(grid),
-    onFinishTurnCallback(callback),
+    onFinishTurnCallback(call),
     seed(42) {}
 
 void PlayerAI::startTurn() {
+
     // Prevent user from interacting with grid.
     this->grid->dequeueCallbacks();
 
     IndexPath previousPositionOfCursor = this->grid->getSelectedPath();
 
-    // Here we will store the units of this AI player and the path where they
-    // are located.
-    std::vector<Unit *> units;
-    std::vector<IndexPath> paths;
-    // We have to check the full grid to know where are our units.
-    for (int row = 0; row < this->grid->numRows(); row++) {
-        for (int col = 0; col < this->grid->numCols(); col++)  {
-            IndexPath path = { row, col };
-            Cell *c = this->grid->cellAtIndexPath(path);
-            if (c->isOccupied()) {
-                Unit *u = c->getCharacter();
-                if (u->getOwner() == this->ID) {
-                    units.push_back(u);
-                    paths.push_back(path);
+    // Now we have to make some decisions...
+    // We will call the following callback once each 1.5s.
+    this->unitNumber = 0;
+    auto moveSomeUnit = [this, previousPositionOfCursor](int ID) {
+        // Here we will store the units of this AI player and the path where they
+        // are located.
+        std::vector<Unit *> IAunits;
+        std::vector<IndexPath> IApaths;
+        std::vector<Unit *> playerUnits;
+        std::vector<IndexPath> playerPaths;
+        std::vector<IndexPath> chosenPaths;
+
+        // We have to check the full grid to know where are our units.
+        for (int row = 0; row < this->grid->numRows(); row++) {
+            for (int col = 0; col < this->grid->numCols(); col++)  {
+                IndexPath path = { row, col };
+                Cell *c = this->grid->cellAtIndexPath(path);
+                if (c->isOccupied()) {
+                    Unit *u = c->getCharacter();
+                    if (u->getOwner() == this->ID) {
+                        IAunits.push_back(u);
+                        IApaths.push_back(path);
+                    } else {
+                        playerUnits.push_back(u);
+                        playerPaths.push_back(path);
+                    }
                 }
             }
         }
-    }
 
-    // Just to scare the other player.
-    FMAW::printf("Turn of AI player %d, MUA-HAHAHA-HA", this->ID);
-    FMAW::printf("\tI've %d units", units.size());
+        std::map<IndexPath, std::vector<IndexPath>> IAUnitCanAttack;
+        std::map<IndexPath, std::vector<IndexPath>> PlayerUnitCanBeAttackedBy;
 
-    // We will call the following callback once each 1.5s.
-    this->unitNumber = 0;
-    auto moveSomeUnit = [this, units, paths, previousPositionOfCursor](int ID) {
-        if (this->unitNumber < units.size()) {
+        std::map<IndexPath, std::vector<IndexPath>> IAUnitsPossibleMovements;
+        std::map<IndexPath, int> distanceToNearestEnemyUnit;
+
+        // Compute which units can attack which ones.
+        for (IndexPath p : IApaths) {
+            this->grid->setPickedUpCell(p);
+            Cell *c = this->grid->cellAtIndexPath(p);
+            if (c->getCharacter()->hasAvailableActions()) {
+                for (IndexPath t : playerPaths) {
+                    if (grid->pickedUpUnitCanAttackCharacterAtCell(t)) {
+                        IAUnitCanAttack[p].push_back(t);
+                        PlayerUnitCanBeAttackedBy[t].push_back(p);
+                    }
+                }
+            }
+        }
+
+        // Compute where can be moved IA units.
+        for (IndexPath p : IApaths) {
+            for (int row = 0; row < this->grid->numRows(); row++) {
+                for (int col = 0; col < this->grid->numCols(); col++)  {
+                    IndexPath t = { row, col };
+                    if (grid->canMoveCharacterFromCellToCell(p, t)) {
+                        IAUnitsPossibleMovements[p].push_back(t);
+                    }
+                }
+            }
+        }
+
+        // Compute distance to nearest visible enemy.
+        for (int row = 0; row < this->grid->numRows(); row++) {
+            for (int col = 0; col < this->grid->numCols(); col++) {
+                IndexPath f = { row, col };
+                Cell *from = grid->cellAtIndexPath(f);
+                distanceToNearestEnemyUnit[f] = COST_CELL_INFINITY;
+                for (int t_row = 0; t_row < this->grid->numRows(); t_row++) {
+                    for (int t_col = 0; t_col < this->grid->numCols(); t_col++) {
+                        IndexPath t = { t_row, t_col };
+                        Cell *to = this->grid->cellAtIndexPath(t);
+                        int distance = abs(t.row - f.row) + abs(t.col - f.col);
+                        if (to->isOccupied()) {
+                            Unit *u = to->getCharacter();
+                            if (this->grid->canSeeCharacterAtCell(t) &&
+                                    u->getOwner() != this->ID) {
+                                distanceToNearestEnemyUnit[f] = distance;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Helper function to compute best cell to move.
+        auto nearestEnemy = [&distanceToNearestEnemyUnit](
+                                IndexPath i, IndexPath j
+        ) -> bool {
+            return distanceToNearestEnemyUnit[i] < distanceToNearestEnemyUnit[j];
+        };
+
+        bool canDoSomething = false;
+        for (Unit *u : IAunits) {
+            if (u->hasAvailableActions()) {
+                canDoSomething = true;
+            }
+        }
+        if (canDoSomething) {
+            while (!IAunits[this->unitNumber]->hasAvailableActions()) {
+                this->unitNumber++;
+                this->unitNumber %= IAunits.size();
+            }
             //------------------------------------------------------------------
             // Actual AI script.
             //------------------------------------------------------------------
-            IndexPath path = paths[this->unitNumber];
-            Unit *unit = units[this->unitNumber];
+            bool actionDone = false;
+            IndexPath path = IApaths[this->unitNumber];
+            Unit *unit = IAunits[this->unitNumber];
+            this->grid->setPickedUpCell(path);
 
             int row = path.row;
             int col = path.col;
@@ -68,27 +151,87 @@ void PlayerAI::startTurn() {
             FMAW::printf("Choosing action for unit %d at %d %d",
                          this->unitNumber, row, col);
 
-            std::vector<IndexPath> availableMovements;
+            std::vector<IndexPath> shouldAttack;
+            std::vector<IndexPath> attackable;
 
-            IndexPath up = { row - 1, col };
-            IndexPath down = { row + 1, col };
-            IndexPath left = { row, col - 1 };
-            IndexPath right = { row, col + 1 };
+            // If I'm the only one who can attack, I'll do (random on tie).
 
-            std::vector<IndexPath> candidates({up, down, left, right});
+            attackable = IAUnitCanAttack[path];
+            for (IndexPath t : attackable) {
+                if (PlayerUnitCanBeAttackedBy[t].size() == 1) {
+                    shouldAttack.push_back(t);
+                }
+            }
 
-            for (auto it = candidates.begin(); it != candidates.end(); it++)
-                if (this->grid->canMoveCharacterFromCellToCell(path, *it))
-                    availableMovements.push_back(*it);
+            FMAW::printf("\tI'm the only one that can attack %d units",
+                         attackable.size());
 
-            int movement = rand_r(&(this->seed)) % availableMovements.size();
-            IndexPath chosen = availableMovements[movement];
+            // If I'm not the only one, I attack to a random (random on tie).
+            if (shouldAttack.size() == 0) {
+                attackable = IAUnitCanAttack[path];
+                for (IndexPath t : attackable) {
+                    shouldAttack.push_back(t);
+                }
 
-            this->grid->moveCharacterFromCellToCell(path, chosen, 200);
+                FMAW::printf("\tMe and others can attack %d units",
+                             attackable.size());
+            }
+
+            // I'll attack if I can.
+            if (shouldAttack.size() > 0) {
+                while (shouldAttack.size() > 0) {
+                    int rand = rand_r(&(this->seed)) % shouldAttack.size();
+                    IndexPath tg = shouldAttack[rand];
+                    if (this->grid->pickedUpUnitCanAttackCharacterAtCell(tg)) {
+                        FMAW::printf("\tWill attack unit at %d %d",
+                                     tg.row, tg.col);
+                        this->grid->attackCharacterAtCell(path, tg,
+                                                          ATTACK_DURATION);
+                        actionDone = true;
+                        break;
+                    } else {
+                        FMAW::printf("\tCouldn't to attack unit at %d %d",
+                                     tg.row, tg.col);
+                        shouldAttack.erase(shouldAttack.begin() + rand);
+                    }
+                }
+            }
+
+            // If I can't attack, I'll move to the nearest enemy unit (random
+            // on tie).
+            if (!actionDone) {
+                FMAW::printf("\tI couldn't attack any unit, so I'll move");
+                std::vector<IndexPath> availableMovements;
+                for (int r = 0; r < this->grid->numRows(); r++) {
+                    for (int c = 0; c < this->grid->numCols(); c++) {
+                        IndexPath t = { r, c };
+                        if (this->grid->canMoveCharacterFromCellToCell(path, t)) {
+                            availableMovements.push_back(t);
+                        }
+                    }
+                }
+
+                FMAW::printf("\tI can move to %d cells",
+                             availableMovements.size());
+
+                std::sort(availableMovements.begin(), availableMovements.end(),
+                          nearestEnemy);
+
+                if (availableMovements.size() > 0) {
+                    IndexPath chosen = availableMovements[0];
+                    FMAW::printf("\tI'll move to %d %d",
+                                 chosen.row, chosen.col);
+                    this->grid->moveCharacterFromCellToCell(path, chosen,
+                                                            MOVEMENT_DURATION);
+                    IApaths[this->unitNumber] = chosen;
+                }
+            }
+
+            FMAW::printf("\t-------------------------------------------------");
+
             //------------------------------------------------------------------
             // End of AI script.
             //------------------------------------------------------------------
-            this->unitNumber++;
             this->grid->selectCellAtIndexPath(previousPositionOfCursor);
         } else {
             FMAW::printf("\tI've finished!");

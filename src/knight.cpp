@@ -18,19 +18,39 @@
 
 #define SPRITES_IDLE_ANIMATION 4
 
+FMAW::Tile Knight::paletteBlue = FMAW::Tile(0);
+FMAW::Tile Knight::paletteRed  = FMAW::Tile(0);
+
+void Knight::registerPalettes() {
+    paletteBlue = FMAW::Tile(FMAW::t_tile_attrib(
+                                 free_knight_1_blueTiles,
+                                 free_knight_1_blueTilesLen,
+                                 free_knight_1_bluePal,
+                                 free_knight_1_bluePalLen,
+                                 FMAW::TypeSprite,
+                                 FMAW::ScreenMain));
+    paletteRed = FMAW::Tile(FMAW::t_tile_attrib(
+                                free_knight_1_redTiles,
+                                free_knight_1_redTilesLen,
+                                free_knight_1_redPal,
+                                free_knight_1_redPalLen,
+                                FMAW::TypeSprite,
+                                FMAW::ScreenMain));
+}
+
 void Knight::init() {
     this->reset();
 
     this->unitType = UNIT_TYPE_KNIGHT;
-    this->movementCapacity = 6;
-    this->sightDistance = 8;
+    this->movementCapacity = 7;
+    this->sightDistance = 6;
     this->maximumAvailableActions = 2;
     this->currentAvailableActions = this->maximumAvailableActions;
-    this->maximumHealth = 2;
+    this->maximumHealth = 5;
     this->currentHealth = this->maximumHealth;
     this->minimumAttackRange = 1;
     this->maximumAttackRange = 1;
-    this->attackPower = 5;
+    this->attackPower = 4;
     this->print();
 
     int space_required = SPRITES_IDLE_ANIMATION * sizeof(
@@ -131,7 +151,13 @@ void Knight::init() {
 
     this->currentTileID = 0;
 
-    this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]));
+    if (this->ownerID == 0) {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteBlue);
+    } else {
+        this->tile = new FMAW::Tile(*(this->tiles[this->currentTileID]),
+                                    paletteRed);
+    }
 
     //--------------------------------------------------------------------------
     // Set up sprite.

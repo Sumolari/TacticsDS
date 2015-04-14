@@ -41,34 +41,74 @@
  */
 #define COST_MOVE_CELL_MOUNTAIN  3
 /**
+* Cost of entering a castle cell.
+*/
+#define COST_MOVE_CELL_CASTLE    1
+/**
  * Cost of entering a river cell.
  */
 #define COST_MOVE_CELL_RIVER     COST_CELL_INFINITY
 
 /**
- * Cost of entering a base cell.
+ * Cost of seeing through a base cell.
  */
 #define COST_SEE_CELL_BASE      1
 /**
- * Cost of entering a bridge cell.
+ * Cost of seeing through a bridge cell.
  */
 #define COST_SEE_CELL_BRIDGE    1
 /**
- * Cost of entering a forest cell.
+ * Cost of seeing through a forest cell.
  */
-#define COST_SEE_CELL_FOREST    2
+#define COST_SEE_CELL_FOREST    5
 /**
- * Cost of entering a grass cell.
+ * Cost of seeing through a grass cell.
  */
 #define COST_SEE_CELL_GRASS     1
 /**
- * Cost of entering a mountain cell.
+ * Cost of seeing through a mountain cell.
  */
 #define COST_SEE_CELL_MOUNTAIN  3
+/**
+ * Cost of seeing through a castle cell.
+ */
+#define COST_SEE_CELL_CASTLE    1
 /**
  * Cost of entering a river cell.
  */
 #define COST_SEE_CELL_RIVER     1
+/**
+ * Default defense value.
+ */
+#define DEFAULT_DEFENSE        0
+/**
+ * Defense given by a base cell.
+ */
+#define DEFENSE_CELL_BASE      DEFAULT_DEFENSE
+/**
+ * Defense given by a bridge cell.
+ */
+#define DEFENSE_CELL_BRIDGE    DEFAULT_DEFENSE
+/**
+ * Defense given by a forest cell.
+ */
+#define DEFENSE_CELL_FOREST    1
+/**
+ * Defense given by a grass cell.
+ */
+#define DEFENSE_CELL_GRASS     DEFAULT_DEFENSE
+/**
+ * Defense given by a mountain cell.
+ */
+#define DEFENSE_CELL_MOUNTAIN  2
+/**
+ * Defense given by a castle cell.
+ */
+#define DEFENSE_CELL_CASTLE    2
+/**
+ * Defense given by a river cell.
+ */
+#define DEFENSE_CELL_RIVER     DEFAULT_DEFENSE
 
 /**
  * ID of none owner.
@@ -97,5 +137,15 @@
  * Name of the file that will be used to store saved games.
  */
 #define DEFAULT_SAVEGAME_FILE "savegame.txt"
+
+/**
+ * Duration of an attack.
+ */
+#define ATTACK_DURATION   50
+
+/**
+ * Duration of a movement.
+ */
+#define MOVEMENT_DURATION 200
 
 #endif

@@ -21,6 +21,7 @@ Grid::Grid():
     rightArrowCallbackID(-1),
     aButtonCallbackID(-1),
     bButtonCallbackID(-1),
+    touchCallbackID(-1),
     savefile(nullptr),
     playingSavedFile(false),
     fogOfWarMode(allVisible) {
@@ -162,6 +163,7 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
 
     this->clearGridUnits();
     FMAW::Tile::releaseAllSpriteMemory();
+    Unit::registerPalettes();
     this->fogOfWarMode = allVisible;
     this->recomputeVisibleCells();
     this->playingSavedFile = true;
@@ -253,19 +255,21 @@ void Grid::playSavedHistory(std::string f, std::function<void(bool)> callback) {
                 Cell *fromC = this->cellAtIndexPath(from);
                 Cell *toC   = this->cellAtIndexPath(to);
 
+                // We select the cell and pick it up.
+                this->selectCellAtIndexPath(from);
+                this->setPickedUpCell(this->getSelectedPath());
+
                 if (toC->isOccupied()) {
                     // If movement can't be done then it's an attack.
-                    FMAW::Sound::playEffect(this->hitSoundID);
-
-                    if (this->attackCharacterAtCell(from, to, 50)) {
+                    if (this->attackCharacterAtCell(from, to, ATTACK_DURATION)) {
                         FMAW::printf("\tA unit has been killed");
-                        toC->setCharacter(nullptr);
                     } else {
                         FMAW::printf("\tA unit has been attacked");
                     }
                 } else {
-                    this->moveCharacterFromCellToCell(from, to, 200);
-                    FMAW::printf("\tA movement has been loaded");
+                    bool mov = this->moveCharacterFromCellToCell(from, to,
+                               MOVEMENT_DURATION);
+                    FMAW::printf("\tA movement has been loaded: %d", mov);
                 }
             }
         } else {
@@ -360,6 +364,8 @@ IndexPath Grid::getSelectedPath() {
     return this->selectedPath;
 }
 
+
+
 bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
                                  unsigned int duration) {
     Cell *a = this->cellAtIndexPath(attackerPos);
@@ -368,13 +374,23 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
             this->attackableCells[victimPos]) {
         Unit *attacker = a->getCharacter();
         Unit *victim = v->getCharacter();
+        FMAW::Sound::playEffect(this->hitSoundID);
 
-        bool isKill = attacker->attackUnit(victim);
+        bool isKill = attacker->attackUnit(victim, v->terrainDefense());
+        if (isKill) {
+            v->setCharacter(nullptr);
+        }
+
+        if (attacker->hasMaximumAvailableActions())
+            attacker->decreaseAvailableActions();
         attacker->decreaseAvailableActions();
+
         this->cursor.disable();
 
         std::function<void(bool)> reenableCursor = [this](bool b) {
-            this->cursor.enable();
+            if (!this->playingSavedFile) {
+                this->cursor.enable();
+            }
         };
 
         std::function<void(bool)> backToPosVict = [this, victim, v, duration,
@@ -418,7 +434,22 @@ bool Grid::attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
 
         return isKill;
     }
+    FMAW::printf("Can't attack non-attackable cell");
     return false;
+}
+
+bool Grid::pickedUpUnitCanAttackCharacterAtCell(IndexPath vPos) {
+    if (this->pickedUpCell.row == -1 || this->pickedUpCell.col == -1) {
+        return false;
+    }
+    Cell *a = this->cellAtIndexPath(this->pickedUpCell);
+    Cell *v = this->cellAtIndexPath(vPos);
+    // Only attack visible cells from occupied cells.
+    if (a->isOccupied() && this->visibleCells[vPos]) {
+        return v->isOccupied() && this->attackableCells[vPos];
+    } else {
+        return false;
+    }
 }
 
 bool Grid::moveCharacterFromCellToCell(IndexPath from, IndexPath to,
@@ -455,16 +486,18 @@ bool Grid::canMoveCharacterFromCellToCell(IndexPath from, IndexPath to) {
     if (!t->isOccupied() && f->isOccupied()) {
         Unit *u = f->getCharacter();
         if (u->getOwner() == TurnManager::currentPlayerID()) {
-            if (this->getSelectedPath().row != from.row ||
-                    this->getSelectedPath().col != from.col) {
-                this->selectCellAtIndexPath(from);
-                this->recomputeReachableCells();
+            if (!(this->pickedUpCell == from)) {
+                this->setPickedUpCell(from);
             }
             return this->reachableCells[to];
         }
     }
 
     return false;
+}
+
+bool Grid::canSeeCharacterAtCell(IndexPath cell) {
+    return this->visibleCells[cell];
 }
 
 void Grid::renderBackground() {
@@ -564,7 +597,8 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
             }
 
             // If we can attack that player then we set proper cursor.
-            if (this->attackableCells[this->selectedPath]) {
+            if (this->attackableCells[this->selectedPath] &&
+                    this->visibleCells[this->selectedPath]) {
                 if (c->isOccupied()) {
                     Unit *u = c->getCharacter();
                     if (u->getOwner() != TurnManager::currentPlayerID()) {
@@ -591,6 +625,14 @@ bool Grid::selectCellAtIndexPath(IndexPath path) {
         return true;
     }
     return false;
+}
+
+void Grid::setPickedUpCell(IndexPath path) {
+    this->pickedUpCell.row = path.row;
+    this->pickedUpCell.col = path.col;
+    this->recomputeVisibleCells();
+    this->recomputeReachableCells();
+    this->recomputeAttackableCells();
 }
 
 bool Grid::selectBottomCell() {
@@ -638,8 +680,7 @@ void Grid::setSwordCursor() {
 }
 
 void Grid::resetPickedUpCell() {
-    this->pickedUpCell.row = -1;
-    this->pickedUpCell.col = -1;
+    this->setPickedUpCell({ -1, -1});
     this->setSquareCursor();
 }
 
@@ -689,17 +730,15 @@ void Grid::enqueueCallbacks() {
                 u->getOwner() == TurnManager::currentPlayerID()) {
             // If cell is occupied by a character owned by current player and
             // it has available actions then we pick up it.
-            this->pickedUpCell.row = this->getSelectedPath().row;
-            this->pickedUpCell.col = this->getSelectedPath().col;
+            this->setPickedUpCell(this->getSelectedPath());
             FMAW::Sound::playEffect(this->selectSoundID);
             this->setArrowCursor();
             FMAW::printf("Se ha marcado la celda %d %d",
                          this->pickedUpCell.row,
                          this->pickedUpCell.col);
-            this->recomputeReachableCells();
-            this->recomputeAttackableCells();
         } else if (c->isOccupied() && u->getOwner() !=
-                   TurnManager::currentPlayerID()) {
+                   TurnManager::currentPlayerID() &&
+                   visibleCells[this->getSelectedPath()]) {
             // If cell is occupied by a character owned by an enemy we release
             // previously picked up cell and we reset the cursor.
             FMAW::printf("Hay un enemigo en la celda %d %d",
@@ -707,7 +746,6 @@ void Grid::enqueueCallbacks() {
                          this->pickedUpCell.col);
             if (this->hasPickedUpCell() &&
                     this->attackableCells[this->getSelectedPath()]) {
-                FMAW::Sound::playEffect(this->hitSoundID);
                 FMAW::printf("Atacando enemigo en la celda %d %d",
                              this->pickedUpCell.row,
                              this->pickedUpCell.col);
@@ -715,20 +753,20 @@ void Grid::enqueueCallbacks() {
                 int enemyID = u->getOwner();
                 bool isKill = this->attackCharacterAtCell(this->pickedUpCell,
                               this->getSelectedPath(),
-                              50);
+                              ATTACK_DURATION);
+
+                // We save attack in history log.
+                if (this->savefile != nullptr) {
+                    FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
+                                      this->pickedUpCell.row,
+                                      this->pickedUpCell.col,
+                                      this->getSelectedPath().row,
+                                      this->getSelectedPath().col);
+                    FMAW::IO::fflush(this->savefile);
+                }
 
                 if (isKill) {
                     FMAW::printf("Enemigo abatido!");
-                    // We save death in history log.
-                    if (this->savefile != nullptr) {
-                        FMAW::IO::fprintf(this->savefile, "%d %d %d %d\n",
-                                          this->pickedUpCell.row,
-                                          this->pickedUpCell.col,
-                                          this->getSelectedPath().row,
-                                          this->getSelectedPath().col);
-                        FMAW::IO::fflush(this->savefile);
-                    }
-                    c->setCharacter(nullptr);
                     if (!this->existCharacterWithOwner(enemyID)) {
                         this->gameOverCallback(TurnManager::currentPlayerID());
                     }
@@ -751,7 +789,8 @@ void Grid::enqueueCallbacks() {
                          this->getSelectedPath().col);
             FMAW::Sound::playEffect(this->selectSoundID);
             this->moveCharacterFromCellToCell(this->pickedUpCell,
-                                              this->getSelectedPath(), 100);
+                                              this->getSelectedPath(),
+                                              MOVEMENT_DURATION);
             u->decreaseAvailableActions();
             if (!u->hasAvailableActions()) {
                 this->setCrossCursor();
@@ -773,6 +812,13 @@ void Grid::enqueueCallbacks() {
     };
     if (this->bButtonCallbackID == -1) {
         this->bButtonCallbackID = FMAW::Input::onButtonBReleased(releaseB);
+    }
+
+    auto touchCallback = [this](int x, int y) {
+        this->selectCellAtIndexPath({y / CELL_HEIGHT, x / CELL_WIDTH});
+    };
+    if (this->touchCallbackID == -1) {
+        this->touchCallbackID = FMAW::Input::onTouchReleased(touchCallback);
     }
 }
 
@@ -801,6 +847,15 @@ void Grid::dequeueCallbacks() {
         FMAW::Input::unregisterCallback(this->bButtonCallbackID);
         this->bButtonCallbackID = -1;
     }
+    if (this->touchCallbackID != -1) {
+        FMAW::Input::unregisterCallback(this->touchCallbackID);
+        this->touchCallbackID = -1;
+    }
+}
+
+void Grid::setFogOfWarMode(FogOfWarMode fogOfWarMode) {
+    this->fogOfWarMode = fogOfWarMode;
+    this->recomputeReachableCells();
 }
 
 //------------------------------------------------------------------------------
@@ -822,6 +877,8 @@ void Grid::recomputeReachableCells() {
         Cell *cell = this->cellAtIndexPath(this->pickedUpCell);
         Unit *unit = cell->getCharacter();
         int maxMove = unit->getMovementCapacity();
+        if (!unit->hasMaximumAvailableActions()) maxMove /=
+                unit->maximumAvailableActions;
 
         // First no cell is reachable.
         for (int row = 0; row < this->rows; row++) {
@@ -846,6 +903,10 @@ void Grid::recomputeReachableCells() {
             if (path.row > 0) {
                 IndexPath u = { path.row - 1, path.col };
                 int c = this->cellAtIndexPath(u)->movementCost();
+                if (this->cellAtIndexPath(u)->isOccupied() &&
+                        this->cellAtIndexPath(u)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
+                    c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[u] && newCost <= maxMove) {
                     reachCost[u] = newCost;
@@ -857,6 +918,10 @@ void Grid::recomputeReachableCells() {
             if (path.row < this->rows - 1) {
                 IndexPath d = { path.row + 1, path.col };
                 int c = this->cellAtIndexPath(d)->movementCost();
+                if (this->cellAtIndexPath(d)->isOccupied() &&
+                        this->cellAtIndexPath(d)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
+                    c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[d] && newCost <= maxMove) {
                     reachCost[d] = newCost;
@@ -868,6 +933,10 @@ void Grid::recomputeReachableCells() {
             if (path.col > 0) {
                 IndexPath l = { path.row, path.col - 1 };
                 int c = this->cellAtIndexPath(l)->movementCost();
+                if (this->cellAtIndexPath(l)->isOccupied() &&
+                        this->cellAtIndexPath(l)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
+                    c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[l] && newCost <= maxMove) {
                     reachCost[l] = newCost;
@@ -879,6 +948,10 @@ void Grid::recomputeReachableCells() {
             if (path.col < this->cols - 1) {
                 IndexPath r = { path.row, path.col + 1 };
                 int c = this->cellAtIndexPath(r)->movementCost();
+                if (this->cellAtIndexPath(r)->isOccupied() &&
+                        this->cellAtIndexPath(r)->getCharacter()->getOwner() !=
+                        TurnManager::currentPlayerID())
+                    c = COST_CELL_INFINITY;
                 int newCost = reachCost[path] + c;
                 if (newCost < reachCost[r] && newCost <= maxMove) {
                     reachCost[r] = newCost;
@@ -1007,7 +1080,7 @@ void Grid::recomputeVisibleCells() {
         int maxSight = unit->getSightDistance();
 
         if (cell->getBackgroundType() == CellBGMountain) {
-            maxSight += 5;
+            maxSight += 4;
         }
 
         std::map<IndexPath, int> reachCost;

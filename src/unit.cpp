@@ -32,6 +32,12 @@ Unit *Unit::UnitWithType(int unitType, PlayerID ownerID) {
     }
 }
 
+void Unit::registerPalettes() {
+    Warrior::registerPalettes();
+    Sniper::registerPalettes();
+    Knight::registerPalettes();
+}
+
 void Unit::init() {}
 
 void Unit::update() {}
@@ -59,6 +65,14 @@ bool Unit::hasAvailableActions() {
                  this->currentAvailableActions);
     */
     return this->currentAvailableActions > 0;
+}
+
+bool Unit::hasMaximumAvailableActions() {
+    /*
+    FMAW::printf("This unit has %d actions available",
+                 this->currentAvailableActions);
+    */
+    return this->currentAvailableActions == this->maximumAvailableActions;
 }
 
 int Unit::getMovementCapacity() {
@@ -91,8 +105,9 @@ int Unit::force() {
     return this->attackPower;
 }
 
-bool Unit::attackUnit(Unit *u) {
-    u->setCurrentHealth(u->getCurrentHealth() - this->force());
+bool Unit::attackUnit(Unit *u, int terrain_defense) {
+    if( terrain_defense <= this->force() )
+        u->setCurrentHealth(u->getCurrentHealth() - this->force() + terrain_defense);
 
     if (u->getCurrentHealth() <= 0) {
         delete(u);

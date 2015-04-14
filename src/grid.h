@@ -80,6 +80,11 @@ class Grid {
     int bButtonCallbackID;
 
     /**
+     * ID of the callback triggered when stylus is released.
+     */
+    int touchCallbackID;
+
+    /**
      * Cells rechables by currently selected unit.
      */
     std::map<IndexPath, bool> reachableCells;
@@ -93,18 +98,6 @@ class Grid {
      * Cells visible by currently playing player.
      */
     std::map<IndexPath, bool> visibleCells;
-
-    /**
-     * Recomputes the cells reachable by currently selected unit.
-     * If no unit is selected all cells are available.
-     */
-    void recomputeReachableCells();
-
-    /**
-     * Recomputes the cells attackable by currently selected unit.
-     * If no unit is selected no cells are available.
-     */
-    void recomputeAttackableCells();
 
     /**
      * Returns whether some cell with a character has been picked up or not.
@@ -137,13 +130,29 @@ class Grid {
      */
     int hitSoundID;
 
-  public:
+    /**
+     * Recomputes the cells visible by current player's unit.
+     */
+    void recomputeVisibleCells();
+
+    /**
+     * Recomputes the cells reachable by currently selected unit.
+     * If no unit is selected all cells are available.
+     */
+    void recomputeReachableCells();
+
+    /**
+     * Recomputes the cells attackable by currently selected unit.
+     * If no unit is selected no cells are available.
+     */
+    void recomputeAttackableCells();
 
     /**
      * Mode of Fog of War.
      */
     FogOfWarMode fogOfWarMode;
 
+  public:
     /**
      * Callback called when game is over.
      * Parameter is the winner.
@@ -197,12 +206,12 @@ class Grid {
      * Initializes cursor.
      */
     void initCursor();
-    
+
     /**
      * Disables cursor.
      */
     void disableCursor();
-    
+
     /**
      * Enables cursor.
      */
@@ -233,10 +242,17 @@ class Grid {
      * @param  attackerPos      Original cell of the attacking character.
      * @param  victimPos        Final cell of the attacked character.
      * @param  duration         Duration of the animation.
-     * @return                  Whether change could be performed or not.
+     * @return                  Whether attacked character will "die" or not.
      */
     bool attackCharacterAtCell(IndexPath attackerPos, IndexPath victimPos,
                                unsigned int duration);
+
+    /**
+     * Returns whether the attack is possible or not.
+     * @param  victimPos        Final cell of the attacked character.
+     * @return                  Whether attack could be performed or not.
+     */
+    bool pickedUpUnitCanAttackCharacterAtCell(IndexPath victimPos);
 
     /**
      * Moves the character in given cell to given cell.
@@ -256,6 +272,14 @@ class Grid {
      * @return           Whether change could be performed or not.
      */
     bool canMoveCharacterFromCellToCell(IndexPath from, IndexPath to);
+
+    /**
+     * Returns whether current player can see the character located at given
+     * index path.
+     * @param  cell      Cell to check
+     * @return           Whether character at given cell is visible or not.
+     */
+    bool canSeeCharacterAtCell(IndexPath cell);
 
     /**
      * Draws the grid and the cells.
@@ -298,6 +322,12 @@ class Grid {
      * @return      Whether selected cell changed or not.
      */
     bool selectCellAtIndexPath(IndexPath path);
+
+    /**
+     * Selects the new picked up cell.
+     * @param path Path of the new selected cell.
+     */
+    void setPickedUpCell(IndexPath path);
 
     /**
      * Selects cell at bottom of previous cell.
@@ -367,6 +397,17 @@ class Grid {
     void resetCursor();
 
     //--------------------------------------------------------------------------
+    // Fog of war.
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets fog of war mode.
+     * Recomputes visible cells.
+     * @param fogOfWarMode New fog of war mode.
+     */
+    void setFogOfWarMode(FogOfWarMode fogOfWarMode);
+
+    //--------------------------------------------------------------------------
     // Callbacks.
     //--------------------------------------------------------------------------
 
@@ -379,11 +420,6 @@ class Grid {
      * Dequeues callbacks to manage user input.
      */
     void dequeueCallbacks();
-
-    /**
-     * Recomputes the cells visible by current player's unit.
-     */
-    void recomputeVisibleCells();
 };
 
 #endif
