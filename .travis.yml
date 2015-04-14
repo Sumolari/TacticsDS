@@ -1,0 +1,7 @@
+language: cpp
+before_install: sudo apt-get update
+install: sudo apt-get -q -y install wget gcc g++
+script:
+  - chmod a+x ./install_dependencies.sh
+  - ./install_dependencies.sh
+  - make
