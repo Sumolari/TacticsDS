@@ -5,3 +5,4 @@ script:
   - chmod a+x ./install_dependencies.sh
   - ./install_dependencies.sh
   - make
+  - make test
