@@ -7,6 +7,13 @@ $(echo "Set DEVKITARM in your environment to build for Nintendo DS.")
 include Makefile-opengl
 else
 
+export GAME_ICON    := $(CURDIR)/icon.bmp
+
+LIBNDS	:=	$(DEVKITPRO)/libnds
+export GAME_TITLE	:=	Tactics DS
+GAME_SUBTITLE1	:=	by Mark Holland, Victor Grau and Lluis Ulzurrun
+GAME_SUBTITLE2	:=	http://github.com/Sumolari/TacticsDS
+
 include $(DEVKITARM)/ds_rules
 
 #-------------------------------------------------------------------------------
@@ -20,6 +27,7 @@ include $(DEVKITARM)/ds_rules
 # MUSIC is the path where audio files are stored
 #-------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
+ONAME       := TacticsDS
 BUILD		:=	build
 SOURCES		:=	assets src data
 INCLUDES	:=	include build
@@ -105,13 +113,17 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
 #-------------------------------------------------------------------------------
 $(BUILD): $(AUDIOFILES)
+	@rm -f $(TARGET).nds
 	@[ -d $@ ] || mkdir -p $@
+	@rm -f $(BUILD)/icon.bmp
+	@cp $(GAME_ICON) $(BUILD)/icon.bmp
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@mv $(TARGET).nds $(ONAME).nds
 
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba $(TARGET).test
+	@rm -fr $(BUILD) $(TARGET).elf $(ONAME).nds $(TARGET).ds.gba $(TARGET).test
 
 #-------------------------------------------------------------------------------
 doc:
@@ -125,14 +137,6 @@ test:
 	./$(TARGET).test
 
 #-------------------------------------------------------------------------------
-
-soound:
-	#@mmutil $^ -d -osoundbank.bin -hsoundbank.h
-	#@mv soundbank.bin $(BUILD)/
-	#@mv soundbank.h $(BUILD)/
-	#echo $(bin2o)
-	#bin2s $(BUILD)/soundbank.bin | arm-none-eabi-as -o$(BUILD)/soundbank_bin.o
-	#$(bin2o) $(BUILD)/soundbank.bin
 
 else
 
