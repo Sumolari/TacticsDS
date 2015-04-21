@@ -27,7 +27,6 @@ include $(DEVKITARM)/ds_rules
 # MUSIC is the path where audio files are stored
 #-------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
-ONAME       := TacticsDS
 BUILD		:=	build
 SOURCES		:=	assets src data
 INCLUDES	:=	include build
@@ -118,12 +117,11 @@ $(BUILD): $(AUDIOFILES)
 	@rm -f $(BUILD)/icon.bmp
 	@cp $(GAME_ICON) $(BUILD)/icon.bmp
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
-	@mv $(TARGET).nds $(ONAME).nds
 
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(ONAME).nds $(TARGET).ds.gba $(TARGET).test
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba $(TARGET).test
 
 #-------------------------------------------------------------------------------
 doc:
