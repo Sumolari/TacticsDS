@@ -1,6 +1,0 @@
-// Copyright 2015 FMAW
-
-#include <nds.h>
-
-#define WINDOW_HEIGHT SCREEN_HEIGHT
-#define WINDOW_WIDTH  SCREEN_WIDTH
